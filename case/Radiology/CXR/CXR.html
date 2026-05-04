@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physio Radiology Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --light: #ecf0f1;
+            --secondary: #95a5a6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #game-container {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .hidden { display: none; }
+
+        #xray-display {
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            background: white;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-home {
+            margin-top: 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-retry {
+            margin-top: 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .wrong { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        #stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        #next-btn {
+            margin-top: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Clinical Radiology Challenge - CXR</h1>
+    
+    <div id="start-screen">
+        <p>Test your diagnostic skills. 10 Cases. 1 Timer.</p>
+        <button onclick="startGame()">Start Challenge</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div id="stats-bar">
+            <span>Case: <span id="q-num">1</span>/10</span>
+            <span>Timer: <span id="timer">0</span>s</span>
+        </div>
+        
+        <img id="xray-display" src="" alt="Clinical X-ray">
+        
+        <div id="options" class="options-grid"></div>
+
+        <div id="feedback" class="hidden"></div>
+        <button id="next-btn" class="hidden" onclick="nextQuestion()">Next Case →</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Challenge Complete!</h2>
+        <p>Your Score: <span id="final-score">0</span> / 10</p>
+        <p>Total Time: <span id="final-time">0</span> seconds</p>
+        
+        <button class="btn-retry" onclick="location.reload()">Try Again</button>
+<button class="btn-home" onclick="history.back()">← Go Back</button>
+    </div>
+</div>
+
+<script>
+    // --- DATABASE ---
+    // You can expand this array to 10 items
+    const questions = [
+        {
+            image: "CX1.png",
+            options: ["Pneumothorax", "Pleural effusion", "Pneumonia", "COPD"],
+            correct: 1,
+            explanation: "Blunting of the costophrenic angles on this patient's chest x-ray is consistent with pleural effusion. <br><br>The trachea is midline.Bilateral pleural effusions are noted, left greater than right. <br>Left lower lung opacification is noted adjacent to the pleural effusion.<br>The cardiomediastinal silhouette is unremarkable in size and contour. Intact median sternotomy wires and single lead left-sided pacemaker are also noted.<br>Bilateral hila are normal."
+        },
+        {
+            image: "CX2.jpg",
+            options: ["Pneumothorax", "CHF", "Pneumonia", "TB"],
+            correct: 1,
+            explanation: "Kerley B lines are present. The heart occupies more than half of the thoracic diameter. Cephalisation of the lung vasculature is also noted. <br><br>Kerley B lines are short, horizontal, peripheral opacities (1–2 cm long) seen on chest X-rays, representing thickened, edematous interlobular septa. They indicate interstitial lung fluid accumulation, most commonly from cardiogenic pulmonary edema."
+        },
+        {
+            image: "CX3.jpeg",
+            options: ["Pneumonia", "Collapsed lung", "Idiopathic pulmonary fibrosis", "TB"],
+            correct: 3,
+            explanation: "The left apical lung zone shows a cavitary lesion with a thickened wall, suggesting an active tuberculosis lesion. Left upper and middle lung zones show reticulonodular opacities. Left apical pleural thickening is noted."
+        },
+                {
+            image: "CX4.jpeg",
+            options: ["Collapsed lung", "Pleural effusion", "Pneumonia", "COPD"],
+            correct: 2,
+            explanation: "Airspace consolidation with air bronchograms (a classic sign of pneumonia, showing air-filled bronchi surrounded by fluid-filled, consolidated alveoli) over the right middle lobe."
+        },
+                {
+            image: "CX5.jpg",
+            options: ["Collapsed lung", "Pleural effusion", "Pneumonia", "COPD"],
+            correct: 3,
+            explanation: "Chest xrays demonstrates very marked hyperinflation of both lungs. Over 11 posterior ribs are seen, the diaphragms are flattened and there is enlargement of the retrosternal airspace.  Pulmonary vasculature not terribly distorted, although there is some prominence of the pulmonary arteries."
+        },
+                        {
+            image: "CX6.png",
+            options: ["Appropriate positioning of NG tube", "NG tube kinked in stomach", "NG tube tip lies in the distal oesophagus", "NG tube tip lies in the lung"],
+            correct: 3,
+            explanation: "The NG tube deviates to the right at the level of the carina then passes down the right main bronchus and the tip is seen projected over the right hemidiaphragm, likely in the right lower lobe of the lung. <br><br>Complications occur in ~5% (range 0.5-8%) of NGTs. Pulmonary complications should be preventable and manifestations from bronchial placement include: atelectasis, pneumonia, lung abscess, etc."
+        },
+         {
+            image: "CX7.jpg",
+            options: ["Appropriate positioning of ETT", "ETT position is too shallow", "ETT served to perform single lung ventilation", "ETT is misplaced into oesophagus"],
+            correct: 2,
+            explanation: "This is an example of a malpositioned endotracheal tube (ETT) with tip in the right main bronchus and features of developing left lung collapse (reduced volume, mediastinal shift, increased density). There is shift of the mediastinum to the left, elevation of the left hemidiaphragm and generally increased density in the left hemithorax. All these are features of volume loss and an indication that collapse of the left lung is imminent unless the ETT is withdrawn by at least several centimetres. The desired position of an ETT is 5 ± 2 cm above the carina. "
+        },
+        {
+            image: "CX8.jpeg",
+            options: ["Appropriate positioning of intercostal catheter (ICC)", "ICC is malpositioned in the chest wall", "ICC is malpositioned in the axilla ", "ICC penetrated the lung tissue"],
+            correct: 1,
+            explanation: "This CXR shows moderately-sized right pneumothorax. The right intercostal catheter (ICC) is kinked and coiled within the chest wall and not in the pleural space. No significant mediastinal shift. Patchy airspace opacities in the right lung and displaced right 7th rib fracture are also shown in this CXR."
+        },
+                 {
+            image: "CX9.jpeg",
+            options: ["Lung mass", "Collapsed lung", "Pneumonia", "TB"],
+            correct: 0,
+            explanation: "Large well-defined rounded mass lesion measuring up to 7 cm and projected within the right lung mid to upper zones. The lungs and pleural spaces are otherwise clear.  Cardiomediastinal contours are unremarkable allowing the limitations of this AP projection.  No pneumothorax or subphrenic free gas.  No destructive bone lesions."
+        },
+        {
+            image: "CX10.jpeg",
+            options: ["Pneumothorax", "CHF", "Pneumonia", "TB"],
+            correct: 0,
+            explanation: "Subtle lung edge at the left apex, without cardiomediastinal shift, suspicious for a small simple apical pneumothorax. No rib fractures or other acute traumatic sequelae evident."
+        },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let startTime;
+    let timerInterval;
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        startTime = Date.now();
+        startTimer();
+        showQuestion();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timer').innerText = elapsed;
+        }, 1000);
+    }
+
+    function showQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById('q-num').innerText = currentQuestion + 1;
+        document.getElementById('xray-display').src = q.image;
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(choice) {
+        const q = questions[currentQuestion];
+        const feedback = document.getElementById('feedback');
+        const buttons = document.querySelectorAll('#options button');
+        
+        buttons.forEach(b => b.disabled = true);
+        
+        feedback.classList.remove('hidden');
+        if(choice === q.correct) {
+            score++;
+            feedback.innerHTML = `<strong>Correct!</strong><br>${q.explanation}`;
+            feedback.className = "correct";
+        } else {
+            feedback.innerHTML = `<strong>Incorrect.</strong><br>Correct answer: ${q.options[q.correct]}<br>${q.explanation}`;
+            feedback.className = "wrong";
+        }
+        
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if(currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-time').innerText = Math.floor((Date.now() - startTime) / 1000);
+    }
+</script>
+
+</body>
+</html>

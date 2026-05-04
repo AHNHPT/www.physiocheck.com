@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physio Radiology Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --light: #ecf0f1;
+            --secondary: #95a5a6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #game-container {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .hidden { display: none; }
+
+        #xray-display {
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            background: white;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-home {
+            margin-top: 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-retry {
+            margin-top: 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .wrong { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        #stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        #next-btn {
+            margin-top: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Clinical Radiology Challenge - Knee</h1>
+    
+    <div id="start-screen">
+        <p>Test your diagnostic skills. 10 Cases. 1 Timer.</p>
+        <button onclick="startGame()">Start Challenge</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div id="stats-bar">
+            <span>Case: <span id="q-num">1</span>/10</span>
+            <span>Timer: <span id="timer">0</span>s</span>
+        </div>
+        
+        <img id="xray-display" src="" alt="Clinical X-ray">
+        
+        <div id="options" class="options-grid"></div>
+
+        <div id="feedback" class="hidden"></div>
+        <button id="next-btn" class="hidden" onclick="nextQuestion()">Next Case →</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Challenge Complete!</h2>
+        <p>Your Score: <span id="final-score">0</span> / 10</p>
+        <p>Total Time: <span id="final-time">0</span> seconds</p>
+        
+        <button class="btn-retry" onclick="location.reload()">Try Again</button>
+<button class="btn-home" onclick="history.back()">← Go Back</button>
+    </div>
+</div>
+
+<script>
+    // --- DATABASE ---
+    // You can expand this array to 10 items
+    const questions = [
+        {
+            image: "KN1.jpeg",
+            options: ["OA knee (Kellgren and Lawrence Gr 1)", "OA knee (Kellgren and Lawrence Gr 4)", "Fibular head fracture", "Tibial tuberosity avulsion"],
+            correct: 1,
+            explanation: "Bilateral medial compartment joint space narrowing and erosion of the medial plateaus; marginal osteophyte formation; subchondral sclerosis; subchondral cysts in the left knee. Bilateral varus deformity.<br><br> Kellgren and Lawrence classification: grade 4 (large osteophytes, marked narrowing of joint space, severe sclerosis and definite deformity of bone ends)"
+        },
+        {
+            image: "KN2.png",
+            options: ["Patella fracture", "Tibial plateau fracture", "Patella tendon rupture", "No fracture detected"],
+            correct: 1,
+            explanation: "Lateral tibial plateau fracture with lipohaemarthrosis on the lateral projection. A lipohaemarthrosis is indicative of an intra-articular fracture. Depression and sclerosis of the lateral tibial plateau consistent with tibial plateau fracture. <br><br>Lipohaemarthrosis results from an intra-articular fracture with escape of fat and blood from the bone marrow into the joint, and is most frequently seen in the knee, associated with a tibial plateau fracture or distal femoral fracture."
+        },
+        {
+            image: "KN3.png",
+            options: ["Stieda #", "Segond #", "Fracture inferior pole of patella", "Normal"],
+            correct: 1,
+            explanation: "Avulsed bone fragment from the lateral margin of the left tibial plateau. <br><br> Segond fracture is characterised by a small avulsion - a fragment that is best seen on the anterior-posterior view. <br><br> There is a high incidence of ACL injury in this fracture so the MRI may be useful for visualisation of the associated findings of ligamentous and/or meniscal injury."
+        },
+            {
+            image: "KN4.png",
+            options: ["Medial epicondylar fractures", "Quadriceps tendon rupture", "Tibial tuberosity avulsion", "Patella fracture (Horizontal)"],
+            correct: 2,
+            explanation: "Features consistent with a left tibial tuberosity avulsion fracture injury. There is pretibial soft tissue swelling, an expected high riding patella (patella Alta), supra and infra patellar bursal distension and likely effusion/haemarthrosis. There is background osteopenia and degenerative change. The contralateral and asymptomatic right knee is intact."
+        },
+                {
+            image: "KN5.png",
+            options: ["Patella fracture (vertical)", "Fracture patella (inferior pole)", "Arcuate sign", "# Tibial shaft"],
+            correct: 0,
+            explanation: "Vertically orientated fracture of the patella, seen clearly on the AP view. Vertical fractures of the patella are rare. They are often not visible on the lateral view and a skyline view may, therefore, be of aid in diagnosis."
+        },
+                        {
+            image: "KN6.jpeg",
+            options: ["# femoral shaft", "Quadriceps tendon rupture", "Tibial tuberosity avulsion", "Patella alta"],
+            correct: 3,
+            explanation: "The patella is high-riding (patella alta) with avulsion fracture fragments from its inferior pole consistent with a patellar tendon rupture. "
+        },
+         {
+            image: "KN7.jpg",
+            options: ["Tibial spine fracture", "Bucket handle tear of meniscus", "Bone cyst", "Spontaneous osteonecrosis of the knee (SONK)"],
+            correct: 3,
+            explanation: "Oval radiolucency with central sclerosis in the subchondral medial femoral condyle (crescent sign). Spontaneous osteonecrosis of the knee (SONK) is an idiopathic condition that leads to the development of a crescent shaped osteonecrosis lesion, mostly commonly in the epiphysis of the medial femoral condyle."
+        },
+        {
+            image: "KN8.png",
+            options: ["Patella fracture (Horizontal)", "Segond #", "Tibial spine fracture", "Normal"],
+            correct: 2,
+            explanation: "Tibial spine fracture. This type of fractures may be accompanied by the anterior cruciate ligament tear ACL."
+        },
+                 {
+            image: "KN9.png",
+            options: ["Epiphyseal plate fracture of distal femur", "Greenstick fracture of distal femur", "Traumatic distal femur fracture", "Pathological distal femur fracture"],
+            correct: 3,
+            explanation: "Fracture of the distal left femoral diaphysis through a multiloculated expansile radiolucent bony lesion. There is endosteal scalloping of the distal femur at the lesion with cortical thinning. No periosteal reaction or associated soft tissue mass. The rest of the visualised bones and joint show normal alignment, morphology and density. <br><br> The underlying lesion is multilocular and extends through the medullary cavity, features which favour aneurysmal bone cyst over unicameral bone cyst or non-ossifying fibroma. MRI can help narrow the differential diagnosis by demonstrating fluid-fluid levels. <br><br>In children, pathological fractures are often secondary to benign disease. Nevertheless, a malignant condition must always be formally ruled out."
+        },
+        {
+            image: "KN10.png",
+            options: ["Medial epicondylar fractures", "Patella baja", "Tibial plateau fracture", "Normal"],
+            correct: 2,
+            explanation: "There is a cleavage fracture of the lateral tibial plateau, with minimal displacement of the fracture fragment. Associated knee joint effusion and mild surrounding soft tissue swelling is also noted. <br><br> There are also degenerative changes of the tibiofemoral and patellofemoral joints. The Schatzker classification is the most commonly used system of classifying tibial plateau fractures.<br><br>Schatzker type I fractures are classically described as being wedge shaped pure cleavage fractures of the lateral tibial plateau, with less than 4mm of depression or displacement.<br><br>The mechanism of injury is usually the lateral femoral condyle being driven into the tibial plateau articular surface and are seen more frequently in young patients with normal bone mineral density.<br><br>Type I fractures can be quite subtle and difficult to detect on plain radiography."
+        },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let startTime;
+    let timerInterval;
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        startTime = Date.now();
+        startTimer();
+        showQuestion();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timer').innerText = elapsed;
+        }, 1000);
+    }
+
+    function showQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById('q-num').innerText = currentQuestion + 1;
+        document.getElementById('xray-display').src = q.image;
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(choice) {
+        const q = questions[currentQuestion];
+        const feedback = document.getElementById('feedback');
+        const buttons = document.querySelectorAll('#options button');
+        
+        buttons.forEach(b => b.disabled = true);
+        
+        feedback.classList.remove('hidden');
+        if(choice === q.correct) {
+            score++;
+            feedback.innerHTML = `<strong>Correct!</strong><br>${q.explanation}`;
+            feedback.className = "correct";
+        } else {
+            feedback.innerHTML = `<strong>Incorrect.</strong><br>Correct answer: ${q.options[q.correct]}<br>${q.explanation}`;
+            feedback.className = "wrong";
+        }
+        
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if(currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-time').innerText = Math.floor((Date.now() - startTime) / 1000);
+    }
+</script>
+
+</body>
+</html>

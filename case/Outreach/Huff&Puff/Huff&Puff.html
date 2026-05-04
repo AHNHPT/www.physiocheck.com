@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Huff and Puff</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Huff and Puff</h2>
+  <p>Mr. Wong, a 76-year-old retired man, newly moved into private OAH as his wife (main carer) just passed away. Noted walking instability by CGAT nurse in initial OAH assessment and referred COST Physio for fall risk assessment and walking aids prescription.<br><br>
+    This is the first COST physio OAH visit. OAH staff reported patient ↑SOB in recent 3 days.<br><br>
+    SH: <br>
+    Ex-smoker, non-drinker<br>
+    NKDA<br>
+    Private OAHR (newly moved in)<br>
+    Walk unaided, ET ~ 2 FOS<br>
+    ADL-i<br>
+    Retired GS<br><br>
+    PMH:<br>
+    HT, DM, Lipid<br>
+    COPD, GOLD class III, Group E<br>
+    Dementia, BPSD<br><br>
+    HPI:<br>
+    C/O SOB, increase upon mobilising.<br>
+    OAH is currently in Flu A outbreaking.<br>
+    Cough++, Sputum ++<br>
+    No fever, sore throat, runny nose, headache, dizziness or fatigue.<br>
+    No myalgia<br>
+    No chest pain but C/O heart beating fast.<br><br>
+    P/E:<br>
+    GCS: 15/15<br>
+    Afebrile<br>
+    BP: 142/71 Pulse 98 bpm<br>
+    SpO2 90% RA in resting, RR 25 breaths/min<br>
+    H’stix: 6.3<br><br>
+    Patient alert and oriented to person and place<br>
+    Chest: SOB++, A/E fair and equal, wheezing+, creps++<br>
+    4 limbs power full<br>
+    Calves soft<br></p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Check LL Edema</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Spirometry</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Mobility Assessment</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. 6 in 1 RAT Kit</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Check Bronchodilator Technique</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Utilise Crisis Pack</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Send patient to AED</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Seek CGAT Doctor Consultation</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+    
+  <div style="margin-top:20px;">
+    This is a basic AECOPD case in elderly patient which is commonly encounter in primary healthcare setting.<br>
+    COPD exacerbation is characterized by an acute worsening in one or more of the following cardinal symptoms of COPD over ≤14 days:<br>
+    ●Cough (increase in frequency and severity)<br>
+    ●Sputum production (increase in volume and/or change in character)<br>
+    ●Dyspnea (increased level or with less activity)<br><br><br>
+    Accompanying signs include tachypnea, tachycardia, hypoxemia, and impaired gas exchange. Exacerbations are associated with airway and systemic inflammation and are often caused by respiratory tract infections, pollution, or other acute airway insults.<br><br>
+    <strong>-----Investigations-------</strong><br>
+    <strong>1. Check LL Edema: Correct! </strong><br>
+    Symptoms of COPD exacerbation are not specific to COPD. Therefore, patients with COPD should be carefully evaluated for coexisting or alternative conditions, particularly heart failure, pulmonary embolism, myocardial ischemia, pneumothorax, etc. Diagnosing or excluding these conditions is important to ensure timely concurrent management.<br><br>
+    Checking lower limbs edema can screen out part of the risk of heart failure and pulmonary embolism. While peripheral edema is a common sign in advanced or right-sided heart failure due to fluid retention from impaired cardiac pumping. It also occurs in pulmonary embolism if associated with deep vein thrombosis. Although absence of lower limb edema does not reliably exclude heart failure and pulmonary embolism, it is a supportive sign to alert with these conditions. Prediction rules integrate edema with other factors like the Framingham risk score for heart failure and the Wells score for pulmonary embolism, which can evaluate the probability of the diseases. Further investigation and imaging are essential in symptomatic patients.<br><br>
+    <img src='Framingham.jpeg' alt='Framingham' style='max-width:100%;boder-radius:5px;'><br>Table1: Framingham Criteria for Heart Failure Diagnosis<br>
+    <img src='Well_PE.jpeg' alt='Well_PE' style='max-width:100%;boder-radius:5px;'><br>Table2: Wells criteria for PE<br>
+    <strong>2. Spirometry: Wrong!</strong><br>
+    A peak expiratory flow rate is surely a significant clinical test when diagnosing and monitoring COPD disease progression.<br>
+    However, we should not assess the patient using peak expiratory flow rate as an acute investigation due to low quality or unreliable.<br>
+    In practice, patients are often unable to perform a good-quality forced expiratory manoeuvre during acute exacerbation.<br><br>
+    <strong>3. Mobility Assessment: Wrong!</strong><br>
+    Based on the clinical findings, Mr. Wong’s SpO2 was borderline at rest, respiratory rate was 25/min, heart rate was 98 bpm and he complained of increased SOB once moving.<br>
+    It shows moderate level of COPD exacerbation based on the Rome classification. Mobilising the patient may exacerbate the condition and lead to further desaturation.<br>
+    As mobility assessment is a low priority, it is preferable to defer it to next visit once the exacerbation is settled.<br><br><br>
+    <img src='COADAE.jpeg' alt='COADAE' style='max-width:100%;boder-radius:5px;'><br>Fig 1: Suspected COAD management flow<br><br>
+    <strong>4. 6 in 1 RAT Kit: Correct!</strong><br>
+    As the OAH is currently in Flu A outbreaking, an RAT should be performed to screen out other causes of increasing SOB.<br>
+    For patients with a COPD exacerbation during influenza season, we screen for influenza infection.<br><br>
+    A 6 in 1 RAT kit is the fastest and most efficient way to differentiate influenza infection in primary care setting, which typically detect SARS-CoV-2 (COVID-19), Influenza A (Flu A), Influenza B (Flu B), Respiratory Syncytial Virus (RSV), Adenovirus (ADV), and Mycoplasma pneumoniae (MP).<br><br>
+    Sensitivity (ability to detect true positives) and specificity (ability to detect true negatives) can vary depending on the brand, viral load, timing of symptoms, and testing conditions.<br>
+    Independent reviews specific to 6-in-1 kits are limited, as most studies focus on single- or 2-3 pathogen tests. For combined tests (e.g., COVID/Flu/RSV), independent studies show sensitivities around 60-80% and specificities >98% worldwide.<br><br>
+    We can notify CGAT Dr. and nurse to initiate empirical antiviral therapy, along with proper infection control measures, in cases where timely laboratory confirmation is not readily available or accessible.<br><br>
+    <strong>Management – Explanation</strong><br>
+    <strong>1. Check Bronchodilator Technique: Correct!</strong><br>
+    All patients with COPD exacerbation are recommended inhaled short-acting bronchodilator (SABA, e.g., salbutamol, levalbuterol and SAMA, e.g., Ipratropium bromide) and continue long-acting bronchodilator (LABA and LAMA).<br>
+    Still, checking correct bronchodilator technique is essential to ensure that medication reaches the lungs effectively. This requires patients to synchronise their breath with their hands to give the inhaler dose. Aerochamber and Haleraid are tools which can assist patients with problems using inhalers.<br><br>
+    <strong>2. Utilise Crisis Pack: Correct!</strong><br>
+    A COPD crisis pack in Hong Kong typically contains a short course of oral antibiotics (e.g., Augmentin) and oral steroids (e.g., Prednisolone) prescribed by a doctor to manage COPD exacerbation, reducing hospitalisations.<br>
+    Empiric antibiotic therapy used to treat potential bacterial infection causing increased sputum or change in sputum colour. Oral steroids aim to reduce airway inflammation during the exacerbation. The crisis pack should be used with moderate severity exacerbations per the Rome classification for exacerbation mentioned above.<br><br>
+    <strong>3. Send patient to AED: Wrong!</strong><br>
+    An important step in the initial evaluation is to determine whether the patient needs hospitalisation or can be safely managed in community. While more than 80% of COPD exacerbations can be managed on an outpatient basis, it is important to identify patients who require a higher level of care. You may refer to the following AED algorithm:<br><br><br>
+    <img src='COAD_AED.jpeg' alt='COAD_AED' style='max-width:100%;boder-radius:5px;'><br>Fig 2: COAD management algorithm in AED<br><br>
+    Patients with mild symptoms, sufficient support (stable living conditions, caregiver support, and access to communication), and appropriate intensifying medication (bronchodilators, oral corticosteroids, and antibiotics), as well as the ability and understanding to return to medical evaluation if deterioration occurs, may be safely treated in community setting.<br><br>
+    <strong>4. Seek CGAT Doctor Consultation: Correct!</strong><br>
+    Although hospitalisation is unnecessary, notify community doctor and responsible nurse is still needed. They can visit the OAH more frequently and closely monitor Mr. Wong’s condition. Once there is any change of condition, they can react immediately.<br><br>
+    <strong>Learning Point:</strong><br>
+    Differentiate other causes apart from COPD exacerbation<br>
+    Management of COPD exacerbation in community setting<br><br>
+    <h6>Reference:<br>
+      1. Global Initiative for Chronic Obstructive Lung Disease (GOLD). Global Strategy for the Diagnosis, Management and Prevention of Chronic Obstructive Pulmonary Disease: 2026 Report. www.goldcopd.org<br>
+      2. UpToDate, COPD exacerbations: Management<br>
+      3. UpToDate, COPD exacerbations: Clinical manifestations and evaluation<br>
+      4. UpToDate, Wells criteria and modified Wells criteria: Clinical assessment for pulmonary embolism<br>
+      5. Bosomworth NJ. Practical use of the Framingham risk score in primary prevention: Canadian perspective. Can Fam Physician. 2011 Apr;57(4):417-23. PMID: 21626897; PMCID: PMC3076470.<br>
+      6. BMJ Best Practice, Acute exacerbation of chronic obstructive pulmonary disease<br>
+      7. Hong Kong Thoracic Society, Impact of COPD self-management program on healthcare utilisation<br>
+      8. Hong Kong Asthma Society, Using your inhalers<br><br>Case Creator: Mr. Henry Chan</h6></div>
+
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+
+<script>
+  const investigations = [{"opt":"Check LL Edema","res":"NAD, calves soft, no edema","cor":true},
+  {"opt":"Spirometry","res":"FEV1/FVC 40%","cor":false},
+  {"opt":"Mobility Assessment","res":"SpO2 drops to 85% RA once mobilise","cor":false},
+  {"opt":"6 in 1 RAT Kit","res":"Negative","cor":true}];
+  const management = [{"opt":"Check Bronchodilator Technique","exp":"","cor":true},
+  {"opt":"Utilise Crisis Pack","exp":"","cor":true},
+  {"opt":"Send patient to AED","exp":"","cor":false},
+  {"opt":"Seek CGAT Doctor Consultation","exp":"","cor":true}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

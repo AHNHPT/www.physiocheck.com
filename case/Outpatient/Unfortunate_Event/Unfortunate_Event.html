@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Unfortunate Event</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Unfortunate Event</h2>
+  <p>Ms. Janice Chow's Case Summary:
+   <br><br>SHx:
+   <br>F/72
+   <br>living alone with NGO-supported MOW and escort services
+   <br><br>Premorbid walk with stick + handrails at home, electric wheelchair outdoor
+   <br><br>PMHx:
+   <br>1. IGT
+   <br>2. Ray amputation left 4th & 5th metatarsals in 11/2016
+   <br>3. Right TKR in 04/2016
+   <br><br>HPI:
+   <br>Admitted ORT 3 months ago for acute-on-chronic low back pain radiating to buttocks
+   <br><br>X-ray: no fracture, pedicles and endplates intact, L4/5 spondylolisthesis similar to old films
+   <br><br>D/C home with OPD PT referral
+   <br><br>================================ 
+   <br>You are the case physiotherapist of Ms. Chow. She is attending her 7th outpatient session today. Focus to date has been lumbar mobilisation exercises, general lower-limb strengthening, functional training.
+   <br><br>Ms. Chow attended OPD today on electric wheelchair as usual. Upon approach, she reported a recent fall onto right knee and right arm 3 days ago while exiting the toilet at home.
+   <br><br>Right knee pain had been present for 1 month prior (intermittent, NPRS 4/10); pain exacerbated post-fall but she remained ambulant and symptoms were improving, so no medical review was sought.
+   <br><br>She also reported that low back pain remained unchanged. Right knee pain now intermittent NPRS 6-7/10, aggravated by walking or end-range flexion/extension, eased by sitting/lying.
+   <br><br>================================<br></p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Checking right knee AROM</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Checking back AROM in standing</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Observation of the right knee for inflammatory signs and/or deformity </div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Functional gait assessment </div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training.</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week.</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Send the patient to the Accident and Emergency Department (AED) for further review and management.</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements. </label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+    
+  <div style="margin-top:20px;"><strong>------- Explanations --------</strong>
+    <br><strong>Investigations:</strong>
+    <br><strong>Option 1. Checking right knee AROM</strong>
+    <br>Checking right knee AROM is necessary as the next step. In a patient with recent TKR who sustained a fall onto the prosthetic knee, a new extension lag (e.g., 20° lag not present in prior sessions) is a critical red flag for possible extensor mechanism disruption (quadriceps or patellar tendon rupture) or periprosthetic fracture. This objective mechanical deficit takes precedence over stable chronic lumbar symptoms and mandates urgent medical review rather than continuing routine outpatient assessment.
+    <br><br><strong>Option 2. Checking back AROM in standing</strong>
+    <br>Checking back AROM in standing is not necessary as the next step. The patient's low back pain is chronic, unchanged, and unrelated to the acute post-fall knee complaint. Repeating lumbar AROM adds no new diagnostic value when a higher-priority post-TKR mechanical issue exists and risks further damage (e.g., fracture propagation or implant loosening).
+    <br><br><strong>Option 3. Observation of the right knee for inflammatory signs and/or deformity</strong>
+    <br>Observation of the right knee for inflammatory signs and/or deformity is necessary as the next step. As possible extensor mechanism disruption or periprosthetic fracture is highly suspected in this case, observation for any deformity, swelling, and bruising might provide cues to support your clinical decision making on referring for medical evaluation.
+    <br><br><strong>Option 4. Functional gait assessment</strong>
+    <br>Functional gait assessment is not necessary as the next step. Assessing patient's ability to weight bear may provide supportive information for a suspected extensor mechanism disruption or periprosthetic fracture. However, weight bearing activities are contraindicated when AROM already reveals a clear red flag.
+    <br><br><br><strong>Treatment:</strong>
+    <br><strong>Option 1. Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training.</strong>
+    <br>Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training is not optimal. Ignoring the new post-fall knee trauma and objective extension lag risks exacerbating an undiagnosed periprosthetic fracture, implant loosening, or extensor mechanism rupture. Medical clearance before resuming loading is required when new mechanical symptoms appear.
+    <br><br><strong>Option 2. Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week.</strong>
+    <br>Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week is not optimal. Conservative modification with delayed medical review is unsafe. The history meets Ottawa Knee Rule criteria (age >55 years + trauma) and the new extension lag indicates possible structural failure and the need for urgent medical evaluation (Stiell et al., 1997).
+    <br><br><br><img src='Ottawa_knee.png' alt='knee' style='max-width:100%;boder-radius:5px;'>
+    <br>Fig.1 Ottawa Knee Rule Criteria 
+    <br><br><strong>Option 3. Send the patient to the Accident and Emergency Department (AED) for further review and management.</strong>
+    <br>Send the patient to the Accident and Emergency Department (AED) for further review and management is optimal. The combination of:
+    <br><br>(1) fall onto the prosthetic knee
+    <br><br>(2) persistent pain
+    <br><br>(3) new extension lag constitutes red flags for periprosthetic fracture or extensor mechanism disruption.
+    <br><br>Immediate AED referral ensures urgent X-ray (± CT) and orthopaedic assessment, which is the evidence-based standard to prevent long-term morbidity in elderly patients with prosthetic joints (Stiell et al., 1997).
+    <br><br><strong>Option 4. Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements. </strong>
+    <br>Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements is not optimal. Knee-specific loading or mobilisations are contraindicated until serious pathology is excluded. Forcing exercises on a potentially unstable TKR risks fracture propagation or implant damage.
+    <br><br><strong>Key Take Home Messages:</strong>
+    <br>Always re-prioritise assessment and management when a new symptom arises, especially after trauma. Objective findings (extension lag) trump subjective improvement trends. Early medical referral protects patient safety and prevents avoidable complications. Document clearly and communicate handover details when referring to AED.
+    <br><br>References:
+    <br>Stiell, I. G., Wells, G. A., Hoag, R. H., Sivilotti, M. L., Cacciotti, T. F., Verbeek, P. R., Greenway, K. T., McDowell, I., Cwinn, A. A., Greenberg, G. H., Nichol, G., & Michael, J. A. (1997). Implementation of the Ottawa Knee Rule for the use of radiography in acute knee injuries. *JAMA*, 278(23), 2075-2079. https://doi.org/10.1001/jama.1997.03550230051036
+    <br><br><h6>Case Creator: Gigi Cheung</h6></div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<script>
+  const investigations = [{"opt":"Checking right knee AROM","res":"Right knee AROM 20°-100° (20° extension lag), which was not present in previous sessions (previously 0°-120°)","cor":true},
+  {"opt":"Checking back AROM in standing","res":"Ms. Chow required frame support for standing in view of her right knee pain. <br><br>Lumbar AROM was performed in sitting instead: <br> forward flexion limited to mid-shin level with increased back pain <br> extension limited with bilateral buttock pain (similar to previous sessions)","cor":false},
+  {"opt":"Observation of the right knee for inflammatory signs and/or deformity ","res":"Mild generalised swelling over the supra-patellar pouch and anterior knee with no obvious deformity, malalignment, or patella alta/baja <br>No increased local heat or erythema compared to the contralateral side.","cor":true},
+  {"opt":"Functional gait assessment ","res":"Ms. Chow walked with limping gait with reduced stance time on the right lower limb and heavy reliance on the walking frame. <br><br> She was unable to achieve full knee extension in terminal stance on the right and could only tolerate few steps of walking.","cor":false}];
+  const management = [{"opt":"Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training.","exp":"","cor":false},
+  {"opt":"Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week.","exp":"","cor":false},
+  {"opt":"Send the patient to the Accident and Emergency Department (AED) for further review and management.","exp":"","cor":true},
+  {"opt":"Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements.","exp":"","cor":false}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

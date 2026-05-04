@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Thigh Numbness</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Thigh Numbness</h2>
+  <p>Mr. Chan is a 70-year-old male who underwent a right total hip replacement via the direct anterior approach this morning. The OT was reported no special intraoperative complications, intra-op XR screening showing normal alignment of prosthesis and allow same day rehabilitation. He received general anesthesia for OT. Now it is 6 hours post-operatively.
+    <br><br><br>SHx:
+    <br>Allergy to Penicillin 
+    <br>Drinker (daily 5 cans of beer), Smoker (1/2 pac per day)
+    <br>Live with wife (ADL-i, main carer)
+    <br>Live in village house 2/F
+    <br>Pre-morbid walk with stick outdoor, holding furniture indoor
+    <br><br><br>PMH:
+    <br>HT on Losartan
+    <br>LUTS on Terazosin 
+    <br><br><br>HPI:
+    <br>R hip pain for 10+yrs
+    <br>Xray: Primary R OA hip
+    <br>Adm same day for R THR
+    <br>R THR (DAA, ROSA assist, wound closed with staples) done today a.m.
+    <br>Uneventful, blood loss = 500ml
+    <br><br>Hb: 13.8->11.2
+    <br>WCC: Normal
+    <br>Plt: 200
+    <br><br>P/E:
+    <br>BP: 112/74 HR 90
+    <br>SpO2: 95% RA
+    <br>Afebrile
+    <br><br>----------------------------------------------
+    <br>You are working in Orthopeadic ward
+    <br>It is your first time seeing the patient. He is lying supine in bed, alert, oriented, and reports moderate right hip pain (4/10) at rest and numbness over right thigh. During the assessment, he has difficulty mobilising his right lower limb. He describes a "numb feeling" over his right anterior thigh and inner lower leg, which onset after the surgery.
+    <br><br>There was no back pain nor paresthesia, and no radicular symptoms were reported preoperatively.</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. AROM assessment of the right lower limb</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Bilateral lower limb light touch sensation and power </div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Straight leg raising test</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Reflexes of bilateral lower limbs</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Immediate surgical exploration to evacuate potential hematoma</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Protect the knee with a knee extension brace during transfers/ambulation if quad control is poor, initiate gentle ROM and quadriceps exercises, monitor for recovery</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Plan early mobilization with full weight-bearing and with hip spica</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Check prescription of neuropathic pain medications (e.g., gabapentin, lyrica) with ward nurse</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Selected?</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+    
+  <div style="margin-top:20px;"><strong>----------Explanations----------</strong>
+    <br><strong>Question 1</strong>
+    <br><strong>Choice 1: AROM assessment of the right lower limb</strong>
+    <br>Correct. Assessing limb AROM helps differentiate whether the condition is caused by pain inhibition, muscle weakness, or true neurological deficit. It is normal that patients may experience hip weakness after THR but significant quadriceps weakness while ankle/toes are spared, may imply of possible femoral nerve injury.
+    <br><br><strong>Choice 2: Bilateral lower limb light touch sensation and power</strong>
+    <br>Correct. With a complaint of limb numbness and weakness, a detailed neurology assessment should be performed.
+    <br>The result confirms a unilateral, peripheral-nerve distribution rather than a spinal cord or root lesion.
+    <br><br><strong>Choice 3: Straight leg raising test</strong>
+    <br>Incorrect. The patient denied back pain & paresthesia but complained of LL numbness and weakness. SLR is not indicated as it is unlikely sciatica/disc pathology/nerve root irritation. The sensory and motor deficits are in the femoral nerve distribution. Performing SLR is therefore unnecessary and could cause unnecessary discomfort without adding diagnostic value.
+    <br><br><strong>Choice 4: Reflexes of bilateral lower limbs</strong>
+    <br>Correct. Checking reflexes is used to evaluate the integrity of spinal cord, peripheral nervous system and descending motor pathway. The absent right knee jerk (L3-L4 via femoral nerve) with preserved ankle jerk may indicate femoral neuropathy. Negative Babinski signs bilaterally further exclude upper motor neuron or spinal cord involvement. This reinforces the peripheral nerve localization.
+    <br><strong>Question 2</strong>
+    <br><br><strong>Choice 1: Immediate surgical exploration to evacuate potential hematoma</strong>
+    <br>Incorrect. Although hematoma can occasionally compress on the femoral nerve after anterior-approach THR. The current clinical presentation is more suggestive of intra-operative nerve stretch/ injury. Exploration of wound may be considered with a confirmed compressive hematoma on imaging. Conservative management and close monitoring are more likely the initial approach.
+    <br><br><strong>Choice 2: Protect the knee with a knee extension brace during transfers/ambulation if quad control is poor, initiate gentle ROM and quadriceps exercises, monitor for recovery</strong>
+    <br>Correct. With quadriceps power only grade 1, the patient is at high risk of knee buckling and falls. A knee extension brace provides mechanical stability during transfers and early walking. Gentle active-assisted ROM and quadriceps sets promote nerve recovery and prevent stiffness/contractures.
+    <br><br><strong>Choice 3: Plan early mobilization with full weight-bearing and with hip spica</strong>
+    <br>Incorrect. A hip spica brace is designed for hip instability/dislocation prevention. It is bulky, restrictive, and unnecessary in this case. The primary problem is quadriceps weakness, not hip instability. Adding a hip spica would hinder rehabilitation and increase the risk of pressure sores or stiffness without addressing the real issue.
+    <br><br><strong>Choice 4: Check prescription of neuropathic pain medications (e.g., gabapentin, lyrica) with ward nurse</strong>
+    <br>Correct. The patient describes the feeling as "numb, decrease in sensation". This is neuropathic in nature. Gabapentin or lyrica can help reduce neuropathic pain and dysesthesia while the nerve recovers. And neurobion may also help in supporting nerve health.
+    <br><br><strong>Diagnosis: Femoral nerve injury after THR</strong>
+    <br><br>Nerve injuries can occur during THR due to compression, traction, ischemia or transection. [1]
+    <br><br>The overall incidence of femoral nerve palsy after total hip replacement was 0.21%, with the incidence 14.8-fold higher in patients undergoing anterior hip surgery using either a direct anterior (0.40%) or anterolateral (0.64%) approach. [2]
+    <br><br>In the absence of any pathology that would warrant a re-operation, management of a nerve palsy consists of supportive measures: physiotherapy to maintain range of movement in the affected lower limb, bracing during ambulation and night time splinting, and reassurance that the majority of these problems may resolve slowly over time.[3]
+    <br><br><br><strong>Anterior approach (Smith-Petersen) procedure[4]:</strong>
+    <br><br><img src='cut1.png' alt='1' style='max-width:100%;boder-radius:5px;'>
+    <br>Start the skin incision 2 cm lateral to the anterior superior iliac spine (ASIS). Continue the incision 8-10 cm distally.
+    <br><br><img src='cut2.png' alt='2' style='max-width:100%;boder-radius:5px;'>
+    <br>Incise the fascia over the tensor fasciae latae. The lateral femoral cutaneous nerve lies medially on the fascia.
+    <br><br><img src='cut3.png' alt='3' style='max-width:100%;boder-radius:5px;'>
+    <br>Bluntly dissect the sartorius interval medially to retract the tensor fasciae latae laterally. This avoids damage to the lateral femoral cutaneous nerve.
+    <br><br><img src='cut4.png' alt='4' style='max-width:100%;boder-radius:5px;'>
+    <br>Release the direct head of the rectus femoris from the anterior inferior iliac spine, either through the tendon or with an osteotomy. Release the reflected head of this muscle from its more lateral attachment proximal to the hip capsule. Tag the rectus muscle and retract it distally.
+    <br><br>Alternatively, if the rectus femoris is small, release the tension on it by flexing the hip and retracting it laterally.
+    <br><br><img src='cut5.png' alt='5' style='max-width:100%;boder-radius:5px;'>
+    <br>Place two Hohmann retractors laterally and medially around the femoral neck. Incise the capsule in a T-shaped fashion.
+    <br><br><img src='cut6.png' alt='6' style='max-width:100%;boder-radius:5px;'>
+    <br>Retention sutures medially and laterally allow exposure of the femoral head and neck. Protect the labrum during the capsulotomy.
+    <br><br><img src='cut7.png' alt='7' style='max-width:100%;boder-radius:5px;'>
+    <br>Wound closure after implant insertion.
+    <h6><br><br><br>References:
+    <br>1. Hasija, R., Kelly, J. J., Shah, N. V., Newman, J. M., Chan, J. J., Robinson, J., & Maheshwari, A. V. (2018). Nerve injuries associated with total hip arthroplasty. Journal of clinical orthopaedics and trauma, 9(1), 81-86.
+    <br>2. Fleischman, A. N., Rothman, R. H., & Parvizi, J. (2018). Femoral nerve palsy following total hip arthroplasty: incidence and course of recovery. The Journal of arthroplasty, 33(4), 1194-1199.
+    <br>3. Su, E. P. (2017). [RETRACTION] Post-operative neuropathy after total hip arthroplasty. The bone & joint journal, 99(1_Supple_A), 46-49.
+    <br>4. Surgical procedure: AO Surgery Reference, surgeryreference.aofoundation.org.</h6>
+    <br><h6>Case creator: Ms. Agnes Chan, Mr. Thomas Mak</h6>
+</div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<script>
+  const investigations = [{"opt":"AROM assessment of the right lower limb","res":"His right hip AAROM flexion is 40 degree and that of abduction was 10 degree, limited by pain and weakness.<br><br>He fails to actively extend the right knee with the knee supported by a towel roll, limited by weakness.<br><br>Right knee can rest straightly on bed.<br><br>His right ankle and toes have full AROM","cor":true},
+  {"opt":"Bilateral lower limb light touch sensation and power ","res":"Left lower limb has normal sensation and power.<br><br>There is reduced light touch and pinprick over the right anterior thigh and medial leg x 80%.<br><br>Power Right hip flexor and abductor power: grade 2+<br>Right quad: grade 1<br>Right hamstrings: grade 3-<br>Right ankle: grade 5<br>Left LL: grade 5","cor":true},
+  {"opt":"Straight leg raising test","res":"Negative","cor":false},
+  {"opt":"Reflexes of bilateral lower limbs","res":"There is an absent of right knee jerk but intact of right ankle jerk.<br>Left knee and ankle jerks are intact.<br><br>Bilateral Babinski tests are negative.","cor":true}];
+  const management = [{"opt":"Immediate surgical exploration to evacuate potential hematoma","exp":"","cor":false},
+  {"opt":"Protect the knee with a knee extension brace during transfers/ambulation if quad control is poor, initiate gentle ROM and quadriceps exercises, monitor for recovery","exp":"","cor":true},
+  {"opt":"Plan early mobilization with full weight-bearing and with hip spica","exp":"","cor":false},
+  {"opt":"Check prescription of neuropathic pain medications (e.g., gabapentin, lyrica) with ward nurse","exp":"","cor":true}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

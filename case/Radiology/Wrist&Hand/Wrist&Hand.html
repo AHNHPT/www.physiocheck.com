@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physio Radiology Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --light: #ecf0f1;
+            --secondary: #95a5a6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #game-container {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .hidden { display: none; }
+
+        #xray-display {
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            background: white;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-home {
+            margin-top: 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-retry {
+            margin-top: 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .wrong { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        #stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        #next-btn {
+            margin-top: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Clinical Radiology Challenge - Wrist&Hand</h1>
+    
+    <div id="start-screen">
+        <p>Test your diagnostic skills. 10 Cases. 1 Timer.</p>
+        <button onclick="startGame()">Start Challenge</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div id="stats-bar">
+            <span>Case: <span id="q-num">1</span>/10</span>
+            <span>Timer: <span id="timer">0</span>s</span>
+        </div>
+        
+        <img id="xray-display" src="" alt="Clinical X-ray">
+        
+        <div id="options" class="options-grid"></div>
+
+        <div id="feedback" class="hidden"></div>
+        <button id="next-btn" class="hidden" onclick="nextQuestion()">Next Case →</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Challenge Complete!</h2>
+        <p>Your Score: <span id="final-score">0</span> / 10</p>
+        <p>Total Time: <span id="final-time">0</span> seconds</p>
+        
+        <button class="btn-retry" onclick="location.reload()">Try Again</button>
+<button class="btn-home" onclick="history.back()">← Go Back</button>
+    </div>
+</div>
+
+<script>
+    // --- DATABASE ---
+    // You can expand this array to 10 items
+    const questions = [
+        {
+            image: "WH1.png",
+            options: ["Fracture distal radius", "Fracture distal ulnar", "Traumatic fracture mid-shaft of radius", "Pathological fracture mid-shaft of radius"],
+            correct: 3,
+            explanation: "Slightly displaced comminuted fracture is noted in the middle-proximal third of the radius. In this segment, the underlying bone shows abnormal lucency, keeping with pathological fracture. <br><br>Biopsy later comfirms plasmacytoma."
+        },
+        {
+            image: "WH2.jpeg",
+            options: ["Isolated distal Radius #,Frykman I", "Distal Radius + Ulnar Styloid #,Frykman II", "Distal Radius + Ulnar Styloid #, Frykman IV", "Carpal instability"],
+            correct: 1,
+            explanation: "Transverse fracture distal radius with mild dorsal angulation of the dital fracture fragment. No definite extension into the radiocarpal or distal radioulnar joints. Ulnar styloid fracture.<br><br>Distal radial fractures can be classified using the Frykman system. Our patient has a type II injury: a transverse fracture of the distal radius without intraarticular extension combined with an ulnar styloid fracture.<br><br>Higher types (IV, VI, VIII) involving articular surfaces and the ulnar styloid are more unstable, requiring operative management, while lower types (I-II) may be treated conservatively."
+        },
+        {
+            image: "WH3.jpeg",
+            options: ["Proximal carpal row dislocation", "Radial Styloid #", "# Base of meta-carpal", "Radioscaphoid arthritis"],
+            correct: 3,
+            explanation: "Widening of the scapholunate interval. Significant narrowing of the radioscaphoid joint space with subchondral sclerosis and osteophytosis. <br><br>When osteoarthritis is seen only in the radioscaphoid articulation, one can be very confident of SLAC as a cause. <br><br>In this patient, there was a history of previous FOOSH several years before and a diagnosis of scapholunate ligament rupture in another country for which the patient did not seek treatment."
+        },
+                {
+            image: "WH4.png",
+            options: ["Scapholunate Ligament Injury", "Scaphoid fracture", "Triquetrum fracture", "Normal"],
+            correct: 0,
+            explanation: "The clenched fist view (pencil grip view) is an additional projection used to evaluate suspected widening of the scapholunate interval, often performed bilaterally it is a functional view that requires the patient to clench both hands. An increased distance (>2–3 mm) between the scaphoid and lunate bones in the wrist, indicating a tear of the scapholunate ligament."
+        },
+        {
+            image: "WH5.jpeg",
+            options: ["Fracture distal radius", "# Base of meta-carpal", "Scaphoid fracture", "Triquetrum fracture"],
+            correct: 2,
+            explanation: "This is scaphoid view Xray. Scaphoid fractures account for 70-80% of all carpal bone fractures. Although they occur essentially at any age, adolescents and young adults are most commonly affected. Older patients falling similarly are more likely to sustain a distal radial fracture (usually a Colles fracture)."
+        },
+        {
+            image: "WH6.png",
+            options: ["# Base of meta-carpal", "# Neck of meta-carpal", "Scapholunate Ligament Injury", "Normal"],
+            correct: 1,
+            explanation: "There is a fracture involving the neck of the fourth metacarpal, associated with mild angulation. Soft tissue swelling is present around the fracture site."
+        },
+         {
+            image: "WH7.jpeg",
+            options: ["Mallet finger", "Boxer's fracture", "# Proximal phalanx", "Normal"],
+            correct: 2,
+            explanation: "Punching injury with fracture to the base of the ring finger proximal phalanx."
+        },
+        {
+            image: "WH8.jpeg",
+            options: ["Mallet fingers", "Jersey fingers", "Boutonnière deformity", "Ulnar Styloid #"],
+            correct: 0,
+            explanation: "There are dorsal bony avulsions of the base of the terminal phalanges of the right 3rd and 4th digits. There is an intraarticular extension (DIP). These are best visualised on the lateral views.<br><br>An unusual presentation of dual mallet finger involving the right middle and ring fingers. The majority of these injuries are solitary. This injury most commonly occurs in the middle, ring or small finger of the dominant hand as in this instance."
+        },
+                 {
+            image: "WH9.png",
+            options: ["Mallet finger", "Volar plate avulsion", "PIPJ dislocation", "Lesser tuberosity fracture"],
+            correct: 1,
+            explanation: "There is a volar plate avulsion injury of the volar aspect of the middle phalanx of the ring finger. There is no associated dislocation or subluxation of the proximal interphalangeal articulation. There is well-identified soft tissue swelling. <br><br>In the absence of an associated PIP joint dislocation, most volar plate avulsion injuries are best identified on a lateral or occasionally complementary oblique view. Frontal views often do not show the volar plate avulsion injury unless the avulsed fragment is significantly displaced horizontally. At best, the soft tissue swelling on a frontal series will allude to a more sinister injury in cases of volar plate avulsion injuries."
+        },
+        {
+            image: "WH10.jpeg",
+            options: ["Colles' Fracture", "# Proximal phalanx", "Boxer's fracture", "Normal"],
+            correct: 2,
+            explanation: "A fracture through the neck of the right fifth metacarpal is noted, with mild palmar angulation. <br><br>This case illustrates the typical appearance of a boxer fracture, but the patient claimed that he got trauma from a blunt object (stone) and there was no history of assault."
+        },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let startTime;
+    let timerInterval;
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        startTime = Date.now();
+        startTimer();
+        showQuestion();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timer').innerText = elapsed;
+        }, 1000);
+    }
+
+    function showQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById('q-num').innerText = currentQuestion + 1;
+        document.getElementById('xray-display').src = q.image;
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(choice) {
+        const q = questions[currentQuestion];
+        const feedback = document.getElementById('feedback');
+        const buttons = document.querySelectorAll('#options button');
+        
+        buttons.forEach(b => b.disabled = true);
+        
+        feedback.classList.remove('hidden');
+        if(choice === q.correct) {
+            score++;
+            feedback.innerHTML = `<strong>Correct!</strong><br>${q.explanation}`;
+            feedback.className = "correct";
+        } else {
+            feedback.innerHTML = `<strong>Incorrect.</strong><br>Correct answer: ${q.options[q.correct]}<br>${q.explanation}`;
+            feedback.className = "wrong";
+        }
+        
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if(currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-time').innerText = Math.floor((Date.now() - startTime) / 1000);
+    }
+</script>
+
+</body>
+</html>

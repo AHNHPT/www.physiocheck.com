@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physio Radiology Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --light: #ecf0f1;
+            --secondary: #95a5a6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #game-container {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .hidden { display: none; }
+
+        #xray-display {
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            background: white;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-home {
+            margin-top: 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-retry {
+            margin-top: 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .wrong { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        #stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        #next-btn {
+            margin-top: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Clinical Radiology Challenge - Spine</h1>
+    
+    <div id="start-screen">
+        <p>Test your diagnostic skills. 10 Cases. 1 Timer.</p>
+        <button onclick="startGame()">Start Challenge</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div id="stats-bar">
+            <span>Case: <span id="q-num">1</span>/10</span>
+            <span>Timer: <span id="timer">0</span>s</span>
+        </div>
+        
+        <img id="xray-display" src="" alt="Clinical X-ray">
+        
+        <div id="options" class="options-grid"></div>
+
+        <div id="feedback" class="hidden"></div>
+        <button id="next-btn" class="hidden" onclick="nextQuestion()">Next Case →</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Challenge Complete!</h2>
+        <p>Your Score: <span id="final-score">0</span> / 10</p>
+        <p>Total Time: <span id="final-time">0</span> seconds</p>
+        
+        <button class="btn-retry" onclick="location.reload()">Try Again</button>
+<button class="btn-home" onclick="history.back()">← Go Back</button>
+    </div>
+</div>
+
+<script>
+    // --- DATABASE ---
+    // You can expand this array to 10 items
+    const questions = [
+        {
+            image: "SP1.png",
+            options: ["C1-C2 subluxation", "C2 spondylolisthesis", "# C2 vertebral body", "C3 vertebral collaspe"],
+            correct: 2,
+            explanation: "Teardrop fracture of C2 involving the anterior inferior body. No anterior displacement of C2 on C3. Fracture line through C6 vertebrae spinous process. <br><br> Cervical spine fractures can occur secondary to exaggerated flexion or extension, or because of direct trauma or axial loading. C2 (~30%) and C7 (~20%) are the most commonly fractured levels."
+        },
+        {
+            image: "SP2.png",
+            options: ["C1-C2 subluxation", "C5 vertebral collaspe", "# C6 vertebrae spinous process", "C6 endplate erosion"],
+            correct: 0,
+            explanation: "Widening of the predental space is seen in the lateral flexion view reaching 6.8 mm. There are multilevel mild anterior spondylolisthesis of C3 through C5 creating a stepladder appearance in the vertebral bodies. Diffuse reduced bone mineralisation is noted. <br><br>Atlantoaxial joint is frequently involved in patients with rheumatoid arthritis. Erosions and pannus formation cause disruption of the supporting structures and eventually lead to atlantoaxial subluxation or basilar invagination. <br><br>The expected distance between the anterior arch of C1 and the dens in the fully flexed position should be <3 mm in an adult (5 mm is the upper limit of normal in a child)."
+        },
+        {
+            image: "SP3.jpeg",
+            options: ["# C5 vertebrae spinous process", "C7 vertebral collaspe", "C5/6 anterolisthesis", "C6/7 facet joint dislocation"],
+            correct: 3,
+            explanation: "The vertebral body of C6 is anteriorly displaced relative to C7. The C6/7 facet joints are abnormally aligned, with one dislocated anteriorly (locked), and the other almost perched. <br><br>Classically as one of the facets is still normally aligned, the amount of anterolisthesis is limited to less that 25 - 50%. Both facets would need to be dislocated to achieve greater anterolisthesis."
+        },
+                {
+            image: "SP4.png",
+            options: ["C1-C2 subluxation", "Odontoid fracture", "C5/6 anterolisthesis", "# C5 vertebrae spinous process"],
+            correct: 1,
+            explanation: "A transverse fracture with extension to the lateral masses is present in the base of the odontoid process, accompanied by the mild odontoid's backward displacement and shows no frank changes on hyperflexion and hyperextension images.<br><br>Features on a single lateral view of the cervical spine are compatible with type III Anderson and D'Alonzo classification of odontoid process fracture.This type of odontoid fracture is relatively stable if not excessively displaced, and has the best prognosis for healing because of its larger surface area."
+        },
+                {
+            image: "SP5.png",
+            options: ["T9 pedicle erosion (Winking owl sign)", "Severe thoracic scoliosis", "T9 vertebrae wedge collaspe", "9th Left rib fracture"],
+            correct: 2,
+            explanation: "The T8-9 vertebrae appear wedge shaped on the laterolateral projection, whilst the fractured fragments are well depicted on the AP view."
+        },
+                        {
+            image: "SP6.png",
+            options: ["T8/9 anterolisthesis", "T9 vertebrae wedge collaspe", "T11 pedicle erosion (Winking owl sign)", "T12 pedicle erosion (Winking owl sign)"],
+            correct: 2,
+            explanation: "Absent left pedicle of T11 vertebra. <br><br>X-rays of the thoracic spine demonstrate the left  T11 pedicle to be absent, seen only on AP projection and is called the winking owl sign. This is suspicious of lytic spinal metastases. "
+        },
+         {
+            image: "SP7.png",
+            options: ["L4 endplate erosion", "L4/5 anterolisthesis", "Severe spondylosis", "Ankylosing spondylitis"],
+            correct: 3,
+            explanation: "Throughout the spine, the vertebral bodies are fused by marginal syndesmophytes giving the appearance of Bamboo spine. <br><br>Traditionally it was thought there was a male predilection of 3:1 or more, however, the gender predilection of the disease is a matter of ongoing research as females may be under-diagnosed. According to some research, men tend toward more severe disease 28. The disease usually manifests in young adults, with the first symptoms becoming evident in the third decade, although up to 18% of cases manifest in the second decade."
+        },
+        {
+            image: "SP8.jpeg",
+            options: ["L4/5 Grade I anterolisthesis", "L4/5 Grade II anterolisthesis", "L4/5 Grade I retrolisthesis", "L4/5 spondyloptosis"],
+            correct: 1,
+            explanation: "Anterior displacement of L4 in relation to L5, Grade II anterolisthesis. Straightening of the lumbar lordosis. <br><br>Grading:<br>grade I: < 25% displacement of the vertebral body.<br>grade II: 25-50% displacement of the vertebral body.<br>grade III: 50-75% displacement of the vertebral body.<br>grade IV: 75-100% displacement of the vertebral body.<br>grade V: spondyloptosis."
+        },
+                 {
+            image: "SP9.png",
+            options: ["Coccyx fracture", "Sacral fracture", "L4/5 Grade I anterolisthesis", "L5/S1 Sacralization"],
+            correct: 0,
+            explanation: "Lateral radiograph shows a fracture line through the first coccygeal segment. The fractured segment shows mild displacement. No significant angulation seen. Sacro-coccygeal joint appears maintained without subluxation. Remaining coccygeal segments demonstrate normal alignment. No sacral fracture identified.<br><br>Coccygeal fractures occur most often following direct trauma such as a backward fall, particularly in older adults who may have reduced bone density. The lateral radiograph is the most useful projection for detecting coccygeal alignment abnormalities and fracture lines, while AP views offer limited additional value due to bowel gas overlap.<br><br>The first coccygeal segment is the most commonly fractured. Even minimal displacement can result in significant pain (coccydynia)."
+        },
+        {
+            image: "SP10.png",
+            options: ["L1 compression fracture", "L1 end-plate erosion", "L1 pedicle erosion (Winking owl sign)", "L1 Schmorl's nodes"],
+            correct: 0,
+            explanation: "A compression fracture of L1 with approximately 30% loss of height anteriorly.<br><br>Stable fractures generally showing <30° of kyphosis or <50% height loss, often managed conservatively."
+        },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let startTime;
+    let timerInterval;
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        startTime = Date.now();
+        startTimer();
+        showQuestion();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timer').innerText = elapsed;
+        }, 1000);
+    }
+
+    function showQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById('q-num').innerText = currentQuestion + 1;
+        document.getElementById('xray-display').src = q.image;
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(choice) {
+        const q = questions[currentQuestion];
+        const feedback = document.getElementById('feedback');
+        const buttons = document.querySelectorAll('#options button');
+        
+        buttons.forEach(b => b.disabled = true);
+        
+        feedback.classList.remove('hidden');
+        if(choice === q.correct) {
+            score++;
+            feedback.innerHTML = `<strong>Correct!</strong><br>${q.explanation}`;
+            feedback.className = "correct";
+        } else {
+            feedback.innerHTML = `<strong>Incorrect.</strong><br>Correct answer: ${q.options[q.correct]}<br>${q.explanation}`;
+            feedback.className = "wrong";
+        }
+        
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if(currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-time').innerText = Math.floor((Date.now() - startTime) / 1000);
+    }
+</script>
+
+</body>
+</html>

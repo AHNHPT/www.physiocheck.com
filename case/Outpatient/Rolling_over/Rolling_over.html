@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rolling Over</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Rolling Over</h2>
+  <p>On a hot & sunny day, Patient: Sarah, a 46-year-old female, presents to the AED after "rolling" her left foot while hiking on uneven ground two hours ago.
+    <br>She is able to limp into the assessment room with friend's support, but reports significant pain.
+    <br>She describes the pain as sharp and "deep" inside the foot.
+    <br><br>You are the on-call physiotherapist and being called for walking exercise to facilitate patient discharge home.
+    <br><br>SHx:<br>Salesperson, live with husband in PHU (lift landing).<br>NKDA, NDNS<br>Premorbid: walk unaided outdoor.
+    <br><br>PMH:<br>Hyperlipidemia on lipitor 10mg daily<br><br>HPI:<br>Sprain L ankle while hiking today.
+    <br>She felt too painful to walk and escort to AED by helicopter.<br><br>She report no HI / LOC.
+    <br>Only isolated injury at L foot. No other injury.<br><br>CBC: Normal<br>RLFT: Normal
+    <br><br>P/E:<br>GCS: 15/15<br>BP: 135/70 HR 75<br>SpO2: 99% RA<br>Temp: 36.5
+    <br><br>Patient alert and cooperative<br>L foot swelling++, bruise ++
+    <br><img src='look.png' alt='look' style='max-width:100%;boder-radius:5px;'>
+    <br><br>Ankle walker was given</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Palpation to L foot</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Check Xray</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Ankle AROM</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Anterior drawer test (ankle)</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. WBAT with frame and ankle walker</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Free active ankle mobilisation ex</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Refer OPD PT for further rehabilitation</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Inform doctor for re-assessment +/- further imaging</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  
+  <div style="margin-top:20px;">
+    <br> This case challange was developed based on a real case.
+    <br><br><strong>Diagnosis:Intra-articular navicular fracture</strong>
+<br> This patient was initially diagnosed with a sprained ankle. Initial referral order was PWB walking.
+<br><br> With the history, physical findings and positive Ottawa rule, a fracture was suspected. The abnormalty in XR warranted advanced imaging (eg. CT or MRI) to detect obstructed fracture lines or occult fractures.  
+<br><br>This patient was sent to AED by the physiotherapist in charge, and CT confirmed the diagnosis later.
+<br><br>The patient was then received for ORIF in the orthopaedic ward with post-op orders of NWB 6/52, PWB 6/52.
+<br><br><strong>Epidemiology</strong>
+<br>Navicular fractures are responsible for approximately 5% of all foot fractures and 35% of all midfoot fractures.
+<br>It may present with pain, swelling or haematoma directly over the mid-foot. Stress fractures in athletes and construction workers may present with vague pain and swelling over the mid-foot, which worsens with exercise.
+<br><br><strong>Pathology</strong>
+<br>The fracture occurs via two main mechanisms:
+<br> 1. chronic overuse injuries causing a stress fracture (often in athletes)
+<br> 2. acute high-energy trauma where the head of the talus impacts the concavity of the navicular bone
+<br><br><br><strong>Case explantion:</strong>
+<br><strong>Question 1</strong>
+<br><strong>Option 1: Palpation to L foot</strong>
+<br>Correct. Palpation of foot found severe tenderness over medial mid-foot which navicular was located. Ottawa ankle rules was positive with the fact that patient was unable to weight bear.
+<br><img src='Ottawa.png' alt='Ottawa' style='max-width:100%;boder-radius:5px;'>
+<br>Fig. 1 Ottawa ankle rule
+<br>Evidence supports the Ottawa ankle rules as an accurate instrument for excluding fractures of the ankle and mid-foot. The instrument has a sensitivity of almost 100% and a modest specificity, and its use should reduce the number of unnecessary radiographs by 30-40%. A patient who presents without the symptoms is less than 1% likely to have a fracture.
+<br><br><strong>Option 2: Check Xray</strong>
+<br>Correct. Xray showed intra-articular navicular fracture. Alignment within normal limits.
+<br><br>Radiographic features:
+<br>Plain radiograph:
+<br>Plain radiographs are the best initial test in a suspected navicular fracture. Their sensitivity for identifying navicular fracture is low; however, lateral and oblique radiographs provide the greatest chance of identifying a fracture. Rarely fractures of an accessory navicular bone (if present) are also possible and may be visible.
+<br><br>CT:
+<br>CT is more sensitive for identifying navicular fractures. It also allows for the assessment of the extent of the fracture line and the degree of comminution.
+<br><br>MRI:
+<br>T2: may demonstrate areas of hyperintensity over the fracture site indicating bone oedema. It should be noted that MRI is more sensitive than CT in identifying stress fractures.
+<br><br><strong>Option 3: Ankle AROM</strong>
+<br>Correct. You can follow "look, feel, move" or "TOTAPS" diagnostic squence. The severe limited AROM demonstrated would also support the presence of a major fracture or intra-articular fracture.
+<br><br>Navicular stress fractures in athletes and construction workers may present with vague pain and swelling over the mid-foot, which worsens with exercise. These patients generally have a normal range of motion and a normal neurovascular examination.
+<br><br><strong>Option 4: Anterior drawer test (ankle)</strong>
+<br>Incorrect. In such high irritablilty and strong sign of presence of fracture, special test is contraindicated. Anterior drawer test may worsen the condition by displacing the fracture in this case.
+<br><br><br><br>
+<br><strong>Question 2</strong>
+<br><strong>Option 1: WBAT with frame and ankle walker</strong>
+<br> Incorrect. Weight bearing on a foot with an intra-articular navicular fracture may make the filament displace.
+<br><br><strong>Option 2: Free active ankle mobilisation ex</strong>
+<br>Incorrect. Mobilising an intra-articular navicular fracture may make the filament displace.
+<br><br><strong>Option 3: Refer OPD PT for further rehabilitation & Option 4: Inform doctor for re-assessment +/- further imaging</strong>
+<br>Further rehabilitation may not be appropriate before reviewing by doctor. 
+<br>This patient may need operative management instead of conservative one. 
+<br><br>Rarely, navicular fracture could be treated conservetively if the fragments are small and undisplaced.  In that circumstance, it will not lead to any instability of the talar-navicular joint. 
+<br><br>In contrast, larger or displaced fragments may be fixed with lag screws.
+<br>Fig 2. Insertion a cannulated lag screw according to the standard technique. A washer is typically used. In contrast to lag screws inserted in the diaphysis, these lag screws will typically not penetrate the far cortex, as this would damage the opposite articular surface.
+<br><br>The strict non-weight bearing should be maintained until there is evidence of healing and any transfixion K-wires (6–12 weeks) or bridging devices (min 12 weeks) are removed.
+<br><br><h6><br><br><br>Reference:
+<br>1. AO Surgery Reference, surgeryreference.aofoundation.org.
+<br>2. Rasmussen C, Jørgensen S, Larsen P, Horodyskyy M, Kjær I, Elsoe R. Population-Based Incidence and Epidemiology of 5912 Foot Fractures. Foot Ankle Surg. 2021;27(2):181-5. doi:10.1016/j.fas.2020.03.009 - Pubmed
+<br>3. Kerkhoffs, G.M., van den Bekerom, M., Elders, L.A., van Beek, P.A., Hullegie, W.A., Bloemers, G.M., de Heus, E.M., Loogman, M.C., Rosenbrand, K.C., Kuipers, T. and Hoogstraten, J.W.A.P., 2012. Diagnosis, treatment and prevention of ankle sprains: an evidence-based clinical guideline. British journal of sports medicine, 46(12), pp.854-860.
+<br>4. Radiopaedia.org
+<br><br>Case creator: Mr. Thomas Mak</h6>
+</div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<script>
+  const investigations = [{"opt":"Palpation to L foot","res":"Tenderness++ at mid-foot arch especially medial side ","cor":true},
+  {"opt":"Check Xray","res":"<img src='X1.jpeg' alt='XR1' style='max-width:100%;boder-radius:5px;'><br><img src='X2.jpeg' alt='XR2' style='max-width:100%;boder-radius:5px;'><br><img src='X3.jpeg' alt='XR3' style='max-width:100%;boder-radius:5px;'>","cor":true},
+  {"opt":"Ankle AROM","res":"DF: trace movement, p+++ <br>PF: trace movement, p+++","cor":true},
+  {"opt":"Anterior drawer test (ankle)","res":"Severe pain with guarding","cor":false}];
+  const management = [{"opt":"WBAT with frame and ankle walker","exp":"","cor":false},{"opt":"Free active ankle mobilisation ex","exp":"","cor":false},{"opt":"Refer OPD PT for further rehabilitation","exp":"","cor":false},{"opt":"Inform doctor for re-assessment +/- further imaging","exp":"","cor":true}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

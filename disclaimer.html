@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer | PhysioCheck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1a567a;
+            --text-dark: #2c3e50;
+            --text-light: #546e7a;
+            --bg-light: #f4f7f9;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content-card {
+            background: var(--white);
+            max-width: 800px;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: var(--primary-blue);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            margin-top: 2rem;
+        }
+
+        p, ul {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 3rem;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+
+        .back-btn:hover {
+            opacity: 0.9;
+        }
+
+        .back-icon {
+            margin-right: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .content-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content-card">
+        <h1>Disclaimer</h1>
+        
+        <p>Welcome to <strong>PhysioCheck</strong>. Please read this disclaimer carefully before using the platform.</p>
+
+        <h2>1. Educational Purpose Only</h2>
+        <p>PhysioCheck is designed as a clinical reasoning challenge platform for students and staff. The cases, scenarios, and feedback provided are for <strong>educational and professional development purposes only</strong>. They do not constitute medical advice, diagnosis, or treatment plans for actual patients.The information presented may not be comprehensive, up-to-date, or applicable to every individual situation. All cases are anonymized, fictionalized, or based on generalized experiences and are not intended to represent real patients or specific medical conditions.</p>
+
+        <h2>2. Clinical Judgment</h2>
+        <p>While the scenarios are based on clinical principles, users must exercise their own professional judgment when treating real-world patients. Guidelines and evidence-based practices are constantly evolving; therefore, the information within this platform should not be used as a sole reference for clinical decision-making. Reliance on the content of this platform for medical decision-making is at your own risk.</p>
+
+        <h2>3. No Patient Relationship</h2>
+        <p>Use of this platform does not create a therapist-patient relationship. All patient cases presented are simulated or de-identified to protect privacy in accordance with healthcare data protection standards.</p>
+
+        <h2>4. Limitation of Liability</h2>
+        <p>The developer, contributors, and platform operators make no representations or warranties of any kind, express or implied, regarding the accuracy, reliability, completeness, or suitability of the information provided.</br>To the fullest extent permitted by law, we disclaim all liability for any direct, indirect, incidental, consequential, or special damages arising from or in connection with the use of this platform, including but not limited to errors, omissions, interruptions, or any outcomes resulting from the application of the content.</br>By accessing or using this platform, you acknowledge and agree to these terms and assume full responsibility for any actions taken based on the information herein.</p>
+
+        <h2>5. Intellectual Property</h2>
+        <p>All content, including case studies, logic flows, and graphics (some graphics from AI generation), are the property of the PhysioCheck development team and are intended for internal use by authorized students and staff only.<br> Some radiology image from radiopaedia.org.</p>
+		
+		<h2>Good luck, enjoy the challenge, and most importantly — happy learning! 💙</h2>
+
+        <a href="index.html" class="back-btn">
+            <span class="back-icon">←</span> Back to Homepage
+        </a>
+    </div>
+
+</body>
+</html>

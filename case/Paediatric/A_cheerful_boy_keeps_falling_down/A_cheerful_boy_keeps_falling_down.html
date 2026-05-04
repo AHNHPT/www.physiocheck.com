@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>A cheerful boy keeps falling down</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: A cheerful boy keeps falling down</h2>
+  <p>Noah, a 5-year-old boy, was referred by an orthopaedics doctor for out-patent physiotherapy with details of referral as below:
+    <br><br>Diagnosis: genu valgum
+    <br>Reason for referral: easy fall
+    <br>This is the 1st OPD Physio session. Noah is brought by his mother.
+    <br><br>HPI:
+    <br>Noah’s mother expressed worries over his awkward gait which leads to his frequent fall, nearly 1-2 times per week.
+    <br><br>In fact, she and Noah’s father noted that he walked with awkward gait since he started to walk independently around 13 months.
+    <br><br>They thought that it was primitive walking pattern. Until around 2 years old, the awkward gait persisted hence they sought medical advice. They attended Family Medicine Clinic and were referred to Orthopaedics SOPD.
+    <br><br>Orthopaedic diagnosis is genu valgum.
+    <br>Lower limb scannogram is done and results are normal.
+    <br><br>Birth history:
+    <br>G1 P1, gestation 38 weeks NSD born at Union Hospital
+    <br>AN, PN unremarkable
+    <br><br>SHx:<br>first child in the family
+    <br>lives with parents (both working)
+    <br>main carer: maid
+    <br>studying K3 in mainstream kindergarten
+    <br><br>PMH:
+    <br>- vaccination up to date, normal development
+    <br>- genu valgum with normal lower limb scannogram; FU Ortho SOPD
+    <br><br>DHx:
+    <br>- walk unaided independently: ~13 months
+    <br>- jumping ~ 24 months
+    <br><br>P/E:
+    <br>Behaviour: cheerful, follow commands
+    <br>Vision and hearing: no concern from carer, follow commands
+    <br>Speech: speak in full sentences
+    <br><br>Gross motor:
+    <br>Gait: crouch knee and jump knee gait
+    <br>Stairs walking: clumpsy, cautious, wobbling, 1 hand on rail, alternate step when going up, same step when going down
+    <br>Jump forward 12” with both feet landing independently
+    <br>Jump across 2” hurdle with 1 foot leading
+    <br>Single leg stand both feet 3 seconds with trunk wobbling
+  <br><img src='gait.png' alt='gait' style='max-width:100%;boder-radius:5px;'>
+    <br><br>
+You are physiotherapist working in Paed OPD. He is your new case today.</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Check Gower sign </div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Check joint ROM, muscle length and muscle tone of LL</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Check reflex </div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Check sit up </div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Escort to AED immediately </label>
+  <label><input type="checkbox" id="man-check1" /> 2. Refer to Paed SOPD </label>
+  <label><input type="checkbox" id="man-check2" /> 3. Lower limb stretching exercises </label>
+  <label><input type="checkbox" id="man-check3" /> 4. Balance exercises </label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  
+  <div style="margin-top:20px;">
+    <strong>Learning point:</strong>
+    <br>- think, assess and manage comprehensively
+    <br>- is it just a local orthopaedics issue, or neurological-related or any
+    <br>neuromuscular diseases?
+    <br>- refer speciality when necessary
+    <br><strong>Question 1:</strong>
+    <br><strong>A - Check Gower sign</strong>
+    <br>Noah’s orthopaedic diagnosis is genu valgum. Yet, his lower limb scannogram is normal. His crouching and jump knee gait is something we need to drill on.
+    <br><br>Here comes Ddx again - is it just a local orthopaedics issue, or neurological-related or any neuromuscular diseases?
+    <br><br>Positive Gower sign indicates weakness in proximal muscles, pointing to possibility of neuromuscular diseases eg: Duchenne muscular dystrophy, Becker muscular dystrophy and spinal muscular atrophy.
+    <br><br>It is also accompanied by calf pseudohypertrophy, toe walking, waddling gait and diﬃculty in stairs climbing. Further investigation is needed - creatine, kinase blood test and genetic testing - to confirm the diagnosis.
+    <br><br><strong>Option B - Check joint ROM, muscle length and muscle tone of LL</strong>
+    <br>Although the referral only documented genu valgum, our physiotherapy assessment not only limits to knee only but comprehensively to whole LL, especially seeing Noah’s crouching and jump knee gait. Is it due to muscle weakness, muscle tightness, muscle spasticity or joint contracture?
+    <br><br><strong>Option C - Check reflex</strong>
+    <br>Here comes Ddx again - is it just a local orthopaedics issue, or neurological-related or any neuromuscular diseases?
+    <br>Abnormal findings of reflex - hyporeflexia, hyperreflexia or clonus warrant further investigation as it could point to neurological-related conditions.
+    <br><br><strong>Option D - Check sit up</strong>
+    <br>Sit up assesses a child’s core muscle strength. It has been proved that core muscles are essential for maintaining postural stability and enhancing body control and hence helps improve balance and reduce falls in children.
+    <br>In Noah’s case, his lower limb tightness and spasitcity are speaking far louder to his frequent falls.
+    <br>Therefore, checking sit up is in lower priority at this moment.
+    <br>(Reference: Mohamed Abdelbaky, F., & Ahmed Ibrahim, A. (2014). Eﬀect of core strength training on power and dynamic balance among child athletes. Journal of Applied Sports Science, 4(2), 93-98.)
+    <br><br><br><strong>Question 2:</strong>
+    <br><strong>Option A - Escort to AED immediately & Option B - Refer to Paed SOPD</strong>
+    <br>From Noah’s crouching and jump knee gait, we found out, after physiotherapy assessment, he has spastic long hip adductor and gastrocnemius bilaterally, tight hamstrings, quadriceps and short hip adductor bilaterally, brisk knee and ankle jerks bilaterally and bilateral upgoing plantar reflex.
+    <br><br>All these suggest possible neurological-related conditions which warrant further investigation. Noah did not present any urgent medical signs which need urgent medical care.
+    <br><br>Hence, escort to AED immediately is not indicated. However, he needs to be referred to paediatrician for further investigation.
+    <br><br><strong>Option C - Lower limb stretching exercises</strong>
+    <br>The paediatrician might order blood test, imaging and/or genetic testing for working up the diagnosis.
+    <br><br>While waiting all these, stretching exercises have been proved to be eﬀective to improve muscle length and prevent joint contracture.
+    <br>Lower limb stretching exercises could be started to help Noah’s bilateral spastic long hip adductor and gastrocnemius, bilateral tight hamstrings, quadriceps and short hip adductor.
+    <br><br>In addition to passive stretching, active stretching (eccentric contraction) is eﬀective in improving walking speed and function.
+    <br>Also, combining stretching exercises with orthosis or botox injection could have beLer outcomes.
+    <br><br>(Reference: Kalkman, B. M., Bar-On, L., O’Brien, T. D., & Maganaris, C. N. (2020). Stretching interventions in children with cerebral palsy: why are they ineﬀective in improving muscle function and how can we beLer their outcome?. Frontiers in physiology, 11, 131.)
+    <br><br><strong>Option D - Balance exercises</strong>
+    <br>There are many reasons to explain that why kids fall frequently - poor balance, weak eye hand and limbs coordination, weak muscle strength, visual and vestibular conditions.
+    <br>In Noah’s case, his lower limb tightness and spasticity are speaking far louder to his frequent falls. Therefore, balance exercises are in lower priority at this moment.
+    <br><br><br><h6>Case Creator: Stephy Lau</h6></div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+<script>
+  const investigations = [{"opt":"Check Gower sign ","res":"Negative","cor":true},
+  {"opt":"Check joint ROM, muscle length and muscle tone of LL","res":"- Prone knee bend bil +ve <br> - Hip abd PROM:<br>With knee ext R1 20 deg / R2 45 deg<br>With knee flex bil 60 deg <br> - Popliteal angle (from vertical) bil 25 deg with tight end feel<br> - Ankle DF PROM<br>With knee ext R1 neutral / R2 5 deg<br>With knee flex bil 10 deg","cor":true},
+  {"opt":"Check reflex ","res":"Normal bil biceps, triceps, supinator jerks<br>Brisk bil knee and ankle jerks<br>Bil upgoing plantar reflex","cor":true},
+  {"opt":"Check sit up ","res":"Perform 2 repetitions with slight assistance with 2 hands held","cor":false}];
+  const management = [{"opt":"Escort to AED immediately ","exp":"","cor":false},
+  {"opt":"Refer to Paed SOPD ","exp":"","cor":true},
+  {"opt":"Lower limb stretching exercises ","exp":"","cor":true},
+  {"opt":"Balance exercises ","exp":"","cor":false}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

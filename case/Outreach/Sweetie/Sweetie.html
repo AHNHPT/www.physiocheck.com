@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sweetie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Sweetie</h2>
+  <h4>Ms. Amy Chan’s Discharge summary:</h4>
+  <p>SHx:<br>Live with maid in village house 1/F<br>Premorbid: Walk with small-based quadripod + maid assist, outdoor walker<br><br>
+    PMHx:<br>
+    1. HT/ lipid/ DM on Insulin<br>
+    2. old CVA 2012, good recovery<br>
+    3. Atypical chest pain with ECHO 2024: Moderate MS, mild AS<br>
+    4. COPD, GOLD Stage II<br><br>
+    HPI:<br>
+    Adm AHN MED x SOB<br>
+    WCC 12.8, CRP 10.1, Hb 9.7<br>
+    NPS -ve<br>
+    RFT: Na 133  K 4.3  Urea 9.2. Creatinine 112<br>
+    TnI 12.8  CK: N  LDH: N<br><br>
+    CXR: bil LZ hazziness, congestion+<br>
+    ECG: SR, no acute ST/T changes<br><br>
+    Imp: CHF / mild AECOPD<br><br>
+    Given Lasix, PO Augmentin, Ventolin puff<br>
+    BW down to 57kg, similar to baseline<br>
+    WCC, CRP downtrend<br>
+    Weaned off O2<br><br>
+    D/C home<br><br>
+    Refer COST PT x 6-minute walk test<br><br>
+    ================================<br>
+    As a physiotherapist serving in COST team, you provided home visit for this patient for referral of 6MWT.<br><br>
+    First, you took vital signs of the patient and then perform O/E as below:<br>
+    BP 136/82, HR 82bpm<br>
+    SpO2 94% RA<br>
+    H’stix 18.0<br><br>
+    Patient was alert and follow commands well.<br><br>
+    Chest: A/E fair with no added sounds, dry cough with strong effort <br><br>
+    Limb power: 4 / 4<br>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp4 / 4<br><br>
+    Transfer: 1 mild assist<br>
+    Walking: Stick, supervision<br>
+    <br><br>
+    Patient reported walking the stairs is difficult for her due to LL weakness.<br><br>
+    Patient reported she had breakfast 2 hours ago, and had Insulin injected before meal.</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Recheck H'stix after 15mins</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Check pupil size</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Check urine ketone-stix</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Check for any limb numbness / sensation loss</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Ensure euhydration</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Proceed to 6MWT</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Teach patient home ex with light intensity</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Send patient to AED</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  <div style="margin-top:20px;">
+    <h4>Explanation:<br>
+     Investigations:</h4>
+    1. Rechecking capillary blood glucose is not necessary.<br>
+     A meta-analysis and systematic review done in 2023 reviewed 23 studies involving a total of 3121 patients has found no difference in the blood glucose values between the first and second drops of blood measured by different blood glucose meters and different cleaning methods. The study has concluded that the first drop of capillary blood can be directly used to measure blood glucose. (Dong, Zhang, Wu & Zhu, 2024)<br><br>
+     2. Checking pupil size (or assessing for anisocoria, abnormal pupil reactivity, or mydriasis/miosis) is not necessary<br>
+     This is not a routine or primary step when evaluating isolated or uncomplicated hyperglycemia in a clinically stable patient, like Ms. Amy Chan (alert, oriented, stable vitals, negative ketones, no focal neurology, recent mild AECOPD/CHF but improved).<br>
+     This is because acute hyperglycemia itself does not typically cause acute changes in pupil size or pupillary light reflex that would be detectable on basic clinical examination.<br>
+     Pupil changes (e.g., mydriasis, anisocoria, or loss of reactivity) are classic red flags for acute neurological emergencies like third nerve palsy, uncal herniation, stroke, or intracranial hemorrhage — none of which are suggested here by the patient's alert status, normal sensation, symmetrical neurology, and absence of headache, cranial nerve deficits, or focal signs.<br><br>
+     3. Checking urine ketones is necessary in this case.<br>
+     The key concern is to rule out incipient or evolving ketosis, potentially leading to diabetic ketoacidosis (DKA) — a life-threatening emergency. “Exercise and type 2 diabetes: the American College of Sports Medicine and the American Diabetes Association: joint position statement” recommended to rule out ketosis before exercise if capillary blood glucose is >16.7mmol/l.<br>
+     Exercise is contraindicated if ketosis/ketonuria is present, as hyperglycemia can be worsened by dehydration dramatically.<br><br>
+     4. Checking for limb numbness / sensation loss is not necessary.<br>
+     Acute focal or peripheral neurological changes (e.g., new limb numbness, sensory loss, or focal weakness) are not typical of moderate postprandial hyperglycemia (18 mmol/L as in this case).<br>
+     Checking sensation would add little diagnostic value in ruling out exercise risk.In community PT, the primary concern with this level of hyperglycemia in an insulin-treated patient is metabolic instability, which could lead to worsening hyperglycemia, osmotic diuresis, dehydration, or progression toward diabetic ketoacidosis (DKA).<br><br>
+     <h4>Treatment:</h4> 
+     1. “Exercise and type 2 diabetes: the American College of Sports Medicine and the American Diabetes Association: joint position statement” suggested caution should be advised when exercising without or with minimal levels of blood or urinary ketones for diabetic patients with blood glucose level >16.7mmol/L, provided that they are adequately hydrated.<br>
+     Hyperglycemia can lead to osmotic diuresis, resulting in loss of water and electrolytes, hypovolemia, and dehydration, which further worsens hyperglycemia by reducing glomerular filtration rate and concentrating blood glucose. <br><br>
+     2. 6MWT is a submaximal exercise testing used to assess aerobic capacity and endurance.<br>
+     Most guidelines (ADA, ACSM, pulmonary rehab protocols) recommend only light activities and avoid exertion if blood glucose >16.7–19.4 mmol/L without ketosis, especially in frail elderly patients.<br>
+     A submaximal andsustained 6-minute walking effort can stress cardiopulmonary reserve. With recent CHF, COPD GOLD II, and LL weakness in Ms. Amy Chan, the risk of decompensation (dyspnea, fatigue, arrhythmia) increases under stress.<br>
+     It is preferable to defer 6MWT to next visit / until blood glucose stabilizes at a safer level. <br><br>
+     3. In hyperglycemic patients, individuals are advised to only begin light activity if they are asymptomatic and properly hydrated as suggested by ACSM.<br>
+     Moderate to high intensity exercise trainingmay cause a transient increase in blood glucose that remains elevated afterward for a period of time.<br>
+     The primary focus of this home visit should be on low-intensity mobility/strengthening and education on DM management.<br><br>
+     4. Sending the patient to the AED is not indicated in this case because Ms. Amy Chan's presentation represents moderate postprandial hyperglycemia without features of an acute hyperglycemic emergency.<br>
+     The following situations might warrant emergencymedical attention:<br>
+     <img src="High_Hstix.png" alt='Hstix' style='max-width:100%;boder-radius:5px;'> <br><br><br><br><br><br>
+     References:<br>
+     Colberg, S. R., Sigal, R. J., Fernhall, B., Regensteiner, J. G., Blissmer, B. J., Rubin, R. R., Chasan-Taber, L., Albright, A. L., Braun, B., American College of Sports Medicine, & American Diabetes Association (2010). Exercise and type 2 diabetes: the American College of Sports Medicine and the American Diabetes Association: joint position statement. Diabetes care, 33(12), e147–e167. https://doi.org/10.2337/dc10-9990<br><br>
+     Dong, X., Zhang, C., Wu, T., & Zhu, B. (2024). First versus second drop of capillary blood for monitoring blood glucose: A meta-analysis and systematic review. Archives of Medical Science, 20(6), 1909–1917. https://doi.org/10.5114/aoms/186657<br><br>
+     Kanaley, J. A., Colberg, S. R., Corcoran, M. H., Malin, S. K., Rodriguez, N. R., Crespo, C. J., Kirwan, J. P., & Zierath, J. R. (2022). Exercise/Physical Activity in Individuals with Type 2 Diabetes: A Consensus Statement from the American College of Sports Medicine. Medicine and science in sports and exercise, 54(2), 353–368. https://doi.org/10.1249/MSS.0000000000002800<br><br>
+    Case creator: Ms Gigi Cheung, Mr Thomas Mak<br>
+    </div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+<script>
+  const investigations = [{"opt":"Recheck H'stix after 15mins","res":"H'stix: 18.2","cor":false},{"opt":"Check pupil size","res":"Normal and symmetrical","cor":false},{"opt":"Check urine ketone-stix","res":"Negative","cor":true},{"opt":"Check for any limb numbness / sensation loss","res":"Sensation normal","cor":false}];
+  const management = [{"opt":"Ensure euhydration","exp":"","cor":true},{"opt":"Proceed to 6MWT","exp":"","cor":false},{"opt":"Teach patient home ex with light intensity","exp":"","cor":true},{"opt":"Send patient to AED","exp":"","cor":false}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

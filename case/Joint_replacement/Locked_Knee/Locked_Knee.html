@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Locked Knee</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Locked Knee</h2>
+  <p>Mrs. Li, a 76-year-old female, underwent left Oxford UKA one month ago. On latest PTJC follow-up (3 days ago), she achieved 0-115° knee flexion, left knee power grade 4, and mobilized independently with a walking stick. She reported she has no knee pain for walking less than 30 minutes.
+    <br><br><br>During today’s PTJC follow-up, she reports: “Last night when I turned over in bed, I felt a sudden ‘clunk’ and sharp medial pain. Since then, my knee feels unstable, it catches and locks when I try to walk, and the swelling has increased.” There is no history of a fall or trauma.
+    <br><br><br>SHx:
+    <br>Live with husband, lift landing flat in Tai Po
+    <br>Self-arrange transport to PTJC
+    <br><br>PMHx:
+    <br>HT, on Norvasc
+    <br>DM, on Metformin
+    <br><br>------- Today's Findings --------
+    <br>C/O: Lt knee pain NPRS: 5 / 10 on walking.
+    <br><br>P/E:
+    <br>Lt knee wound healing, dry clots+
+    <br>Lt knee swelling++ (mainly suprapatella region), calf swelling+, ankle toes ok, no bruise.
+    <br>Lt Knee AROM: 15-85<br>          PROM: 15-85
+    <br>Power:
+    <br>Quad: Gr 3+
+    <br>Hamstring: Gr 3+
+    <br>Walking: with Frame, mild limping. Tolerance = 10 mins</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Neurovascular checks and Homan’s test to rule out deep vein thrombosis</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Gait assessment</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Stability testing (varus/valgus stress at 30°, anterior drawer)</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Palpation along the medial joint line during flexion/extension</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Apply RICE protocol, continue exercise as tolerated and review condition in 3 days.</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Suggest patient to have R NWB walking with a frame first and review condition in 3 days.</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Suspend exercise and refer patient to the orthopedic team for same day review</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Suspend strengthening exercise, but continue range ROM ex as tolerated and recheck patient range at the end of PTJC</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+    
+  <div style="margin-top:20px;"><strong>-------- Explanation ---------</strong>
+    <br><strong>Question 1</strong>
+    <br><strong>Option 1: Neurovascular checks and Homan's test to rule out deep vein thrombosis</strong>
+    <br>Correct. Calf swelling is present, the patient may be at risk for DVT post-surgery. Homan's test is negative and calf is non-tender, which helps rule out DVT.
+    <br><br><strong>Option 2: Gait assessment</strong>
+    <br>Correct. Severe pain on stance phase may indicated implant failure. One of the possibilities may be due to bearing dislocation as the femoral condyle is not articulating congruently against the bearing and it may directly impinge on the tibial tray, dislocated bearing or soft tissue. This leads to severe pain on stance phase of walking.
+    <br><br><strong>Option 3: Stability testing (varus/valgus stress at 30°, anterior drawer)</strong>
+    <br>Correct. No obvious laxity is found. This helps differentiate from ligament injury or implant instability and narrows it toward an intra-articular mechanical issue.
+    <br><br><strong>Option 4: Palpation along the medial joint line during flexion/extension</strong>
+    <br>Correct. Palpation along the medial joint line for a mobile structure during flexion/extension helps to identify the bearing location. In this patient, the mass is prominent on knee extension but disappears on knee flexion. This suggests the problem may be more likely due to bearing dislocation, rather than metal implant crushing.
+    <br><br><strong>Question 2</strong>
+    <br><br><strong>Option 1: Apply RICE protocol, continue exercise as tolerated and review condition in 3 days.</strong>
+    <br>Incorrect. Continuing exercises as tolerated is unsafe here. The patient has acute mechanical symptoms (locking, catching, instability) and a palpable mass. Exercise may worsen the dislocation, increasing swelling, or causing further damage to the bearing or components.
+    <br><br><strong>Option 2: Suggest patient to have R NWB walking with a frame first and review condition in 3 days.</strong>
+    <br>Incorrect. Non-weight-bearing (NWB) might temporarily reduce stress, but it does not address the underlying mechanical issue. Delaying proper review by 3 days while the knee is locking and unstable is inappropriate.
+    <br><br><strong>Option 3: Suspend exercise and refer patient to the orthopedic team for same day review</strong>
+    <br>Correct. This is the safest and most appropriate action. Sudden clunk, locking, palpable mass and marked decrease ROM at 1-month post-op may indicate bearing dislocation or other intra-articular mechanical failure. This warrants an urgent orthopedic surgeon attention for immediate review.
+    <br><br><strong>Option 4: Suspend strengthening exercise, but continue range ROM ex as tolerated and recheck patient range at the end of PTJC</strong>
+    <br>Incorrect. When there is clear mechanical locking and a palpable mass, further ROM exercise may worsen the condition. Suspending all intervention until orthopedic review is wiser.
+    <br><br><strong>Diagnosis:</strong>
+    <br>Oxford Knee bearing dislocation
+    <br><img src='bearing.png' alt='bearing' style='max-width:100%;boder-radius:5px;'>
+    <br>Fig.1 AP & lateral radiographs of the left knee demonstrating a cemented medial Oxford unicompartmental knee arthroplasty with posteromedial dislocation of the polyethylene mobile bearing insert. There is also significant lateral and patellofemoral osteoarthritis with associated anterior femoral and patellar osteophytosis [4]
+    <br><br>A meta-analysis done by Mohammad et al. [1] with 8658 UKA patients across 15 studies found that the main causes of UKA revision operation was lateral disease progression (1.42 %), aseptic loosening (1.25 %), bearing dislocation (0.58 %), and pain (0.57 %).
+    <br><br>Imbalance of the flexion and extension gap, malposition of components, impingement by osteophytes and cement, laxity of medial collateral ligament, traumatic accident and habitual high knee flexion may contribute to UKA bearing dislocation. [2]
+    <br><br>Possible treatment of UKA dislocation included MCL reconstruction, arthroscopic debridement, mobile-bearing replacement and revision TKR, in which revision is more likely to be chosen with a higher successful rate. [3]
+    <br><br>1. Mohammad, H. R., Strickland, L., Hamilton, T. W., & Murray, D. W. (2018). Long-term outcomes of over 8,000 medial Oxford Phase 3 Unicompartmental Knees—a systematic review. Acta orthopaedica, 89(1), 101-107.
+    <br>2. Guan, Z. P., & Li, Z. (2020). Prevention and treatment of bearing dislocation of mobile-bearing unicompartmental knee arthroplasty. Zhonghua wai ke za zhi [Chinese Journal of Surgery], 58(6), 416-419.
+    <br>3. Guo, Y., Lan, S., Sun, K., Cangjue, D., Lunzhu, C., & Li, J. (2025). A comprehensive review of complications following unicompartmental knee arthroplasty. Asian Journal of Surgery.
+    <br>4. Vajapey, S.P., Alvarez, P.M. & Chonko, D. Bearing failure in a mobile bearing unicompartmental knee arthroplasty: an uncommon presentation of an implant-specific complication. Arthroplasty 3, 16 (2021). https://doi.org/10.1186/s42836-021-00073-9
+    <h6>Case Creator: Agnes Chan</h6>
+  </div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<script>
+  const investigations = [{"opt":"Neurovascular checks and Homan's test to rule out deep vein thrombosis","res":"Homan's test -ve, non-tender calf","cor":true},
+  {"opt":"Gait assessment","res":"Severe Lt medial knee pain in Lt stance phrase","cor":true},
+  {"opt":"Stability testing (varus/valgus stress at 30°, anterior drawer)","res":"No obvious laxity on varus/valgus stress test/anterior drawer test","cor":true},
+  {"opt":"Palpation along the medial joint line during flexion/extension","res":"Tenderness++ over Lt medial joint line with a firm mass felt over posteromedial joint on knee extension but disappear on knee flexion","cor":true}];
+  const management = [{"opt":"Apply RICE protocol, continue exercise as tolerated and review condition in 3 days.","exp":"","cor":false},
+  {"opt":"Suggest patient to have R NWB walking with a frame first and review condition in 3 days.","exp":"","cor":false},
+  {"opt":"Suspend exercise and refer patient to the orthopedic team for same day review","exp":"","cor":true},
+  {"opt":"Suspend strengthening exercise, but continue range ROM ex as tolerated and recheck patient range at the end of PTJC","exp":"","cor":false}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

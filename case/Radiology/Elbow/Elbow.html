@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physio Radiology Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --light: #ecf0f1;
+            --secondary: #95a5a6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #game-container {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .hidden { display: none; }
+
+        #xray-display {
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            background: white;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-home {
+            margin-top: 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-retry {
+            margin-top: 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .wrong { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        #stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        #next-btn {
+            margin-top: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Clinical Radiology Challenge - Elbow</h1>
+    
+    <div id="start-screen">
+        <p>Test your diagnostic skills. 10 Cases. 1 Timer.</p>
+        <button onclick="startGame()">Start Challenge</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div id="stats-bar">
+            <span>Case: <span id="q-num">1</span>/10</span>
+            <span>Timer: <span id="timer">0</span>s</span>
+        </div>
+        
+        <img id="xray-display" src="" alt="Clinical X-ray">
+        
+        <div id="options" class="options-grid"></div>
+
+        <div id="feedback" class="hidden"></div>
+        <button id="next-btn" class="hidden" onclick="nextQuestion()">Next Case →</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Challenge Complete!</h2>
+        <p>Your Score: <span id="final-score">0</span> / 10</p>
+        <p>Total Time: <span id="final-time">0</span> seconds</p>
+        
+        <button class="btn-retry" onclick="location.reload()">Try Again</button>
+<button class="btn-home" onclick="history.back()">← Go Back</button>
+    </div>
+</div>
+
+<script>
+    // --- DATABASE ---
+    // You can expand this array to 10 items
+    const questions = [
+        {
+            image: "EL1.jpeg",
+            options: ["Radial neck fracture", "Coronoid process avulsion", "Posterior elbow dislocation", "Olecranon process avulsion"],
+            correct: 1,
+            explanation: "Avulsion fracture is noted at the tip of coronoid process of ulna with anterior and posterior fat pad sign, suggesting the presence of elbow joint effusion. Coronoid process fracture is an uncommon fracture (approximately 10 to 15% of elbow fractures) and it is generally diagnosed on lateral or 45° internal oblique views."
+        },
+        {
+            image: "EL2.png",
+            options: ["Radial head fracture", "Supracondylar fracture", "Posterior elbow dislocation", "Fracture olecranon"],
+            correct: 3,
+            explanation: "Olecranon fracture just adjacent to the ossification centre. Minor displacement. Elbow joint effusion with anterior fat pad and posterior fat pad. <br><br>Fractures of the olecranon are common in children, and commonly overlooked. If there is another elbow fracture, 30% of children will have an olecranon fracture too. <br><br>In this case, the fracture is adjacent to the ossification centre and if you're not used to looking at this type of film, could be overlooked."
+        },
+        {
+            image: "EL3.jpg",
+            options: ["Fracture olecranon", "Sail sign positive", "Normal", "Radial head dislocation"],
+            correct: 1,
+            explanation: "X-rays of the left elbow demonstrate a prominent anterior fat pad (sail sign) with the posterior fat pad also visible. This is consistent with a large joint effusion.<br><br>No definite fracture can be seen in this film, although the radial head appears a little ill-defined laterally. Fracture neck of radius was found in CT."
+        },
+                {
+            image: "EL4.jpeg",
+            options: ["Anterior elbow dislocation", "Posterior elbow dislocation", "Fracture olecranon", "Fracture ulnar shaft"],
+            correct: 1,
+            explanation: "There is posterior dislocation of the elbow joint but no fracture."
+        },
+                {
+            image: "EL5.jpeg",
+            options: ["Radial neck fracture", "Fracture ulnar shaft", "Radial head dislocation", "Olecranon dislocation"],
+            correct: 2,
+            explanation: "Volar dislocation of the radial head. No fracture is identified, in particular none of the distal forearm. No carpal dislocation. Distal ulnar shaft bone island. <br><br>Isolated radial head dislocations in adults are rare, and they mostly occur in children. These should not be missed as long-term consequences of an untreated radial head dislocation include early degenerative joint disease and loss of function. "
+        },
+                        {
+            image: "EL6.jpeg",
+            options: ["Radial head fracture", "Fracture ulnar shaft", "Fracture olecranon", "Normal"],
+            correct: 0,
+            explanation: "Radial head fracture with mild displacement. The most common cause of elbow joint effusion in adults is a radial head fracture"
+        },
+         {
+            image: "EL7.png",
+            options: ["Radial head fracture", "Supracondylar fracture", "Radial head dislocation", "Coronoid process avulsion"],
+            correct: 3,
+            explanation: "There is an avulsion fracture of the tip of the right coronoid process, best visualised on the oblique view. There are displaced anterior and posterior fat pads suggestive of an associated effusion. This represents a type I fracture based on the Regan and Morrey classification system. The fracture is barely discernable on the lateral view and poorly appreciated on the frontal view."
+        },
+        {
+            image: "EL8.jpeg",
+            options: ["Supracondylar fracture", "Elbow synovial sarcoma", "Elbow Osteoarthritis", "Fracture ulnar shaft"],
+            correct: 1,
+            explanation: "Soft tissue swelling is most prominent in the anterior elbow region. There is a lytic expansile area along the anterior aspect of the proximal upper third of the ulna diaphysis."
+        },
+                 {
+            image: "EL9.png",
+            options: ["Radial head fracture", "Lateral epicondyle fracture", "Radial head dislocation", "Coronoid process avulsion"],
+            correct: 1,
+            explanation: "Avulsion fracture fragment projecting superior to the radial head on lateral view and closely related to the lateral epicondyle on AP view. Elevated anterior and posterior pericapsular fat (joint effusion). Associated soft tissue swelling. Anterior humeral and radio-capitellar lines are undisplaced. No elbow joint dislocation present."
+        },
+        {
+            image: "EL10.png",
+            options: ["Fracture olecranon", "Radial head fracture", "Supracondylar fracture", "Normal"],
+            correct: 2,
+            explanation: "Elbow radiographs revealed a discrete lucent fracture line on the AP view. The lateral radiograph shows an undisplaced supracondylar fracture of the humerus. These findings describe a Gartland type I supracondylar fracture. Also, there is a small elbow joint effusion, shown by the sail sign."
+        },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let startTime;
+    let timerInterval;
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        startTime = Date.now();
+        startTimer();
+        showQuestion();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timer').innerText = elapsed;
+        }, 1000);
+    }
+
+    function showQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById('q-num').innerText = currentQuestion + 1;
+        document.getElementById('xray-display').src = q.image;
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(choice) {
+        const q = questions[currentQuestion];
+        const feedback = document.getElementById('feedback');
+        const buttons = document.querySelectorAll('#options button');
+        
+        buttons.forEach(b => b.disabled = true);
+        
+        feedback.classList.remove('hidden');
+        if(choice === q.correct) {
+            score++;
+            feedback.innerHTML = `<strong>Correct!</strong><br>${q.explanation}`;
+            feedback.className = "correct";
+        } else {
+            feedback.innerHTML = `<strong>Incorrect.</strong><br>Correct answer: ${q.options[q.correct]}<br>${q.explanation}`;
+            feedback.className = "wrong";
+        }
+        
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if(currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-time').innerText = Math.floor((Date.now() - startTime) / 1000);
+    }
+</script>
+
+</body>
+</html>

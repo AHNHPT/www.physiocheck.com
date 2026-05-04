@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dizzy and vomiting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Dizzy and vomiting</h2>
+  <p>Mr. Mok, a 68-year-old retired man, presents to the Emergency Department with severe dizziness and imbalance starting abruptly 36 hours ago.
+    <br><br>SHx: Live in lift-landing flat with wife.
+    <br>Premorbid walk unaided
+    <br><br>PMH:
+    <br>Hypertension on amlodipine
+    <br>Hyperlipidemia on Lipitor
+    <br><br>HPI:
+    <br>E adm x EMW x severe vertigo
+    <br>Severe vertigo starts ~36 hours ago
+    <br><br>No recent head trauma
+    <br>Vertigo even when he is lying still or sitting upright
+    <br><br>Symptoms worsen in turning his head or changes position (e.g., rolling over in bed or looking up)
+    <br>Difficulty in walking
+    <br>Nausea+ with one episode of vomiting
+    <br><br>No hearing loss/ tinnitus/ ear fullness or pain/ headache
+    <br>He recalls having a mild upper respiratory tract infection (runny nose and mild sore throat) about 5–7 days prior to onset.
+    <br><br>CBC: Hb:10.0 WCC: 8.9
+    <br>L/RFT: Normal
+    <br><br>CTB in AED: no ICH/ MLS/ SOL
+    <br> ECG: SR
+    <br><br>Refer physiotherapy service for vestibular rehabilitation.
+    <br>----------------------------------------------------------------------
+    <br><br>You encounter Mr. Mok in EM ward.
+    <br><br>O/E:
+    <br>Alert and oriented
+    <br>GCS: 15/15
+    <br><br>BP 138/83 Pulse 95
+    <br>SpO2 96% on room air.
+    <br>Afebrile.
+    <br><br>Hstix: 7.0 (post meal 2 hrs)</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Perform motor, sensation test of 4 limbs and cranial nerve testing</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Dix-Hallpike test, Supine roll test</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Bedside HINTS examination (Head Impulse, Nystagmus, Test of Skew)</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Assessment on mobility</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Epley maneuver/ Canalith repositioning procedure</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Mobility training</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Don’t do anything and record it as Central cause of vertigo</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Start gentle adaptation exercise</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  
+  <div style="margin-top:20px;">This is a classic case of vestibular neuritis in an elderly patient. Vestibular neuritis is an acute unilateral peripheral vestibulopathy, typically affecting the horizontal semicircular canal and superior vestibular nerve branch most prominently. It often happens after preceding viral-like illness.
+    <br><br>Vertigo in vestibular neuritis starts suddenly. Symptoms peak in the first 24–48 hours and remain continuous (not brief/episodic). Symptoms are worsened by head movements or position changes. Other symptoms include nausea, vomiting and disequilibrium.
+    <br><br>In contrast, BPPV causes brief (seconds) vertigo only with specific position changes, resolving quickly when still.
+    <br>Vestibular neuritis usually not involves auditory symptoms (hearing loss, tinnitus, ear pain, ear fullness). This nature could be differentiated from labyrinthitis (which involves the cochlea) or Meniere's disease.
+    <br><br><strong>Qurstion 1:</strong>
+    <br><strong>Perform motor, sensation test of 4 limbs and cranial nerve</strong>
+    <br>It is a crucial step to rule out central cause of vertigo. If there is focal motor or sensory deficit, speech difficulty, facial asymmetry or visual changes (including diplopia), central cause should be suspected.
+    <br><br><strong>B. Dix-Hallpike test, Supine roll test</strong>
+    <br>Dix-Hallpike test is mainly used to diagnose posterior canal BPPV.
+    <br>In this case, we observe spontaneous right-beating nystagmus. Symptoms worsen in positional change. However, the nystagmus is persisting without latency or clear fatigability. The nystagmus does not follow Posterior BPPV pattern (upbeat-torsional nystagmus).
+    <br><br>Supine roll test is used to diagnose horizontal canal BPPV.
+    <br>Similarly, we observe spontaneous right-beating nystagmus. Symptoms worsen in positional change. However, it does not follow horizontal canal BPPV pattern (geotropic or apogeotropic).<br>Vertigo may increase mildly with head rolling due to further vestibular asymmetry, but without the paroxysmal, position-locked pattern of horizontal canal BPPV.
+    <br><br><strong>C. Bedside HINTS examination (Head Impulse, Nystagmus, Test of Skew)</strong><br>HINTS is useful to differentiate central and peripheral vertigo.
+    <br>Head Impulse Test (HIT) — tests the vestibulo-ocular reflex (VOR).
+    <br>How to perform: Patient fixes gaze on your nose. Quickly thrust the head ~10–20° to each side (passive, unpredictable).
+    <br>Peripheral: Positive — Corrective saccade (rapid eye movement back to target) on the affected side (e.g., left-sided neuritis → corrective saccade on left thrust).
+    <br>Central: Negative — No corrective saccade (VOR intact, as the lesion spares the peripheral nerve but affects central pathways).
+    <br><br>Nystagmus — Observe in primary gaze and eccentric gaze.
+    <br>Peripheral: Unidirectional horizontal nystagmus (fast phase away from the affected side, e.g., right-beating in left neuritis). Follows Alexander's law (increases on gaze toward fast phase, decreases/opposite on gaze away).  No direction change.
+    <br>Central: Direction-changing (bidirectional gaze-evoked), pure vertical, torsional, or non-direction-fixed nystagmus.
+    <br><br>Test of Skew — Alternate cover test for vertical ocular misalignment.
+    <br>How to perform: Patient fixes on distant target. Cover one eye, uncover, observe for vertical refixation saccade; repeat on other eye.
+    <br>Peripheral: No skew (normal, no vertical deviation).
+    <br>Central: Skew deviation present (vertical misalignment, often with refixation saccade; highly specific for brainstem involvement).
+    <br>In this case, we can conclude that it is a peripheral vertigo with left sided lesion.
+    <br><br><strong>D. Assessment on mobility</strong>
+    <br>In the absence of red flags or absolute contraindications, it is our role to assess the patient’s mobility. Mobility assessment should proceed gradually according to the patient’s tolerance. If the patient tolerates it well, it may be helpful to gather information on their gait and balance during the assessment.
+    <br><br><strong>Question 2:</strong>
+    <br><strong>A. Epley maneuver or canalith repositioning procedure</strong> 
+    <br>The presentation of this patient does not follow the usual picture of BPPV. Even though the patient complaints of worsening of symptom in Dix-Hallpike test/ Supine roll test, it cannot simply be concluded to be BPPV. 
+    <br>Summarizing the assessment result, canalith repositioning procedure is not necessary in this case.
+    <br><img src="BPPV.png"alt='BPPV' style='max-width:100%;boder-radius:5px;'>
+    <br><br><strong>B. Mobility training</strong>
+    <br>In this case, patient still complaints of severe nausea and constant vertigo. We may keep monitoring and start mobility training as soon as the symptoms subside enough.
+    <br><br><strong>C. Don’t do anything and record it as Central cause of vertigo</strong>
+    <br>According to the assessment, it is not likely a central cause of vertigo. This option is not appropriate.
+    <br>Remark: If a central cause of vertigo is suspected according to your findings, normal finding in plain CT Brain is not sufficient to rule out Posterior circulation ischemic stroke. You should discuss with doctor for further investigation.
+    <br><br><strong>D. Start gentle adaptation and habituation exercise</strong> 
+    <br>Early vestibular rehabilitation (VRT) is supported by multiple studies and guidelines for unilateral peripheral vestibular hypofunction like vestibular neuritis. Starting early (within the first few days, even day 1–3 if severe vertigo allows) leads to faster symptom reduction, better long-term function, and lower risk of persistent issues like PPPD (persistent postural-perceptual dizziness). Vestibular rehabilitation can be started as soon as severe vegetative symptoms (intense spinning, vomiting) subside enough to tolerate mild provocation — often within 24–72 hours.
+    <br>Habituation specifically (repeated exposure to symptom-provoking stimuli to desensitize the brain) is a core component of vestibular rehabilitation for vestibular neuritis. Classic examples include Cawthorne-Cooksey exercises or simple head movements.
+    <br>Habituation works best when exercises provoke mild to moderate symptoms (e.g., 2–4/10 on a dizziness scale) that subside quickly after stopping — not severe distress.
+    <br><br>In this case, we can start simple adaptation and habituation when symptoms are controlled by medication prescribed by doctor. Examples are given below.
+    <br>Gentle head nodding (up/down) or side-to-side turns while lying down or sitting, eyes open or fixed on a point.
+    <br>Slow gaze stabilization (VOR x1): Hold a target at eye level and move head slowly side-to-side while keeping eyes on target.
+    <br>Repeated small head tilts or turns (e.g., 5–10 reps, pause if symptoms spike).
+    <br>Do it in short sessions (30–90 seconds per exercise, or until mild-moderate dizziness), 3–5 times per day total (e.g., 10–15 minutes spread out). Stop and rest if symptoms exceed moderate or last too long.
+    <br><br>Supplementary information on vestibular neuritis
+    <br>Medical management of vestibular neuritis
+    <br>Symptomatic relief (short-term only, 1–3 days): Antiemetics for nausea/vomiting
+    <br>Vestibular suppressants (sparingly, as they can delay compensation): e.g., meclizine, dimenhydrinate, or low-dose benzodiazepines (lorazepam/diazepam) for severe vertigo/anxiety. Guidelines stress short duration only, especially in elderly patients, to avoid prolonging recovery or increasing fall risk/sedation
+    <br><br>Corticosteroids — Consider short-course oral steroids (e.g., prednisolone 50–60 mg daily for 5 days, then taper by 10 mg every 2 days) if presentation is within 72 hours (ideally 24–48 hours for best effect).
+    <br>Modest benefit in accelerating vestibular function recovery and reducing symptom duration (meta-analyses and studies show better outcomes with early steroids; GRACE-3 recommends shared decision-making due to very low–moderate certainty evidence, weighing risks like GI upset, hyperglycemia in elderly/diabetics)
+    <br><br>In elderly: Use cautiously (monitor blood sugar, BP), but still often offered if no contraindications.
+    <br>Supportive: IV fluids if dehydrated from vomiting, fall precautions, dark/quiet environment, head elevation.
+    <br><br><strong>Prognosis</strong>
+    <br>Excellent overall prognosis
+    <br><br>Most patients recover well with appropriate management.
+    <br><br>Acute severe vertigo peaks in 24–72 hours. It improves significantly within 1–2 weeks.
+    <br><br>Full functional recovery is expected in typically 2–6 weeks for many (return to daily activities), but residual mild imbalance or motion sensitivity can persist longer.
+    <br><br>Complete peripheral vestibular recovery (on testing): Occurs in ~60–70% within 12 months; central compensation handles the rest effectively in most cases.
+    <br><br>Timeframe variability: Elderly patients (like 60s–70s) may take longer (weeks to months) due to slower neural plasticity, comorbidities, or deconditioning, but still good outcomes with early VRT.
+    <br><br><strong>Potential complications:</strong>
+    <br>~30–50% develop chronic mild symptoms (e.g., imbalance, oscillopsia on head movement) if VRT delayed.
+    <br><br>Risk of secondary issues: Falls, anxiety, persistent postural-perceptual dizziness (PPPD) if maladaptive avoidance behaviors occur.
+    <br>Recurrence: Uncommon (~5–10%).
+    <br><br><strong>Learning point:</strong>
+    <br>Understand clinical presentation and management of vestibular neuritis
+    <br>Differentiate peripheral and central cause of vertigo
+    <br><br>For more information, you may refer to the reference below.
+    <br>Bae, C. H., Na, H. G., Choi, Y. S. (2022). Current diagnosis and treatment of vestibular neuritis: a narrative review. Journal of Yeungnam Medical Science, 39(2), 81–88.
+    <br>Edlow JA, Carpenter C, Akhter M, Khoujah D, Marcolini E, Meurer WJ, Morrill D, Naples JG, Ohle R, Omron R, Sharif S, Siket M, Upadhye S, E Silva LOJ, Sundberg E, Tartt K, Vanni S, Newman-Toker DE, Bellolio F. Guidelines for reasonable and appropriate care in the emergency department 3 (GRACE-3): Acute dizziness and vertigo in the emergency department. Acad Emerg Med. 2023 May;30(5):442-486. doi: 10.1111/acem.14728. PMID: 37166022.
+    <br>Herdman, S. J., & Clendaniel, R. (2014). Vestibular rehabilitation. FA Davis.
+    <br><br>Case creator: Mr. Leon Yiu</div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+<script>
+  const investigations = [{"opt":"Perform motor, sensation test of 4 limbs and cranial nerve testing","res":"No focal weakness, numbness, speech difficulty, facial asymmetry or visual changes","cor":true},{"opt":"Dix-Hallpike test, Supine roll test","res":"Dix-Hallpike test: Right beating nystagmus noted in both side <br>Supine roll test: Right beating nystagmus noted in both side","cor":true},{"opt":"Bedside HINTS examination (Head Impulse, Nystagmus, Test of Skew)","res":"Head Impulse: Positive in left head thrust <br>Nystagmus: Spontaneous right beating nystagmus. Not direction-changing. <br>Test of Skew: Negative","cor":true},{"opt":"Assessment on mobility","res":"Severe vertigo in lying to sitting.<br>He then requests to rest on bed.","cor":true}];
+  const management = [{"opt":"Epley maneuver/ Canalith repositioning procedure","exp":"","cor":false},{"opt":"Mobility training","exp":"","cor":false},{"opt":"Don’t do anything and record it as Central cause of vertigo","exp":"","cor":false},{"opt":"Start gentle adaptation exercise","exp":"","cor":true}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

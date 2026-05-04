@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physio Radiology Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --light: #ecf0f1;
+            --secondary: #95a5a6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #game-container {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .hidden { display: none; }
+
+        #xray-display {
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            background: white;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-home {
+            margin-top: 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-retry {
+            margin-top: 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .wrong { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        #stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        #next-btn {
+            margin-top: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Clinical Radiology Challenge - Shoulder</h1>
+    
+    <div id="start-screen">
+        <p>Test your diagnostic skills. 10 Cases. 1 Timer.</p>
+        <button onclick="startGame()">Start Challenge</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div id="stats-bar">
+            <span>Case: <span id="q-num">1</span>/10</span>
+            <span>Timer: <span id="timer">0</span>s</span>
+        </div>
+        
+        <img id="xray-display" src="" alt="Clinical X-ray">
+        
+        <div id="options" class="options-grid"></div>
+
+        <div id="feedback" class="hidden"></div>
+        <button id="next-btn" class="hidden" onclick="nextQuestion()">Next Case →</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Challenge Complete!</h2>
+        <p>Your Score: <span id="final-score">0</span> / 10</p>
+        <p>Total Time: <span id="final-time">0</span> seconds</p>
+        
+        <button class="btn-retry" onclick="location.reload()">Try Again</button>
+<button class="btn-home" onclick="history.back()">← Go Back</button>
+    </div>
+</div>
+
+<script>
+    // --- DATABASE ---
+    // You can expand this array to 10 items
+    const questions = [
+        {
+            image: "SH1.jpg",
+            options: ["Distal clavicle fracture", "Bony bankart lesion", "Posterior dislocation", "Coracoclavicular (CC) ligament injury"],
+            correct: 1,
+            explanation: "A small bone fragment is displaced from the inferior aspect of the glenoid consistent with a bony Bankart lesion. There is also subtle compression deformity of the superolateral humeral head consistent with a Hill-Sachs lesion. Both these lesions are the result of previous anterior shoulder dislocation. This patient had a history of recurrent dislocations."
+        },
+        {
+            image: "SH2.png",
+            options: ["Bony bankart lesion", "Distal acromion fracture", "Greater tuberosity fracture", "Hill-Sachs lesion"],
+            correct: 2,
+            explanation: "A case of one-part fracture according to Neer classification and type A1.1 fracture according to AO/OTA classification of proximal humeral fractures. <br>Classification describes only displaced segments which are defined as 1.0 cm displacement or 45 degree angulation."
+        },
+        {
+            image: "SH3.jpg",
+            options: ["Anterior dislocation", "Posterior dislocation", "Greater tuberosity fracture", "AC joint dislocation"],
+            correct: 1,
+            explanation: "This dislocation may be difficult to appreciate on an AP view because it is not inferiorly displaced and may appear to be in the glenoid fossa. (Note that the space between the glenoid fossa and the humeral head does not look normal.) The scapular Y view, reveals that a posterior dislocation is present. (Note that the humeral head lays posterior to the glenoid fossa rather than being centered over it.)"
+        },
+                {
+            image: "SH4.jpeg",
+            options: ["AC joint dislocation", "Coracoclavicular (CC) ligament injury", "Distal acromion fracture", "Normal"],
+            correct: 3,
+            explanation: "The acromioclavicular joint is normal. No fracture identified. An AP weight-bearing view is a specialized AP shoulder X-ray, often done bilaterally, where the patient holds 5–15 lb weights to apply downward traction on the arms. It highlights instability and unmasks occult injuries, such as subtle ACJ or CC ligament laxity."
+        },
+                {
+            image: "SH5.jpg",
+            options: ["AC joint dislocation", "Coracoclavicular (CC) ligament injury", "Supraspinatus calcific tendinitis", "Greater tuberosity fracture"],
+            correct: 2,
+            explanation: "Calcific deposit in region of the supraspinatus tendon, in a patient with acute shoulder pain. Findings consistent with calcific tendinitis."
+        },
+                        {
+            image: "SH6.jpeg",
+            options: ["Greater tuberosity fracture", "Mid-clavicle fracture", "Distal acromion fracture", "Rib fracture"],
+            correct: 3,
+            explanation: "Right hydropneumothorax, presumably haemopneumothorax given right fifth and sixth rib fractures. No shoulder girdle fracture. No dislocation."
+        },
+         {
+            image: "SH7.jpeg",
+            options: ["Glenohumeral joint osteoarthritis", "Supraspinatus calcific tendinitis", "Mid-clavicle fracture", "Lesser tuberosity fracture"],
+            correct: 0,
+            explanation: "No sign of acute bony trauma. Moderate AC and advanced glenohumeral joint osteoarthritis with marked narrowing of the glenohumeral joint space and subchondral sclerosis. Unusually large inferior humeral osteophyte."
+        },
+        {
+            image: "SH8.jpeg",
+            options: ["Distal clavicle fracture", "Supraspinatus calcific tendinitis", "Mid-clavicle shaft fracture", "Greater tuberosity fracture"],
+            correct: 0,
+            explanation: "There is a comminuted fracture of the distal aspect of the right clavicle; there is inferior displacement and overlapping of the fragments.<br><br>Fractures of the clavicle are common in adults, they account for 44-66% of shoulder fractures. Distal or lateral fractures of the clavicle account for 3% of clavicle injuries, they have a high incidence of non-union; proposed to be a result of the forces acting on the medial fragment via the trapezius muscle and the overall weight of the arm on the fracture site."
+        },
+                 {
+            image: "SH9.jpeg",
+            options: ["Greater tuberosity fracture", "Mid-clavicle fracture", "Humeral neck fracture", "Lesser tuberosity fracture"],
+            correct: 3,
+            explanation: "Avulsion fracture of lesser tuberosity displaced caudal to the glenoid with lipoemarthrosis."
+        },
+        {
+            image: "SH10.jpg",
+            options: ["Anterior dislocation", "Posterior dislocation", "Distal acromion fracture", "Normal"],
+            correct: 2,
+            explanation: "Lateral Y views of the shoulder demonstrate a minimally displaced acromion fracture. ."
+        },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let startTime;
+    let timerInterval;
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        startTime = Date.now();
+        startTimer();
+        showQuestion();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timer').innerText = elapsed;
+        }, 1000);
+    }
+
+    function showQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById('q-num').innerText = currentQuestion + 1;
+        document.getElementById('xray-display').src = q.image;
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(choice) {
+        const q = questions[currentQuestion];
+        const feedback = document.getElementById('feedback');
+        const buttons = document.querySelectorAll('#options button');
+        
+        buttons.forEach(b => b.disabled = true);
+        
+        feedback.classList.remove('hidden');
+        if(choice === q.correct) {
+            score++;
+            feedback.innerHTML = `<strong>Correct!</strong><br>${q.explanation}`;
+            feedback.className = "correct";
+        } else {
+            feedback.innerHTML = `<strong>Incorrect.</strong><br>Correct answer: ${q.options[q.correct]}<br>${q.explanation}`;
+            feedback.className = "wrong";
+        }
+        
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if(currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-time').innerText = Math.floor((Date.now() - startTime) / 1000);
+    }
+</script>
+
+</body>
+</html>

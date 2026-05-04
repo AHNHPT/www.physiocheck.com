@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bedbound patient after stroke</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Bedbound patient after stroke</h2>
+  <p>Mr. Chan, a 90 years old man, suffered from bilateral MCA infarct. 
+    <br>He had been hospitalized for 6 months due to stroke, pneumonia and septic shock. 
+    <br>A course of rehabilitation was given to patient in rehabilitation hospital.
+  <br>Refer outreach physiotherapy service for home exercise.
+  <br><br>Case details:
+  <br>Social Hx: 
+  <br>Live in lift-landing flat with maid.
+  <br>Patient's son and daughter visit patient daily.<br>Premorbid walk with stick<br>
+  <br>PMH: HT on Losartan and Betaloc, CKD, AF on apixaban
+  <br><br>HPI:
+  <br>Admitted for CVA
+  <br>Present with sudden onset aphasia and dull looking
+  <br>Clinically gaze deviation to Left side
+  <br>Given IVT in AED
+  <br>CTA showed no LVO
+  <br>Developed new Left hemiparesis the next day after admission
+  <br>Repeated CT brain showed bilateral MCA territory infarct
+  <br>Consulted neurosurgery: no intervention
+  <br>Started on tube feeding
+  <br>Later developed pneumonia and septic shock. Completed a course of Tazocin. 
+  <br>Once required BiPAP and dopamine for hemodynamic support but later weaned off.
+  <br><br>A course of rehabilitation was given to patient in rehabilitation hospital
+  <br>Upon discharge, he was bedbound with R/T feeding.
+  <br><br>Family's caring plan for patient:
+  <br>-Patient’s family wishes to continue home care.
+  <br>-Patient is cared by maid in ADL (grooming, wiping, changing diaper).
+  <br>-They hired private outreach Chinese medical practitioner for acupuncture and rehabilitation 5 times per week.
+  <br><br>In the first home visit, patient’s maid, son and daughter are present.
+  <br><br>O/E:
+  <br>BP 110/75 Pulse 91 SpO2 96% on room air. Afebrile.
+  <br>Chest clear, no sputum sound.
+  <br>GCS: E4V1M6
+  <br>Aphasic, not follow commands.</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Screening of skin condition</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. ROM, Muscle strength, Muscle tone</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Functional capacity (bed mobility, transfer and mobility)</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Home environment, availability of assistive tools and walking aids</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Carer training in turning, transfer and limbs maintenance </label>
+  <label><input type="checkbox" id="man-check1" /> 2. Bedside sitting and trunk control exercise</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Application of barrier cream on the skin of potential bedsore</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Fall advice, care advice and prevention of complication (DVT) </label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  <div style="margin-top:20px;"><h4>Learning point:</h4><br>Prioritize safety & prevention over ambitious goals in very severe, chronic cases (biopsychosocial approach, realistic expectations).
+    <br><br><strong>Question 1:</strong> 
+    <br><strong>A. Screening of skin condition</strong>
+    <br>This patient is a bedbound, advanced age patient with a prolonged period of hospitalization. It increases the likelihood of developing pressure sore. The common site of the bedsore is as below.
+    <br><img src="PI_site.jpg" alt='PI' style='max-width:100%;boder-radius:5px;'>
+    <br><br>Preventive measure could be considered
+    <br>1. Regular repositioning
+    <br>2. Use of pressure relieving support surface( mattress, wheelchair cushion, etc.)
+    <br>3. Protection on bony prominence (such as the use of heel protectors, pillow)
+    <br>4. Skin care and moisture
+    <br>5. Nutrition(adequate protein, calories, vitamin) and hydration
+    <br>6. Regular risk assessment (such as Braden Scale)
+    <br><br><strong>B. ROM, muscle strength, muscle tone</strong>
+    <br>They are core physiotherapy assessments in severe stroke.
+    <br>Identifies contractures, spasticity, pain, or severe weakness (very common after prolonged immobility and bilateral MCA damage).
+    <br>Establishes baseline for realistic goal setting (e.g., rolling, bridging, supine → sit, assisted transfers).
+    <br>Guides prevention of complications (pressure ulcers, joint deformity, pain, chest infection).
+    <br><br><strong>C. Functional capacity (bed mobility, transfer and mobility)</strong>
+    <br>Functional capacity assessment is emphasized in almost all stroke rehab guidelines for severe cases. It provide the basis
+    <br>for the therapist to formulate a treatment plan and rehabilitation goal with the patient and his family.
+    <br><br><strong>D. Home environment, availability of assistive tools and walking aids</strong>
+    <br>This is a key difference from hospital-based assessment.
+    <br>In a lift-landing flat with maid as primary carer, environmental factors determine safety, feasibility of any intervention, and carer burden (e.g., bed height, space for hoisting, turning, pressure-relieving mattress, availability of slide sheets, transfer belts, commode, etc.).
+    <br>Even though the patient is bedbound, assessment of potential for future progression (e.g., hoist availability, future wheelchair consideration) is important.
+    <br>Guidelines (NICE, VA/DoD, Canadian Stroke Best Practice) strongly recommend environmental assessment as part of
+    <br>community/home rehab.
+    <br><br><strong>Question 2:</strong>
+    <br><strong>A. Carer training in turning, transfer and limbs maintenance</strong>
+    <br>This is a core priority in home-based care for severe stroke with high carer dependence.
+    <br>NICE Guideline NG236 explicitly recommends offering training to family/carers in moving/handling, transfers, positioning,
+    <br>and care (including limb maintenance to prevent contractures/pain).
+    <br>Canadian Stroke Best Practices emphasize carer education as essential for safety, reducing burden, preventing complications (e.g., pressure ulcers from poor positioning, contractures from unmanaged tone).
+    <br>With maid as primary carer and daily family visits, training in safe turning (to prevent shear/friction), assisted transfers (using transfer belt/board), and passive ROM/maintenance for the spastic right side and flaccid left side is critical and realistic in the first session.
+    <br>Teaching should include cues for the aphasic patient (gestures, yes/no, visual aids) and monitoring for fatigue/pain.
+    <br><br><strong>B. Bedside sitting and trunk control exercise</strong>
+    <br>Appropriate and evidence-supported as an initial, low-risk intervention.
+    <br>The patient has fair neck control but poor static sitting balance (leans left), requires 1 moderate-heavy assist for lying-to-sitting.
+    <br>Guidelines (NICE, Canadian) support early/repetitive task-specific practice for sitting balance in severe cases, starting with supported bedside sitting to build trunk control, prevent deconditioning, and improve tolerance for ADLs/pressure relief.
+    <br>This is goal-directed and safe with assistance available (son/daughter/maid). Use the electric bed for gradual elevation,
+    <br>monitor vitals (given age, AF, CKD), and limit duration to avoid fatigue/hypotension.
+    <br>Focus in this case should be on bed-based interventions initially (positioning, passive movements, respiratory care, basic bed mobility).
+    <br><br><strong>C. Application of barrier cream on the skin of potential bedsore</strong>
+    <br>A barrier cream creates a protective layer on the skin to shield it from irritants like moisture (urine/feces), chemicals, or friction, preventing dryness, damage, and conditions like incontinence-associated dermatitis or occupational dermatitis,
+    <br>while also locking in moisture and promoting healing for compromised skin. It works by forming a physical shield, allowing the skin to breathe, and is thicker than a regular moisturizer, often containing ingredients like zinc oxide or ceramides to support the skin's natural barrier.
+    <br>It is not routine care for bedbound patient. It would be helpful if the patient presents with indications such as incontinence-associated dermatitis or stage 1 pressure injury.
+    <br><br><strong>D. Fall advice, care advice and prevention of complication (DVT)</strong>
+    <br>Prevention of secondary complications is a top priority in severe, bedbound elderly stroke patients.
+    <br>Fall prevention: Even though the patient is bedbound, advice should be given on safe transfer, and environmental hazards.
+    <br>Supervision must be given in sitting exercise in this case.
+    <br>DVT: Risk factors include immobility, age, AF. Advise ankle pumps, compression stocking if appropriate. Education should
+    <br>be done to the carer on when to seek medical review for swelling/pain.
+    <br>NICE and Canadian guidelines all stress education on complication prevention, carer advice, and risk management as foundational in community/home settings.
+    <br><br>For more information, you may refer to NICE Guideline NG236: Stroke Rehabilitation in Adults (Published October 2023)
+    <br>https://www.nice.org.uk/guidance/ng236
+    <br><br>Canadian Stroke Best Practice Recommendations (CSBPR) – Rehabilitation, Recovery, and Community Participation Module (7th Edition Update, 2025)
+    <br>https://www.strokebestpractices.ca/recommendations<br><br>AHA/ASA Guidelines for Adult Stroke Rehabilitation and Recovery
+    <br>https://www.ahajournals.org/doi/10.1161/STR.0000000000000098
+    <br> Pressure Ulcers Img from: https://www.kch.org/pressure-ulcers
+    <br>Case Creator: Leon Yiu
+  </div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+<script>
+  const investigations = [{"opt":"Screening of skin condition","res":"Skin over the following sites is intact. <br>- Back of head and ear <br>- Shoulder and elbow <br>- Buttock and hip <br>- Heel <br>- Lateral thigh and leg","cor":true},{"opt":"ROM, Muscle strength, Muscle tone","res":"PROM of 4 limbs grossly full <br>Limb power: (Right / Left) <br>Upper limbs : 2 / 1 <br>Lower limbs: 1 / 1 <br>Fair neck control in sitting. <br>Not able to extend his neck upright. <br>Increase muscle tone over right UL and LL. <br>Flaccid left UL and LL.","cor":true},{"opt":"Functional capacity (bed mobility, transfer and mobility)","res":"Bed mobility: Turning with 1 assist <br>Shifting on bed need 2 assists <br>Transfer: <br>Lying to sitting with 1 moderate to heavy assist <br>Poor static sitting balance. Need 1 consistent assistance in sitting <br>Lean to left side in sitting. <br>MFAC: 1/7","cor":true},{"opt":"Home environment, availability of assistive tools and walking aids","res":"Tidy home environment, sufficient clearance in the living room <br>Electric bed (3 function, 3 feet width) placed in living room <br>Pressure relieving foam mattress applied <br>Wheelchair available. <br>Geriatric chair available <br>Transfer belt and transfer board available <br>Stick available","cor":true}];
+  const management = [{"opt":"Carer training in turning, transfer and limbs maintenance ","exp":"","cor":true},{"opt":"Bedside sitting and trunk control exercise","exp":"","cor":true},{"opt":"Application of barrier cream on the skin of potential bedsore","exp":"","cor":false},{"opt":"Fall advice, care advice and prevention of complication (DVT) ","exp":"","cor":true}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

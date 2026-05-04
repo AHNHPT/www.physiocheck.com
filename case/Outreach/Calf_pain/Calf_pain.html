@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calf pain</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Calf pain</h2>
+  <p>Ms. Josephine Lui’s Case Discharge Summary:
+    <br><br>
+    SHx: <br>
+    82-year-old woman<br>
+    live alone in lift-landing flat<br><br>
+    PMHx<br>
+    1. HT on Lisinopril <br>
+    2. Type 2 DM on Metformin <br>
+    3. Atrial fibrillation on Apixaban<br><br>
+    HPI:<br>
+    Adm AHNH ORT x R hip pain after tripped and fall<br>
+    CTB: no ICH/SOL/MLS<br>
+    XR L hip: # R NOF, Garden III<br><br>
+    Underwent right total hip replacement (posterolateral approach)<br>
+    Uneventful procedure<br>
+    Post-op: Allowed FWB on right leg<br><br>
+    Prn Panadol, Tramadol and usual meds prescribed<br>
+    Upon D/C: MFAC Cat 6 frame<br><br>
+    D/C home<br>
+    Refer COST PT x post-op rehabilitation<br><br>
+    ================================<br>
+    As a physiotherapist serving in outreach team, you provided home visit for this patient.<br>
+    Ms. Lui walks with frame in antalgic gait to open the door for you.<br><br>
+    She complains of increasing pain and swelling in right calf over the last 48 hours, attributed to “overdoing it” with walking exercises as she walked for 30 minutes non-stop yesterday. <br>
+    Denies falls or trauma since discharge.<br><br>
+    Vitals today: <br>
+    BP 138/82<br>
+    HR 88<br>
+    SpO2 96% in RA<br>
+    Temp: 37.2°C.<br><br>
+    On initial observation:<br>
+    Right lower leg appeared slightly erythematous with thin veins sprouting superficially and warmer to touch compared to left, mild pitting edema around ankle and calf.<br><br>
+    Patient reported pain intensity over right calf was NPRS 6/10 at rest, and NPRS 8/10 on weight-bearing.</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1.  Apply the Wells criteria for DVT</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Assess for Homan’s sign with passive dorsiflexion</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Inspect the hip surgical wound for signs of infection.</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Perform tip toeing test (single-leg heel raise / ability to rise onto toes)</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Withhold weight-bearing on the affected leg and refer AED. </label>
+  <label><input type="checkbox" id="man-check1" /> 2. Add ankle pump exercises and compression stocking to the calf.</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Apply TENS to the calf, and teach hip muscle strengthening exercises.</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Reassess swelling and pain during the next home visit in 3-5 days. </label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  <div style="margin-top:20px;">
+    <strong>----------Explanations----------<br></strong>
+    <strong>--Investigations--<br></strong>
+    <strong>1. Applying the Wells criteria for DVT is necessary as the next step.<br></strong>
+    In community/outreach settings, the Wells score is a validated clinical decision rule to estimate pre-test probability of DVT, stratifying patients into low (score ≤0), moderate (1-2), or high (≥3) categories based on risk factors (e.g. recent major surgery within 12 weeks, alternative diagnosis less likely than DVT) and signs (e.g. calf swelling >3 cm compared to contralateral leg, pitting edema confined to symptomatic leg, localized tenderness along deep venous system).<br><br>
+    A high score (≥3) indicates high pretest probability, warranting urgent referral for compression ultrasound without D-dimer, as per evidenced-based clinical algorithms that recommend direct imaging for moderate-to-high risk patients to guide safe escalation in high-risk post-operative cases (Wells et al., 1997; American College of Emergency Physicians Clinical Policies Committee, 2003; Reshi et al., 2015).<br>
+    <img src='well_chart.jpg' alt='chart' style='max-width:100%;boder-radius:5px;'><br>Table1: Wells criteria for DVT<br>
+    <img src='well_decision.gif' alt='decision' style='max-width:100%;boder-radius:5px;'><br>Figure 1. Deep Venous Thrombosis (DVT) Clinical Algorithm Suggested by the American College of Emergency Physicians (ACEP)<br><br><br>
+    <strong>2. Assessing Homan’s sign is not the optimal first step.</strong><br>
+    Homan’s sign (pain on passive dorsiflexion) has low sensitivity/specificity (~50% or less) and poor diagnostic utility; it risks clot dislodgement and is no longer recommended as a primary maneuver.<br><br><br>
+    Moreover, Homan’s sign is often positive in various other conditions causing calf pain and is not helpful for differential diagnosis in Ms. Lui’s case, as other conditions that Ms. Lui could possibly be suffering from (e.g. calf strain, intramuscular haematoma), might lead to a positive Homan’s sign as well (Ambesh et al., 2017; Hillegass et al., 2022).<br><br><br>
+    <strong>3. Inspecting the hip surgical wound is not necessary as the next priority.<br></strong>
+    While wound infection or hematoma must be considered post-THR, the unilateral calf swelling, erythema, warmth, and pain in a high-risk post-op period point more to DVT than local surgical complication alone. Prioritizing VTE screening avoids delay in addressing a potentially life-threatening condition (Hillegass et al., 2022).<br><br><br>
+   <strong>4. Perform tip toeing test is not necessary as the next step.<br></strong>
+    The tip toeing test (or single-leg heel raise test, assessing ability to rise onto toes) evaluates calf muscle strength, plantarflexion power, and integrity of the gastrocnemius-soleus complex/Achilles mechanism.<br><br>
+    It may provoke or exacerbate calf pain in conditions like gastrocnemius strain, tear, or Achilles pathology, but it has limited diagnostic specificity for differentiating DVT from musculoskeletal causes.<br><br>
+    In suspected DVT post-hip replacement, performing this test risks aggravating symptoms, provoking clot dislodgement and embolization risk during forceful plantarflexion, or delaying priority VTE screening via Wells criteria.<br><br>
+    Pain/weakness on tip toeing is nonspecific (occurs in calf strain, tear, or DVT-related discomfort) and does not reliably rule in/out DVT; guidelines prioritize clinical probability scoring and urgent imaging over provocative functional tests in high-risk post-operative settings (Hillegass et al., 2022).<br><br>
+    <Strong>--Treatment-- <br></Strong>
+    <Strong>1. Withholding weight-bearing and referring to AED is optimal.<br></Strong>
+    Suspected acute DVT post-hip replacement is a potential emergency due to PE risk. In outreach PT, cease aggravating activities, elevate leg to reduce venous pressure, avoid massage/compression until excluded (risk of embolization), and activate urgent referral for diagnostics (doppler US ± D-dimer) and possible anticoagulation.<br>
+    This minimizes propagation or embolization in elderly, multimorbid patients (Hillegass et al., 2022; Konstantinides et al., 2019).<br><br><br>
+    <Strong>2. Adding ankle pumps and compression stocking is not optimal. <br></Strong>
+    Mobilization and mechanical compression (stockings/IPC) are contraindicated until DVT is ruled out, as they may dislodge clot or worsen embolization risk.<br>
+    Ankle pumps alone are insufficient for suspected acute DVT; guidelines advise against routine compression in acute phase without confirmation (ACCP/CHEST guidelines; Hillegass et al., 2022).<br><br><br>
+    <Strong>3. Providing TENS, and strengthening is not optimal.</Strong> <br> 
+    These interventions ignore VTE red flags and could promote activity/mobilization in unstable state, increasing risk of PE. TENS is not indicated for suspected DVT and may be harmful (Hillegass et al., 2022).<br><br><br>
+    <Strong>4. Reassessing in 3-5 days while progressing exercises is not optimal.</Strong><br> 
+    Delaying evaluation for suspected DVT risks progression to PE or death, especially in elderly post-THR patients (peak risk 2-10 days post-op). Urgent same-day escalation is required, not watchful waiting (Hillegass et al., 2022).<br><br><br>
+    <h6>References:<br>
+    Ambesh, P., Obiagwu, C., & Shetty, V. (2017). Homan’s sign for deep vein thrombosis: A grain of salt? Indian Heart Journal, 69(3), 418–419. https://doi.org/10.1016/j.ihj.2017.01.016<br>
+    American College of Emergency Physicians (ACEP) Clinical Policies Committee, & ACEP Clinical Policies Subcommittee on Suspected Lower-Extremity Deep Venous Thrombosis (2003). Clinical policy: critical issues in the evaluation and management of adult patients presenting with suspected lower-extremity deep venous thrombosis. Annals of emergency medicine, 42(1), 124–135. https://doi.org/10.1067/mem.2003.181<br>
+    Hillegass, E., Lukaszewicz, K., Puthoff, M. L., Bourgeois, M. S., Wesley, L., Andrade, R., Butcher, J., Harris, L., Hopp, J., & Jackson, L. (2022). Role of Physical Therapists in the Management of Individuals at Risk for or Diagnosed With Venous Thromboembolism: Evidence-Based Clinical Practice Guideline 2022. Physical Therapy, 102(8), pzac082. https://doi.org/10.1093/ptj/pzac082<br>
+    Konstantinides, S. V., Meyer, G., Becattini, C., Bueno, H., Geersing, G. J., Harjola, V. P., ... & Zamorano, J. L. (2019). 2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism developed in collaboration with the European Respiratory Society (ERS). European Heart Journal, 41(4), 543–603. https://doi.org/10.1093/eurheartj/ehz405<br>
+    Reshi, R. A., Pulivarthi, S., Zelensky, A., Singh, T., Pawar, G., & Gurram, M. K. (2015). Evaluation of use of wells criteria and D-dimer for screening of venous thromboembolism in a community hospital. General Internal Medicine and Clinical Innovations, 1(1), 12-15.<br>
+    Wells, P. S., Anderson, D. R., Bormanis, J., Guy, F., Mitchell, M., Gray, L., ... & Hirsh, J. (1997). Value of assessment of pretest probability of deep-vein thrombosis in clinical management. The Lancet, 350(9094), 1795–1798. https://doi.org/10.1016/S0140-6736(97)08140-3<br>
+    Wells, P. S., Anderson, D. R., Rodger, M., Forgie, M., Kearon, C., Dreyer, J., Kovacs, G., Mitchell, M., Lewandowski, B., & Kovacs, M. J. (2003). Evaluation of D-dimer in the diagnosis of suspected deep-vein thrombosis. The New England journal of medicine, 349(13), 1227–1235. https://doi.org/10.1056/NEJMoa023153<br><br>
+    Case creator: Ms Gigi Cheung, Mr Thomas Mak<br></h6></div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+<script>
+  const investigations = [{"opt":" Apply the Wells criteria for DVT","res":" <img src='well_result.png' alt='result' style='max-width:100%;boder-radius:5px;'> ","cor":true},
+  {"opt":"Assess for Homan’s sign with passive dorsiflexion","res":"Positive (patient reports increased calf pain on passive dorsiflexion of right foot with knee extended). ","cor":false},
+  {"opt":"Inspect the hip surgical wound for signs of infection.","res":"Surgical wound: Clean, dry, intact sutures; mild peri-wound erythema, no purulent discharge, no excessive heat, no palpable mass.","cor":false},
+  {"opt":"Perform tip toeing test (single-leg heel raise / ability to rise onto toes)","res":"- Right leg: Unable to perform single-leg heel raise; patient reports sharp increase in calf pain of NPRS 9/10 on attempted plantarflexion/weight shift to toes.<br> Can barely achieve bilateral tip-toeing with frame support but stops after 1–2 repetitions due to pain and fatigue.<br><br> - Left leg: Able to perform 5–6 single-leg heel raises with mild effort, no significant pain.","cor":false}];
+  const management = [{"opt":"Withhold weight-bearing on the affected leg and refer AED. ","exp":"","cor":true},
+  {"opt":"Add ankle pump exercises and compression stocking to the calf.","exp":"","cor":false},
+  {"opt":"Apply TENS to the calf, and teach hip muscle strengthening exercises.","exp":"","cor":false},
+  {"opt":"Reassess swelling and pain during the next home visit in 3-5 days. ","exp":"","cor":false}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

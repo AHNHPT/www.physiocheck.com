@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fall when chasing bus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .choice {
+      padding: 10px;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    .choice:hover {
+      background-color: #d0d0d0;
+    }
+    .disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .feedback {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+    }
+    .btn {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover { background-color: #0056b3; }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box" id="case-box">
+  <h2>Case: Fall when chasing bus</h2>
+  <p><strong>Ms. Gigi Wan</strong>, a 78year-old woman, was sent to AED due to fall. Patient report that she lost balance and fell on ground while chasing bus in a hot and sunny day.</br></br>
+	Patient was landed on buttock and cannot walk after fall. She report no head injury and no preceeding symptoms before fall.</p>
+	<p>P/E:</br>
+GCS: 15/15</br>
+BP: 163/96 HR:96</br>
+SpO2: 98% RA</br>
+Hstix: 7.3</br>
+ECG: 82bpm, SR</br></br>
+Patient alert and oriented to T/P/P</br>
+Chest: clear</br>
+Abd soft, no ecchymosis, T- G- R-</br>
+pelvis stable on rocking</br>
+L hip T+</br></br>
+Limb power: </br>
+5 / 5</br>
+5- / 5- (except hip)</br>
+UL & LL coordination grossly normal</br></br>
+SHx: live with son's family in lift landing private flat. Day time alone.</br>
+Premorbid: stick outdoor.</br></br>
+PMH:</br>
+DM/HT/lipid</br>
+GAD FU Psy</br>
+</p>
+<p>You are the orthopedic ward physiotherapist going to provide treatment to her.</p>
+</div>
+
+<!-- QUESTION 1 -->
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Xray Pelvic</div>
+  <div class="feedback" id="inv-result0"></div>
+
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. CT Brain</div>
+  <div class="feedback" id="inv-result1"></div>
+
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Check Electrolytes</div>
+  <div class="feedback" id="inv-result2"></div>
+
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. EEG</div>
+  <div class="feedback" id="inv-result3"></div>
+
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<!-- QUESTION 2 -->
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  <label><input type="checkbox" id="man-check0" /> 1. PWB walking</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Bed rest</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Check sodium chloride prescription</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Ankle toes exercise</label>
+
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<!-- FINAL RESULT -->
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Question</th>
+        <th>Option</th>
+        <th>Indicated?</th>
+        <th>User Your Selection</th>
+      </tr>
+    </thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+
+  <h4 style="margin-top: 30px;">🧪 Investigations – Explanation</h4>
+  <ul>
+    <li><strong>Xray:</strong> The xray pelvic shows # L superior & inferior pubic rami and L sacral ala. Vertical shear fracture should be considered.</br><img src='Pelvic xr contrast ans.png' alt='Xray ans' style='max-width:100%;boder-radius:5px;'></br><img src='Vertical shear fracture.jpg' alt='Xray ans' style='max-width:100%;boder-radius:5px;'></br></li>
+    <li><strong>CT Brain:</strong> CT Brain was not a necessary option since pateint report no head injury and her GCS was full. </br> CT Brain will be highly indicated if pateint presented with history of head injury, laceration over the head, reduced GCS, any neurological symptoms, amnesia, abnormal drowsiness, vomiting, seizures and etc. </br>Stroke can be another cause of fall. However, no acute stroke sign was noted in physical exam. CT Brain will be indicated to rule out any stroke related fall if potensital stroke was suspected.</br>
+Cardiac syncope, a type of fainting due to heart-related issues, significantly increases the risk of falls. Studies show that individuals experiencing syncope have a higher likelihood of falling compared to those without syncope.There is a positive association between most common cardiovascular disorders and falls in adults aged over 50 years.</br></br></li>
+    <li><strong>Check Electrolytes:</strong> Older adults are particularly susceptible to the effects of hyponatremia, as they are more likely to experience falls in general, and hyponatremia can exacerbate this risk.</br></br>
+In study of Boyer, S. et al 2019, The prevalence of mild hyponatremia was 13.2% (95% CI: 10.1–16.3%) in patients without falls and 26.1% (95% CI: 19.8–32.4%) in patients admitted for falls. Mild hyponatremia was significantly associated with falls (P < 0.001) and the adjusted odds ratio (OR) was 3.02 (95% CI: 1.84–4.96). The association between mild hyponatremia and falls remained significant after controlling for covariates. </br></br>
+Because mild hyponatremia might be a risk factor for injurious falls and ED admission, determination of sodium levels during basic biomarker assessment on ED admission could be an important component of fall prevention strategies for the elderly.</br></br></li>
+    <li><strong>EEG:</strong> EEG was not considered indicated since the patient reported no preceding symptoms before the fall, making convulsion less likely. Convulsion should associated with other sign and symptoms, such as absent seizures, tonic seizures, tonic-chronic seizures, LOC, incontinence and etc.</li>
+  </ul>
+
+  <h4>💊 Management – Explanation</h4>
+  <ul>
+    <li><strong>PWB walking:</strong> Not a good option due to multiple breaks in the pelvic ring. An unstable pelvic ring is considered when there are two or more fracture points. The management plan depends on the degree of instability, fracture displacement, and the patient’s activity demands. </br></br></li>
+    <li><strong>Bed rest:</strong> Correct. Due to multiple breaks in the pelvic ring, surgical option maybe indicated.</br></br></li>
+    <li><strong>Check sodium chloride prescription</strong> This patient is suffering from moderate hyponatremia. Sodium replacement is needed and can be done orally or intravenously, depending on the degree of deficit.  <img src='HypoNa.png' alt='Xray' style='max-width:100%;boder-radius:5px;'></br></br></li>
+    <li><strong>Ankle toes exercise:</strong> Correct. Joint mobilization can often begin early but should be individualized. Even in a bed bound patient, exercises to avoid stiffness and promote muscle function are advisable.</li>
+  </ul>
+<p><h5>Refrence:</br>
+Boyer, S., Gayot, C., Bimou, C. et al. Prevalence of mild hyponatremia and its association with falls in older adults admitted to an emergency geriatric medicine unit (the MUPA unit). BMC Geriatr 19, 265 (2019). https://doi.org/10.1186/s12877-019-1282-0</br></br>
+Bourke R, Doody P, Pérez S, Moloney D, Lipsitz LA, Kenny RA. Cardiovascular Disorders and Falls Among Older Adults: A Systematic Review and Meta-Analysis. J Gerontol A Biol Sci Med Sci. 2024 Feb 1;79(2):glad221. doi: 10.1093/gerona/glad221. PMID: 37738307; PMCID: PMC10809055.</br></br>
+For more infomaiton about Pelvic ring fracture:</br>
+<a href="https://orthoinfo.aaos.org/en/diseases--conditions/pelvic-fractures/">https://orthoinfo.aaos.org/en/diseases--conditions/pelvic-fractures/</a></h5></p>
+</br></br>
+<h6>Case contributor: Mr Thomas Mak, Ms Gigi Cheung</h6>
+  <button class="btn" onclick="restart()">🔁 Restart Case</button>
+</div>
+
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+<script>
+  const investigations = [
+    { text: "<img src='Pelvic xr.jpg' alt='Xray' style='max-width:100%;boder-radius:5px;'></br><img src='Pelvic xr contrast.jpg' alt='Xray c' style='max-width:100%;boder-radius:5px;'>", correct: true },
+    { text: "CTB: no ICH/MLS/SOL/SDH.", correct: false },
+    { text: "<img src='Lab.png' alt='Lab' style='max-width:100%;boder-radius:5px;'>", correct: true },
+    { text: "No abnormal brain wave patterns", correct: false }
+  ];
+
+  const management = [
+    { correct: false },  // PWB walking
+    { correct: true }, // Bed rest
+    { correct: true },  // Check sodium chloride prescription
+    { correct: true }   // Ankle toes exercise
+  ];
+
+  let selected = {
+    investigations: [false, false, false, false]
+  };
+
+  function selectChoice(type, index) {
+    if (!selected[type]) selected[type] = [false, false, false, false];
+    if (!selected[type][index]) {
+      selected[type][index] = true;
+      const info = investigations[index];
+      const feedback = document.getElementById("inv-result" + index);
+      feedback.innerHTML = info.text;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function scorePerItem(type, data, checkedArray) {
+    let score = 0;
+    for (let i = 0; i < data.length; i++) {
+      const userSelected = (type === 'investigations') ? selected[type][i] : checkedArray[i];
+      if (userSelected === data[i].correct) {
+        score++;
+      }
+    }
+    return score;
+  }
+
+  function showFinalResult() {
+    const checkedMan = [
+      document.getElementById("man-check0").checked,
+      document.getElementById("man-check1").checked,
+      document.getElementById("man-check2").checked,
+      document.getElementById("man-check3").checked
+    ];
+
+    const invScore = scorePerItem("investigations", investigations, []);
+    const manScore = scorePerItem("management", management, checkedMan);
+    const totalScore = invScore + manScore;
+    const totalPossible = 8;
+    const percentage = Math.round((totalScore / totalPossible) * 100);
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = `
+      <strong>Total Score: ${totalScore} / ${totalPossible} → ${percentage}%</strong>
+    `;
+
+    for (let i = 0; i < 4; i++) {
+      document.getElementById("man-check" + i).disabled = true;
+    }
+
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+
+    const invLabels = [
+      "Xray Pelvic",
+      "CT Brain",
+      "Check Electrolytes",
+      "EEG"
+    ];
+
+    const manLabels = [
+      "PWB walking",
+      "Bed rest",
+      "Check sodium chloride prescription",
+      "Ankle toes exercise"
+    ];
+
+    for (let i = 0; i < investigations.length; i++) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>Q1</td>
+        <td>${invLabels[i]}</td>
+        <td>${investigations[i].correct ? "✅ Yes" : "❌ No"}</td>
+        <td>${selected.investigations[i] ? "✅ Yes" : "❌ No"}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    for (let i = 0; i < management.length; i++) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>Q2</td>
+        <td>${manLabels[i]}</td>
+        <td>${management[i].correct ? "✅ Yes" : "❌ No"}</td>
+        <td>${checkedMan[i] ? "✅ Yes" : "❌ No"}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+
+  function restart() {
+    selected.investigations = [false, false, false, false];
+    document.querySelectorAll(".feedback").forEach(el => el.innerText = "");
+    document.querySelectorAll(".choice").forEach(el => el.classList.remove("disabled"));
+    for (let i = 0; i < 4; i++) {
+      document.getElementById("man-check" + i).checked = false;
+      document.getElementById("man-check" + i).disabled = false;
+    }
+    document.getElementById("question2").style.display = "none";
+    document.getElementById("result").style.display = "none";
+  }
+</script>
+
+</body>
+</html>

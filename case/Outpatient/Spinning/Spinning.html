@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Spinning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Spinning</h2>
+  <p>You are working in OPD setting. Ms. Ngai, A 67-year-old female was referred by her GP for “dizziness and imbalance”.
+    <br><br>SHx:
+    <br>Lives alone in lift-landing flat
+    <br>Pre-morbid walk unaided outdoor
+    <br><br>PMH:
+    <br>Hypertension on Norvasc
+    <br>Osteoporosis
+    <br><br>HPI:
+    <br>Sudden onset of “dizziness and imbalance” 3 weeks ago
+    <br>No trauma/ history of fall
+    <br><br>Intense spinning vertigo lasting around 30 seconds
+    <br>Triggered only by: rolling onto right side in bed, sitting up from supine, bending forward to tie shoes
+    <br>No dizziness at rest
+    <br><br>Nausea but no vomiting
+    <br>Symptoms completely absent when staying still
+    <br><br>No hearing loss, tinnitus, constant unsteadiness, headache, diplopia, slurred speech, limb weakness, numbness
+    <br>No dysarthria, dysphagia, drop attacks, dysesthesia
+    <br>No recent viral illness, no neck pain/stiffness
+    <br><br>Independent with ADLs but reduces social activities due to fear of falling
+    <br>Now avoids right-side lying and moves very cautiously
+    <br>Improving trend in term of severity
+    <br><br><br>C/O:
+    <br>Occasional dizziness only when turning or change in position
+    <br>Only last ~ 30sec
+    <br>Not ADL limiting
+    <br><br><br>O/E:
+    <br>BP (lying): 125/89
+    <br>BP (standing): 113/80
+    <br><br>Alert, oriented
+    <br>GC well, normal body built
+    <br>Interactive and social smile
+    <br><br>Neck ROM full and pain-free
+    <br><br>4 limb power: grossly full
+    <br><br>No obvious neurological deficits (cranial nerve test, muscle strength, sensation, coordination)
+    <br><br>Transfer: Independent, No spontaneous nystagmus in sitting/standing still
+    <br>Walking: Unaided, Normal gait with mild caution, not ataxic</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perfrom/check?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Dix-Hallpike test and supine roll test</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. HINTS battery</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Vertebral artery test</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Comprehensive balance assessment</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Canalith repositioning procedure (Modified Epley maneuver)</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Brandt-Daroff habituation exercise</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Balance training (such as single leg stand on foam surface)</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Advice to consult doctor in AED</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+    
+  <div style="margin-top:20px;"><strong>-----Explanation------</strong>
+    <br><strong>Question 1:</strong>
+    <br><strong>A. Dix-Hallpike test and supine roll test</strong>
+    <br>A classic history of short-duration, positionally triggered vertigo suggests BPPV.
+    <br><br>The Dix-Hallpike test is mainly used to diagnose posterior canal BPPV. A positive Dix-Hallpike test would be vertigo and up-beating torsional nystagmus toward the affected side for short duration with latency. Sign and symptoms of 20-50% patients after 1-3 months would improve spontaneously. Nystagmus may be in a small amplitude which cannot be seen with bare eyes. It would be helpful to use enhanced viewing(Frenzel lenses and infrared goggle) in assessment.
+    <br><br><img src='eye.png' alt='eye' style='max-width:100%;boder-radius:5px;'>
+    <br>Fig 1. Different type of torsional nystagmus
+    <br><br>As the patient has a history compatible with BPPV and the Dix-Hallpike test shows no nystagmus, supine roll test is suggested to assess lateral canal BPPV. In this case, the supine roll test is negative.
+    <br><br>It implies it is more likely posterior canal BPPV with spontaneous improvement or subjective/atypical BPPV. If the nystagmus is absent even with enhanced viewing(Frenzel lenses and infrared goggle) and the symptoms persist, differential diagnosis (vestibular migraine, etc.) may need to be considered.
+    <br><br><strong>B. HINTS battery</strong>
+    <br>HINTS is designed for differentiating central and peripheral causes. This patient has purely positional, episodic vestibular syndrome. Based on the neurological test performed and history, HINTS is not indicated.
+    <br><br><strong>C. Vertebral artery test</strong>
+    <br>Vertebrobasilar insufficiency (VBI) is when blood flow to the back of your brain reduces or stops. Risk factors of VBI include age (>50), coronary artery disease or peripheral artery disease, Diabetes, family history of VBI, hypertension, history of smoking, obesity, atherosclerosis, hyperlipidemia, cardiac diseases.
+    <br>Clinical test could be performed in sustained neck extension and rotation to screen for positive symptoms(5 Ds: dizziness, diplopia, dysarthria/dysphagia, drop attacks, dysesthesia; 3 Ns: nausea/vomiting, nystagmus, numbness).  
+    <br>In this case, the test is used as a quick screening before Dix-Hallpike test/ Epley’s maneuver to check positional tolerance. 
+    <br><br>VBI positional tests (e.g., sustained cervical rotation/extension) have low sensitivity (often 0–57%), moderate to good specificity (67–100%), but overall predictive value is limited. False negatives/positives are common. If the test is positive, it is a clinical red flag and requires a referral to a doctor for further diagnostic tests to investigate suspected VBI.  
+    <br><br><strong>D. Comprehensive balance assessment</strong>
+    <br>Balance tests are not always indicated in suspected BPPV cases without risk of fall. However, considering the background history of this patient(age, osteoporosis, fear of fall), it is beneficial for the patient to have a balance assessment.
+    <br><br><br><br><strong>Question 2:</strong>
+    <br><strong>A. Canalith repositioning procedure (Modified Epley maneuver)</strong>
+    <br>Posterior canal BPPV is the most likely diagnosis according to the history and the clinical tests. The nystagmus is now absent but positional vertigo persists, it's often still worth trying an Epley or similar maneuver.
+    <br>For older adults with osteoporosis/fall risk, gentler side-lying alternative may be used.
+    <br>Persistent symptoms beyond a few months or atypical features should prompt checking for other causes (e.g., vestibular migraine, residual vestibular hypofunction, or rare central issues).
+    <br><br><strong>B. Brandt-Daroff habituation exercise</strong>
+    <br>Brandt-Daroff exercise (BDE) is a home-based habituation protocol involving repeated side-lying movements to provoke and then adapt to vertigo symptoms. It was originally proposed in 1980 as a way to promote central compensation and potentially dislodge otoconia in benign paroxysmal positional vertigo (BPPV), particularly posterior canal.
+    <br>It works as a home exercise for residual dizziness/habituation after successful repositioning, or a second-line option when repositioning is contraindicated (e.g., severe neck issues, inability to tolerate positioning).
+    <br>Current evidence (from systematic reviews, meta-analyses, RCTs, and guidelines up to recent years) shows limited and inconsistent efficacy when it is used as a standalone or first-line treatment, especially compared to canalith repositioning maneuvers like the Epley or Semont. Multiple comparisons show repositioning maneuvers (e.g., Epley) achieve higher resolution rates (often 70–90% in 1–2 sessions) vs. BDE alone (typically lower, around 40–60% in some studies).
+    <br><br><strong>C. Balance training (such as single leg stand on foam surface)</strong>
+    <br>The patient does not have significant risk of fall or deficit in balance in Berg Balance Test and Romberg test. In this case, balance training is not necessary. General fall prevention advice could be given.
+    <br><br><strong>D. Advice to consult doctor in AED</strong>
+    <br>This option is reserved for suspected central cause of dizziness and clinical red flag. Based on the history and clinical examination, it is not likely a central cause of dizziness.
+    <br><br><strong>Bottomline:</strong>
+    <br>This case is most likely Right posterior canal BPPV (subjective/atypical variant in partial spontaneous resolution phase).
+    <br>Primary management: Perform a modified Epley maneuver (right-sided. Reassess in 1 week - 1 month.)
+    <br><br>Adjuncts: Provide education on BPPV (benign, high spontaneous improvement rate ~20–50% in weeks/months, but repositioning accelerates recovery), fall risk reduction (avoid triggers temporarily, cautious movements, home modifications), and when to seek urgent care (new/worsening symptoms like constant vertigo, neurological changes).
+    <br><br>If no improvement after 1–2 attempts: Re-evaluate (repeat tests with enhanced viewing if available), consider differentials (e.g., vestibular migraine), or refer to ENT/vestibular specialist.
+    <br><br><strong>Learning point:</strong>
+    <br>Understand classic presentation and management of posterior canal BPPV and  subjective/atypical BPPV.
+    <br><br>For more information, you may refer to...
+    <br> Clinical Practice Guideline: Benign Paroxysmal Positional Vertigo (Update)
+    <br>https://www.entnet.org/quality-practice/quality-products/clinical-practice-guidelines/bppv/
+    <br><br>Alvarenga, G. A., Barbosa, M. A., & Porto, C. C. (2011). Benign paroxysmal positional vertigo without nystagmus: diagnosis and treatment. Brazilian journal of otorhinolaryngology, 77(6), 799–804.
+    <br>https://doi.org/10.1590/S1808-86942011000600018
+    <br><br>Sideris, G., Korres, G., Lazarou, I., Vasileiou, E., Male, A., & Kaski, D. (2026). Differentiating Atypical BPPV from Central Positional Vertigo: A Narrative Review. NeuroSci, 7(2), 32.
+    <br><br>Uz, U., Uz, D., Akdal, G., & Çelik, O. (2019). Efficacy of Epley Maneuver on Quality of Life of Elderly Patients with Subjective BPPV. The journal of international advanced otology, 15(3), 420–424.
+    <br>https://doi.org/10.5152/iao.2019.6483
+    <br><br><h6>Case creator: Mr. Leon Yiu</h6></div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<script>
+  const investigations = [{"opt":"Dix-Hallpike test and supine roll test","res":"Dix-Hallpike Test <br>Right: Provoke usual vertigo(for 30 seconds with latency), no obvious nystagmus seen <br>Left: Negative  <br><br>Supine roll test: <br>Right: Negative <br>Left: Negative","cor":true},{"opt":"HINTS battery","res":"Head Impulse Test: Negative <br>Direction-changing nystagmus: Negative <br>Test of Skew: Negative","cor":false},{"opt":"Vertebral artery test","res":"No dizziness in sustained end-range rotation <br>VBI test: Negative","cor":true},{"opt":"Comprehensive balance assessment","res":"Berg Balance Scale 54/56 <br>Romberg test: Normal in eyes closed or uneven surface","cor":true}];
+  const management = [{"opt":"Canalith repositioning procedure (Modified Epley maneuver)","exp":"","cor":true},{"opt":"Brandt-Daroff habituation exercise","exp":"","cor":true},{"opt":"Balance training (such as single leg stand on foam surface)","exp":"","cor":false},{"opt":"Advice to consult doctor in AED","exp":"","cor":false}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

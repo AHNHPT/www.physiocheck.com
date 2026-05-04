@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physio Radiology Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --light: #ecf0f1;
+            --secondary: #95a5a6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #game-container {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .hidden { display: none; }
+
+        #xray-display {
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            background: white;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-home {
+            margin-top: 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-retry {
+            margin-top: 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .wrong { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        #stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        #next-btn {
+            margin-top: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Clinical Radiology Challenge - Hip & Pelvic</h1>
+    
+    <div id="start-screen">
+        <p>Test your diagnostic skills. 10 Cases. 1 Timer.</p>
+        <button onclick="startGame()">Start Challenge</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div id="stats-bar">
+            <span>Case: <span id="q-num">1</span>/10</span>
+            <span>Timer: <span id="timer">0</span>s</span>
+        </div>
+        
+        <img id="xray-display" src="" alt="Clinical X-ray">
+        
+        <div id="options" class="options-grid"></div>
+
+        <div id="feedback" class="hidden"></div>
+        <button id="next-btn" class="hidden" onclick="nextQuestion()">Next Case →</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Challenge Complete!</h2>
+        <p>Your Score: <span id="final-score">0</span> / 10</p>
+        <p>Total Time: <span id="final-time">0</span> seconds</p>
+        
+        <button class="btn-retry" onclick="location.reload()">Try Again</button>
+<button class="btn-home" onclick="history.back()">← Go Back</button>
+    </div>
+</div>
+
+<script>
+    // --- DATABASE ---
+    // You can expand this array to 10 items
+    const questions = [
+        {
+            image: "HP1.jpeg",
+            options: ["# Inferior pubic rami", "# TOF", "# NOF (Garden I)", "Great trochanter avulsion"],
+            correct: 3,
+            explanation: "Pelvis and hip radiographs revealed a fracture of the great trochanter of the right femur. The fragment is consistent with the insertion of the gluteus medius and gluteus minimus tendons. The injury is most likely an avulsion fracture of the great trochanter. <br><br>Avulsion fractures of the hip are more common in skeletally immature patients. However, some elderly patients rarely present these after withstanding a fall. In these cases, a prior history of abductors tendinopathy is usually present."
+        },
+        {
+            image: "HP2.jpeg",
+            options: ["# NOF", "# TOF", "Acetabular fracture", "ASIS avulsion"],
+            correct: 2,
+            explanation: "Pelvis radiograph revealed an acetabular fracture of the right hip consistent with anterior and posterior column fractures. Disruption of the iliopectineal and ilioischial lines, as well as of the acetabular roof are noted."
+        },
+        {
+            image: "HP3.jpeg",
+            options: ["Basicervical femoral neck fracture", "Intertrochanteric fracture", "Subtrochanteric fracture", "No fracture detected"],
+            correct: 0,
+            explanation: "Pelvis and right hip radiographs revealed a basicervical femoral neck fracture. There is a discrete fracture line at the base of the femoral neck. The right Shenton line is disrupted, which further indicates a femoral neck fracture. Incidental atherosclerosis is noted bilaterally."
+        },
+                {
+            image: "HP4.jpg",
+            options: ["Fracture superior pubic rami", "Fracture inferior pubic rami", "Pelvic ring fracutre", "No fracture detected"],
+            correct: 2,
+            explanation: "Radiograph of the pelvis revealed a superior & inferior left pubic rami fracture and diastasis of sacroiliac joint. The iliopectinal line is interrupted. <br><br>Pelvic fractures are related to pelvic trauma with a risk of grave haemorrhage. If a pelvic fracture is suspected, proper physical examination and radiographic studies are extremely important."
+        },
+                {
+            image: "HP5.jpeg",
+            options: ["# NOF", "# TOF", "Fracture inferior pubic rami", "No fracture detected"],
+            correct: 0,
+            explanation: "Linear sclerotic line in the left subcapital region of the femoral neck with minor disruption of Shenton's line. <br><br>It is important to trace the lines of the femoral neck on hip radiographs to identify a cortical step defect"
+        },
+                        {
+            image: "HP6.jpg",
+            options: ["# NOF", "# TOF", "Acetabular fracture", "ASIS avulsion"],
+            correct: 3,
+            explanation: "This case demonstrates the typical x-ray appearance of an ASIS avulsion fracture. The ASIS is the site of attachment for sartorius and tensor fascia lata muscles and is most commonly avulsed in adolescent athletes. <br><br>Avulsion injury of the anterior superior iliac spine is a fairly common young athlete avulsion injury. <br><br>It usually occurs due to forceful extension of the affected hip during a sporting activity that incorporates running, sprinting, and jumping.<br><br>The highest risk sports include athletics, football, and Ice Hockey.<br><br>They are usually treated conservatively with analgesia and restriction of movement.<br><br>Occasionally surgery is required."
+        },
+         {
+            image: "HP7.jpg",
+            options: ["Advance femoral head collapse", "Femoral neck fractures", "Subchondral cyst", "Lesser trochanter fracture"],
+            correct: 2,
+            explanation: "Large cyst in the pressure zone of the femoral head. Signs of osteoarthritis. <br><br> Subchondral cysts in the superior outer and middle third of the femoral head (pressure zone) may arise from bone contusion and synovial intrusion or osteoclastic resorption of necrotic trabeculae following avascular necrosis."
+        },
+        {
+            image: "HP8.jpeg",
+            options: ["# NOF (Garden I)", "# NOF (Garden IV)", "Great trochanter fracture", "Femoral head collapse"],
+            correct: 0,
+            explanation: "An impacted left subcapital neck of femur fracture is suspected on the frontal X-ray of the pelvis. Metalic post-embolisation material is seen in the pelvis secondary to a previous haemorrhage years ago."
+        },
+                 {
+            image: "HP9.jpg",
+            options: ["Femoral head fracture", "Basicervical femoral neck fracture", "Intertrochanteric fracture", "Subtrochanteric fracture"],
+            correct: 2,
+            explanation: "Intertrochanteric fracture of the left neck of the femur with a fracture fragment including the lesser trochanter lying inferomedially."
+        },
+        {
+            image: "HP10.jpeg",
+            options: ["Acute hip dislocation", "Hip dysplasia with pseudoarticulation", "Acetabular fracture with hip dislocation", "Normal"],
+            correct: 1,
+            explanation: "There is dislocation of the left hip joint with pseudoarticulation of the proximal left femur with the ilium. The left acetabulum is dysplastic as demonstrated by a shallow cup with a vertically orientated roof. This evident long standing untreated left hip dysplasia with dislocation and pseudoarticulation."
+        },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let startTime;
+    let timerInterval;
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        startTime = Date.now();
+        startTimer();
+        showQuestion();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timer').innerText = elapsed;
+        }, 1000);
+    }
+
+    function showQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById('q-num').innerText = currentQuestion + 1;
+        document.getElementById('xray-display').src = q.image;
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(choice) {
+        const q = questions[currentQuestion];
+        const feedback = document.getElementById('feedback');
+        const buttons = document.querySelectorAll('#options button');
+        
+        buttons.forEach(b => b.disabled = true);
+        
+        feedback.classList.remove('hidden');
+        if(choice === q.correct) {
+            score++;
+            feedback.innerHTML = `<strong>Correct!</strong><br>${q.explanation}`;
+            feedback.className = "correct";
+        } else {
+            feedback.innerHTML = `<strong>Incorrect.</strong><br>Correct answer: ${q.options[q.correct]}<br>${q.explanation}`;
+            feedback.className = "wrong";
+        }
+        
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if(currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-time').innerText = Math.floor((Date.now() - startTime) / 1000);
+    }
+</script>
+
+</body>
+</html>

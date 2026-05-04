@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parathyroidectomy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Parathyroidectomy</h2>
+  <p>Ms. Y is a 61 years old female. She was diagnosed with hyperparathyroidism. Recent USG thyroid and parathyroid showed 2 possible parathyroid adenomas or hyperplastic nodules. MIBI scan further confirmed parathyroid hyperplasia features. She was clinically admitted for complete parathyroidectomy. 
+    <br><br><br>Today is Day 1 post operation and she had a kick of fever last night. She is referred for post operative physiotherapy, you are the physiotherapist attending her. 
+    <br><br>SHx:
+    <br>Live with family
+    <br>Unaided outdoor
+    <br><br>PMHx:
+    <br>HT
+    <br>ESRD on PD
+    <br><br>HPI:
+    <br>C-admitted for PTHdectomy
+    <br><br>Complete parathyroidectomy 12/3/2026
+    <br>Incision: 6cm collar incision, subplatysmal flap raised, midline raphe incise
+    <br>Anaesthesia: GA
+    <br>Magnitude: Major
+    <br>Blood loss: 30ml
+    <br>Drain inserted
+    <br>Findings: All four nodules frozen section confirmed abnormal cellular parathyroid tissues
+    <br><br>Post op:
+    <br>No SOB/HOV
+    <br>No neck swelling/ subcutaneous emphysema
+    <br>No weakness/ numbness
+    <br>Wound no oozing/ hematoma/ infection sign, drain ~10ml
+    <br><br><br>CXR: No definite consolidation
+    <br>WCC 15.1
+    <br>CRP 107
+    <br>Cr 566
+    <br>Urine Multistix: -ve
+    <br>Blood c/st: T/F
+    <br>Urine c/st: no growth
+    <br>Spt c/st: mixed of oral flora
+    <br><br>Vital signs: 
+    <br>BP 130/80, HR 60
+    <br>SpO2 96% RA
+    <br>Temp 37.3 degree Celsius<br></p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Neck AROM</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Check Electrolytes Level</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Check Thyroid Function (T3, T4, TSH)</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Auscultation, Breathing pattern and cough effort</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Neck extension AROM/AAROM ex</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Walking ex</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Incentive spirometry</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Huff coughing</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>You Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  <div style="margin-top:20px;"><strong>Question 1:</strong>
+    <br><strong>Option 1: Neck AROM</strong>
+    <br>Following the surgical intervention in the neck region, this assessment serves to identify any functional restrictions in cervical range of motion. Evaluating these movements is essential to differentiate between expected post-operative stiffness, pain-related guarding of the 6cm collar incision, and any structural limitations caused by the subplatysmal flap dissection or midline raphe sutures.
+    <br><img src='para_site.png' alt='Para site' style='max-width:100%;boder-radius:5px;'>
+    <br>Fig.1 Surface anatomy and relationships for parathyroid incision placement.
+    <br><br><strong>Option 2: Check Electrolytes Level</strong>
+    <br>The parathyroid glands function as the body's "calcium thermostat" by secreting Parathyroid Hormone (PTH), which maintains serum Ca2+ levels by stimulating bone release, renal reabsorption, and intestinal absorption. Following a complete parathyroidectomy, the sudden absence of PTH triggers Hungry Bone Syndrome, where bones abruptly reverse their behavior and aggressively sequester calcium from the bloodstream.
+    <br><br>In the context of End-Stage Renal Disease, the kidneys' inability to filter or regulate minerals further exacerbates these electrolyte imbalances. Critically low levels of calcium and potassium level can lead to cardiac arrhythmias and neuromuscular irritability, such as tetany, while disturbances in sodium and phosphate level may manifest as cognitive confusion or profound muscle weakness.
+    <br><br><strong>Option 3: Check Thyroid Function (T3, T4, TSH)</strong>
+    <br>Although the thyroid and parathyroid glands are neighbours, they are functionally independent.
+    <br><img src='thyroid.jpeg' alt='Thyroid vs para' style='max-width:100%;boder-radius:5px;'>
+    <br>Fig.2 Thyroid and parathyroid glands function.
+    <br><br>As the surgery was a parathyroidectomy, which focuses on the four small glands located behind the thyroid, the thyroid gland was likely left intact.
+    <br><br><strong>Option 4: Auscultation, Breathing pattern and cough effort</strong>
+    <br>Given Ms. Y's post-operative fever, leucocytosis (WCC 15.1), and elevated CRP (107), a thorough chest examination is essential to investigate a potential pulmonary source of infection.
+    <br><br>Assessing chest expansion allows the clinician to detect basal atelectasis - a common cause of early post-op fever - while evaluating her airway clearance (cough/huff effort) determines if she can effectively mobilize the secretions in her airway.
+    <br><br>Furthermore, observing her breathing pattern serves as a functional indicator of wound pain management; shallow or asymmetrical expansion often reveals "guarding", which, if left unaddressed, significantly increases her risk of developing secondary pneumonia.
+    <br><br><br><br><strong>Question 2:</strong>
+    <br><strong>Option 1: Neck extension AROM/AAROM ex</strong>
+    <br>Although Ms. Y has limited neck extension ROM, excessive neck extension exerts significant mechanical tension on the 6cm transverse collar incision and the newly elevated subplatysmal flaps. This longitudinal stretching can lead to wound dehiscence or compromise the midline raphe sutures, potentially triggering a post-operative bleed or hematoma.
+    <br><br>Maintaining a neutral neck position is therefore essential to preserve the structural integrity of the surgical site and ensure optimal healing of the delicate neck tissues.
+    <br><br><strong>Option 2: Walking ex</strong>
+    <br>While early mobilization is typically a primary goal in physiotherapy, Ms. Y's clinical status on Day 1 renders ambulation a secondary priority and a significant safety risk. Her critical hypocalcaemia (1.86 mmol/L), combined with a borderline low potassium level (3.5 mmol/L), places her at high risk for both muscle spasms and cardiac arrhythmias. The physiological stress of walking could exacerbate these electrolyte imbalances, potentially triggering a cardiac event or syncope.
+    <br><br><strong>Option 3: Incentive spirometry</strong>
+    <br>Given Ms. Y's post-operative fever, shallow breathing pattern, and diminished air entry at the lung bases, Incentive Spirometry (IS) is a vital intervention to counteract the effects of her major surgery. During her general anaesthesia and supine positioning, she likely developed compression atelectasis, where the small air sacs (alveoli) in the lung bases collapse-the most frequent cause of Day 1 post-op pyrexia. By facilitating a sustained maximal inspiration, the IS creates a controlled increase in transpulmonary pressure that "re-inflates" these collapsed segments, thereby optimizing gas exchange.
+    <br><br>Furthermore, the visual feedback provided by the device helps Ms. Y overcome "pain guarding" caused by her 6cm collar incision; it encourages her to bypass the instinctive fear of neck movement and take deeper, more effective breaths than she would otherwise attempt. This deep lung expansion is essential to prevent the pooling of secretions and the subsequent development of pneumonia, offering a gentler, more effective alternative to the high-pressure strain of a traditional cough.
+    <br><br><strong>Option 4: Huff coughing</strong>
+    <br>For Ms. Y, she has a weak and ineffective cough limited by wound pain. A traditional explosive cough poses a higher clinical risk following her subplatysmal flap surgery and the creation of a 6cm collar incision. Unlike a standard cough, which involves closing the glottis to build massive intrathoracic pressure before a violent release, Huffing (Forced Expiratory Technique) is performed with an open glottis. This "fogging" maneuver prevents the sharp, upward pressure waves that strain the "strap" muscles and platysma, thereby protecting the midline raphe and preventing wound dehiscence.
+    <br><br>Furthermore, huffing is more effective for airway clearance in the post-operative phase. While a forceful cough can cause unstable, smaller airways to collapse-trapping secretions-huffing allows for the strategic manipulation of the Equal Pressure Point. By varying the lung volume from mid-to-low for peripheral clearance and higher volumes for proximal reach, Ms. Y can effectively bring the phlegm toward the upper airway without triggering premature airway closure.
+  </br></br>
+<h6>Case contributor: Ms Yannie Kwong</h6></div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+<script>
+  const investigations = [{"opt":"Neck AROM","res":"Flex: Full<br>Ext: to neutral, p++ <br>Rot: L 1/2ROM, p+      R 1/2ROM, p+","cor":true},
+  {"opt":"Check Electrolytes Level","res":"<img src='Lab.png' alt='Lab' style='max-width:100%;boder-radius:5px;'>","cor":true},
+  {"opt":"Check Thyroid Function","res":"<img src='TF.png' alt='TF' style='max-width:100%;boder-radius:5px;'>","cor":false},
+  {"opt":"Auscultation, Breathing pattern and cough effort","res":"Auscultation: reduced AE at lower zones, crackles at upper zone<br>Breathing pattern: shallow<br>Cough: Weak, moist, ineffective, pain+","cor":true}];
+  const management = [{"opt":"Neck extension AROM/AAROM ex","exp":"","cor":true},
+  {"opt":"Walking ex","exp":"","cor":false},
+  {"opt":"Incentive spirometry","exp":"","cor":true},
+  {"opt":"Huff coughing","exp":"","cor":true}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

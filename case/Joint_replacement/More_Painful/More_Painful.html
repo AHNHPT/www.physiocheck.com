@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>More painful</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: More painful</h2>
+  <p>Mr Lee is a 75-year-old male, 6 weeks post-operative following a left Total Knee Replacement (TKR). He lives alone and homebound with a walking frame. During his first months of outpatient physiotherapy, he was progressing well, achieving 0°–100° range of motion (ROM).
+  <br><br>Subjective Presentation: Today, he arrives for his session complaining of a "deep, throbbing ache" in his left knee that started three days ago. NPRS: 5/10. He mentions the pain is now present even at rest and has prevented his from performing his home exercise program.
+  <br><br>He is currently taking Panadol and Acroxia prn. No recent fall / trauma reported.
+  <br><br>SHx:
+  <br>Live alone in PHU
+  <br>ADR to Novasc, NDNS
+  <br>Windowed, no child
+  <br>Support by HST x escort and MOW
+  <br><br>PMH:
+  <br>HT on Betaloc
+  <br>DM on MF, Jardiance
+  <br>RA with MTX resumed post-op 2/52
+  <br><br>HPI:
+  <br>L TKR (Triathlon CR) done 6/52 ago
+  <br>Patella replaced.
+  <br>Wound closed with staple
+  <br><br>Post-op Hb: 9.0, WCC: 9.7
+  <br><br>Today's P/E:
+  <br>Patient alert but tired looking
+  <br>Follow commands
+  <br><br>BP: 135/84 HR 95
+  <br>SpO2: 97% RA
+  <br>Spot Hstix: 13.5
+  <br><br>L knee
+  <br>AROM: 5-75
+  <br>PROM: 0-90
+  <br><br>Transfer: independent
+  <br>Walking: Frame, independent with antalgic gait. Report walking tolerance = 15mins</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Take tympanic temperature</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Wound inspection</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Palpation</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Varus/Valgus stress test</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Step up painkiller use according to prescription</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Give compressive ice therapy (Game-ready)</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Knee pulley exercise</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Refer Nurse Clinic to consider Synovasure® </label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  <div style="margin-top:20px;"><strong>Learning point:</strong>
+  <br>In a post-TKR patient with new-onset resting pain, warmth, and fever, Periprosthetic Joint Infection (PJI) must be the working diagnosis until proven otherwise. Inflammatory markers (CRP/ESR) and synovial fluid analysis (aspiration) are the gold standards for confirming infection. X-rays are often normal in early acute infection.
+  <br><br>PJI is a surgical emergency in the context of joint replacement. DAIR (Debridement, Antibiotics, and Implant Retention) is most successful when performed shortly after the onset of symptoms. Physiotherapists must not delay surgical consultation.
+  <br><br>This patient is taking Methotrexate (MTX) due to RA. Methotrexate (MTX) is an immunosuppressant that increases the risk of bacterial, viral, and fungal infections by lowering white blood cell counts.
+  <br><br><br><strong>Question 1:</strong>
+  <br><strong>Option 1: Take tympanic temperature</strong>
+  <br>Correct. Fever is a highly sensitive, but non-specific, indicator of infection, acting as part of the body's acute phase response to pathogens. The immune system raises the hypothalamic temperature set-point to fight disease, often accompanied by symptoms like chills and skin sensitivity.
+  <br><br>This patient is currently taking Panadol and Acroxia, which are antipyretics. They may mask the patient's fever condition. We have to be vigilant when determining any infection condition.
+  <br><br><br><strong>Option 2: Wound inspection & Option 3: Palpation</strong>
+  <br>Correct. The clinical photo shows marked effusion. PJI usually presents with redness, warmth,  and swollen joint. Skin changes around the scar, including scaly skin patches or weeping, honey-coloured crusts/pustules, may present.
+  <br><br>Stitch abscess, if left untreated, may progress to PJI. Therefore, skin/wound inspection is crucial for patients after joint replacement.
+  <br><br><br><strong>Option 4: Varus/Valgus stress test</strong>
+  <br>Incorrect. With no injury/trauma history and the patient's presentation, joint laxity/implant failure were less likely diagnoses.
+  <br><br><strong>Question 2:</strong>
+  <br><strong>Option 1: Step up painkiller use according to prescription.</strong>
+  <br>Incorrect. With his clinical presentation, the worsening of pain and swelling are likely due to periprosthetic joint infection. Step-up painkillers will not cure the underlying cause and may delay the needed treatment.
+  <br><br>For patients with fluctuations of pain, we may advise the patient to step up/down the PRN painkiller according to the doctor's prescription. The sequence may refer to the WHO analgesic ladder.
+  <br><img src='WHO.jpg' alt='WHO' style='max-width:100%;boder-radius:5px;'>
+  <br><br><br><strong>Option 2: Give compressive ice therapy (Game-ready).</strong>
+  <br>Incorrect. Same as option 1, the worsening of pain and swelling is likely due to periprosthetic joint infection. The physiotherapist is responsible for monitoring the patient's condition during the course of rehabilitation. We are equipped to pick up potential red flags and refer the appropriate medical professional.
+  <br><br><br><strong>Option 3: Knee pulley exercise</strong>
+  <br>Incorrect. The worsening of patient's knee range is likely due to joint swelling.
+  <br><br><br><strong>Option 4: Refer Nurse Clinic to consider Synovasure®</strong>
+  <br>Correct. The Synovasure Alpha Defensin test is a highly accurate (>94% sensitivity/specificity) diagnostic tool used to detect Periprosthetic Joint Infection (PJI) by measuring alpha-defensin levels in synovial fluid. It provides rapid, same-day results (within 10-20 minutes for the lateral flow test) to help clinicians identify infection in joint replacements, even if antibiotics have already been administered.
+  <br><br>Alpha defensin is an antimicrobial peptide that is secreted by human neutrophils in response to pathogenic presence.
+  <br><br><br>Reference:
+  <br>1. Bonanzinga T, Ferrari MC, Tanzi G, Vandenbulcke F, Zahar A, Marcacci M. The role of alpha defensin in prosthetic joint infection (PJI) diagnosis: a literature review. EFORT Open Rev. 2019 Jan 23;4(1):10-13. doi: 10.1302/2058-5241.4.180029. PMID: 30800475; PMCID: PMC6362339.
+  <br>2. The American Academy of Orthopaedic Surgeons (AAOS) 2019 Clinical Practice Guideline, Diagnosis and Prevention of Periprosthetic Joint Infections<br>
+<br><br><h6>Case Creator: Mr. Thomas Mak</h6></div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<script>
+  const investigations = [{"opt":"Take tympanic temperature","res":"Temperature: 37.5C","cor":true},{"opt":"Wound inspection","res":"<img src='knee.jpeg' alt='knee' style='max-width:100%;boder-radius:5px;'>","cor":true},{"opt":"Palpation","res":"The joint is significantly warmer than the contralateral side and feels tense (joint effusion). <br><br>Tenderness ++ around the scar.","cor":true},{"opt":"Varus/Valgus stress test","res":"Negative","cor":false}];
+  const management = [{"opt":"Step up painkiller use according to prescription","exp":"","cor":false},{"opt":"Give compressive ice therapy (Game-ready)","exp":"","cor":false},{"opt":"Knee pulley exercise","exp":"","cor":false},{"opt":"Refer Nurse Clinic to consider Synovasure® ","exp":"","cor":true}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>
