@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Groin pain</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Groin pain</h2>
+  <p>Ms. Wu, a 67-year-old female, presents to the AED with increased left groin and hip pain for 1 month.
+  <br><br>SHx:<br>Lives alone since 3 months ago in lift-landing flat
+  <br>Premorbid walks with rollator
+  <br><br>PMH:
+  <br>1. Hypertension (Lisinopril & Metoprolol Tartrate), hyperlipidemia (Gemfibrozil)
+  <br>2. Obstructive sleep apnea
+  <br>3. L3/4 central and bilateral lateral recess stenosis -> Bilateral L3/4 TFESI 05/2022
+  <br>4. Degenerative scoliosis
+  <br>5. Recurrent LL edema (slow K & Lasix)
+  <br><br>HPI:
+  <br>E adm x left hip pain
+  <br>Chronic left hip pain, gradual increase of left hip pain x 1/12
+  <br>Able to walk FWB with rollator even with left hip pain
+  <br>No injury in recent months
+  <br>No LBP / numbness / weakness
+  <br><br>CBC:  Hb 10.6↓  WCC 4.0
+  <br>CRP 2.1 ESR 36↑
+  <br>L/RFT: Na 136↓  K 3.6  Cr  63  Alb 32↓  Ca 2.13↓
+  <br>           ALP 78    ALT 9
+  <br><br>Refer physiotherapy for mobilization
+  <br>——————————————————
+  <br><br>You encounter Ms. Wu in orthopaedics ward.
+  <br><br>O/E:
+  <br>Alert and oriented
+  <br>Afebrile
+  <br>BP 119/68 pulse 78
+  <br>SpO2 97% on room air<br></p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Check XR Left hip & pelvis</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Check CT Lower extremity</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Hip AROM, hip rocking,  axial loading, power</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Assessment on mobility</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Suspend walking</label>
+  <label><input type="checkbox" id="man-check1" /> 2. FWB as tolerated</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Hip mobilization exercise</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Check Antibiotics Prescription</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  <div style="margin-top:20px;"><strong>Learning Point:</strong>
+  <br>This is a case of hip dysplasia complicated with femoral avascular necrosis. A dysplastic hip results in a shallow acetabulum with lack of anterior and lateral coverage.
+  <br><br>Hip dysplasia may be congenital or developed during childhood, thus the term "developmental dysplasia of hip (DDH)". Mild DDH may not be detected until later in life, and is a significant risk for early hip OA. DDH is also associated with ligament laxity, excessive hip anteversion, coxa valga and avascular necrosis.
+  <br><br><strong>The severity of DDH can be graded using the Hartofilakidis Classification:</strong>
+  <br><strong>Type A:</strong>Femoral head located within true acetabulum with subluxation
+  <br><strong>Type B:</strong>Femoral head located in false acetabulum that partially covers true acetabulum
+  <br><strong>Type C:</strong>Femoral head located completely out of true acetabulum with superior & posterior displacement
+  <br><br><img src='HClass.png' alt='Classification' style='max-width:100%;boder-radius:5px;'>
+<br><br><strong>Explanations:</strong>
+<br><strong>Q1- Option A - XR Left hip & pelvis</strong>
+<br>Taking an x-ray is the standard first step for patient with hip pain, especially for older adults. It could help differentiate between hip OA, fractures, DDH or other pathologies.
+<br><br>In the case, the hip and pelvis x-rays provide us hints that the patient is having DDH.
+<br>The sclerotic changes in acetabulum and collapsed femoral head also suggest an AVN component.
+<br><br>1. Teardrop sign / Waldenström sign
+<br>The teardrop distance is measured between the pelvic teardrop and the femoral head. A longer than 11 mm total distance or a difference larger than 2 mm compared with the contralateral side is considered a positive sign, which indicates hip joint effusion or DDH. In this x-ray, the teardrop is distance is 17mm in the left side and 8mm in the right side. (Refer to red lines)
+<br><br>2. Neck shaft angle
+<br>As mentioned above, DDH is associated with coxa valga, which is usually defined as neck shaft angle greater than 135˚ or 140˚. The neck shaft angle is measured with the axis of femoral neck passing through the center of femoral head and the longitudinal axis of femoral shaft. In this x-ray, the neck shaft angle is 156˚. (Refer to blue lines)
+<br><br>3. Sharp angle
+<br>The sharp angle is measured by a line connecting both teardrop and a lone between the teardrop and lateral acetabulum. An angle greater than 42 deg is considered dysplastic. In this x-ray, the sharp angle is 56˚. (Refer to yellow lines)
+<br><br>4. Femoral head extrusion index (FHEI)
+<br>FHEI is represented in terms of percentage in which the femoral head is not covered by acetabulum. The hip is considered dysplastic if FHEI is greater than 25%. In this x-ray, the femoral head extrusion index is 49.7%. (Refer to green lines)
+<br><br>As seen in the x-ray, the femoral head being laterally shifted away from the acetabulum might be mistaken as hip dislocation. However, hip dislocation mostly occurs from high-energy traumas like RTA. Normally, the acetabular labrum forms a water-tight, smooth rim around the socket creating a strong suction seal providing stability to the hip joint. In this patient, no injury is reported prior to the onset of hip pain, thus hip dislocation is highly unlikely.
+<br><br><img src='XRHm.png' alt='XR Measure' style='max-width:100%;boder-radius:5px;'>
+<br><br><strong>Q1- Option B - CT Lower extremity</strong>
+<br>A CT scan is usually not indicated for conservative treatment for DDH. Plain radiograph provides enough information for diagnosing DDH and formulate treatment plan for simple DDH. However, CT scan is often used for pre-op planning and post-op assessment if the patient is undergoing a periacetabular osteotomy or a THR in adult patients. For infants, CT scan may also be used for evaluation after closed or open reduction of the hip. To avoid excessive exposure to radiation to infants, MRI or US is preferred over CT.
+<br><br>For assessing DDH related problems, CT is the gold standard for measuring excessive femoral anteversion, while MRI for early AVN.
+<br><br><strong>Q1- Option C - Hip AROM, hip rocking, axial loading, power</strong>
+<br>Physical exam is crucial before deciding whether to proceed with further mobility assessment and training. DDH patients often present with excessive IR range, which could be explained by the excessive femoral anteversion, and limited abduction range with pain. Patients with advanced stages of associated AVN may have limited range in all planes of motion accompanied by severe pain.
+<br>Patients with hip fracture may present with similar signs and symptoms. Physical exam helps to screen for hip fractures. Fractured hips often appear shortened and externally rotated. Hip rocking (or formally log roll test) and axial loading provoke pain when there is a fracture. Check for bruising if possible.
+<br><br><strong>Q1- Option D - Assessment on mobility</strong>
+<br>Mobility assessment is an essential part to evaluate the functional stability of the patient. If the patient tolerates the above physical exams, we may proceed to assess patient's bed mobility, transfer skill and walking gait.
+<br><br>Dysplastic hip is often unstable and patients may present with antalgic gait due to hip. The patients may exhibit increased knee and ankle flexion to compensate for the reduced hip ROM.
+<br><br><strong>Q2- Option A - Suspend walking & B - FWB as tolerated</strong>
+<br>As mentioned above, walking is crucial to assess the functional mobility of the patient. Bed rest or NWB walking should be attempted in case of suspected fracture or septic arthritis while waiting for further investigation (i.e. CT/MRI and lab test from joint aspiration respectively).
+<br><br>Doctor may order NWB or PWB for patients with different stages of AVN to reduced loading to prevent or delay femoral head collapse. However, multiple studies have found that this is ineffective for 80-90% of the patients which ultimately needing surgery.
+<br><br>From the history taken, we know that this patient is able to walk with FWB despite the pain. Thus, walking exercise should be proceed as pain tolerated.
+<br><br>During assessment, this patient only able to stand for less than a minute. The mobility severely limited by the pain. We may then review pain medications for optimizing pain control. Check if there are prn analgesics. Coordinate with the ward routine and try to mobilize during the therapeutic window.
+<br><br><strong>Q2- Option C -  Hip mobilization exercise</strong>
+<br>In adults with DDH, hip mobilization exercises focus on stabilization and proprioceptive training.
+<br><br>Since the dysplastic hip is usually hyper-mobile, stretching and PROM exercises are not advised. Hip stabilization and muscle activation helps recruit gluteus medius and other deep stabilizers.
+<br><br><strong>Q2- Option D -  Check Antibiotics Prescription</strong>
+<br>Empiric IV antibiotics should administered if there is a suspected septic arthritis following joint aspiration.
+<br><br>In this patient, the inflammatory markers are mostly normal except mildly elevated ESR. Septic arthritis is unlikely and joint aspiration is not ordered.
+<br><br>In case of suspected septic arthritis, empiric vancomycin should be used for gram +ve result. Continue vancomycin if it is MRSA, or switch to beta-lactam agent such as cefazolin if it is not. If it is gram -ve, ceftazidime or ceftriaxone should be used.
+<br><br>Case creator: Mr. Eric Chang</h6><br><br>
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+</div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<script>
+  const investigations = [{"opt":"Check XR Left hip & pelvis","res":"<img src='XRH1.png' alt='1' style='max-width:100%;boder-radius:5px;'><br><img src='XRH2.png' alt='2' style='max-width:100%;boder-radius:5px;'>","cor":true},
+  {"opt":"Check CT Lower extremity","res":"IMPRESSION:<br>Significant superior and lateral displacement of the right femoral head and sclerotic changes at the acetabulum suggestive of right hip dysplasia, associated with severe secondary osteoarthritis.<br><br>Subchondral collapse and flattening of right femoral head noted. This is be suggestive of avascular necrosis. MRI is suggested for confirmation.<br><br>OA changes over bilateral knee noted primarily involving medial compartments.","cor":false},
+  {"opt":"Hip AROM, hip rocking,  axial loading, power","res":"No pain on rocking Pain++ on axial loading <br>Pain++ on left hip AROM with reduced ROM","cor":true},
+  {"opt":"Assessment on mobility","res":"Transfer 1A <br>Standing with frame + 1A x tolerate ~30 sec only","cor":true}];
+  const management = [{"opt":"Suspend walking","exp":"","cor":false},{"opt":"FWB as tolerated","exp":"","cor":true},{"opt":"Hip mobilization exercise","exp":"","cor":true},{"opt":"Check Antibiotics Prescription","exp":"","cor":false}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>
