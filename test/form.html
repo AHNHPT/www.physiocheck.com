@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Entry</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    input, button { width: 100%; padding: 10px; margin: 8px 0; }
+    button { background: #1a73e8; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>New Entry</h1>
+  <form id="dataForm">
+    <input type="hidden" name="action" value="append">
+    
+    <label>Date</label>
+    <input type="date" name="Date" required>
+    
+    <label>Name</label>
+    <input type="text" name="Name" required>
+    
+    <label>Department</label>
+    <input type="text" name="Department" required>
+    
+    <label>Item</label>
+    <input type="text" name="Item" required>
+    
+    <label>Quantity</label>
+    <input type="number" name="Quantity" required min="1">
+    
+    <label>Remarks</label>
+    <input type="text" name="Remarks">
+    
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="status"></p>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyKtEkdGXh-qECBYsG6NNBgaHhDRS6R0Qg49T6Jhy4dybOCrhCn_3Y87tH_roUBxO97/exec';
+    const form = document.getElementById('dataForm');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = "Submitting...";
+
+      const formData = new FormData(form);
+      
+      try {
+        const response = await fetch(scriptURL, { method: 'POST', body: formData });
+        if (response.ok) {
+          status.innerHTML = '✅ Saved successfully!';
+          form.reset();
+          setTimeout(() => window.location.href = 'search.html', 1500);
+        }
+      } catch (err) {
+        status.textContent = "Error submitting data.";
+      }
+    });
+  </script>
+</body>
+</html>
