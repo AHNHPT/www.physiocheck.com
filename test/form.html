@@ -38,26 +38,34 @@
 
   <p id="status"></p>
 
-  <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyKtEkdGXh-qECBYsG6NNBgaHhDRS6R0Qg49T6Jhy4dybOCrhCn_3Y87tH_roUBxO97/exec';
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzjGTdb1H4AHEkc0rUsCQTa6OJzzfjWQJ4aUD3WMyen_PBGeV5f4c1QstetgnHTNsMD/exec';
+
     const form = document.getElementById('dataForm');
-    const status = document.getElementById('status');
+    const statusDiv = document.getElementById('status');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      status.textContent = "Submitting...";
+      statusDiv.textContent = "Submitting...";
+      statusDiv.style.background = "#fff3cd";
 
       const formData = new FormData(form);
-      
+
       try {
-        const response = await fetch(scriptURL, { method: 'POST', body: formData });
-        if (response.ok) {
-          status.innerHTML = '✅ Saved successfully!';
-          form.reset();
-          setTimeout(() => window.location.href = 'search.html', 1500);
-        }
+        await fetch(scriptURL, { 
+          method: 'POST', 
+          body: formData,
+          mode: 'no-cors'
+        });
+
+        statusDiv.innerHTML = '✅ Data saved successfully!';
+        statusDiv.style.background = "#d4edda";
+        form.reset();
+        
+        setTimeout(() => window.location.href = 'search.html', 1500);
       } catch (err) {
-        status.textContent = "Error submitting data.";
+        statusDiv.innerHTML = '❌ Failed to submit. Please try again.';
+        console.error(err);
       }
     });
   </script>
