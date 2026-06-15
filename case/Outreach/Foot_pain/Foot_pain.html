@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Foot pain</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Foot pain</h2>
+  <p>PhysioCheck: Foot pain
+    <br><br>Mr. Ray Leung, a 72-year-old gentleman, suffered a stroke and was just discharged from the acute hospital. You are the case manager taking care of his post-discharge rehabilitation and care. This is your second home visit.
+    <br><br>————————— Discharge Summary ————————————
+    <br>SHx:
+    <br>Retired renovation worker
+    <br>Live with wife in PHU, lift-landing.
+    <br>Pre-morbid: walk unaided outdoor
+    <br><br>PMH:
+    <br>Rt floaters FU EYE
+    <br>Rt hearing loss with tinnitus FU ENT
+    <br>Chronic LUTS, pending URO
+    <br><br>HPI:
+    <br>Sudden onset vertigo, Rt tinnitus, Rt sided weakness at ~ 2:30pm
+    <br>Initial NIHSS 3/42, GCS 15/15 at AED
+    <br>Rt sided weakness and tinnitus resolved in ward
+    <br>still c/o some vertigo
+    <br>no chest pain/SOB
+    <br>no HI/LOC/fall
+    <br>no facial asymmetry / slurred speech
+    <br><br>Declined TPA
+    <br><br>P/E:
+    <br>GCS 15/15 PEARL.
+    <br>CN intact
+    <br>EOM full, no diplopia
+    <br>power
+    <br>5|5
+    <br>5|5
+    <br>no cerebellar signs
+    <br>chest clear
+    <br>HSDNM
+    <br>abd soft, non-tender
+    <br>no ankle edema
+    <br><br>CTB: tiny lacunar infarcts (old) at Lt brainstem, bilateral BG, white matter hypodensities indicating small vessel disease
+    <br>CXR clear. no widened mediastinum
+    <br><br>Imp: minor stroke, posterior circulation
+    <br><br>BP/Hstix good in ward
+    <br>PT: Rt side Dix hallpike +, Epley maneuver to Rt side, MFAC 6/7, unaided +/- supervision
+    <br>OT: MBI 89/100
+    <br>ST: regular diet, thin liquid
+    <br><br>A1c 5.8, LDL 2.7
+    <br>started DAPT, lipitor
+    <br>dizziness on cinnarizine
+    <br><br>Rt side persistent hearing loss with tinnitus
+    <br>consulted ENT, appt. 24/4/2026
+    <br><br>Mx:
+    <br>Home
+    <br>FU PDCC 8/52 with meds and prior bloods
+    <br>DAPT 3/52 till 7/5/26 then lifelong aspirin
+    <br><br>——————————————————————————————
+    <br>————————— Today’s home visit ——————————
+    <br>C/O:
+    <br>Vertigo resolved with previous Epley maneuver
+    <br>Tinnitus static
+    <br>Limb power preserved, able to go outdoor unaided.
+    <br><br>Left foot swelling started at base of toes (dorsal side) on 2days ago.
+    <br>No recent injury / trauma
+    <br>seen GP, told gout and given meds given
+    <br>Slight improvement with GP meds but develop chills after meds
+    <br>progressively ↑ in swelling and erythema
+    <br><br><br>P/E:
+    <br>Alert, cooperative
+    <br>GCS 15/15
+    <br>GC well
+    <br><br>Home environment:
+    <br>Very messy, Hoarding house
+    <br>Narrow walk path, enough for unaided walking
+    <br>Standing shower, no rails
+    <br><br>———————————
+    <br><strong>Current medications:</strong>
+    <br><strong>ASPIRIN</strong> tablet
+    <br>oral : 80 mg daily for 8weeks
+    <br><br><Strong>Clopidogrel (PLAVIX)</Strong> tablet (Special Drug)
+      <br>oral: 75 mg daily for 17 day(s)
+      <br><br><strong>LIPITOR (ATORVASTATIN)</strong> tablet
+      <br>oral : 20 mg daily for 8weeks
+      <br><br><strong>PANTOLOC (PANTOPRAZOLE SODIUM SESQUIHYDRATE)</strong> tablet
+      <br>oral : 20 mg daily for 8 weeks
+      <br><br><strong>HYTRIN (TERAZOSIN HCL)</strong> tablet
+      <br>oral : 2 mg nocte for 8 weeks
+      <br><br><strong>Cinnarizine</strong> tablet
+      <br>oral: 25 mg TDS PRN(100%) for 8 week(s)
+      <br><br><strong>VOLTAREN (DICLOFENAC SODIUM)</strong> tablet
+      <br>oral : 25 mg bd prn (100%) for 1 weeks
+      <br><br><strong>PANADOL (PARACETAMOL)</strong> tablet
+      <br>oral : 1000 mg q8h prn (100%) for 2 weeks
+      <br><br><strong>Colchicine</strong> tablet
+      <br>oral : 0.5 mg tds prn(100%) for 1 weeks
+      <br>———————————</p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Check vitals</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Inspect R foot</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Palpation to R foot</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Check capillary refill of toes</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Cont'd meds and review 2 days later</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Book FMC</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Ice and compression to Rt foot</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Withhold walking</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+    
+  <div style="margin-top:20px;"><strong>📋Discussion:</strong>
+    <br>The diagnosis of this case was cellulitis.
+    <br><br>This case was referred to FM Clinic and given a course of Ampicillin and Cloxacillin to treat the underlying infection. The patient's wife also developed foot cellulitis two days after the patient was diagnosed. The messy home environment may lead to poor hygiene. Home cleansing (especially home slippers) was recommended.
+    <br><br>Acute stroke treatments and the physiological stress of a stroke itself frequently trigger gout flare-ups. Up to 4% of hospitalized stroke patients experience a gout attack within the first week. These flares commonly present in the paretic (weakened) limb and can complicate recovery. [1]
+    <br><br><strong>Why Strokes Trigger Gout Flares?</strong>
+    <br>1. Post-Stroke Inflammation: Acute stroke causes massive systemic inflammation and oxidative stress, which accelerates purine metabolism and causes sudden spikes in serum uric acid levels.
+    <br><br>2. Medications Used in Stroke Care:
+    <br><br>2A) Diuretics: Blood pressure-lowering "water pills" (e.g., hydrochlorothiazide) are common after strokes but impair the kidneys' ability to excrete uric acid.
+    <br><br>2B) Low-Dose Aspirin: Often prescribed after ischemic strokes, it can cause unpredictable shifts in uric acid levels.
+    <br><br>3. Dehydration & Immobility: Routine fluid restriction during stroke recovery or immobility can concentrate uric acid in the blood and joints.
+    <br><br>In this case, the initial suspicion of gout is reasonable given the onset of pain and medical comorbidities. However, a lack of treatment progress and the progression of the painful area should lead to a re-evaluation of the diagnosis, potentially shifting it from gout to cellulitis.
+    <br><br><strong>⭐️Learning point:</strong><br>-Some drugs may increase the likelihood of gout
+    <br>-Diagnosis is fluid to change with clinical picture progress
+    <br>-When treatment trial did not provide the expect effect, clinical team members should consider alternate possibilities
+    <br>-DDx between cellulitis and gouty attack
+    <br>-Triage decision
+    <br><br><br><strong>👍Explanation:</strong>
+    <br><br><strong>Q1.Option 1: Check vitals</strong>
+    <br>Raised body temperature is a crucial hint of severe or systemic infection. In this case, if the patient is febrile/septic looking on visit, the patient should be advised to AED instead of FMC for further management.
+    <br><br>Please also bear in mind that a febrile condition may be masked by medications (e.g. NSAID/Panadol).
+    <br><br>The patient also reported an episode of chills. Chills and rigours are your body's involuntary response to a sudden shift in temperature, usually signalling an underlying infection.
+    <br><br><strong>Q1.Option 2: Inspect R foot</strong>
+    <br>Both cellulitis and gouty attacks  have skin discolouration—redness on light skin tones; on brown or black skin, it may look purple, grey, or darker than the surrounding skin.
+    <br><br>However, gout should stay localised (most commonly the big toe, ankle, or knee). Cellulitis often spreads diffusely. Dimpling around hair follicles may give an "orange peel" texture.[2]
+    <br><br></ber><img src="vs.png" alt='Hstix' style='max-width:100%;boder-radius:5px;'>
+    <br><br><strong>Q1.Option 3: Palpation to R foot</strong>
+    <br>The area must be palpated for fluctuance (a wave-like feeling). A localised abscess requires incision and drainage, whereas pure cellulitis is treated with antibiotics. If fluctuance is detected in this patient, he should be advised to AED instead of FMC.
+    <br><br><strong>Q1.Option 4: Check capillary refill of toes</strong>
+    <br>Checking the capillary refill time (CRT) of an affected limb or extremity is a standard component of evaluating a patient with cellulitis.[2] It helps clinicians assess tissue perfusion, monitor for severe complications, and differentiate cellulitis from other vascular conditions.
+    <br><br><br><br><strong>Q2.Option 1&2: Cont'd meds and review 2 days later/ Book FMC</strong>
+    <br>Patient's clinical picture flavours the suspect of cellulitis instead of gout. Continue current medication cannot take the underlying infection and delaying the indicated treatment.
+    <br><br>Here are the comparison of cellulitis and gouty attack
+    <br><br><strong>Q2.Option 3: Ice and compression to Rt foot</strong>
+    <br>No, although studies shows that compression therapy is effective to alleviate symptoms without causing complications in cellulitis, compression should be started with a time window to allow the antibiotic therapy to take effect before initiating compression therapy. Moreover, if wound or ulcer is present in the cellulitis site, ice or compression maybe contraindicated. [3] In patients with initial CRP levels above 50 mg/dl at admission, CRP reduction occurred more rapidly.
+    <br><br><strong>Q2.Option 4: Withhold walking</strong>
+    <br>Walking is allowed in view of bone involvement being less likely in this case. The patient reported no trauma/injury history, making an underlying fracture less likely.
+    <br>In severe cases of cellulitis, the infection can spread into deeper tissues, potentially leading to osteomyelitis (OM). In this case, an X-ray is needed to rule out any osteomyelitic changes.
+    <h6><br><br><br>Reference:
+    <br>1. Panagiotopoulos E, Kotsali-Peteinelli V, Papagiannopoulou G, Theodorou A, Chondrogianni M, Bakola E, Palaiodimou L, Psychogios K, Kargiotis O, Safouris A, Tsalouchidou PE, Mengel A, Ziemann U, Krogias C, Tsivgoulis G, Stefanou MI. Gout flares following acute stroke: a single-center cohort and a systematic review/meta-analysis. Neurol Res Pract. 2025 Oct 15;7(1):75. doi: 10.1186/s42466-025-00424-w. PMID: 41094550; PMCID: PMC12529815.
+    <br><br>2. Brown BD, Syed HA, Hood Watson KL. Cellulitis. [Updated 2025 Dec 13]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026 Jan-. Available from: https://www.ncbi.nlm.nih.gov/sites/books/NBK549770/
+    <br><br>3. Dräger S, Kiehne C, Zinser G, Kahle B. Treating cellulitis promptly with compression therapy reduces C-reactive protein-levels and symptoms - a randomized-controlled trial. J Dtsch Dermatol Ges. 2025 Oct;23(10):1274-1280. doi: 10.1111/ddg.15829. Epub 2025 Aug 11. PMID: 40790909; PMCID: PMC12548327.</h6>
+  <h6><br>Case creator: Mr Thomas Mak</h6>
+  </div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+
+<script>
+  const investigations = [{"opt":"Check vitals","res":"BP: 140/95 HR79<br>SpO2: 95% RA<br>Temp: 36.8C","cor":true},
+  {"opt":"Inspect R foot","res":"<img src='Foot.jpeg' alt='foot' style='max-width:100%;boder-radius:5px;'>","cor":true},
+  {"opt":"Palpation to R foot","res":"Right lower limb:<br>swelling and erythema at dorsal foot up to mid-foot <br>mild tenderness and increase in warmth <br>compartment soft<br><br>no focal fluctuance point. <br>no bullae / blister / crepitus <br>no tenderness beyond area of erythema / upon passive stretching","cor":true},
+  {"opt":"Check capillary refill of toes","res":"CR <2sec","cor":true}];
+  const management = [{"opt":"Cont’d meds and review 2 days later","exp":"","cor":false},
+  {"opt":"Book FMC","exp":"","cor":true},
+  {"opt":"Ice and compression to Rt foot","exp":"","cor":false},
+  {"opt":"Withhold walking","exp":"","cor":false}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>
