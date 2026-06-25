@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Productive Cough</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: Productive Cough</h2>
+  <p>Mr. W is a 84 year old male. He was admitted for cough with whitish sputum x few days, with increased shortness of breath since day before admission. 
+  <br><br>Today is Day 4 since admission. He was referred for chest physiotherapy, you are the physiotherapist attending him today.
+  <br><br>--------- Admission findings ---------
+  <br>SHx: 
+  <br>OAHR, walks with Rollator
+  <br><br>PMHx:
+  <br>HT, DM, Hyperlipid
+  <br>COPD on 1L/min LTOT
+  <br><br>HPI:
+  <br>E adm x cough with whitish sputum x few days, with increased respiratory distress since day before admission.
+  <br><br>Not relieved by usual puffs. No fever. No chest pain. 
+  <br>Given 2L O2, Ventolin puff, prednisolone in AED
+  <br><br>Hb Plt N
+  <br>WCC 7
+  <br>CRP 15
+  <br>TnI CK LDH N
+  <br>NPS -ve
+  <br><br>----------------- Todays progress ---------------------
+  <br>Vital signs today:
+  <br>Temperature: 36.4°C
+  <br>Blood Pressure: 102/64
+  <br>Respiratory Rate: 14/min
+  <br>Blood oxygen saturation rate (SPO2): 96%, O2 Therapy (L/min): 1L/min
+  <br>Level of consciousness: A: Alert
+  <br>MEWS: 0
+  <br><br>Patient lying on bed
+  <br>Alert and cooperative
+  <br><br>4 limb power full<br><br></p>
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Check Inflammatory markers</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Check CXR</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Auscultation</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Check IPMOE x Current medications</div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Breathing and coughing exercise</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Use a PEP/OPEP device</label>
+  <label><input type="checkbox" id="man-check2" /> 3. Mobility training</label>
+  <label><input type="checkbox" id="man-check3" /> 4. Keep bed rest</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+    
+  <div style="margin-top:20px;">
+    <strong>Explaination:</strong>
+    <br><strong>Option 1 Check Inflammatory markers</strong> 
+    <br>Checking the inflammatory markers such as WCC, CRP, or even ESR may provide an indication on the severity of the infection.
+    <br><br>Furthermore, by checking the trend of the inflammatory markers, you may see how the patient is currently responding to current treatment.
+    <br><br>If the inflammatory markers are decreasing, it may indicate that the patient is responding well to the treatment. However, if the inflammatory markers are increasing, it may mean that the patient is not responding to the current treatment, or that there is a new source of infection for investigation.
+    <br><br><br><strong>Q1. Option 2 Check CXR</strong>
+    <br>The patient presented with increased respiratory distress, and had an increased oxygen demand when first admitted.
+    <br><br>This Chest X-ray shows hyperinflated lungs, which is typically seen in patients with COPD. As COPD causes airway obstruction and a decrease in lung elasticity, air may become trapped in the lungs. In a CXR with lung hyperinflation, you may observe flattened diaphragms, increased rib counts, or even widened intercostal spaces.
+    <br><br>Having a CXR on hand may provide you with an indication for how congested their lung may be, which allows you to have an estimate on how likely they are to be in sputum retention. After seeing the latest CXR, you may also choose to compare this film with the last film, allowing you to have a comparison on whether there is a difference in lung consolidation.
+    <br><br>A CXR also allows the doctor to screen out any more acute conditions or life-threatening conditions such as pneumothorax or pleural effusion.
+    <br><br><br><strong>Q1. Option 3 Auscultation</strong>
+    <br>Auscultating the patient allows you to have a more comprehensive respiratory assessment. Assessing the air entry, and the type of transmitted sound they have (if any), can help guide your treatment.
+    <br><br>Auscultation may help you identify where secretions may be trapped. This may help to guide any positioning, vibrations or percussion that you may choose to use.
+    <br><br>Furthermore, it may also provide you with an indication of how much sputum the patient is retaining. If the patient is in excessive sputum retention, suction may be indicated.
+    <br><br><br><strong>Q1. Option 4 IPMOE (Current medications)</strong>
+    <br>Checking the current medications would allow you to have a picture of the doctor's differential diagnosis. Furthermore, it may give you an indication on the doctor's discharge plan. For example, if a patient was initially put on IV antibiotics, and later changed to oral antibiotics, it may be an indication that the patient is responding well to treatment, and that the doctor is aiming to discharge the patient home soon.
+    <br><br>If the patient is on a bronchodilator, checking when the medication was last taken may also give you a timeframe of the optimal time to see the patient. Bronchodilators help to open up airways by relaxing the surrounding muscles. Doing airway clearance techniques (eg. percussion, vibrations, huffing) around 10-15 mins after the use of bronchodilators may prove to be more effective in sputum clearance.
+    <br><br><br><strong>Q2. Option 1 Breathing and coughing exercise</strong>
+    <br>In acute respiratory conditions, excessive, thick mucus may be blocking the patient's airway. By directing a coughing exercise, the high expiratory flow may cause a shearing force, clearing the airway.
+    <br><br>On the other hand, you may choose to teach the patient a huffing technique, which is a gentler way to clear mucus. Huffing allows one to loosen sputum from their airways, but at the same time keeps your airways open, which may be more beneficial for patients with COPD.
+    <br><br>Teaching the patient breathing techniques such as pursed-lip breathing may also be beneficial. Pursed-lip breathing allows for more PEEP, keeping the airways open for longer during expiration. This helps to reduce the retention of carbon dioxide.
+    <br><br><strong>Q2. Option 2 Use a PEP/OPEP device for airway clearance</strong>
+    <br>Patients who present with AECOPD often present with increased sputum production and retention, hence indicating a prescription of Airway Clearance Techniques (ACTs).
+    <br><br>A standard Positive Expiratory Pressure (PEP) device provides resistance upon exhalation. This resistance helps to keep airways open, allowing air to travel through the Pores of Kohn and Canals of Lambert (Collateral channels of the lungs). The collateral ventilation allows the air to travel behind mucus plugs, helping to clear the secretion. As the secretion is cleared, the work of breathing is reduced. This allows for an improved respiratory rate and decreased fatigue.
+    <br><br>On the other hand, Oscillatory Positive Expiratory Pressure (OPEP) devices may be used. These devices combine an expiratory pressure with high frequency vibrations, which allows for better mucus clearance.
+    <br><br>Common OPEP devices that may be found in a hospital setting include the Akapella and Aerobika. Similarly, a common PEP device found in the hospital setting is the TheraPEP.
+    <br><br><strong>Q2. Option 3 Mobility training & Option 4 Keep bed rest</strong>
+    <br>Although the patient's current inflammatory markers are slightly elevated, they are not uncontrolled sepsis. There is no absolute contraindication for mobilization.
+    <br><br>Early mobilization may prevent physical decline, as well as lowering the risk for developing DVT/PE.
+    <br><br>Physical movement may also help with sputum clearing. Patients will naturally take deeper breaths when mobilizing, which may help create the mechanical shearing force needed to loosen sputum.
+    <br><br>Sitting or standing also allows for better lung expansion. Being in a “position of ease” may also help to offload the diaphragm, recruiting accessory breathing muscles.
+<br><br><h6>Case creator: Ms Elaine Liu, Ms Kiho Masui</h6>
+</div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<script>
+  const investigations = [{"opt":"Check Inflammatory markers","res":'<img src="lab.png" alt="Lab" style="max-width:100%;border-radius:5px;">',"cor":true},
+  {"opt":"Check CXR","res":'<img src="cxr.jpeg" alt="Lab" style="max-width:100%;border-radius:5px;">',"cor":true},
+  {"opt":"Auscultation","res":'LLZ:<br><audio controls><source src="sound1.mp3" type="audio/mpeg"></audio><br><br>RLZ:<br><audio controls><source src="sound2.mp3" type="audio/mpeg"></audio>',"cor":true},
+  {"opt":"Check IPMOE x Current medications","res":'<img src="drugs.png" alt="Lab" style="max-width:100%;border-radius:5px;">',"cor":true}];
+  const management = [{"opt":"Breathing and coughing exercise","exp":"","cor":true},
+  {"opt":"Use a PEP/OPEP device","exp":"","cor":true},
+  {"opt":"Mobility training","exp":"","cor":true},
+  {"opt":"Keep bed rest","exp":"","cor":false}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>
