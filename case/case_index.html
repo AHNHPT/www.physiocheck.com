@@ -133,6 +133,17 @@
       gap: 10px;
     }
 
+    /* PTCOC Special Styling */
+    .PTCOC-card {
+      border-top-color: #ffe476; /* Yellow for PTCOC */
+    }
+
+    .PTCOC-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
     /* Buttons */
     .btn-container {
       text-align: center;
@@ -307,7 +318,12 @@
         <a href="Radiology/CXR/CXR.html" class="case-link"><span class="case-name">8️⃣ Chest X-ray</span></a>
       </div>
     </section>
-
+    <section class="category-card PTCOC-card" style="grid-column: 1 / -1;">
+      <h3>🎖️ PTCOC Education Portal</h3>
+      <div class="guideline-list">
+        <a href="PTCOC_Guideline/COPD_AE.html" class="case-link"><span class="case-name">1️⃣ COPD AE</span></a>
+      </div>
+    </section>
   </div>
 
   <div class="btn-container">
