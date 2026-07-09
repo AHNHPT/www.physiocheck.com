@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geriatric Hip Fracture PT Guidelines - HA Allied Health Education Portal</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
+
+  <!-- Top Navigation/Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo and Title -->
+        <div class="flex items-center space-x-3">
+          <div class="bg-teal-600 text-white p-2 rounded-lg">
+            <i data-lucide="heart-pulse" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Geriatric Hip Fracture Portal</h1>
+            <p class="text-xs text-slate-500 font-medium">Physiotherapy Clinical Guidelines • HAHO-COC-GL-PHY-013-v01</p>
+          </div>
+        </div>
+        <!-- Status Badges -->
+        <div class="hidden md:flex items-center space-x-4">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-teal-50 text-teal-800 border border-teal-200">
+            Approved: 25/11/2025
+          </span>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-800 border border-blue-200">
+            Review: 25/11/2028
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Portal Layout -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Hero / Intro Card -->
+    <div class="bg-gradient-to-r from-teal-700 via-teal-800 to-slate-900 rounded-2xl shadow-xl text-white p-6 sm:p-8 mb-8 relative overflow-hidden">
+      <div class="absolute right-0 top-0 opacity-10 pointer-events-none transform translate-x-12 -translate-y-12">
+        <i data-lucide="bone" class="w-96 h-96"></i>
+      </div>
+      <div class="relative z-10 max-w-3xl">
+        <span class="bg-teal-500 text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-opacity-40">
+          PTCOC Musculoskeletal Grade Standard
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold mt-3 tracking-tight">
+          Geriatric Hip Fracture Rehabilitation
+        </h2>
+        <p class="mt-4 text-slate-200 text-sm sm:text-base leading-relaxed">
+          The aging population demands an exponential rise in quality, standardized, and safe rehabilitation. Over 7,000 cases are admitted yearly to HA hospitals, with 80% aged &ge;75. This clinical education tool is designed to train junior physiotherapists across all settings (Acute, Extended, and Community Care).
+        </p>
+        <div class="mt-6 flex flex-wrap gap-4 text-xs sm:text-sm text-slate-300">
+          <div class="flex items-center space-x-1.5">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400"></i>
+            <span>Standardized Protocols</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <i data-lucide="shield-alert" class="w-4 h-4 text-teal-400"></i>
+            <span>Safety Guardrails</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <i data-lucide="award" class="w-4 h-4 text-teal-400"></i>
+            <span>Interactive Case Studies</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation Tabs -->
+    <div class="mb-8 border-b border-slate-200 bg-white rounded-xl shadow-sm p-2 flex flex-wrap gap-1">
+      <button onclick="switchTab('pathway')" id="tab-pathway" class="tab-btn flex-1 py-3 px-4 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 bg-teal-600 text-white shadow-sm">
+        <i data-lucide="milestone" class="w-4 h-4"></i>
+        <span>Clinical Pathway Journey</span>
+      </button>
+      <button onclick="switchTab('complications')" id="tab-complications" class="tab-btn flex-1 py-3 px-4 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 hover:bg-slate-100 hover:text-slate-950">
+        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        <span>Complications & Safe Precautions</span>
+      </button>
+      <button onclick="switchTab('outcomes')" id="tab-outcomes" class="tab-btn flex-1 py-3 px-4 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 hover:bg-slate-100 hover:text-slate-950">
+        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+        <span>Assessments & Metrics</span>
+      </button>
+      <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn flex-1 py-3 px-4 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 hover:bg-slate-100 hover:text-slate-950">
+        <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+        <span>Clinical Reasoning Quiz</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: CLINICAL PATHWAY -->
+    <section id="panel-pathway" class="tab-panel space-y-8">
+      
+      <!-- Phase Cards Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Phase 1 -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+          <div class="bg-slate-50 px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Phase 1 of 4</span>
+            <span class="bg-blue-100 text-blue-800 text-2xs font-bold px-2 py-0.5 rounded">Pre-Operative</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4">
+            <div class="flex items-center space-x-3">
+              <div class="bg-blue-100 text-blue-700 p-2 rounded-lg">
+                <i data-lucide="activity" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-bold text-slate-900">Acute Pre-op / Non-op</h3>
+            </div>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Initiate care on admission to prevent medical deterioration while optimizing the patient's condition for surgery.
+            </p>
+            <div class="space-y-2">
+              <h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider">Key Interventions:</h4>
+              <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+                <li>Active deep breathing & chest PT</li>
+                <li>Ankle & toes circulation pumpers</li>
+                <li>TED stockings / IPC installation</li>
+                <li>Pain relief & un-involved limb training</li>
+              </ul>
+            </div>
+          </div>
+          <div class="bg-slate-50 px-5 py-3 border-t border-slate-100 text-2xs text-slate-500 flex items-center space-x-1">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+            <span>Admission up to 48 hours</span>
+          </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+          <div class="bg-slate-50 px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Phase 2 of 4</span>
+            <span class="bg-emerald-100 text-emerald-800 text-2xs font-bold px-2 py-0.5 rounded">Post-Operative</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4">
+            <div class="flex items-center space-x-3">
+              <div class="bg-emerald-100 text-emerald-700 p-2 rounded-lg">
+                <i data-lucide="activity-square" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-bold text-slate-900">Acute Post-op</h3>
+            </div>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Targeted early mobilization starting the immediate day after surgery (unless strictly contraindicated) to minimize recumbency risk.
+            </p>
+            <div class="space-y-2">
+              <h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider">Key Interventions:</h4>
+              <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+                <li><strong>Mobilization &ge; 1x daily</strong></li>
+                <li>Post-op pain control & local edema care</li>
+                <li>Arthroplasty precautions (Southern/Lateral)</li>
+                <li>Prescribe appropriate walking aid</li>
+              </ul>
+            </div>
+          </div>
+          <div class="bg-slate-50 px-5 py-3 border-t border-slate-100 text-2xs text-slate-500 flex items-center space-x-1">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+            <span>Day 1 to discharge (Acute)</span>
+          </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+          <div class="bg-slate-50 px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Phase 3 of 4</span>
+            <span class="bg-amber-100 text-amber-800 text-2xs font-bold px-2 py-0.5 rounded">Rehabilitation</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4">
+            <div class="flex items-center space-x-3">
+              <div class="bg-amber-100 text-amber-700 p-2 rounded-lg">
+                <i data-lucide="trending-up" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-bold text-slate-900">Extended Care</h3>
+            </div>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Focus is restorative: maximize strength, balance, safety, and functional endurance while exploring long-term placement needs.
+            </p>
+            <div class="space-y-2">
+              <h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider">Key Interventions:</h4>
+              <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+                <li>Cardiorespiratory / Aerobic UE training</li>
+                <li>Targeted hip abductor & extensor strengthening</li>
+                <li>Indoor/outdoor walker & slope/stair training</li>
+                <li>Structured caregiver handling coaching</li>
+              </ul>
+            </div>
+          </div>
+          <div class="bg-slate-50 px-5 py-3 border-t border-slate-100 text-2xs text-slate-500 flex items-center space-x-1">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+            <span>Average Extended Care: 35.3 days</span>
+          </div>
+        </div>
+
+        <!-- Phase 4 -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+          <div class="bg-slate-50 px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Phase 4 of 4</span>
+            <span class="bg-purple-100 text-purple-800 text-2xs font-bold px-2 py-0.5 rounded">Reintegration</span>
+          </div>
+          <div class="p-5 flex-1 space-y-4">
+            <div class="flex items-center space-x-3">
+              <div class="bg-purple-100 text-purple-700 p-2 rounded-lg">
+                <i data-lucide="home" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-bold text-slate-900">Community & Ambulatory</h3>
+            </div>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Integration into the local environment functionally and safely. Mitigate home fall hazards and support caregiver burden.
+            </p>
+            <div class="space-y-2">
+              <h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider">Key Interventions:</h4>
+              <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+                <li>Advanced outdoor navigation (roads, escalators)</li>
+                <li>Home environmental safety assessment</li>
+                <li>Fall-prevention program training</li>
+                <li>Telehealth integration via <strong>HA Go</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="bg-slate-50 px-5 py-3 border-t border-slate-100 text-2xs text-slate-500 flex items-center space-x-1">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+            <span>Post-Discharge / NGO Support</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Orthopaedic Surgical Procedures Reference Panel -->
+      <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-6">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+            <i data-lucide="wrench" class="text-teal-600"></i>
+            <span>Orthopaedic Surgical Management & Implants</span>
+          </h3>
+          <p class="text-slate-500 text-sm mt-1">
+            Acknowledge the orthopedic approach immediately to match weight-bearing parameters and precautions.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="border border-slate-100 p-4 rounded-lg bg-slate-50 space-y-2">
+            <div class="flex items-center justify-between">
+              <h4 class="font-semibold text-slate-900 text-sm">Undisplaced Intracapsular</h4>
+              <span class="bg-slate-200 text-slate-800 text-2xs font-semibold px-2 py-0.5 rounded">Stable</span>
+            </div>
+            <p class="text-xs text-slate-600">
+              Commonly treated with <strong>Internal Fixation Screws</strong> to stabilize the fracture. Minimizes risk of avascular necrosis (AVN), non-union, or delayed union.
+            </p>
+          </div>
+          <div class="border border-slate-100 p-4 rounded-lg bg-slate-50 space-y-2">
+            <div class="flex items-center justify-between">
+              <h4 class="font-semibold text-slate-900 text-sm">Displaced Intracapsular</h4>
+              <span class="bg-orange-100 text-orange-800 text-2xs font-semibold px-2 py-0.5 rounded">Unstable / AVN Risk</span>
+            </div>
+            <p class="text-xs text-slate-600">
+              <strong>Unipolar or Bipolar Hemiarthroplasty</strong> is indicated. Newer designs are preferred over Austin-Moore/Thompson due to better biomechanics and longevity.
+            </p>
+          </div>
+          <div class="border border-slate-100 p-4 rounded-lg bg-slate-50 space-y-2">
+            <div class="flex items-center justify-between">
+              <h4 class="font-semibold text-slate-900 text-sm">Extracapsular Fractures</h4>
+              <span class="bg-amber-100 text-amber-800 text-2xs font-semibold px-2 py-0.5 rounded">Inter / Subtrochanteric</span>
+            </div>
+            <p class="text-xs text-slate-600">
+              Managed using a <strong>Sliding Hip Screw (SHS)</strong> or <strong>Intramedullary Nail</strong> (e.g., Gamma Nail for subtrochanteric/reverse oblique fractures).
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 2: COMPLICATIONS & PRECAUTIONS -->
+    <section id="panel-complications" class="tab-panel hidden space-y-8">
+      
+      <!-- Warning Alert -->
+      <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-xl">
+        <div class="flex">
+          <div class="flex-shrink-0 text-red-600">
+            <i data-lucide="shield-alert" class="w-5 h-5"></i>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-bold text-red-800">Critical Proactive Monitoring Required</h3>
+            <p class="text-xs text-red-700 mt-1 leading-relaxed">
+              Post-operative geriatric hip fracture complications drive a 20-30% mortality rate in the 1st year. As a PT, you must screen every patient daily before initiating training.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Chest Infection Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+          <div class="bg-blue-50 border-b border-blue-100 px-5 py-4 flex items-center space-x-2 text-blue-900">
+            <i data-lucide="wind" class="w-5 h-5"></i>
+            <h3 class="font-bold text-sm">1. Chest Infection Risk</h3>
+          </div>
+          <div class="p-5 flex-1 space-y-4 text-xs">
+            <div>
+              <h4 class="font-semibold text-slate-900">Primary Signs to Screen:</h4>
+              <p class="text-slate-600 mt-1">Shortness of breath, localized wheezing/crackles, poor cough effort, elevated temperature, drop in SpO2.</p>
+            </div>
+            <div class="bg-blue-50/50 p-3 rounded-lg border border-blue-100">
+              <h4 class="font-semibold text-blue-900 mb-1">Preventative Actions:</h4>
+              <ul class="space-y-1 text-slate-600 list-disc pl-4">
+                <li>Teach active breathing & coughing pre-op</li>
+                <li>Postural drainage and manual chest techniques</li>
+                <li>Mobilize to chair early (reduces atelectasis)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- DVT Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+          <div class="bg-amber-50 border-b border-amber-100 px-5 py-4 flex items-center space-x-2 text-amber-900">
+            <i data-lucide="activity" class="w-5 h-5"></i>
+            <h3 class="font-bold text-sm">2. Deep Vein Thrombosis (DVT)</h3>
+          </div>
+          <div class="p-5 flex-1 space-y-4 text-xs">
+            <div>
+              <h4 class="font-semibold text-slate-900">Primary Signs to Screen:</h4>
+              <p class="text-slate-600 mt-1">Significant unilateral calf swelling, increased warmth, calf tenderness, and pain on passive ankle dorsiflexion.</p>
+            </div>
+            <div class="bg-amber-50/50 p-3 rounded-lg border border-amber-100">
+              <h4 class="font-semibold text-amber-900 mb-1">Preventative Actions:</h4>
+              <ul class="space-y-1 text-slate-600 list-disc pl-4">
+                <li>Prescribe regular active ankle pumps</li>
+                <li>Check lab results for safe therapeutic INR</li>
+                <li>Utilize sequential compression devices (SCD)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dislocation Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+          <div class="bg-red-50 border-b border-red-100 px-5 py-4 flex items-center space-x-2 text-red-900">
+            <i data-lucide="help-circle" class="w-5 h-5"></i>
+            <h3 class="font-bold text-sm">3. Hemiarthroplasty Dislocation</h3>
+          </div>
+          <div class="p-5 flex-1 space-y-4 text-xs">
+            <div>
+              <h4 class="font-semibold text-slate-900">Primary Signs to Screen:</h4>
+              <p class="text-slate-600 mt-1">Significant sudden leg length discrepancy, internal rotated hip, extreme pain, or immediate loss of weight-bearing capability.</p>
+            </div>
+            <div class="bg-red-50/50 p-3 rounded-lg border border-red-100">
+              <h4 class="font-semibold text-red-900 mb-1">Preventative Actions:</h4>
+              <ul class="space-y-1 text-slate-600 list-disc pl-4">
+                <li>Educate: No flexion >90°, adduction, internal rotation</li>
+                <li>Seat height adjustment (hips must be higher than knees)</li>
+                <li>Use an abduction wedge pillow between legs</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Precaution Action Checklist -->
+      <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <h3 class="font-bold text-slate-900 text-base mb-4 flex items-center space-x-2">
+          <i data-lucide="check-square" class="text-teal-600"></i>
+          <span>Clinical Checklist: Patient Movement Rules (Posterior Approach Hemiarthroplasty)</span>
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="space-y-2 border border-slate-100 p-4 rounded-lg bg-red-50/50">
+            <h4 class="font-bold text-red-800 flex items-center space-x-1.5">
+              <i data-lucide="x-circle" class="w-4 h-4"></i>
+              <span>Strictly Forbidden Moves</span>
+            </h4>
+            <ul class="space-y-1.5 text-slate-700 list-disc pl-5">
+              <li>Sitting on low couches/sofas (knees above hips)</li>
+              <li>Crossing legs at the knees or ankles</li>
+              <li>Leaning excessively forward when sitting or standing up</li>
+              <li>Pivoting directly on the operated leg when turning</li>
+              <li>Bending down to grab objects on the floor directly</li>
+            </ul>
+          </div>
+          <div class="space-y-2 border border-slate-100 p-4 rounded-lg bg-teal-50/50">
+            <h4 class="font-bold text-teal-800 flex items-center space-x-1.5">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span>Instructed Safe Alternatives</span>
+            </h4>
+            <ul class="space-y-1.5 text-slate-700 list-disc pl-5">
+              <li>Sit only in high, firm chairs (hips higher than knees)</li>
+              <li>Keep a firm pillow or wedge between legs in bed</li>
+              <li>Extend the operated leg forward during transfers</li>
+              <li>Use a "reacher" or adaptive "grabber" for floor items</li>
+              <li>Take multiple small steps instead of twisting to turn</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 3: ASSESSMENTS & OUTCOME MEASURES -->
+    <section id="panel-outcomes" class="tab-panel hidden space-y-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Interactive Explorer for Outcome Metrics -->
+        <div class="lg:col-span-1 bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
+          <h3 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+            <i data-lucide="settings" class="text-teal-600"></i>
+            <span>Interactive Outcome Guide</span>
+          </h3>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Select a clinical outcome score to understand its calculation, staging, and interpretation. This helps structure clear discharge pathways.
+          </p>
+
+          <div class="space-y-2">
+            <button onclick="showMetric('mfac')" id="btn-metric-mfac" class="w-full text-left p-3 rounded-lg border border-teal-600 bg-teal-50 text-teal-900 font-semibold text-xs transition-colors flex justify-between items-center">
+              <span>MFAC (Ambulation Stage)</span>
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+            <button onclick="showMetric('ems')" id="btn-metric-ems" class="w-full text-left p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-colors flex justify-between items-center">
+              <span>Elderly Mobility Scale (EMS)</span>
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+            <button onclick="showMetric('tug')" id="btn-metric-tug" class="w-full text-left p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-colors flex justify-between items-center">
+              <span>Timed Up and Go (TUG)</span>
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+            <button onclick="showMetric('handgrip')" id="btn-metric-handgrip" class="w-full text-left p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-colors flex justify-between items-center">
+              <span>Handgrip Strength Test</span>
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Detail Panel for Selected Outcome -->
+        <div class="lg:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+          
+          <!-- MFAC Detail -->
+          <div id="metric-panel-mfac" class="metric-detail-panel space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">Modified Functional Ambulation Classification (MFAC)</h3>
+                <p class="text-xs text-slate-500">Staging classification for basic mobility (excluding specific walking aids)</p>
+              </div>
+              <span class="bg-teal-100 text-teal-800 text-xs font-bold px-2.5 py-1 rounded">Primary Scale</span>
+            </div>
+
+            <div class="overflow-x-auto border border-slate-100 rounded-lg">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-100">
+                    <th class="p-3 font-semibold text-slate-900">Stage</th>
+                    <th class="p-3 font-semibold text-slate-900">Name</th>
+                    <th class="p-3 font-semibold text-slate-900">Definition</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900">Stage I</td>
+                    <td class="p-3">Recliner</td>
+                    <td class="p-3">Cannot ambulate; needs support to sit for 1 minute with hips/knees/ankles at 90° and feet flat.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900">Stage II</td>
+                    <td class="p-3">Sitter</td>
+                    <td class="p-3">Sits independently for 1 minute; cannot ambulate with only 1 person.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900">Stage III</td>
+                    <td class="p-3">Dependent Walker</td>
+                    <td class="p-3">Requires manual contact of 1 person to support weight and/or assist coordination.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900">Stage IV</td>
+                    <td class="p-3">Assisted Walker</td>
+                    <td class="p-3">Requires light touch/intermittent support of 1 person for balance/coordination.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900">Stage V</td>
+                    <td class="p-3">Supervised Walker</td>
+                    <td class="p-3">No manual touch; requires standby guarding or verbal cues for safety.</td>
+                  </tr>
+                  <tr class="bg-teal-50/30">
+                    <td class="p-3 font-bold text-teal-900">Stage VI</td>
+                    <td class="p-3 font-medium text-teal-950">Indoor Walker</td>
+                    <td class="p-3">Independent indoor flat surface; requires supervision/help for stairs or inclines.</td>
+                  </tr>
+                  <tr class="bg-teal-50/50">
+                    <td class="p-3 font-bold text-teal-900">Stage VII</td>
+                    <td class="p-3 font-medium text-teal-950">Outdoor Walker</td>
+                    <td class="p-3">Completely independent outdoor surfaces, stairs, and slopes.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- EMS Detail -->
+          <div id="metric-panel-ems" class="metric-detail-panel hidden space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">Elderly Mobility Scale (EMS)</h3>
+                <p class="text-xs text-slate-500">Validated 20-point scale measuring mobility of frail older adults.</p>
+              </div>
+              <span class="bg-teal-100 text-teal-800 text-xs font-bold px-2.5 py-1 rounded">Score range: 0-20</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="border border-red-100 bg-red-50 p-4 rounded-lg">
+                <h4 class="font-bold text-red-900 text-xs flex items-center space-x-1">
+                  <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+                  <span>High Dependency (&lt;10)</span>
+                </h4>
+                <p class="text-xs text-slate-600 mt-2">Requires highest levels of manual help with ADLs and transfers. Safe home discharge unlikely without institutional or heavy care.</p>
+              </div>
+              <div class="border border-amber-100 bg-amber-50 p-4 rounded-lg">
+                <h4 class="font-bold text-amber-900 text-xs flex items-center space-x-1">
+                  <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+                  <span>Borderline Care (10-13)</span>
+                </h4>
+                <p class="text-xs text-slate-600 mt-2">Requires high level of care (needs caregiver at home or nursing home support). Pivotal stage for progressive target rehabilitation.</p>
+              </div>
+              <div class="border border-emerald-100 bg-emerald-50 p-4 rounded-lg">
+                <h4 class="font-bold text-emerald-900 text-xs flex items-center space-x-1">
+                  <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                  <span>Discharge Potential (14-20)</span>
+                </h4>
+                <p class="text-xs text-slate-600 mt-2">Generally safe for home discharge. Highly independent in basic ADLs with or without appropriate walking aid.</p>
+              </div>
+            </div>
+
+            <div class="space-y-1 mt-4">
+              <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Scale Subcomponents:</h4>
+              <p class="text-xs text-slate-600">1. Lying to Sitting • 2. Sitting to Lying • 3. Sit to Stand • 4. Standing • 5. Gait • 6. Timed Walk (6m) • 7. Functional Reach.</p>
+            </div>
+          </div>
+
+          <!-- TUG Detail -->
+          <div id="metric-panel-tug" class="metric-detail-panel hidden space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">Timed Up and Go (TUG)</h3>
+                <p class="text-xs text-slate-500">Measures the speed and functional balance for basic mobility transitions.</p>
+              </div>
+              <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded">Timed in Seconds</span>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-2">
+              <h4 class="font-bold text-slate-900 text-xs">Standardized Testing Procedure:</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Patient starts in standard high chair, hands on thighs. On "Go", they stand, walk 3 meters, cross the line with both legs, turn toward the <strong>non-operated side</strong>, walk back, and sit. The timer stops when their back touches the chair. Record the second trial.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="border border-slate-100 p-4 rounded-lg">
+                <span class="text-emerald-700 font-extrabold text-lg">&lt;10 seconds</span>
+                <h4 class="font-semibold text-slate-900 text-xs mt-1">Freely Independent</h4>
+                <p class="text-slate-500 text-2xs">Patient is highly mobile and possesses low falls risk.</p>
+              </div>
+              <div class="border border-slate-100 p-4 rounded-lg">
+                <span class="text-amber-700 font-extrabold text-lg">&ge; 14 seconds</span>
+                <h4 class="font-semibold text-slate-900 text-xs mt-1">High Fall Risk</h4>
+                <p class="text-slate-500 text-2xs">Strongly correlates with increased incidence of post-fracture community falls.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Handgrip Detail -->
+          <div id="metric-panel-handgrip" class="metric-detail-panel hidden space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">Handgrip Strength Test</h3>
+                <p class="text-xs text-slate-500">Correlates to relative appendicular muscle mass and overall frailty indices.</p>
+              </div>
+              <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-1 rounded">AWGS 2019 Cutoffs</span>
+            </div>
+
+            <p class="text-xs text-slate-600">
+              Low handgrip strength correlates directly with prolonged recovery times, slower progression in functional walking aid use, and higher long-term mortality rates.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-blue-50/50 border border-blue-100 p-4 rounded-xl flex items-center space-x-4">
+                <i data-lucide="user" class="w-8 h-8 text-blue-600 flex-shrink-0"></i>
+                <div>
+                  <h4 class="text-slate-900 font-bold text-sm">Male Cutoff</h4>
+                  <span class="text-xs font-semibold text-blue-800">Low Strength &lt; 28.0 kg</span>
+                </div>
+              </div>
+              <div class="bg-pink-50/50 border border-pink-100 p-4 rounded-xl flex items-center space-x-4">
+                <i data-lucide="user-round" class="w-8 h-8 text-pink-600 flex-shrink-0"></i>
+                <div>
+                  <h4 class="text-slate-900 font-bold text-sm">Female Cutoff</h4>
+                  <span class="text-xs font-semibold text-pink-800">Low Strength &lt; 18.0 kg</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 4: CLINICAL REASONING QUIZ -->
+    <section id="panel-quiz" class="tab-panel hidden space-y-8">
+      
+      <!-- Quiz Introduction -->
+      <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Clinical Reasoning Quiz</h3>
+          <p class="text-xs text-slate-500 mt-1">Test your critical thinking against clinical parameters from the official HA Guidelines.</p>
+        </div>
+        <div class="bg-teal-50 px-4 py-2 rounded-lg border border-teal-100">
+          <span class="text-xs font-bold text-teal-800">Target Score: 5 / 5 Correct</span>
+        </div>
+      </div>
+
+      <!-- Quiz Questions Grid -->
+      <div class="space-y-6">
+
+        <!-- Question 1 -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4 relative overflow-hidden" id="q1-container">
+          <div class="flex items-start space-x-3">
+            <span class="bg-slate-100 text-slate-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+            <div class="space-y-1">
+              <span class="bg-blue-100 text-blue-800 text-2xs font-bold px-2 py-0.5 rounded">Acute Post-op Clinical Reasoning</span>
+              <h4 class="font-bold text-slate-900 text-sm mt-1">
+                An 82-year-old female is Day 1 post-operative following a right posterior approach bipolar hemiarthroplasty. Her baseline vital signs are stable, and resting pain is rated 3/10 on NPRS. How should the junior therapist proceed with early mobilization?
+              </h4>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-9">
+            <button onclick="checkAnswer('q1', 'A')" class="option-btn-q1 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="A">
+              <strong>A.</strong> Defer mobilization until Day 3 post-op to ensure healing and avoid dislocation.
+            </button>
+            <button onclick="checkAnswer('q1', 'B')" class="option-btn-q1 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="B">
+              <strong>B.</strong> Initiate safe bedside transfer, standing, and walking training at least once daily.
+            </button>
+            <button onclick="checkAnswer('q1', 'C')" class="option-btn-q1 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="C">
+              <strong>C.</strong> Focus exclusively on bed-based deep breathing, ankle pumps, and upper limb exercises.
+            </button>
+            <button onclick="checkAnswer('q1', 'D')" class="option-btn-q1 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="D">
+              <strong>D.</strong> Mobilize without precautions, as a cemented bipolar prosthesis cannot dislocate.
+            </button>
+          </div>
+
+          <!-- Rationale Card (Hidden initially) -->
+          <div id="rationale-q1" class="hidden pl-9">
+            <div class="bg-emerald-50 border border-emerald-100 text-emerald-950 p-4 rounded-xl text-xs space-y-1">
+              <h5 class="font-bold">Correct Answer: B</h5>
+              <p class="leading-relaxed">
+                NICE Guidelines (CG124) and HA PT guidelines recommend starting mobilization (bedside transfer, standing, walking) at least once daily starting the day after surgery, unless strictly medically contraindicated. Waiting is unnecessary and increases the risk of hypostatic pneumonia, DVT, and deconditioning.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4 relative overflow-hidden" id="q2-container">
+          <div class="flex items-start space-x-3">
+            <span class="bg-slate-100 text-slate-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+            <div class="space-y-1">
+              <span class="bg-red-100 text-red-800 text-2xs font-bold px-2 py-0.5 rounded">Complication Safety Screening</span>
+              <h4 class="font-bold text-slate-900 text-sm mt-1">
+                While performing post-op evaluation on Day 3, you note the patient's operated calf is warm to touch, swollen (+2.5 cm circumference compared to contralateral leg), and painful. They deny chest pain or shortness of breath. Which action is strictly indicated?
+              </h4>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-9">
+            <button onclick="checkAnswer('q2', 'A')" class="option-btn-q2 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="A">
+              <strong>A.</strong> Perform deep friction massage on the calf to disperse fluid and reduce localized pain.
+            </button>
+            <button onclick="checkAnswer('q2', 'B')" class="option-btn-q2 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="B">
+              <strong>B.</strong> Instruct active ankle pumps with high repetition to facilitate localized blood flow.
+            </button>
+            <button onclick="checkAnswer('q2', 'C')" class="option-btn-q2 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="C">
+              <strong>C.</strong> Immediately suspend active mobility, keep the leg steady, and report suspected DVT to the medical team.
+            </button>
+            <button onclick="checkAnswer('q2', 'D')" class="option-btn-q2 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="D">
+              <strong>D.</strong> Request the nurse apply heat packs to resolve muscular stiffness.
+            </button>
+          </div>
+
+          <!-- Rationale Card -->
+          <div id="rationale-q2" class="hidden pl-9">
+            <div class="bg-emerald-50 border border-emerald-100 text-emerald-950 p-4 rounded-xl text-xs space-y-1">
+              <h5 class="font-bold">Correct Answer: C</h5>
+              <p class="leading-relaxed">
+                Asymmetry, redness, and calf swelling indicate suspected Deep Vein Thrombosis (DVT). Massages, physical therapy, or active movement are contraindicated to prevent dislodging the thrombus, which could lead to a fatal pulmonary embolism. Report to medical staff immediately for diagnostic screening (Doppler/D-dimer).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4 relative overflow-hidden" id="q3-container">
+          <div class="flex items-start space-x-3">
+            <span class="bg-amber-100 text-amber-800 text-2xs font-bold px-2 py-0.5 rounded">Outcome Interpretation</span>
+            <span class="bg-slate-100 text-slate-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+            <div class="space-y-1">
+              <h4 class="font-bold text-slate-900 text-sm mt-1">
+                Prior to planned discharge from Extended Care, an 80-year-old patient achieves an Elderly Mobility Scale (EMS) score of 12. According to guidelines, how should this score dictate discharge planning?
+              </h4>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-9">
+            <button onclick="checkAnswer('q3', 'A')" class="option-btn-q3 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="A">
+              <strong>A.</strong> Safe for direct independent discharge home without any additional caregiver support.
+            </button>
+            <button onclick="checkAnswer('q3', 'B')" class="option-btn-q3 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="B">
+              <strong>B.</strong> Patient requires high levels of care; discharge home necessitates a trained caregiver or placement in an eldercare facility.
+            </button>
+            <button onclick="checkAnswer('q3', 'C')" class="option-btn-q3 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="C">
+              <strong>C.</strong> Patient requires absolute, total dependency in all self-care, indicating ICU care.
+            </button>
+            <button onclick="checkAnswer('q3', 'D')" class="option-btn-q3 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="D">
+              <strong>D.</strong> Discontinue all rehabilitation exercises as the patient has reached their maximal functional plateau.
+            </button>
+          </div>
+
+          <!-- Rationale Card -->
+          <div id="rationale-q3" class="hidden pl-9">
+            <div class="bg-emerald-50 border border-emerald-100 text-emerald-950 p-4 rounded-xl text-xs space-y-1">
+              <h5 class="font-bold">Correct Answer: B</h5>
+              <p class="leading-relaxed">
+                Smith (1994) clinical interpretation guidelines state that EMS scores between 10-13 indicate high care needs, requiring either a caregiver or residential home assistance. Safe independent discharge home requires a score between 14-20.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4 relative overflow-hidden" id="q4-container">
+          <div class="flex items-start space-x-3">
+            <span class="bg-slate-100 text-slate-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+            <div class="space-y-1">
+              <span class="bg-purple-100 text-purple-800 text-2xs font-bold px-2 py-0.5 rounded">Hemiarthroplasty Protection</span>
+              <h4 class="font-bold text-slate-900 text-sm mt-1">
+                You are advising a caregiver on home modifications and positioning rules for a patient who had a southern approach hemiarthroplasty. Which layout recommendation violates post-op safety guidelines?
+              </h4>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-9">
+            <button onclick="checkAnswer('q4', 'A')" class="option-btn-q4 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="A">
+              <strong>A.</strong> Place a raised toilet seat (RTS) on the toilet to prevent excessive flexion.
+            </button>
+            <button onclick="checkAnswer('q4', 'B')" class="option-btn-q4 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="B">
+              <strong>B.</strong> Place a comfortable low, soft lounge chair in the living room for resting.
+            </button>
+            <button onclick="checkAnswer('q4', 'C')" class="option-btn-q4 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="C">
+              <strong>C.</strong> Place a rigid straight-back wooden chair (19" height) for meals.
+            </button>
+            <button onclick="checkAnswer('q4', 'D')" class="option-btn-q4 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="D">
+              <strong>D.</strong> Place a pillow between the legs when the patient lies on their side.
+            </button>
+          </div>
+
+          <!-- Rationale Card -->
+          <div id="rationale-q4" class="hidden pl-9">
+            <div class="bg-emerald-50 border border-emerald-100 text-emerald-950 p-4 rounded-xl text-xs space-y-1">
+              <h5 class="font-bold">Correct Answer: B</h5>
+              <p class="leading-relaxed">
+                Posterior and posterolateral approaches (sometimes referred to as southern) disrupt posterior structures, making joint dislocation high-risk during hip flexion >90°, internal rotation, or adduction. Low, soft couches force deep hip flexion (&gt;90°) and are strictly contraindicated.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4 relative overflow-hidden" id="q5-container">
+          <div class="flex items-start space-x-3">
+            <span class="bg-slate-100 text-slate-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">5</span>
+            <div class="space-y-1">
+              <span class="bg-teal-100 text-teal-800 text-2xs font-bold px-2 py-0.5 rounded">Sarcopenia Integration</span>
+              <h4 class="font-bold text-slate-900 text-sm mt-1">
+                A 74-year-old female patient with an intertrochanteric fracture (repaired with SHS) is tested for Handgrip Strength on Day 5 post-op. She scores a maximum of 14.2 kg. According to AWGS 2019 standards, how should this score guide you?
+              </h4>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-9">
+            <button onclick="checkAnswer('q5', 'A')" class="option-btn-q5 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="A">
+              <strong>A.</strong> This is normal strength; progress physical training with high resistance directly.
+            </button>
+            <button onclick="checkAnswer('q5', 'B')" class="option-btn-q5 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="B">
+              <strong>B.</strong> The score indicates low handgrip strength (&lt;18 kg for females), classifying her with probable sarcopenia. Anticipate potential delays in walking aid progression and high frailty risk.
+            </button>
+            <button onclick="checkAnswer('q5', 'C')" class="option-btn-q5 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="C">
+              <strong>C.</strong> Handgrip strength is only relevant for upper limb conditions; ignore this finding.
+            </button>
+            <button onclick="checkAnswer('q5', 'D')" class="option-btn-q5 w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors" data-option="D">
+              <strong>D.</strong> Order immediate bed rest to prevent any further energy depletion.
+            </button>
+          </div>
+
+          <!-- Rationale Card -->
+          <div id="rationale-q5" class="hidden pl-9">
+            <div class="bg-emerald-50 border border-emerald-100 text-emerald-950 p-4 rounded-xl text-xs space-y-1">
+              <h5 class="font-bold">Correct Answer: B</h5>
+              <p class="leading-relaxed">
+                The Asian Working Group for Sarcopenia (AWGS 2019) cutoff for low handgrip strength is &lt;18.0 kg for women (&lt;28.0 kg for men). Low grip strength correlates with delayed ambulation, poor functional independence, and higher early mortality. Therapists should plan progressive, structured nutritional and resistance training.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer Info -->
+  <footer class="bg-white border-t border-slate-200 mt-16 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 space-y-2">
+      <p class="font-semibold text-slate-700">This is AI generated clinical infographic by AHNH PTD</p>
+      <p>Source Guideline Ref: Document No. HAHO-COC-GL-PHY-013-v01. Issue Date: 25/11/2025.</p>
+      <p>This is AI generated clinical infographic summary of clinical practice guideline. Staff should refer to HA Intranet documents if in doubt.</p>
+    </div>
+  </footer>
+
+  <!-- Interactivity Scripts -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Tab switcher
+    function switchTab(tabName) {
+      // Hide all panels
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.add('hidden');
+      });
+      // Show active panel
+      document.getElementById('panel-' + tabName).classList.remove('hidden');
+
+      // Update Tab button states
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = "tab-btn flex-1 py-3 px-4 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 hover:bg-slate-100 hover:text-slate-950";
+      });
+
+      // Highlight active tab
+      const activeBtn = document.getElementById('tab-' + tabName);
+      activeBtn.className = "tab-btn flex-1 py-3 px-4 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 bg-teal-600 text-white shadow-sm";
+    }
+
+    // Metric visualizer switcher
+    function showMetric(metricName) {
+      // Hide all details
+      document.querySelectorAll('.metric-detail-panel').forEach(p => p.classList.add('hidden'));
+      // Show selected detail
+      document.getElementById('metric-panel-' + metricName).classList.remove('hidden');
+
+      // Reset button styles
+      ['mfac', 'ems', 'tug', 'handgrip'].forEach(id => {
+        const btn = document.getElementById('btn-metric-' + id);
+        btn.className = "w-full text-left p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-colors flex justify-between items-center";
+      });
+
+      // Style active button
+      const activeBtn = document.getElementById('btn-metric-' + metricName);
+      activeBtn.className = "w-full text-left p-3 rounded-lg border border-teal-600 bg-teal-50 text-teal-900 font-semibold text-xs transition-colors flex justify-between items-center";
+    }
+
+    // MCQ Interactive state handler
+    const correctAnswers = {
+      q1: 'B',
+      q2: 'C',
+      q3: 'B',
+      q4: 'B',
+      q5: 'B'
+    };
+
+    function checkAnswer(questionId, selectedOption) {
+      const correct = correctAnswers[questionId];
+      const buttons = document.querySelectorAll('.option-btn-' + questionId);
+      
+      buttons.forEach(btn => {
+        const opt = btn.getAttribute('data-option');
+        // Disable further clicking of this question
+        btn.disabled = true;
+
+        if (opt === correct) {
+          // Highlight correct green
+          btn.className = "w-full text-left p-3.5 rounded-lg border-2 border-emerald-600 bg-emerald-50 text-emerald-950 text-xs font-bold transition-colors";
+        } else if (opt === selectedOption) {
+          // Highlight selected wrong option red
+          btn.className = "w-full text-left p-3.5 rounded-lg border-2 border-red-600 bg-red-50 text-red-950 text-xs font-bold transition-colors";
+        } else {
+          // Fade other options
+          btn.className = "w-full text-left p-3.5 rounded-lg border border-slate-100 bg-slate-50 text-slate-400 text-xs font-medium transition-colors cursor-not-allowed";
+        }
+      });
+
+      // Show rationale block
+      const rationaleBox = document.getElementById('rationale-' + questionId);
+      rationaleBox.classList.remove('hidden');
+
+      // Style correct container with soft background glow
+      const container = document.getElementById(questionId + '-container');
+      if (selectedOption === correct) {
+        container.classList.add('border-emerald-200', 'bg-emerald-50/10');
+      } else {
+        container.classList.add('border-red-200', 'bg-red-50/10');
+      }
+    }
+  </script>
+</body>
+</html>
