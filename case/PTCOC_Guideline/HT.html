@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physiotherapy for Hypertension in Primary Care — Clinical Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14273B;
+    --muted:#57646F;
+    --muted-2:#7C8791;
+    --paper:#EEF0EA;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8F4;
+    --line:#D9DCD2;
+    --sys:#C1442D;      /* systolic / primary alert accent */
+    --sys-dim:#F4DED8;
+    --dia:#1F7A6C;      /* diastolic / safe accent */
+    --dia-dim:#DCEAE6;
+    --caution:#B9812B;  /* amber / caution accent */
+    --caution-dim:#F1E3C8;
+    --ink-inverse:#F3F1E9;
+    --radius:18px;
+    --radius-sm:10px;
+    --font-display:'Space Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
+    --font-body:'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    --font-mono:'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+    --maxw:1120px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,h4{
+    font-family:var(--font-display);
+    color:var(--ink);
+    line-height:1.15;
+    margin:0 0 .5em 0;
+    letter-spacing:-0.01em;
+  }
+  p{margin:0 0 1em 0;}
+  ul{margin:0 0 1em 0; padding-left:1.2em;}
+  li{margin-bottom:.4em;}
+  a{color:var(--sys);}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+
+  /* ---------- top progress bar ---------- */
+  #scroll-progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg, var(--sys), var(--caution));
+    z-index:1000; transition:width .08s linear;
+  }
+
+  /* ---------- header / nav ---------- */
+  header.site{
+    position:sticky; top:0; z-index:900;
+    background:rgba(238,240,234,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding-top:3px;
+  }
+  .brand-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px 10px; max-width:var(--maxw); margin:0 auto; gap:16px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--font-mono); font-size:13px; color:var(--muted);
+    white-space:nowrap;
+  }
+  .brand .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--sys);
+    box-shadow:0 0 0 3px var(--sys-dim);
+  }
+  .brand strong{color:var(--ink); font-weight:600;}
+
+  nav.tabs{
+    display:flex; gap:6px; overflow-x:auto;
+    padding:0 24px 12px; max-width:var(--maxw); margin:0 auto;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs a{
+    flex:0 0 auto;
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    text-decoration:none;
+    color:var(--muted);
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:7px 13px;
+    border-radius:999px;
+    white-space:nowrap;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  nav.tabs a:hover{border-color:var(--sys); color:var(--sys);}
+  nav.tabs a.active{
+    background:var(--ink); color:var(--ink-inverse); border-color:var(--ink);
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    background:var(--ink);
+    color:var(--ink-inverse);
+    overflow:hidden;
+    padding:64px 0 56px;
+  }
+  .hero .wrap{position:relative; z-index:2;}
+  .hero-grid{
+    display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:center;
+  }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:12.5px; letter-spacing:.08em;
+    text-transform:uppercase; color:#E8A895; margin-bottom:14px; display:block;
+  }
+  .hero h1{
+    font-size:clamp(2rem, 4.2vw, 3.1rem);
+    color:#fff;
+    max-width:16ch;
+  }
+  .hero p.lede{
+    color:#C7CDD3; font-size:clamp(1rem,1.6vw,1.15rem); max-width:46ch; margin-top:14px;
+  }
+  .hero .meta-line{
+    font-family:var(--font-mono); font-size:12.5px; color:#8FA0A8; margin-top:22px;
+  }
+  .hero-cta{
+    display:inline-flex; gap:10px; margin-top:26px; flex-wrap:wrap;
+  }
+  .btn{
+    font-family:var(--font-mono); font-size:13.5px; font-weight:500;
+    padding:11px 20px; border-radius:999px; text-decoration:none;
+    display:inline-block; cursor:pointer; border:1px solid transparent;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--sys); color:#fff;}
+  .btn-primary:hover{box-shadow:0 6px 18px rgba(193,68,45,.35);}
+  .btn-ghost{background:transparent; color:#fff; border-color:rgba(255,255,255,.35);}
+
+  /* monitor readout */
+  .monitor{
+    background:#0D1A26;
+    border:1px solid #2A3D4C;
+    border-radius:var(--radius);
+    padding:22px 22px 16px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.6);
+  }
+  .monitor-row{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
+  .monitor-label{font-family:var(--font-mono); font-size:11px; color:#7FA79A; letter-spacing:.08em;}
+  .monitor-readout{
+    font-family:var(--font-mono); font-weight:600; font-size:clamp(2.4rem,5vw,3.4rem);
+    color:#F4EDE4; display:flex; align-items:baseline; gap:8px;
+  }
+  .monitor-readout .sys{color:#F0806A;}
+  .monitor-readout .dia{color:#5FCBB4;}
+  .monitor-readout .slash{color:#4B5F6C; font-weight:400;}
+  .monitor-unit{font-family:var(--font-mono); font-size:13px; color:#5F7480;}
+  .waveform{width:100%; height:64px; margin-top:10px; display:block;}
+  .waveform path{
+    fill:none; stroke:#5FCBB4; stroke-width:2;
+    stroke-dasharray:600; stroke-dashoffset:600;
+    animation:draw 3.2s linear infinite;
+  }
+  @keyframes draw{
+    0%{stroke-dashoffset:600;}
+    100%{stroke-dashoffset:-600;}
+  }
+  .monitor-foot{
+    display:flex; justify-content:space-between; margin-top:10px;
+    font-family:var(--font-mono); font-size:11px; color:#4B5F6C;
+  }
+
+  /* ---------- section shell ---------- */
+  section.panel{padding:64px 0; border-bottom:1px solid var(--line);}
+  section.panel:last-of-type{border-bottom:none;}
+  .section-head{max-width:640px; margin-bottom:36px;}
+  .section-num{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--sys);
+    letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:10px;
+  }
+  .section-head h2{font-size:clamp(1.5rem, 2.6vw, 2.1rem);}
+  .section-head p{color:var(--muted); font-size:1.02rem;}
+
+  /* card grid utilities */
+  .grid{display:grid; gap:18px;}
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  .grid-4{grid-template-columns:repeat(4,1fr);}
+  @media (max-width:880px){
+    .grid-2, .grid-3, .grid-4{grid-template-columns:1fr;}
+    .hero-grid{grid-template-columns:1fr;}
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px;
+  }
+  .card h3{font-size:1.05rem; margin-bottom:8px;}
+  .card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:11px;
+    color:var(--muted); background:var(--surface-2); border:1px solid var(--line);
+    padding:3px 9px; border-radius:999px; margin-bottom:10px;
+  }
+
+  /* stat strip */
+  .stat{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; text-align:left;
+  }
+  .stat .num{
+    font-family:var(--font-mono); font-weight:700; font-size:clamp(1.8rem,3vw,2.4rem);
+    color:var(--sys); display:block;
+  }
+  .stat .label{color:var(--muted); font-size:.92rem; margin-top:4px;}
+
+  /* classification tables */
+  .table-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface);}
+  table{border-collapse:collapse; width:100%; min-width:560px; font-size:.92rem;}
+  table.compact{min-width:640px;}
+  th,td{padding:11px 14px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap;}
+  thead th{
+    font-family:var(--font-mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--muted); background:var(--surface-2);
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  td.hl{color:var(--sys); font-weight:600; font-family:var(--font-mono);}
+
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media(max-width:780px){.two-col{grid-template-columns:1fr;}}
+
+  /* pill legend */
+  .legend{display:flex; gap:16px; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin-top:10px;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .swatch{width:11px; height:11px; border-radius:3px; display:inline-block;}
+
+  /* evidence rows */
+  .ev-row{
+    display:grid; grid-template-columns:120px 1fr; gap:18px; align-items:start;
+    padding:16px 0; border-bottom:1px solid var(--line);
+  }
+  .ev-row:last-child{border-bottom:none;}
+  .ev-num{font-family:var(--font-mono); font-weight:700; font-size:1.5rem; color:var(--dia);}
+  .ev-num small{display:block; font-family:var(--font-mono); font-size:11px; color:var(--muted); font-weight:400; margin-top:2px;}
+  @media(max-width:600px){.ev-row{grid-template-columns:1fr;} .ev-num{display:flex; gap:8px; align-items:baseline;}}
+
+  /* BP gauge - signature component */
+  .gauge-block{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:24px;}
+  .gauge-title{font-family:var(--font-mono); font-size:12.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:16px;}
+  .gauge{position:relative; margin-bottom:34px;}
+  .gauge:last-child{margin-bottom:0;}
+  .gauge-label-row{display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:12px; color:var(--muted); margin-bottom:6px;}
+  .gauge-track{
+    position:relative; height:26px; border-radius:8px; overflow:visible;
+    background:linear-gradient(90deg, var(--dia-dim) 0%, var(--dia-dim) var(--z1,66%), var(--caution-dim) var(--z1,66%), var(--caution-dim) var(--z2,83%), var(--sys-dim) var(--z2,83%), var(--sys-dim) 100%);
+    border:1px solid var(--line);
+  }
+  .gauge-marker{
+    position:absolute; top:-6px; bottom:-6px; width:2px; background:var(--ink);
+  }
+  .gauge-marker .flag{
+    position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+    font-family:var(--font-mono); font-size:11px; white-space:nowrap; color:var(--ink);
+    background:var(--surface); border:1px solid var(--line); padding:2px 7px; border-radius:6px;
+  }
+  .gauge-scale{display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10.5px; color:var(--muted-2); margin-top:6px;}
+  .gauge-zones-legend{display:flex; gap:14px; flex-wrap:wrap; margin-top:14px; font-size:.82rem; color:var(--muted);}
+
+  /* accordion (details/summary) */
+  details.acc{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:0; margin-bottom:14px; overflow:hidden;
+  }
+  details.acc[open]{border-color:var(--sys);}
+  details.acc summary{
+    list-style:none; cursor:pointer; padding:18px 22px; font-family:var(--font-display);
+    font-weight:600; font-size:1.02rem; display:flex; justify-content:space-between; align-items:center;
+    gap:12px;
+  }
+  details.acc summary::-webkit-details-marker{display:none;}
+  details.acc summary .plus{
+    font-family:var(--font-mono); font-size:20px; color:var(--sys); transition:transform .2s ease; flex:0 0 auto;
+  }
+  details.acc[open] summary .plus{transform:rotate(45deg);}
+  .acc-body{padding:0 22px 22px; color:var(--muted); font-size:.96rem;}
+  .acc-body h4{font-size:.88rem; text-transform:uppercase; letter-spacing:.04em; font-family:var(--font-mono); color:var(--ink); margin:14px 0 6px;}
+  .acc-body ul{margin-bottom:0;}
+  .warn-box{
+    display:flex; gap:10px; align-items:flex-start; background:var(--sys-dim); border:1px solid #E3B4A7;
+    border-radius:var(--radius-sm); padding:12px 14px; margin:14px 0; font-size:.9rem; color:#7A2C1B;
+  }
+  .warn-box b{color:#7A2C1B;}
+
+  /* exclusion criteria list */
+  .exclusion-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  @media(max-width:700px){.exclusion-grid{grid-template-columns:1fr;}}
+  .exclusion-item{
+    display:flex; gap:12px; align-items:flex-start; background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius-sm); padding:14px 16px;
+  }
+  .exclusion-item .x{
+    font-family:var(--font-mono); color:var(--sys); font-weight:700; font-size:1.1rem; flex:0 0 auto;
+  }
+
+  /* FITT prescription cards */
+  .fitt-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:22px;}
+  .fitt-card h3{display:flex; align-items:center; gap:10px;}
+  .fitt-card .swatch-big{width:14px; height:14px; border-radius:4px;}
+  .fitt-row{display:grid; grid-template-columns:110px 1fr; gap:12px; padding:10px 0; border-bottom:1px dashed var(--line); font-size:.92rem;}
+  .fitt-row:last-child{border-bottom:none;}
+  .fitt-key{font-family:var(--font-mono); font-size:11.5px; text-transform:uppercase; color:var(--muted); letter-spacing:.04em;}
+
+  /* pathway (sequential steps - legitimate numbering) */
+  .pathway{position:relative; padding-left:0;}
+  .step{
+    display:grid; grid-template-columns:52px 1fr; gap:18px; padding:22px 0; border-bottom:1px solid var(--line);
+  }
+  .step:last-child{border-bottom:none;}
+  .step-num{
+    font-family:var(--font-mono); font-weight:700; font-size:1.3rem; color:var(--surface);
+    background:var(--ink); width:42px; height:42px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .step h3{margin-bottom:6px;}
+  .step .sub{font-size:.9rem; color:var(--muted);}
+
+  /* intensity table small */
+  .rpe-scale{display:flex; flex-direction:column; gap:6px;}
+  .rpe-row{display:grid; grid-template-columns:110px 90px 1fr; gap:10px; align-items:center; font-size:.86rem;}
+  .rpe-bar{height:10px; border-radius:6px;}
+
+  /* maintenance tips */
+  .tip-list{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  @media(max-width:700px){.tip-list{grid-template-columns:1fr;}}
+  .tip{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px 16px; font-size:.92rem;}
+  .tip b{display:block; font-family:var(--font-display); margin-bottom:4px;}
+
+  /* ---------- quiz ---------- */
+  .quiz-shell{background:var(--ink); border-radius:24px; padding:8px;}
+  .quiz-inner{background:var(--surface); border-radius:18px; padding:36px;}
+  @media(max-width:600px){.quiz-inner{padding:22px;}}
+  .quiz-score-bar{
+    display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:12.5px; color:var(--muted);
+    border:1px solid var(--line); border-radius:999px; padding:10px 18px; margin-bottom:28px;
+    background:var(--surface-2); position:sticky; top:96px; z-index:10;
+  }
+  .quiz-score-bar .score-num{color:var(--ink); font-weight:700;}
+  .qcard{
+    border:1px solid var(--line); border-radius:var(--radius); padding:24px; margin-bottom:22px;
+    background:var(--surface);
+  }
+  .qcard .qhead{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .qcard .qeyebrow{font-family:var(--font-mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--sys);}
+  .scenario{
+    font-family:var(--font-mono); font-size:.88rem; line-height:1.6; color:var(--ink);
+    background:var(--surface-2); border-left:3px solid var(--dia); border-radius:0 8px 8px 0;
+    padding:14px 16px; margin-bottom:16px;
+  }
+  .qtext{font-weight:600; margin-bottom:14px; font-size:1.02rem;}
+  .options{display:flex; flex-direction:column; gap:10px;}
+  .opt-btn{
+    display:flex; gap:12px; align-items:flex-start; text-align:left;
+    border:1px solid var(--line); background:var(--surface); border-radius:var(--radius-sm);
+    padding:13px 16px; font-family:var(--font-body); font-size:.94rem; color:var(--ink);
+    cursor:pointer; transition:border-color .15s ease, background .15s ease, transform .1s ease;
+  }
+  .opt-btn:hover:not(:disabled){border-color:var(--ink); transform:translateX(2px);}
+  .opt-btn .letter{
+    font-family:var(--font-mono); font-weight:700; color:var(--muted); flex:0 0 auto;
+    width:22px; height:22px; border-radius:50%; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:.78rem;
+  }
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn.correct{background:var(--dia-dim); border-color:var(--dia);}
+  .opt-btn.correct .letter{background:var(--dia); color:#fff; border-color:var(--dia);}
+  .opt-btn.incorrect{background:var(--sys-dim); border-color:var(--sys);}
+  .opt-btn.incorrect .letter{background:var(--sys); color:#fff; border-color:var(--sys);}
+  .opt-btn.dim{opacity:.55;}
+
+  .rationale{
+    margin-top:16px; padding:16px 18px; border-radius:var(--radius-sm);
+    font-size:.92rem; display:none; border:1px solid; gap:10px;
+  }
+  .rationale.show{display:flex;}
+  .rationale.good{background:var(--dia-dim); border-color:var(--dia); color:#124840;}
+  .rationale.bad{background:var(--sys-dim); border-color:var(--sys); color:#7A2C1B;}
+  .rationale .icon{font-family:var(--font-mono); font-weight:700; flex:0 0 auto;}
+
+  .quiz-summary{
+    display:none; text-align:center; padding:34px 20px; border:1px solid var(--line); border-radius:var(--radius);
+    background:var(--surface-2); margin-top:8px;
+  }
+  .quiz-summary.show{display:block;}
+  .quiz-summary .big-score{font-family:var(--font-mono); font-weight:700; font-size:2.6rem; color:var(--ink);}
+  .quiz-summary p{color:var(--muted); max-width:44ch; margin:8px auto 20px;}
+
+  /* footer */
+  footer{padding:44px 0 60px; color:var(--muted-2); font-size:.85rem;}
+  footer .wrap{display:flex; flex-direction:column; gap:8px;}
+  footer strong{color:var(--muted);}
+
+  /* back to top */
+  #back-to-top{
+    position:fixed; right:20px; bottom:20px; z-index:800;
+    width:44px; height:44px; border-radius:50%; background:var(--ink); color:var(--ink-inverse);
+    display:flex; align-items:center; justify-content:center; border:none; cursor:pointer;
+    opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
+    font-family:var(--font-mono); font-size:16px;
+  }
+  #back-to-top.show{opacity:1; pointer-events:auto;}
+  #back-to-top:hover{transform:translateY(-2px);}
+
+  .fade-in{opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease;}
+  .fade-in.visible{opacity:1; transform:translateY(0);}
+
+  :focus-visible{outline:2px solid var(--sys); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<header class="site">
+  <div class="brand-row">
+    <div class="brand"><span class="dot"></span> HA · <strong>Physiotherapy for Hypertension</strong> · Primary Care</div>
+  </div>
+  <nav class="tabs" id="site-nav">
+    <a href="#hero" data-nav>Overview</a>
+    <a href="#condition" data-nav>Condition</a>
+    <a href="#evidence" data-nav>Evidence</a>
+    <a href="#safety" data-nav>Safety</a>
+    <a href="#fitt" data-nav>FITT</a>
+    <a href="#pathway" data-nav>Pathway</a>
+    <a href="#intensity" data-nav>Intensity</a>
+    <a href="#maintenance" data-nav>Adherence</a>
+    <a href="#quiz" data-nav>Quiz</a>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Junior Physiotherapist Education Module</span>
+      <h1>Exercise Prescription for Patients with Hypertension</h1>
+      <p class="lede">A clinical reference for physiotherapy-led management of hypertension in Hospital Authority primary care settings — classification, evidence, safety thresholds, FITT prescription, and a case-based knowledge check.</p>
+      <div class="meta-line">Adapted for education from: HA Head Office Manual · Issued 14/3/2024 · Review 14/3/2027</div>
+      <div class="hero-cta">
+        <a href="#condition" class="btn btn-primary">Start the guide ↓</a>
+        <a href="#quiz" class="btn btn-ghost">Jump to quiz</a>
+      </div>
+    </div>
+    <div class="monitor" aria-hidden="true">
+      <div class="monitor-row">
+        <span class="monitor-label">NIBP · CUFF</span>
+        <span class="monitor-label">mmHg</span>
+      </div>
+      <div class="monitor-readout">
+        <span class="sys">138</span><span class="slash">/</span><span class="dia">86</span>
+      </div>
+      <svg class="waveform" viewBox="0 0 600 64" preserveAspectRatio="none">
+        <path d="M0,40 L40,40 L52,10 L64,58 L76,40 L120,40 L132,20 L144,48 L156,40 L200,40 L212,10 L224,58 L236,40 L280,40 L292,20 L304,48 L316,40 L360,40 L372,10 L384,58 L396,40 L440,40 L452,20 L464,48 L476,40 L520,40 L532,10 L544,58 L556,40 L600,40" />
+      </svg>
+      <div class="monitor-foot">
+        <span>HR 68 bpm</span>
+        <span>Exercise screening panel</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 01 THE CONDITION ================= -->
+<section class="panel" id="condition">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">01 — The Condition</span>
+      <h2>Classification, definitions, and the scale of the problem</h2>
+      <p>Two major guidelines define hypertension differently. Knowing which cut-points your clinic applies matters when interpreting a chart and deciding if a patient meets exclusion criteria.</p>
+    </div>
+
+    <div class="two-col" style="margin-bottom:22px;">
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th colspan="3">2017 ACC / AHA</th></tr></thead>
+          <tbody>
+            <tr><td>Stage 1 Hypertension</td><td>130–139</td><td>or 80–89</td></tr>
+            <tr><td>Stage 2 Hypertension</td><td>≥140</td><td>or ≥90</td></tr>
+            <tr><td>Hypertensive Crisis</td><td class="hl">&gt;180</td><td class="hl">and/or &gt;120</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th colspan="3">2018 ESC / ESH — followed by HKCP</th></tr></thead>
+          <tbody>
+            <tr><td>Grade 1 Hypertension</td><td>140–159</td><td>and/or 90–99</td></tr>
+            <tr><td>Grade 2 Hypertension</td><td>160–179</td><td>and/or 100–109</td></tr>
+            <tr><td>Grade 3 Hypertension</td><td class="hl">≥180</td><td class="hl">and/or ≥110</td></tr>
+            <tr><td>Isolated Systolic HTN</td><td>≥140</td><td>and &lt;90</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p style="font-size:.85rem; color:var(--muted-2); margin-bottom:32px;">Systolic (mmHg) | Diastolic (mmHg). The Hong Kong College of Physicians and the HK Reference Framework for Hypertension Care both adopt the ESC/ESH cut-point of ≥140/90 mmHg.</p>
+
+    <div class="grid grid-3" style="margin-bottom:40px;">
+      <div class="card">
+        <span class="tag">&gt;90% of cases</span>
+        <h3>Essential Hypertension</h3>
+        <p style="color:var(--muted); font-size:.92rem;">High blood pressure with no identifiable secondary medical cause — the type most PTs will encounter in primary care.</p>
+      </div>
+      <div class="card">
+        <span class="tag">15–30% of raised office BP</span>
+        <h3>White Coat Hypertension</h3>
+        <p style="color:var(--muted); font-size:.92rem;">Elevated in-clinic reading but normal ambulatory awake BP. Home BP records are recommended to confirm before labelling a patient hypertensive.</p>
+      </div>
+      <div class="card">
+        <span class="tag">≥3 drug classes, max dose</span>
+        <h3>Resistant Hypertension</h3>
+        <p style="color:var(--muted); font-size:.92rem;">BP remains elevated despite 3 optimised antihypertensive classes (or needs 4+). Requires confirmed medication adherence and exclusion of white-coat effect.</p>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:8px;">
+      <span class="section-num">Scale of the problem</span>
+      <h2 style="font-size:1.4rem;">Epidemiology, at a glance</h2>
+    </div>
+    <div class="grid grid-4" id="stat-grid">
+      <div class="stat fade-in"><span class="num" data-count="1.28" data-suffix="B">0</span><span class="label">Adults aged 30–79 worldwide with hypertension (up from 650M, 30 years earlier)</span></div>
+      <div class="stat fade-in"><span class="num" data-count="19.5" data-suffix="%">0</span><span class="label">Of Hong Kong residents aged 15+ diagnosed with hypertension (Population Health Survey 2020–22)</span></div>
+      <div class="stat fade-in"><span class="num" data-count="10.8" data-suffix="M">0</span><span class="label">Lives claimed worldwide by high blood pressure over 1990–2019 (Global Burden of Disease)</span></div>
+      <div class="stat fade-in"><span class="num" data-count="50.2" data-suffix="%">0</span><span class="label">Prevalence in Hong Kong residents aged 65 and over</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 EVIDENCE ================= -->
+<section class="panel" id="evidence">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">02 — Why Physiotherapy</span>
+      <h2>The evidence base for exercise as antihypertensive therapy</h2>
+      <p>Physical inactivity, high sodium intake, tobacco/alcohol use, and overweight/obesity are WHO-recognised modifiable risk factors — all directly addressable through physiotherapy-led exercise prescription and education.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:28px;">
+      <div class="ev-row">
+        <div class="ev-num">5–7<small>mmHg</small></div>
+        <div>
+          <h3>Aerobic training</h3>
+          <p style="color:var(--muted); font-size:.92rem;">Consistently lowers resting blood pressure across meta-analyses of RCTs — an effect comparable to most single antihypertensive medications.</p>
+        </div>
+      </div>
+      <div class="ev-row">
+        <div class="ev-num">2–3<small>mmHg</small></div>
+        <div>
+          <h3>Dynamic resistance training</h3>
+          <p style="color:var(--muted); font-size:.92rem;">Reduces BP via increased nitric oxide synthesis and reduced sympathetic/adrenaline discharge. Moderate-to-vigorous intensity (&gt;60% 1RM), ≥2×/week, ≥8 weeks shows the strongest effect.</p>
+        </div>
+      </div>
+      <div class="ev-row">
+        <div class="ev-num">≤24<small>hours</small></div>
+        <div>
+          <h3>Post-exercise hypotension</h3>
+          <p style="color:var(--muted); font-size:.92rem;">A single 30–50 minute bout of aerobic exercise, especially at vigorous intensity, can reduce ambulatory BP for up to 24 hours — more pronounced in patients with hypertension.</p>
+        </div>
+      </div>
+      <div class="ev-row">
+        <div class="ev-num">4–54<small>mmHg SBP</small></div>
+        <div>
+          <h3>Slow breathing exercise</h3>
+          <p style="color:var(--muted); font-size:.92rem;">Respiratory rate &lt;10 breaths/min with prolonged, slow, deep expiration increases baroreflex sensitivity. Reported reductions: SBP 4–54.22 mmHg, DBP 3–17 mmHg.</p>
+        </div>
+      </div>
+      <div class="ev-row">
+        <div class="ev-num">1<small>mmHg / kg</small></div>
+        <div>
+          <h3>Weight reduction</h3>
+          <p style="color:var(--muted); font-size:.92rem;">Roughly 1 mmHg SBP reduction per kilogram of weight lost in overweight/obese patients. A ≥5% weight loss is recommended to meaningfully improve BP and cholesterol.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Tai Chi — the adherence-friendly alternative</h3>
+        <p style="color:var(--muted); font-size:.92rem;">Aerobic exercise is evidence-based, but adherence in hypertensive patients is reported at under one-third. Tai Chi is safe, low-impact, inexpensive, and equipment-free — multiple systematic reviews support its antihypertensive effect via reduced sympathetic excitability.</p>
+      </div>
+      <div class="card">
+        <h3>HIIT — promising, but progress gradually</h3>
+        <p style="color:var(--muted); font-size:.92rem;">High-Intensity Interval Training shows benefit for BP control in some studies, but progression for hypertensive patients should always be gradual — avoid large jumps in Frequency, Intensity, Time, or Type at once.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 SAFETY & PROGRAM DESIGN ================= -->
+<section class="panel" id="safety">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">03 — Safety-Critical</span>
+      <h2>Designing the physiotherapy exercise program</h2>
+      <p>Before any prescription: confirm the patient fits the target group, screen out exclusion criteria, and understand exactly how abnormal blood pressure and medications change your plan.</p>
+    </div>
+
+    <div class="grid grid-2" style="margin-bottom:30px;">
+      <div class="card">
+        <h3>Objectives</h3>
+        <ul style="font-size:.92rem; color:var(--muted);">
+          <li>Improve health status and promote active lifestyle through self-management</li>
+          <li>Empower overweight/obese patients with weight-management knowledge</li>
+          <li>Prevent or reduce disease-related complications</li>
+          <li>Build patient knowledge of exercise therapy for hypertension</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Target patients</h3>
+        <ul style="font-size:.92rem; color:var(--muted);">
+          <li>Patients with hypertension under regular follow-up in HA GOPCs</li>
+          <li>Patients with overweight or obesity</li>
+        </ul>
+        <h3 style="margin-top:14px;">Exclusion criteria</h3>
+        <div class="exclusion-grid">
+          <div class="exclusion-item"><span class="x">×</span><span>Unstable haemodynamic status or medical conditions (e.g. compromising cardiac/pulmonary problems)</span></div>
+          <div class="exclusion-item"><span class="x">×</span><span>Acute musculoskeletal comorbidities (irritable joint pain, joint instability, fracture, neuropathy)</span></div>
+          <div class="exclusion-item"><span class="x">×</span><span>High fall risk</span></div>
+          <div class="exclusion-item"><span class="x">×</span><span>Poor cognitive function</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signature BP gauge component -->
+    <div class="gauge-block" style="margin-bottom:26px;">
+      <div class="gauge-title">Blood Pressure Safety Gauge — two different checkpoints</div>
+
+      <div class="gauge">
+        <div class="gauge-label-row"><span>Pre-exercise resting screen</span><span>Systolic (mmHg)</span></div>
+        <div class="gauge-track" style="--z1:66%; --z2:83%;">
+          <div class="gauge-marker" style="left:66%;"><span class="flag">160</span></div>
+          <div class="gauge-marker" style="left:83%;"><span class="flag">200</span></div>
+        </div>
+        <div class="gauge-scale"><span>0</span><span>80</span><span>160</span><span>200</span><span>240</span></div>
+      </div>
+
+      <div class="gauge">
+        <div class="gauge-label-row"><span>Pre-exercise resting screen</span><span>Diastolic (mmHg)</span></div>
+        <div class="gauge-track" style="--z1:60%; --z2:83%;">
+          <div class="gauge-marker" style="left:60%;"><span class="flag">100</span></div>
+          <div class="gauge-marker" style="left:83%;"><span class="flag">110</span></div>
+        </div>
+        <div class="gauge-scale"><span>0</span><span>40</span><span>100</span><span>110</span><span>120</span></div>
+      </div>
+
+      <div class="gauge">
+        <div class="gauge-label-row"><span>During-exercise monitoring ceiling</span><span>Systolic (mmHg)</span></div>
+        <div class="gauge-track" style="--z1:92%; --z2:92%;">
+          <div class="gauge-marker" style="left:92%;"><span class="flag">220</span></div>
+        </div>
+        <div class="gauge-scale"><span>0</span><span>80</span><span>160</span><span>220</span><span>240</span></div>
+      </div>
+
+      <div class="gauge-zones-legend">
+        <span><span class="swatch" style="background:var(--dia-dim); border:1px solid var(--dia);"></span> Proceed with standard precaution</span>
+        <span><span class="swatch" style="background:var(--caution-dim); border:1px solid var(--caution);"></span> Seek medical advice / clearance first</span>
+        <span><span class="swatch" style="background:var(--sys-dim); border:1px solid var(--sys);"></span> Do not exercise / exceed ceiling</span>
+      </div>
+    </div>
+
+    <details class="acc" open>
+      <summary>6.4.1 Abnormal Blood Pressure <span class="plus">+</span></summary>
+      <div class="acc-body">
+        <div class="warn-box"><span class="icon">⛔</span><span><b>Absolute stop:</b> if resting SBP &gt;200 mmHg and/or DBP &gt;110 mmHg, no exercise should be performed that session.</span></div>
+        <h4>Seek medical clearance first</h4>
+        <p>Patients with Stage 2 hypertension (SBP ≥160 mmHg or DBP ≥100 mmHg) or complications such as left ventricular hypertrophy or diabetic retinopathy should seek medical advice before exercise. A medically supervised, symptom-limited exercise test is recommended before starting the program.</p>
+        <h4>During training</h4>
+        <p>Maintain SBP &lt;220 mmHg and/or DBP ≤105 mmHg throughout the session. For patients with unstable blood pressure, check BP between different exercise modes.</p>
+        <h4>Valsalva maneuver</h4>
+        <p>Breath-holding against a closed glottis (e.g. straining) can trigger extreme BP spikes, dizziness, and fainting. Cue patients to <b>exhale</b> during exertion, especially in resistance training — never hold the breath.</p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>6.4.2 Impact of Drug Effect <span class="plus">+</span></summary>
+      <div class="acc-body">
+        <h4>Beta-blockers</h4>
+        <p>Attenuate the heart-rate response to exercise, so target-HR formulas (e.g. 220-age) become unreliable. Use Rating of Perceived Exertion (RPE) instead to gauge and prescribe intensity.</p>
+        <h4>Alpha-blockers, calcium channel blockers, vasodilators</h4>
+        <p>May cause a sudden drop in blood pressure after exercise. Extend and closely monitor the cool-down — more than 10 minutes of light-to-moderate cardiorespiratory and muscular-endurance activity is advised.</p>
+        <h4>Beta-blockers and diuretics</h4>
+        <p>Can impair thermoregulation and provoke hypoglycaemia, especially in diabetic patients on insulin or insulin-secretagogues. Educate on heat-intolerance signs (headache, dizziness, heavy sweating, cramping, nausea) and hypoglycaemia signs (dizziness, sweating, blurred vision, tingling lips, hunger); advise proper food intake before exercising.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ================= 04 FITT ================= -->
+<section class="panel" id="fitt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">04 — Exercise Prescription</span>
+      <h2>FITT: what the major guidelines recommend</h2>
+      <p>Frequency, Intensity, Time and Type recommendations vary slightly by organisation — but converge on near-daily, moderate-intensity aerobic activity as the foundation.</p>
+    </div>
+
+    <div class="table-scroll" style="margin-bottom:34px;">
+      <table class="compact">
+        <thead>
+          <tr>
+            <th>FITT</th>
+            <th>JNC 8 / AHA-ACC Lifestyle WG</th>
+            <th>AHA (2013)</th>
+            <th>ACSM (2019)</th>
+            <th>ESH / ESC (2014)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Frequency</td><td>3–4 sessions/wk, ≥12 wks</td><td>Most days/wk</td><td>Most, preferably all days/wk</td><td>5–7 days/wk</td></tr>
+          <tr><td>Intensity</td><td>Moderate–vigorous</td><td>Moderate–high</td><td>Low/mod/vigorous — emphasis moderate</td><td>Moderate</td></tr>
+          <tr><td>Time</td><td>40 min/session</td><td>150 min/wk</td><td>20–30 min/day → 90–150+ min/wk</td><td>≥30 min/day</td></tr>
+          <tr><td>Type</td><td>Aerobic</td><td>Aerobic</td><td>Aerobic and/or resistance ± neuromotor/flexibility</td><td>Aerobic</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid grid-3">
+      <div class="fitt-card">
+        <h3><span class="swatch-big" style="background:var(--dia);"></span>Aerobic exercise</h3>
+        <div class="fitt-row"><span class="fitt-key">Type</span><span>Prolonged, rhythmic, large-muscle activity based on personal interest (e.g. walking with pedometer)</span></div>
+        <div class="fitt-row"><span class="fitt-key">Intensity</span><span>Moderate — via RPE, Talk Test, or HR monitoring</span></div>
+        <div class="fitt-row"><span class="fitt-key">Duration</span><span>≥30 min/day, ≥150 min/wk; may accumulate in bouts ≥10 min</span></div>
+        <div class="fitt-row"><span class="fitt-key">Frequency</span><span>5–7 days/wk</span></div>
+        <div class="fitt-row"><span class="fitt-key">Progression</span><span>Gradual — avoid large jumps in any FITT component</span></div>
+      </div>
+      <div class="fitt-card">
+        <h3><span class="swatch-big" style="background:var(--caution);"></span>Resistance training</h3>
+        <div class="fitt-row"><span class="fitt-key">Type</span><span>Machines, free weights, bands, or bodyweight</span></div>
+        <div class="fitt-row"><span class="fitt-key">Intensity</span><span>Moderate (~15RM); avoid sustained static work and Valsalva maneuver</span></div>
+        <div class="fitt-row"><span class="fitt-key">Duration</span><span>2–4 sets × 8–12 reps per major muscle group, ≥20 min/session</span></div>
+        <div class="fitt-row"><span class="fitt-key">Frequency</span><span>Minimum 2, preferably 3 non-consecutive days/wk</span></div>
+        <div class="fitt-row"><span class="fitt-key">Progression</span><span>Start 10–15 reps/set (16–20 for older/novice); raise resistance only after target reps consistently exceeded</span></div>
+      </div>
+      <div class="fitt-card">
+        <h3><span class="swatch-big" style="background:var(--sys);"></span>Flexibility & balance</h3>
+        <div class="fitt-row"><span class="fitt-key">Type</span><span>Static/dynamic stretching, yoga; balance work incl. tai chi for older adults</span></div>
+        <div class="fitt-row"><span class="fitt-key">Intensity</span><span>Stretch to point of tightness/slight discomfort; light–moderate balance work</span></div>
+        <div class="fitt-row"><span class="fitt-key">Duration</span><span>Hold 10–30 sec × 2–4 reps; balance training any duration</span></div>
+        <div class="fitt-row"><span class="fitt-key">Frequency</span><span>2–3+ days/wk</span></div>
+        <div class="fitt-row"><span class="fitt-key">Progression</span><span>Gradually increase duration and/or frequency over time</span></div>
+      </div>
+    </div>
+    <p style="margin-top:18px; font-size:.85rem; color:var(--muted-2);">Warm-up and cool-down should always be included in every training session for exercise safety.</p>
+  </div>
+</section>
+
+<!-- ================= 05 PATHWAY ================= -->
+<section class="panel" id="pathway">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">05 — Clinical Pathway</span>
+      <h2>Suggested content of the physiotherapy program</h2>
+      <p>A sequential pathway from referral to outcome measurement. Actual content may vary by local facilities and practice.</p>
+    </div>
+
+    <div class="pathway">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Documentation</h3>
+          <p class="sub">Referral source and reason for referral.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Subjective examination</h3>
+          <p class="sub">Check inclusion/exclusion criteria, exercise habit (IPAQ), barriers to exercise, stage of change in readiness of exercise, and past medical history.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Objective examination</h3>
+          <p class="sub">Body composition (BMI, waist circumference, hip-waist ratio, body fat/lean mass); blood pressure at clinic and/or home (home BP recommended if white-coat effect suspected); physical fitness assessments — 2-Minute Step Test, 30-Second Arm Curl, 30-Second Chair Stand; MSK assessment of lower limbs if indicated.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <h3>Goal setting — SMART</h3>
+          <p class="sub"><b>S</b>pecific · <b>M</b>easurable · <b>A</b>djustable · <b>R</b>ealistic · <b>T</b>ime-frame specific. Example: "Additional 30-minute level-ground brisk walking in the park, 3×/week for one month."</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <h3>Action planning</h3>
+          <p class="sub">Use a relapse-prevention model to identify high-risk situations (bad weather, inconvenient timing, being alone/tired, negative emotions) and build alternatives in advance (e.g. indoor stepping if it rains). Reinforce with AHA tips: personalise the activity, habitualise the routine, exercise with others, and start small with gradual progression.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div>
+          <h3>Exercise prescription</h3>
+          <p class="sub">Aerobic + resistance + flexibility/balance training, per the FITT tables above.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">7</div>
+        <div>
+          <h3>Outcome measurement</h3>
+          <p class="sub">BMI, blood pressure, body weight and composition, physical fitness assessments, stage of change, Chinese Self-Efficacy for Exercise Scale (SEE-C), IPAQ, KAP questionnaire, and patient satisfaction survey.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 INTENSITY ================= -->
+<section class="panel" id="intensity">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">06 — Measuring Intensity</span>
+      <h2>When heart rate isn't reliable</h2>
+      <p>Because beta-blockers blunt the HR response, perceived exertion and the Talk Test are essential alternatives for exercise intensity monitoring.</p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Heart Rate Reserve method</h3>
+        <p style="font-size:.9rem; color:var(--muted); font-family:var(--font-mono);">HRR = Max HR − Resting HR<br>Target HR = (HRR × %intensity) + Resting HR</p>
+        <p style="font-size:.9rem; color:var(--muted);">Moderate intensity = 40–59% HRR (or VO₂R) · Vigorous intensity = 60–89% HRR (or VO₂R)</p>
+      </div>
+      <div class="card">
+        <h3>Talk Test &amp; RPE by intensity</h3>
+        <div class="rpe-scale">
+          <div class="rpe-row"><span>Very light</span><span style="font-family:var(--font-mono);">RPE &lt;10</span><span>Speech unaffected from rest</span></div>
+          <div class="rpe-row"><span>Light</span><span style="font-family:var(--font-mono);">RPE 10–11</span><span>Comfortable speech possible</span></div>
+          <div class="rpe-row"><span><b>Moderate</b></span><span style="font-family:var(--font-mono);"><b>RPE 12–13</b></span><span>Speech possible with some difficulty</span></div>
+          <div class="rpe-row"><span>Vigorous</span><span style="font-family:var(--font-mono);">RPE 14–16</span><span>Speech limited to short phrases</span></div>
+          <div class="rpe-row"><span>Very vigorous</span><span style="font-family:var(--font-mono);">RPE 17–19</span><span>Speech is very difficult</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 07 MAINTENANCE ================= -->
+<section class="panel" id="maintenance">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">07 — Long-Term Adherence</span>
+      <h2>Keeping the habit after the program ends</h2>
+      <p>Self-efficacy is a key driver of long-term maintenance. Tools like HA Go can prescribe exercises, track performance, and give positive feedback to sustain patient confidence.</p>
+    </div>
+    <div class="tip-list">
+      <div class="tip"><b>Personalise</b>Choose activities that match the patient's own interests, not a generic prescription.</div>
+      <div class="tip"><b>Habitualise</b>Anchor exercise to a fixed time of day so it becomes routine rather than a decision.</div>
+      <div class="tip"><b>Socialise</b>Exercising with family or friends improves consistency and enjoyment.</div>
+      <div class="tip"><b>Progress gradually</b>Start with small, achievable bouts and build up — this also protects against BP-related risk.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="panel" id="quiz" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">Clinical Knowledge Quiz</span>
+      <h2>Five cases. Test your clinical reasoning.</h2>
+      <p>Each scenario reflects a real decision point from the manual's safety and program-design sections. Choose an option to reveal the rationale immediately.</p>
+    </div>
+
+    <div class="quiz-shell">
+      <div class="quiz-inner">
+        <div class="quiz-score-bar">
+          <span>Answered: <span class="score-num" id="answered-count">0</span> / 5</span>
+          <span>Score: <span class="score-num" id="score-count">0</span> / 5</span>
+        </div>
+
+        <div id="quiz-container"></div>
+
+        <div class="quiz-summary" id="quiz-summary">
+          <div class="big-score" id="final-score">0 / 5</div>
+          <p id="final-message">Complete all five cases to see your performance summary.</p>
+          <button class="btn btn-primary" id="retake-btn" style="border:none;">Retake quiz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Internal reference only.</strong> This page is an educational summary adapted from the HA Head Office "Manual on Physiotherapy Service for Patients with Hypertension in Primary Care Setting" (Issued 14/3/2024, Review 14/3/2027), prepared by the Chronic Disease Management &amp; Primary Health Specialty Group, PTCOC. Content is provided for internal physiotherapist education — always confirm against the current electronic version and use independent clinical judgement for individual patients.</p>
+  </div>
+</footer>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- scroll progress bar ---------- */
+  var progressEl = document.getElementById('scroll-progress');
+  var backBtn = document.getElementById('back-to-top');
+  function onScroll(){
+    var h = document.documentElement;
+    var scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressEl.style.width = scrolled + '%';
+    if(h.scrollTop > 600){ backBtn.classList.add('show'); } else { backBtn.classList.remove('show'); }
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  backBtn.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+
+  /* ---------- nav active state (scroll-spy) ---------- */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('nav.tabs a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function setActive(){
+    var pos = window.scrollY + 140;
+    var current = sections[0];
+    sections.forEach(function(sec){ if(sec.offsetTop <= pos) current = sec; });
+    navLinks.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  document.addEventListener('scroll', setActive, {passive:true});
+  window.addEventListener('load', setActive);
+
+  /* ---------- fade-in on view ---------- */
+  var fadeEls = document.querySelectorAll('.fade-in');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('visible'); }
+      });
+    }, {threshold:0.2});
+    fadeEls.forEach(function(el){ io.observe(el); });
+  } else {
+    fadeEls.forEach(function(el){ el.classList.add('visible'); });
+  }
+
+  /* ---------- animated stat counters ---------- */
+  var statNums = document.querySelectorAll('.num[data-count]');
+  function animateCount(el){
+    var target = parseFloat(el.getAttribute('data-count'));
+    var suffix = el.getAttribute('data-suffix') || '';
+    var isDecimal = target % 1 !== 0;
+    var duration = 1100, start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var val = target * progress;
+      el.textContent = (isDecimal ? val.toFixed(1) : Math.round(val)) + suffix;
+      if(progress < 1){ requestAnimationFrame(step); }
+    }
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window){
+    var io2 = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ animateCount(e.target); obs.unobserve(e.target); }
+      });
+    }, {threshold:0.4});
+    statNums.forEach(function(el){ io2.observe(el); });
+  } else {
+    statNums.forEach(function(el){ el.textContent = el.getAttribute('data-count') + (el.getAttribute('data-suffix')||''); });
+  }
+
+  /* ================= QUIZ ================= */
+  var quizData = [
+    {
+      scenario: "PATIENT: 68M, known hypertension, referred for group exercise class.\nPRE-SESSION SCREEN: Resting BP 205/98 mmHg. Patient reports feeling well and is keen to start.",
+      question: "As the treating physiotherapist, what is the most appropriate action?",
+      options: [
+        { text: "Proceed with a light walking warm-up while monitoring BP closely", correct: false },
+        { text: "Do not perform any exercise today; hold the session and arrange medical follow-up", correct: true },
+        { text: "Skip aerobic work but proceed with a full resistance training session", correct: false },
+        { text: "Let him rest 5 minutes, recheck BP, and proceed regardless of the result", correct: false }
+      ],
+      rationale: "The manual sets an absolute pre-exercise threshold: if resting SBP is greater than 200 mmHg and/or DBP is greater than 110 mmHg, no exercise should be performed. At 205 mmHg systolic, this patient exceeds that ceiling regardless of how he feels subjectively — the session should be deferred and referred back for medical review before any exercise is attempted."
+    },
+    {
+      scenario: "PATIENT: 74F, hypertension controlled on a beta-blocker.\nDURING SESSION: Target heart rate was calculated using the 220-minus-age formula, but her heart rate barely rises even during brisk walking, and the target zone is never reached.",
+      question: "What is the most appropriate way to monitor and prescribe her exercise intensity?",
+      options: [
+        { text: "Keep increasing her walking speed until the calculated target HR zone is reached", correct: false },
+        { text: "Use Rating of Perceived Exertion (RPE) or the Talk Test instead of a target heart rate", correct: true },
+        { text: "Stop aerobic training altogether and prescribe flexibility exercise only", correct: false },
+        { text: "Continue using the same HR formula but recheck her pulse every 5 minutes", correct: false }
+      ],
+      rationale: "Beta-blockers attenuate the heart-rate response to exercise, making traditional target-heart-rate methods unreliable for prescription and monitoring. The manual recommends using Rating of Perceived Exertion (or the Talk Test) instead, since these reflect true exertion independent of a pharmacologically blunted heart rate."
+    },
+    {
+      scenario: "PATIENT: 60M, hypertension, in a supervised resistance-training circuit.\nOBSERVATION: While performing a seated leg press at moderate resistance, he holds his breath and visibly strains through the lift.",
+      question: "What is the priority action?",
+      options: [
+        { text: "Allow it — breath-holding improves lifting power and is not a concern in hypertension", correct: false },
+        { text: "Stop him and cue exhalation during the exertion phase, avoiding the Valsalva maneuver", correct: true },
+        { text: "Increase the resistance since he is clearly coping well with the current load", correct: false },
+        { text: "Ignore it — Valsalva is only a concern during aerobic exercise, not resistance training", correct: false }
+      ],
+      rationale: "Breath-holding against a closed glottis (the Valsalva maneuver) can trigger extremely high blood pressure responses, dizziness, and even fainting. Physiotherapists should instruct patients to exhale during exertion — this precaution is specifically highlighted for resistance training, exactly the scenario observed here."
+    },
+    {
+      scenario: "PATIENT: 55F, hypertension follow-up in GOPC, taking an alpha-blocker as part of her antihypertensive regimen.\nEND OF SESSION: She has just completed a 30-minute moderate-intensity aerobic session and appears slightly light-headed as she moves toward the door.",
+      question: "What should the physiotherapist have built into this session to manage this risk?",
+      options: [
+        { text: "A cool-down of standard length, since medication type does not affect recovery monitoring", correct: false },
+        { text: "An extended cool-down (over 10 minutes) of light-to-moderate intensity, with close post-exercise monitoring", correct: true },
+        { text: "No cool-down at all — she should sit down immediately after the last exercise", correct: false },
+        { text: "A vigorous-intensity cool-down to actively normalise her blood pressure faster", correct: false }
+      ],
+      rationale: "Alpha-blockers, calcium channel blockers, and vasodilators can cause a sudden post-exercise drop in blood pressure. The manual recommends extending and carefully monitoring the cool-down period — more than 10 minutes of light-to-moderate cardiorespiratory and muscular-endurance activity — precisely to manage this light-headedness risk."
+    },
+    {
+      scenario: "PATIENT: 63M, essential hypertension, referred to the group exercise programme.\nASSESSMENT FINDING: On physiotherapy screening, his right knee is acutely irritable with intermittent giving-way and a positive instability sign; he otherwise has no cardiac or pulmonary concerns and is keen to start immediately.",
+      question: "Based on the program's exclusion criteria, what should the physiotherapist do?",
+      options: [
+        { text: "Enrol him in the standard class since blood pressure control takes priority over the knee", correct: false },
+        { text: "Exclude him from the group exercise programme for now and address or refer the acute knee issue first", correct: true },
+        { text: "Enrol him but restrict him to Valsalva-free resistance training only", correct: false },
+        { text: "Delay enrolment by one week with no other change, then proceed as planned", correct: false }
+      ],
+      rationale: "The exclusion criteria specifically list comorbidities with acute musculoskeletal problems — including irritable joint pain and joint instability — as reasons to exclude a patient from this exercise programme. His unstable, acutely irritable knee should be addressed or referred before he participates, even though his cardiovascular status is otherwise stable."
+    }
+  ];
+
+  var container = document.getElementById('quiz-container');
+  var answeredCountEl = document.getElementById('answered-count');
+  var scoreCountEl = document.getElementById('score-count');
+  var summaryEl = document.getElementById('quiz-summary');
+  var finalScoreEl = document.getElementById('final-score');
+  var finalMessageEl = document.getElementById('final-message');
+  var answeredSet = {};
+  var score = 0;
+
+  function buildQuiz(){
+    container.innerHTML = '';
+    answeredSet = {};
+    score = 0;
+    updateScoreBar();
+    summaryEl.classList.remove('show');
+
+    quizData.forEach(function(q, qi){
+      var card = document.createElement('div');
+      card.className = 'qcard';
+      card.setAttribute('data-qindex', qi);
+
+      var head = document.createElement('div');
+      head.className = 'qhead';
+      head.innerHTML = '<span class="qeyebrow">Case ' + (qi+1) + ' of ' + quizData.length + '</span>';
+      card.appendChild(head);
+
+      var scenario = document.createElement('div');
+      scenario.className = 'scenario';
+      scenario.textContent = q.scenario;
+      card.appendChild(scenario);
+
+      var qtext = document.createElement('div');
+      qtext.className = 'qtext';
+      qtext.textContent = q.question;
+      card.appendChild(qtext);
+
+      var opts = document.createElement('div');
+      opts.className = 'options';
+
+      var letters = ['A','B','C','D'];
+      q.options.forEach(function(opt, oi){
+        var btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.type = 'button';
+        btn.innerHTML = '<span class="letter">' + letters[oi] + '</span><span>' + opt.text + '</span>';
+        btn.addEventListener('click', function(){ handleAnswer(qi, oi, card, opts); });
+        opts.appendChild(btn);
+      });
+      card.appendChild(opts);
+
+      var rationale = document.createElement('div');
+      rationale.className = 'rationale';
+      card.appendChild(rationale);
+
+      container.appendChild(card);
+    });
+  }
+
+  function handleAnswer(qi, oi, card, optsContainer){
+    if(answeredSet[qi] !== undefined) return; // already answered, ignore further clicks
+
+    var q = quizData[qi];
+    var chosenCorrect = q.options[oi].correct;
+    answeredSet[qi] = chosenCorrect;
+    if(chosenCorrect) score++;
+
+    var buttons = optsContainer.querySelectorAll('.opt-btn');
+    buttons.forEach(function(btn, idx){
+      btn.disabled = true;
+      if(q.options[idx].correct){
+        btn.classList.add('correct');
+      } else if(idx === oi){
+        btn.classList.add('incorrect');
+      } else {
+        btn.classList.add('dim');
+      }
+    });
+
+    var rationale = card.querySelector('.rationale');
+    rationale.classList.add('show');
+    rationale.classList.add(chosenCorrect ? 'good' : 'bad');
+    rationale.innerHTML = '<span class="icon">' + (chosenCorrect ? '✓' : '✕') + '</span><span><b>' +
+      (chosenCorrect ? 'Correct. ' : 'Not quite. ') + '</b>' + q.rationale + '</span>';
+
+    updateScoreBar();
+
+    if(Object.keys(answeredSet).length === quizData.length){
+      showSummary();
+    }
+  }
+
+  function updateScoreBar(){
+    answeredCountEl.textContent = Object.keys(answeredSet).length;
+    scoreCountEl.textContent = score;
+  }
+
+  function showSummary(){
+    finalScoreEl.textContent = score + ' / ' + quizData.length;
+    var msg;
+    if(score === quizData.length){
+      msg = "Excellent clinical reasoning — you correctly applied every safety threshold and exclusion criterion in this module.";
+    } else if(score >= 3){
+      msg = "Good foundation. Revisit the highlighted rationale above for any missed cases, especially the Safety-Critical section on abnormal BP and drug effects.";
+    } else {
+      msg = "Worth a closer review of Section 03 (Safety & Program Design) before applying these thresholds in clinic — the rationale for each case above will help.";
+    }
+    finalMessageEl.textContent = msg;
+    summaryEl.classList.add('show');
+    summaryEl.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  document.getElementById('retake-btn').addEventListener('click', buildQuiz);
+
+  buildQuiz();
+})();
+</script>
+
+</body>
+</html>

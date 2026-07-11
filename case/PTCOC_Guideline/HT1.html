@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTN Physio Guidelines • HA Primary Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #0ea5e9;
+        }
+        
+        .tail-container {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .heading-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .nav-link {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .nav-link:hover {
+            color: #0ea5e9;
+            transform: translateY(-2px);
+        }
+
+        .section-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .section-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .quiz-option {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .quiz-option:hover {
+            transform: translateX(8px);
+        }
+        
+        .correct {
+            background-color: #10b981 !important;
+            color: white;
+        }
+        
+        .incorrect {
+            background-color: #ef4444 !important;
+            color: white;
+        }
+
+        .progress-bar {
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+    </style>
+</head>
+<body class="tail-container bg-slate-50 text-slate-800">
+    <!-- HEADER -->
+    <header class="bg-white border-b sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-10 h-10 bg-sky-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">🫀</div>
+                <div>
+                    <h1 class="heading-font text-2xl font-semibold tracking-tight">HTN Physio</h1>
+                    <p class="text-xs text-slate-500 -mt-1">Primary Care Guidelines</p>
+                </div>
+            </div>
+            <nav class="flex items-center gap-x-8 text-sm font-medium">
+                <a href="#overview" onclick="navigateTo('overview')" class="nav-link text-slate-600 hover:text-sky-600">Overview</a>
+                <a href="#key-principles" onclick="navigateTo('key-principles')" class="nav-link text-slate-600 hover:text-sky-600">Principles</a>
+                <a href="#exercise-rx" onclick="navigateTo('exercise-rx')" class="nav-link text-slate-600 hover:text-sky-600">Exercise Rx</a>
+                <a href="#assessment" onclick="navigateTo('assessment')" class="nav-link text-slate-600 hover:text-sky-600">Assessment</a>
+                <a href="#quiz" onclick="navigateTo('quiz')" class="nav-link text-slate-600 hover:text-sky-600">Quiz</a>
+            </nav>
+            <div class="flex items-center gap-x-2 text-xs bg-slate-100 px-3 py-1.5 rounded-3xl">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span class="font-medium text-slate-600">Hospital Authority</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- HERO -->
+        <div id="overview" class="bg-gradient-to-br from-sky-600 to-indigo-700 text-white rounded-3xl p-12 mb-12 relative overflow-hidden">
+            <div class="absolute right-8 bottom-8 text-[180px] opacity-10">🫀</div>
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-x-2 bg-white/20 text-white text-xs px-4 py-2 rounded-3xl mb-6 backdrop-blur">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Internal Reference • 2024</span>
+                </div>
+                <h1 class="heading-font text-5xl font-semibold leading-tight mb-4">
+                    Physiotherapy Service for Patients with Hypertension in Primary Care
+                </h1>
+                <p class="text-sky-100 text-lg max-w-md">Evidence-based guide for junior physiotherapists in HA GOPCs</p>
+                
+                <div class="flex items-center gap-x-8 mt-10">
+                    <div>
+                        <div class="text-4xl font-semibold">5-7</div>
+                        <div class="text-xs uppercase tracking-widest">mmHg SBP reduction</div>
+                    </div>
+                    <div class="h-12 w-px bg-white/30"></div>
+                    <div>
+                        <div class="text-4xl font-semibold">150</div>
+                        <div class="text-xs uppercase tracking-widest">min/week moderate exercise</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK STATS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <div class="text-emerald-500 text-3xl mb-3">📈</div>
+                <div class="text-3xl font-semibold">19.5%</div>
+                <div class="text-sm text-slate-500">HK adults with HTN</div>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <div class="text-amber-500 text-3xl mb-3">🏋️</div>
+                <div class="text-3xl font-semibold">5-7 mmHg</div>
+                <div class="text-sm text-slate-500">Aerobic training effect</div>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <div class="text-violet-500 text-3xl mb-3">🚫</div>
+                <div class="text-3xl font-semibold">SBP &gt;200</div>
+                <div class="text-sm text-slate-500">No exercise</div>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <div class="text-rose-500 text-3xl mb-3">📊</div>
+                <div class="text-3xl font-semibold">FITT</div>
+                <div class="text-sm text-slate-500">Core principle</div>
+            </div>
+        </div>
+
+        <!-- CLASSIFICATION -->
+        <div class="mb-16">
+            <h2 class="heading-font text-3xl font-semibold mb-6 flex items-center gap-x-3">
+                <span class="text-sky-500">2.</span> Classification &amp; Definition
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- ACC/AHA -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-100">
+                    <div class="uppercase text-xs font-medium text-amber-600 mb-4">2017 ACC/AHA</div>
+                    <table class="w-full">
+                        <tr class="border-b">
+                            <td class="py-4 font-medium">Stage 1 HTN</td>
+                            <td class="py-4 text-right">130-139 / 80-89 mmHg</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-4 font-medium">Stage 2 HTN</td>
+                            <td class="py-4 text-right">≥140 / ≥90 mmHg</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 font-medium text-rose-600">Crisis</td>
+                            <td class="py-4 text-right text-rose-600">&gt;180 / &gt;120 mmHg</td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- ESC/ESH & HK -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-100">
+                    <div class="uppercase text-xs font-medium text-sky-600 mb-4">2018 ESC/ESH &amp; HKCP</div>
+                    <table class="w-full">
+                        <tr class="border-b">
+                            <td class="py-4 font-medium">Grade 1</td>
+                            <td class="py-4 text-right">140-159 / 90-99 mmHg</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-4 font-medium">Grade 2</td>
+                            <td class="py-4 text-right">160-179 / 100-109 mmHg</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 font-medium">Grade 3</td>
+                            <td class="py-4 text-right">≥180 / ≥110 mmHg</td>
+                        </tr>
+                    </table>
+                    <div class="mt-6 text-xs bg-slate-50 p-4 rounded-2xl">
+                        <strong>HK Reference Framework</strong>: Uses ESC/ESH cut-offs (SBP ≥140 or DBP ≥90)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROLE & BENEFITS -->
+        <div id="key-principles" class="mb-16">
+            <h2 class="heading-font text-3xl font-semibold mb-8">Role of Physiotherapy &amp; Benefits</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="section-card bg-white p-8 rounded-3xl border border-slate-100">
+                    <i class="fa-solid fa-heart-pulse text-4xl text-rose-500 mb-6"></i>
+                    <h3 class="font-semibold text-xl mb-3">Key Role</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex gap-x-3"><span class="text-emerald-500">•</span> Exercise prescription</li>
+                        <li class="flex gap-x-3"><span class="text-emerald-500">•</span> Lifestyle education</li>
+                        <li class="flex gap-x-3"><span class="text-emerald-500">•</span> Self-management empowerment</li>
+                    </ul>
+                </div>
+                <div class="section-card bg-white p-8 rounded-3xl border border-slate-100">
+                    <i class="fa-solid fa-dumbbell text-4xl text-violet-500 mb-6"></i>
+                    <h3 class="font-semibold text-xl mb-3">Benefits of Exercise</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="text-emerald-600 font-medium">Aerobic</div>
+                            <div class="text-3xl font-semibold text-emerald-700">5-7 mmHg</div>
+                            <div class="text-xs text-slate-500">SBP reduction</div>
+                        </div>
+                        <div>
+                            <div class="text-violet-600 font-medium">Resistance</div>
+                            <div class="text-3xl font-semibold text-violet-700">2-3 mmHg</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-card bg-white p-8 rounded-3xl border border-slate-100">
+                    <i class="fa-solid fa-scale-balanced text-4xl text-amber-500 mb-6"></i>
+                    <h3 class="font-semibold text-xl mb-3">Additional Benefits</h3>
+                    <p class="text-sm leading-relaxed text-slate-600">
+                        Weight management, improved insulin sensitivity, better autonomic balance, reduced CVD risk.
+                    </p>
+                    <div class="mt-6 pt-6 border-t text-xs flex items-center gap-x-2">
+                        <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-3xl">Tai Chi</span>
+                        <span class="px-3 py-1 bg-teal-100 text-teal-700 rounded-3xl">Breathing exercises</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SPECIAL CONSIDERATIONS -->
+        <div class="bg-white rounded-3xl p-10 mb-16 border border-rose-100">
+            <h2 class="heading-font text-2xl font-semibold mb-6 text-rose-700 flex items-center gap-x-3">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Special Considerations
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-medium mb-4">Blood Pressure Thresholds</h4>
+                    <ul class="space-y-4">
+                        <li class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl">
+                            <span>Resting SBP &gt;200 or DBP &gt;110</span>
+                            <span class="text-rose-600 font-medium">NO EXERCISE</span>
+                        </li>
+                        <li class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl">
+                            <span>During exercise</span>
+                            <span>SBP &lt;220 / DBP ≤105</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">Medication Effects</h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex gap-3">
+                            <span class="font-mono bg-slate-100 px-2 py-1 rounded">β-blockers</span>
+                            <span class="text-slate-600">Attenuated HR → Use RPE</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="font-mono bg-slate-100 px-2 py-1 rounded">Vasodilators</span>
+                            <span class="text-slate-600">Extended cool-down (≥10 min)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FITT SUMMARY -->
+        <div id="exercise-rx" class="mb-16">
+            <h2 class="heading-font text-3xl font-semibold mb-8">FITT Recommendations</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[800px] bg-white rounded-3xl overflow-hidden">
+                    <thead>
+                        <tr class="bg-slate-900 text-white">
+                            <th class="px-8 py-6 text-left font-normal">Component</th>
+                            <th class="px-8 py-6 text-left font-normal">Aerobic</th>
+                            <th class="px-8 py-6 text-left font-normal">Resistance</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y">
+                        <tr>
+                            <td class="px-8 py-6 font-medium">Frequency</td>
+                            <td class="px-8 py-6">5-7 days/week</td>
+                            <td class="px-8 py-6">2-3 non-consecutive days/week</td>
+                        </tr>
+                        <tr>
+                            <td class="px-8 py-6 font-medium">Intensity</td>
+                            <td class="px-8 py-6">Moderate (RPE 12-13 / Talk Test)</td>
+                            <td class="px-8 py-6">Moderate (10-15 reps)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-8 py-6 font-medium">Time</td>
+                            <td class="px-8 py-6">≥150 min/week (≥30 min/day)</td>
+                            <td class="px-8 py-6">2-4 sets × 8-12 reps</td>
+                        </tr>
+                        <tr>
+                            <td class="px-8 py-6 font-medium">Type</td>
+                            <td class="px-8 py-6">Brisk walking, cycling, swimming</td>
+                            <td class="px-8 py-6">Machines, bands, bodyweight</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-xs text-slate-500 mt-6 text-center">Include warm-up, cool-down, flexibility &amp; balance</p>
+        </div>
+
+        <!-- ASSESSMENT FLOW -->
+        <div id="assessment" class="mb-20">
+            <h2 class="heading-font text-3xl font-semibold mb-8">Assessment &amp; Program Flow</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div class="bg-white rounded-3xl p-6 text-center section-card border border-sky-100">
+                    <div class="text-4xl mb-4">📋</div>
+                    <div class="font-semibold">1. Documentation</div>
+                    <div class="text-xs text-slate-500 mt-1">Referral + reason</div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 text-center section-card border border-sky-100">
+                    <div class="text-4xl mb-4">🗣️</div>
+                    <div class="font-semibold">2. Subjective</div>
+                    <div class="text-xs text-slate-500 mt-1">History, readiness, barriers</div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 text-center section-card border border-sky-100">
+                    <div class="text-4xl mb-4">📏</div>
+                    <div class="font-semibold">3. Objective</div>
+                    <div class="text-xs text-slate-500 mt-1">BP, BMI, 2MST, Chair Stand</div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 text-center section-card border border-sky-100">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <div class="font-semibold">4. SMART Goals</div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 text-center section-card border border-sky-100">
+                    <div class="text-4xl mb-4">📈</div>
+                    <div class="font-semibold">5. Outcomes</div>
+                    <div class="text-xs text-slate-500 mt-1">BP, IPAQ, SEE-C</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ -->
+        <div id="quiz" class="bg-white rounded-3xl p-10 shadow">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="heading-font text-3xl font-semibold">Clinical Knowledge Quiz</h2>
+                    <p class="text-slate-500">5 case-based questions • Test your reasoning</p>
+                </div>
+                <div id="quiz-progress" class="text-right">
+                    <div class="text-xs font-medium text-slate-400">QUESTION <span id="current-q" class="text-3xl font-semibold text-slate-800">1</span>/5</div>
+                    <div class="h-2 w-48 bg-slate-100 rounded-full mt-3 overflow-hidden">
+                        <div id="progress-fill" class="progress-bar h-2 bg-sky-500 rounded-full w-1/5"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 1 -->
+            <div id="q1" class="quiz-question">
+                <div class="mb-8">
+                    <span class="inline-block px-4 py-1 bg-sky-100 text-sky-700 text-xs font-medium rounded-3xl mb-3">CASE 1</span>
+                    <p class="text-lg font-medium leading-relaxed">A 68-year-old male with Stage 2 hypertension (clinic BP 152/96 mmHg) on beta-blocker is referred for exercise. He reports good tolerance to daily walking but wants to add resistance training. His resting HR is 62 bpm. What is the most appropriate way to monitor intensity for his aerobic component?</p>
+                </div>
+                <div onclick="answerQuestion(1, 1)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">A</span>
+                    <span>Target HR using 220-age formula</span>
+                </div>
+                <div onclick="answerQuestion(1, 2)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">B</span>
+                    <span>Borg RPE scale (target 12-13)</span>
+                </div>
+                <div onclick="answerQuestion(1, 3)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">C</span>
+                    <span>HR &gt; 70% of max</span>
+                </div>
+                <div id="feedback-1" class="hidden mt-6 p-6 rounded-3xl text-sm"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div id="q2" class="quiz-question hidden">
+                <div class="mb-8">
+                    <span class="inline-block px-4 py-1 bg-sky-100 text-sky-700 text-xs font-medium rounded-3xl mb-3">CASE 2</span>
+                    <p class="text-lg font-medium leading-relaxed">A 55-year-old female with hypertension and BMI 32 kg/m² wants to begin an exercise program. Her resting BP today is 168/102 mmHg. She is asymptomatic. What is the correct immediate action?</p>
+                </div>
+                <div onclick="answerQuestion(2, 1)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">A</span>
+                    <span>Proceed with moderate aerobic exercise</span>
+                </div>
+                <div onclick="answerQuestion(2, 2)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">B</span>
+                    <span>Refer back to physician for clearance</span>
+                </div>
+                <div onclick="answerQuestion(2, 3)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">C</span>
+                    <span>Start with breathing exercises only</span>
+                </div>
+                <div id="feedback-2" class="hidden mt-6 p-6 rounded-3xl text-sm"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div id="q3" class="quiz-question hidden">
+                <div class="mb-8">
+                    <span class="inline-block px-4 py-1 bg-sky-100 text-sky-700 text-xs font-medium rounded-3xl mb-3">CASE 3</span>
+                    <p class="text-lg font-medium leading-relaxed">During a resistance training session, a patient with controlled hypertension begins performing Valsalva maneuver while lifting. What is the primary risk?</p>
+                </div>
+                <div onclick="answerQuestion(3, 1)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">A</span>
+                    <span>Significant acute rise in blood pressure</span>
+                </div>
+                <div onclick="answerQuestion(3, 2)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">B</span>
+                    <span>Muscle strain</span>
+                </div>
+                <div onclick="answerQuestion(3, 3)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">C</span>
+                    <span>Decreased venous return</span>
+                </div>
+                <div id="feedback-3" class="hidden mt-6 p-6 rounded-3xl text-sm"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div id="q4" class="quiz-question hidden">
+                <div class="mb-8">
+                    <span class="inline-block px-4 py-1 bg-sky-100 text-sky-700 text-xs font-medium rounded-3xl mb-3">CASE 4</span>
+                    <p class="text-lg font-medium leading-relaxed">A patient completes the 2-Minute Step Test scoring 82 steps (female, age 72). According to the manual norms, how would you interpret this result?</p>
+                </div>
+                <div onclick="answerQuestion(4, 1)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">A</span>
+                    <span>Above average aerobic endurance</span>
+                </div>
+                <div onclick="answerQuestion(4, 2)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">B</span>
+                    <span>Within normal range (68-100)</span>
+                </div>
+                <div onclick="answerQuestion(4, 3)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">C</span>
+                    <span>Below expected range</span>
+                </div>
+                <div id="feedback-4" class="hidden mt-6 p-6 rounded-3xl text-sm"></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div id="q5" class="quiz-question hidden">
+                <div class="mb-8">
+                    <span class="inline-block px-4 py-1 bg-sky-100 text-sky-700 text-xs font-medium rounded-3xl mb-3">CASE 5</span>
+                    <p class="text-lg font-medium leading-relaxed">Which of the following is the BEST strategy to promote long-term adherence according to the manual?</p>
+                </div>
+                <div onclick="answerQuestion(5, 1)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">A</span>
+                    <span>Use HA Go app for tele-prescription and feedback</span>
+                </div>
+                <div onclick="answerQuestion(5, 2)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">B</span>
+                    <span>Give a printed exercise sheet only</span>
+                </div>
+                <div onclick="answerQuestion(5, 3)" class="quiz-option cursor-pointer mb-3 p-5 border border-slate-200 hover:border-sky-300 rounded-2xl flex items-start gap-x-4">
+                    <span class="font-mono text-xl font-bold text-slate-300 w-8">C</span>
+                    <span>Monthly follow-up without self-monitoring tools</span>
+                </div>
+                <div id="feedback-5" class="hidden mt-6 p-6 rounded-3xl text-sm"></div>
+            </div>
+
+            <div class="flex justify-between mt-12">
+                <button onclick="prevQuestion()" id="btn-prev" class="hidden px-8 py-4 rounded-3xl border border-slate-300 font-medium">← Previous</button>
+                <button onclick="nextQuestion()" id="btn-next" class="px-8 py-4 bg-slate-900 text-white rounded-3xl font-medium flex items-center gap-x-3 ml-auto">
+                    Next Question <span class="text-xl">→</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 text-center text-xs mt-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <p>Internal reference only • Hospital Authority • Not for external distribution</p>
+            <p class="mt-2">Manual on Physiotherapy Service for Patients with Hypertension in Primary Care Setting (2024)</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind script already loaded via CDN
+        function navigateTo(section) {
+            document.getElementById(section).scrollIntoView({ behavior: "smooth" });
+        }
+
+        let currentQuestion = 1;
+        let score = 0;
+
+        const answers = {
+            1: 2, // B is correct (RPE for beta-blocker)
+            2: 2, // B is correct (SBP 168 &gt; stage 2 threshold)
+            3: 1, // A is correct (Valsalva)
+            4: 2, // B is correct (68-100 for 70-74)
+            5: 1  // A is correct (HA Go)
+        };
+
+        function showQuestion(n) {
+            document.querySelectorAll('.quiz-question').forEach(q => q.classList.add('hidden'));
+            document.getElementById('q' + n).classList.remove('hidden');
+            document.getElementById('current-q').textContent = n;
+            document.getElementById('progress-fill').style.width = (n * 20) + '%';
+            
+            const prevBtn = document.getElementById('btn-prev');
+            prevBtn.classList.toggle('hidden', n === 1);
+            
+            const nextBtn = document.getElementById('btn-next');
+            nextBtn.textContent = n === 5 ? 'See Results →' : 'Next Question →';
+        }
+
+        function answerQuestion(qNum, selected) {
+            const correct = answers[qNum];
+            const feedbackDiv = document.getElementById('feedback-' + qNum);
+            
+            // Disable other options
+            const options = document.querySelectorAll('#q' + qNum + ' .quiz-option');
+            options.forEach((opt, idx) => {
+                const letter = String.fromCharCode(64 + idx + 1);
+                opt.style.pointerEvents = 'none';
+                if (idx + 1 === correct) {
+                    opt.classList.add('correct');
+                } else if (idx + 1 === selected) {
+                    opt.classList.add('incorrect');
+                }
+            });
+            
+            if (selected === correct) {
+                score++;
+                feedbackDiv.innerHTML = `
+                    <div class="flex items-center gap-x-3 text-emerald-700">
+                        <i class="fa-solid fa-circle-check text-2xl"></i>
+                        <div>
+                            <strong>Correct!</strong><br>
+                            <span class="text-sm">This aligns with the guideline recommendations.</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                feedbackDiv.innerHTML = `
+                    <div class="flex items-center gap-x-3 text-rose-700">
+                        <i class="fa-solid fa-circle-xmark text-2xl"></i>
+                        <div>
+                            <strong>Not quite.</strong><br>
+                            <span class="text-sm">Refer to section 6.4 and 7.6 of the manual.</span>
+                        </div>
+                    </div>
+                `;
+            }
+            feedbackDiv.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 5) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                // Show final score
+                const finalHTML = `
+                    <div class="text-center py-12">
+                        <div class="text-7xl mb-6">🏆</div>
+                        <h3 class="heading-font text-4xl font-semibold mb-2">Quiz Complete!</h3>
+                        <p class="text-6xl font-bold text-sky-600">${score}/5</p>
+                        <p class="text-slate-500 mt-3">Great job applying the guidelines!</p>
+                        <button onclick="location.reload()" 
+                                class="mt-10 px-10 py-5 bg-sky-600 hover:bg-sky-700 transition-colors text-white rounded-3xl text-lg font-medium">
+                            Restart Quiz
+                        </button>
+                    </div>
+                `;
+                document.getElementById('q5').innerHTML = finalHTML;
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            showQuestion(1);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "ArrowRight") nextQuestion();
+                if (e.key === "ArrowLeft") prevQuestion();
+            });
+        };
+    </script>
+</body>
+</html>
