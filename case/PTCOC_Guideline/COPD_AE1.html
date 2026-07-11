@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physiotherapy for Acute Exacerbations of COPD — Clinical Guideline Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================= TOKENS ============================= */
+:root{
+  --bg:#F5F7F6;
+  --surface:#FFFFFF;
+  --surface-alt:#EBF1EF;
+  --ink:#0F2327;
+  --ink-soft:#4C6169;
+  --ink-faint:#7C8E93;
+  --line:#DCE5E2;
+  --line-strong:#C4D1CD;
+
+  --teal-900:#0A3237;
+  --teal-700:#0F6E68;
+  --teal-600:#178077;
+  --teal-500:#2E9187;
+  --teal-100:#DCEEEB;
+
+  --amber-600:#C4841E;
+  --amber-500:#E2A33B;
+  --amber-100:#FBEDD6;
+
+  --coral-600:#C14E36;
+  --coral-500:#D9634A;
+  --coral-100:#F9E0DA;
+
+  --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --radius-lg:20px;
+  --radius-md:14px;
+  --radius-sm:9px;
+
+  --shadow-card: 0 1px 2px rgba(15,35,39,0.04), 0 8px 24px -12px rgba(15,35,39,0.12);
+  --container: 1120px;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{display:block; max-width:100%;}
+a{color:inherit;}
+.container{max-width:var(--container); margin:0 auto; padding:0 24px;}
+@media (max-width:640px){ .container{padding:0 18px;} }
+
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  font-weight:700;
+  line-height:1.12;
+  margin:0;
+  color:var(--teal-900);
+  letter-spacing:-0.01em;
+}
+
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  letter-spacing:0.11em;
+  text-transform:uppercase;
+  color:var(--teal-700);
+  font-weight:600;
+}
+
+.section-head{ max-width:680px; margin-bottom:2.4rem; }
+.section-head h2{ font-size:clamp(1.7rem, 1.35rem + 1.4vw, 2.5rem); margin-top:0.5rem;}
+.section-head p{ color:var(--ink-soft); font-size:1.02rem; margin-top:0.9rem; max-width:60ch;}
+.section-num{
+  font-family:var(--font-mono); font-size:12px; color:var(--teal-600);
+  border:1px solid var(--teal-600); border-radius:100px; padding:3px 10px 4px;
+  display:inline-flex; align-items:center; gap:6px; letter-spacing:0.04em;
+}
+
+section{ padding: 5.2rem 0; position:relative; }
+@media (max-width:720px){ section{ padding:3.4rem 0; } }
+.section-alt{ background:var(--surface-alt); }
+
+/* ============================= WAVEFORM (signature motif) ============================= */
+.trace-wrap{ overflow:hidden; line-height:0; width:100%; }
+.trace-track{
+  display:flex; width:200%;
+  animation: traceScroll 16s linear infinite;
+}
+.trace-track svg{ width:50%; height:auto; flex:0 0 50%; }
+@keyframes traceScroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+.trace-divider{ opacity:0.55; }
+.trace-divider .trace-track{ animation-duration:22s; }
+
+/* ============================= HEADER / NAV ============================= */
+header.top{
+  position:sticky; top:0; z-index:60;
+  background:rgba(245,247,246,0.92);
+  backdrop-filter:saturate(160%) blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.top-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:1rem; padding:12px 0;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--font-mono); font-size:12.5px; color:var(--teal-900); font-weight:600;
+  white-space:nowrap;
+}
+.brand .dot{ width:9px; height:9px; border-radius:50%; background:var(--coral-500); flex:none;
+  box-shadow:0 0 0 3px var(--coral-100); }
+.brand small{ display:block; font-weight:500; color:var(--ink-faint); font-size:10.5px; letter-spacing:0.02em; margin-top:1px;}
+
+nav.pills{
+  display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px;
+}
+nav.pills::-webkit-scrollbar{ display:none; }
+nav.pills a{
+  text-decoration:none; white-space:nowrap; font-size:13px; font-weight:600;
+  color:var(--ink-soft); padding:7px 13px; border-radius:100px; transition:all .15s ease;
+}
+nav.pills a:hover{ background:var(--surface-alt); color:var(--teal-900); }
+nav.pills a.active{ background:var(--teal-700); color:#fff; }
+
+.progress-line{ height:2px; background:var(--line); position:relative; overflow:hidden;}
+.progress-line::after{
+  content:''; position:absolute; left:0; top:0; bottom:0; width:var(--pw,0%);
+  background:linear-gradient(90deg,var(--teal-600),var(--amber-500));
+  transition:width .08s linear;
+}
+
+/* ============================= HERO ============================= */
+.hero{
+  position:relative; padding:3.6rem 0 0;
+  background:
+    radial-gradient(900px 480px at 82% -10%, rgba(15,110,104,0.10), transparent 60%),
+    radial-gradient(700px 420px at 5% 0%, rgba(226,163,59,0.10), transparent 55%);
+}
+.hero-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:3rem; align-items:start; }
+@media (max-width:940px){ .hero-grid{ grid-template-columns:1fr; } }
+
+.hero h1{
+  font-size:clamp(2.1rem, 1.4rem + 3vw, 3.5rem);
+  margin-top:0.9rem;
+}
+.hero .lede{
+  margin-top:1.15rem; color:var(--ink-soft); font-size:1.08rem; max-width:52ch;
+}
+.doc-meta{
+  display:flex; flex-wrap:wrap; gap:0.5rem 1.4rem; margin-top:1.6rem;
+  font-family:var(--font-mono); font-size:12px; color:var(--ink-faint);
+}
+.doc-meta span b{ color:var(--teal-800,var(--teal-900)); font-weight:600; }
+
+.hero-cta{ display:flex; gap:.8rem; margin-top:2rem; flex-wrap:wrap; }
+.btn{
+  font-family:var(--font-body); font-weight:700; font-size:14.5px; border-radius:100px;
+  padding:12px 22px; text-decoration:none; border:1.5px solid transparent; cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.btn:focus-visible, a:focus-visible, button:focus-visible{
+  outline:3px solid var(--amber-500); outline-offset:2px;
+}
+.btn-primary{ background:var(--teal-700); color:#fff; box-shadow:0 10px 24px -10px rgba(15,110,104,0.55);}
+.btn-primary:hover{ transform:translateY(-1px); background:var(--teal-600); }
+.btn-ghost{ background:transparent; border-color:var(--line-strong); color:var(--teal-900); }
+.btn-ghost:hover{ border-color:var(--teal-600); color:var(--teal-700); }
+
+.hero-panel{
+  background:var(--teal-900); border-radius:var(--radius-lg); padding:1.7rem;
+  color:#EAF4F2; position:relative; overflow:hidden;
+}
+.hero-panel .trace-wrap{ margin:0.4rem -1.7rem 1rem; }
+.hero-panel .stat-list{ display:grid; grid-template-columns:1fr 1fr; gap:1.1rem 1rem; margin-top:0.4rem;}
+.hero-panel .stat{ }
+.hero-panel .stat .num{ font-family:var(--font-display); font-weight:700; font-size:1.7rem; color:#fff;}
+.hero-panel .stat .lab{ font-size:12px; color:#B7D6D1; margin-top:2px; line-height:1.3;}
+.hero-panel .divider{ height:1px; background:rgba(255,255,255,0.14); margin:1.3rem 0;}
+.hero-panel .define{ font-size:13.5px; color:#D7EAE7; line-height:1.6;}
+.hero-panel .define b{ color:#fff; }
+
+/* ============================= GOAL / LEGEND CARDS ============================= */
+.goal-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-top:2rem;}
+@media (max-width:900px){ .goal-grid{ grid-template-columns:1fr 1fr; } }
+@media (max-width:520px){ .goal-grid{ grid-template-columns:1fr; } }
+.goal-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md);
+  padding:1.3rem 1.2rem; box-shadow:var(--shadow-card);
+}
+.goal-card .ic{ width:34px; height:34px; margin-bottom:0.8rem;}
+.goal-card h4{ font-size:1.02rem; }
+.goal-card p{ font-size:13px; color:var(--ink-soft); margin:0.4rem 0 0;}
+
+.legend-box{
+  margin-top:2.6rem; background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--radius-lg); padding:1.7rem 1.8rem; box-shadow:var(--shadow-card);
+}
+.legend-box h4{ font-size:1.05rem; }
+.legend-box .sub{ color:var(--ink-soft); font-size:13.5px; margin-top:0.35rem; max-width:62ch;}
+.legend-flex{ display:flex; gap:2.6rem; margin-top:1.4rem; flex-wrap:wrap;}
+.legend-col{ min-width:220px; flex:1; }
+.legend-col .tag{ font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:.6rem; display:block;}
+.level-scale{ display:flex; flex-wrap:wrap; gap:6px; }
+.level-chip{
+  font-family:var(--font-mono); font-size:11.5px; padding:4px 9px; border-radius:7px;
+  background:var(--surface-alt); border:1px solid var(--line); color:var(--ink-soft);
+}
+.grade-scale{ display:flex; gap:8px; flex-wrap:wrap; }
+.grade-mini{ display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-soft);}
+
+/* grade badge component (signature evidence marker) */
+.g-badge{
+  width:30px; height:30px; border-radius:9px; display:inline-flex; align-items:center; justify-content:center;
+  font-family:var(--font-mono); font-weight:700; font-size:14px; color:#fff; flex:none;
+}
+.g-badge[data-g="A"]{ background:var(--teal-700); }
+.g-badge[data-g="B"]{ background:var(--teal-500); }
+.g-badge[data-g="C"]{ background:var(--amber-500); color:#3A2A0B;}
+.g-badge[data-g="D"]{ background:var(--coral-500); }
+
+/* ============================= REC CARDS ============================= */
+.rec-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:1.2rem; margin-top:2.2rem;}
+.rec-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md);
+  padding:1.4rem 1.4rem 1.5rem; box-shadow:var(--shadow-card); position:relative;
+  border-left:4px solid var(--teal-700);
+  opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;
+}
+.rec-card.in-view{ opacity:1; transform:translateY(0); }
+.rec-card[data-stance="avoid"]{ border-left-color:var(--coral-500); }
+.rec-card[data-stance="consider"]{ border-left-color:var(--amber-500); }
+
+.rec-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:0.8rem;}
+.rec-top .g-badge{ width:34px; height:34px; font-size:15px; }
+.rec-lvl{ font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); margin-top:5px; letter-spacing:.03em;}
+
+.stance-tag{
+  font-family:var(--font-mono); font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+  padding:4px 9px; border-radius:100px; white-space:nowrap; height:fit-content;
+}
+.stance-tag[data-s="recommend"]{ background:var(--teal-100); color:var(--teal-700); }
+.stance-tag[data-s="consider"]{ background:var(--amber-100); color:var(--amber-600); }
+.stance-tag[data-s="avoid"]{ background:var(--coral-100); color:var(--coral-600); }
+
+.rec-card h4{ font-size:1.08rem; margin-top:0.9rem; color:var(--teal-900); }
+.rec-card p{ font-size:13.6px; color:var(--ink-soft); margin:0.5rem 0 0; }
+.rec-card .cite{ display:block; margin-top:0.7rem; font-family:var(--font-mono); font-size:10.5px; color:var(--ink-faint); }
+
+/* ============================= ASSESSMENT SECTION SPECIFICS ============================= */
+.exam-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-top:1.6rem;}
+@media (max-width:760px){ .exam-row{ grid-template-columns:1fr 1fr; } }
+.exam-item{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md); padding:1.1rem; text-align:center;}
+.exam-item .ic{ width:26px; height:26px; margin:0 auto 0.6rem; color:var(--teal-700);}
+.exam-item span{ font-weight:700; font-size:13.5px; color:var(--teal-900); }
+
+.two-col{ display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; margin-top:2.2rem; align-items:start;}
+@media (max-width:820px){ .two-col{ grid-template-columns:1fr; } }
+
+details.accordion{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md);
+  padding:0; margin-bottom:0.7rem; overflow:hidden;
+}
+details.accordion summary{
+  list-style:none; cursor:pointer; padding:1rem 1.2rem; font-weight:700; font-size:14.5px;
+  display:flex; align-items:center; justify-content:space-between; color:var(--teal-900);
+}
+details.accordion summary::-webkit-details-marker{ display:none; }
+details.accordion summary::after{
+  content:'+'; font-family:var(--font-mono); font-size:18px; color:var(--teal-600); transition:transform .2s ease;
+}
+details.accordion[open] summary::after{ transform:rotate(45deg); }
+details.accordion .acc-body{ padding:0 1.2rem 1.1rem; font-size:13.6px; color:var(--ink-soft); }
+details.accordion .acc-body ul{ margin:0; padding-left:1.1rem; }
+details.accordion .acc-body li{ margin-bottom:0.45rem; }
+
+.cat-box{
+  background:var(--teal-900); color:#EAF4F2; border-radius:var(--radius-lg); padding:1.8rem;
+}
+.cat-box h4{ color:#fff; font-size:1.15rem; }
+.cat-box p{ font-size:13.6px; color:#C8E3DF; margin-top:0.6rem; }
+.cat-bands{ margin-top:1.2rem; display:flex; flex-direction:column; gap:6px; }
+.cat-band{ display:flex; align-items:center; gap:10px; font-size:12.8px; }
+.cat-band .range{ font-family:var(--font-mono); width:64px; flex:none; color:#fff; font-weight:600;}
+.cat-band .bar{ height:8px; border-radius:6px; flex:1; }
+.cat-band .lab{ width:96px; flex:none; text-align:right; color:#C8E3DF;}
+.cat-foot{ margin-top:1.1rem; padding-top:1.1rem; border-top:1px solid rgba(255,255,255,0.14); font-size:12.3px; color:#B7D6D1;}
+
+/* ============================= EXERCISE CORE CALLOUT ============================= */
+.core-callout{
+  margin-top:2.2rem; display:flex; gap:1.4rem; background:var(--surface);
+  border:1px solid var(--line); border-radius:var(--radius-lg); padding:1.6rem 1.8rem;
+  box-shadow:var(--shadow-card); align-items:flex-start; flex-wrap:wrap;
+}
+.core-callout .g-badge{ width:44px; height:44px; font-size:18px; }
+.core-callout h4{ font-size:1.15rem; }
+.core-callout p{ font-size:14px; color:var(--ink-soft); margin-top:0.5rem; max-width:64ch;}
+
+/* ============================= QUICK REFERENCE TABLE ============================= */
+.filter-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:1.8rem;}
+.chip{
+  font-family:var(--font-mono); font-size:12px; padding:7px 14px; border-radius:100px;
+  border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink-soft);
+  cursor:pointer; font-weight:600; transition:all .15s ease;
+}
+.chip:hover{ border-color:var(--teal-600); color:var(--teal-700); }
+.chip.active{ background:var(--teal-900); border-color:var(--teal-900); color:#fff; }
+
+.table-wrap{ margin-top:1.4rem; overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius-md); background:var(--surface); box-shadow:var(--shadow-card);}
+table.ref-table{ width:100%; border-collapse:collapse; min-width:720px; }
+table.ref-table thead th{
+  text-align:left; font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--ink-faint); padding:14px 16px; border-bottom:1px solid var(--line); background:var(--surface-alt);
+  position:sticky; top:0;
+}
+table.ref-table tbody td{ padding:13px 16px; border-bottom:1px solid var(--line); font-size:13.4px; vertical-align:top;}
+table.ref-table tbody tr:last-child td{ border-bottom:none; }
+table.ref-table tbody tr:hover{ background:var(--surface-alt); }
+.domain-dot{ display:inline-flex; align-items:center; gap:7px; font-weight:700; font-size:12.8px; }
+.domain-dot::before{ content:''; width:8px; height:8px; border-radius:50%; }
+tr[data-domain="dyspnoea"] .domain-dot::before{ background:var(--teal-600); }
+tr[data-domain="mucus"] .domain-dot::before{ background:var(--amber-500); }
+tr[data-domain="exercise"] .domain-dot::before{ background:var(--coral-500); }
+tr[data-domain="education"] .domain-dot::before{ background:#7C6FBE; }
+.itv{ font-weight:700; color:var(--teal-900); }
+.small-grade{ width:26px; height:26px; font-size:12px; border-radius:7px; }
+.lvl-cell{ font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint);}
+
+/* ============================= QUIZ ============================= */
+.quiz-head{ display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1rem;}
+.score-pill{
+  font-family:var(--font-mono); background:var(--teal-900); color:#fff; padding:10px 18px;
+  border-radius:100px; font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:8px;
+}
+.score-pill b{ font-size:16px; }
+
+.q-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg);
+  padding:1.8rem 1.9rem 1.9rem; margin-top:1.4rem; box-shadow:var(--shadow-card);
+}
+.q-card .q-index{
+  font-family:var(--font-mono); font-size:11.5px; color:var(--teal-700); font-weight:700; letter-spacing:.05em;
+}
+.q-card .vignette{
+  margin-top:0.7rem; background:var(--surface-alt); border-left:3px solid var(--teal-600);
+  padding:0.9rem 1.1rem; border-radius:8px; font-size:13.8px; color:var(--ink-soft); font-style:italic;
+}
+.q-card .question{ margin-top:1.1rem; font-weight:700; font-size:16px; color:var(--teal-900); font-family:var(--font-display);}
+.opt-list{ margin-top:1.1rem; display:flex; flex-direction:column; gap:9px; }
+.opt-btn{
+  text-align:left; width:100%; background:var(--surface); border:1.6px solid var(--line-strong);
+  border-radius:11px; padding:12px 14px; font-family:var(--font-body); font-size:14.2px; color:var(--ink);
+  cursor:pointer; display:flex; gap:10px; align-items:flex-start; transition:border-color .15s ease, background .15s ease;
+}
+.opt-btn:hover:not(:disabled){ border-color:var(--teal-600); background:var(--teal-100); }
+.opt-btn:disabled{ cursor:default; }
+.opt-key{
+  font-family:var(--font-mono); font-weight:700; font-size:12px; color:var(--ink-faint);
+  border:1.4px solid var(--line-strong); border-radius:6px; width:22px; height:22px; flex:none;
+  display:flex; align-items:center; justify-content:center; margin-top:1px;
+}
+.opt-btn.correct{ border-color:var(--teal-700); background:var(--teal-100); }
+.opt-btn.correct .opt-key{ background:var(--teal-700); border-color:var(--teal-700); color:#fff; }
+.opt-btn.incorrect{ border-color:var(--coral-500); background:var(--coral-100); }
+.opt-btn.incorrect .opt-key{ background:var(--coral-500); border-color:var(--coral-500); color:#fff; }
+.opt-btn.dim{ opacity:0.55; }
+
+.rationale{
+  margin-top:12px; padding:0.95rem 1.1rem; border-radius:10px; font-size:13.4px; line-height:1.6;
+  display:none;
+}
+.rationale.show{ display:block; animation:fadeIn .25s ease; }
+.rationale.good{ background:var(--teal-100); color:var(--teal-900); border:1px solid #BFE0DB; }
+.rationale.bad{ background:var(--coral-100); color:#7A2E1C; border:1px solid #EFC3B7; }
+.rationale b{ font-weight:700; }
+@keyframes fadeIn{ from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);} }
+
+.quiz-summary{
+  margin-top:1.8rem; background:var(--teal-900); color:#fff; border-radius:var(--radius-lg);
+  padding:2.1rem; text-align:center; display:none;
+}
+.quiz-summary.show{ display:block; }
+.quiz-summary .big{ font-family:var(--font-display); font-size:2.6rem; font-weight:700; }
+.quiz-summary p{ color:#CFE7E3; margin-top:0.5rem; font-size:14.5px;}
+.quiz-summary button{ margin-top:1.3rem; }
+
+/* ============================= FOOTER ============================= */
+footer{
+  background:var(--teal-900); color:#BFDAD5; padding:3rem 0 2.4rem; margin-top:2rem;
+}
+footer .container{ display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
+footer h5{ color:#fff; font-family:var(--font-display); font-size:1.15rem; margin:0 0 0.5rem;}
+footer p{ font-size:12.8px; max-width:46ch; line-height:1.6; margin:0;}
+footer .meta{ font-family:var(--font-mono); font-size:11.5px; color:#8FB6AF; line-height:2; text-align:right;}
+@media (max-width:640px){ footer .container{ flex-direction:column;} footer .meta{ text-align:left; } }
+
+.reveal{ opacity:0; transform:translateY(16px); transition:opacity .55s ease, transform .55s ease; }
+.reveal.in-view{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ============================= HEADER ============================= -->
+<header class="top">
+  <div class="container top-inner">
+    <div class="brand">
+      <span class="dot" aria-hidden="true"></span>
+      <div>
+        HAHO-COC-GL-PHY-001-v03
+        <small>Cardiopulmonary Physiotherapy · AECOPD Guideline</small>
+      </div>
+    </div>
+    <nav class="pills" id="navPills" aria-label="Section navigation">
+      <a href="#glance">Overview</a>
+      <a href="#assessment">Assessment</a>
+      <a href="#dyspnoea">Dyspnoea</a>
+      <a href="#mucus">Mucus</a>
+      <a href="#exercise">Exercise</a>
+      <a href="#education">Education</a>
+      <a href="#reference">Quick Ref</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+  <div class="progress-line" id="progressLine"></div>
+</header>
+
+<!-- ============================= HERO ============================= -->
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div class="reveal in-view">
+      <span class="eyebrow">Hospital Authority · Specialty Group on Cardiopulmonary Physiotherapy</span>
+      <h1>Physiotherapy for Acute&nbsp;Exacerbations of&nbsp;COPD</h1>
+      <p class="lede">A bedside-ready summary of the HA clinical guideline — built for junior physiotherapists managing dyspnoea, mucus retention and deconditioning during an AECOPD admission.</p>
+      <div class="doc-meta">
+        <span>Doc No. <b>HAHO-COC-GL-PHY-001-v03</b></span>
+        <span>Issued <b>30 Jun 2023</b></span>
+        <span>Review <b>30 Jun 2026</b></span>
+        <span>Version <b>3.0</b></span>
+      </div>
+      <div class="hero-cta">
+        <a href="#reference" class="btn btn-primary">Jump to quick-reference chart</a>
+        <a href="#quiz" class="btn btn-ghost">Test your clinical reasoning →</a>
+      </div>
+    </div>
+
+    <div class="hero-panel reveal in-view">
+      <div class="trace-wrap" aria-hidden="true">
+        <div class="trace-track">
+          <svg viewBox="0 0 600 70" preserveAspectRatio="none"><path d="M0,35 C20,35 25,10 40,10 C55,10 58,55 72,55 C86,55 90,20 105,20 L160,20 C175,20 180,50 195,50 C210,50 213,15 228,15 C243,15 247,45 262,45 L320,45 C335,45 340,12 355,12 C370,12 373,58 388,58 C403,58 407,22 422,22 L480,22 C495,22 500,48 515,48 C530,48 533,18 548,18 C563,18 566,42 580,42 L600,35" fill="none" stroke="#5FBFB2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 600 70" preserveAspectRatio="none"><path d="M0,35 C20,35 25,10 40,10 C55,10 58,55 72,55 C86,55 90,20 105,20 L160,20 C175,20 180,50 195,50 C210,50 213,15 228,15 C243,15 247,45 262,45 L320,45 C335,45 340,12 355,12 C370,12 373,58 388,58 C403,58 407,22 422,22 L480,22 C495,22 500,48 515,48 C530,48 533,18 548,18 C563,18 566,42 580,42 L600,35" fill="none" stroke="#5FBFB2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <div class="stat-list">
+        <div class="stat"><div class="num">9%</div><div class="lab">Est. COPD prevalence, HK Chinese aged 70+ (Ko et al 2006)</div></div>
+        <div class="stat"><div class="num">&lt;14d</div><div class="lab">Symptom-worsening window that defines an AECOPD</div></div>
+        <div class="stat"><div class="num">4</div><div class="lab">Core physiotherapy treatment goals</div></div>
+        <div class="stat"><div class="num">A–D</div><div class="lab">SIGN grades of recommendation used throughout</div></div>
+      </div>
+      <div class="divider"></div>
+      <div class="define"><b>AECOPD</b> — an event characterised by dyspnoea and/or cough and sputum that <b>worsen over &lt;14 days</b>. Associated with accelerated lung-function decline, poorer quality of life and increased mortality.</div>
+    </div>
+  </div>
+</section>
+
+<div class="trace-divider trace-wrap" aria-hidden="true">
+  <div class="trace-track">
+    <svg viewBox="0 0 600 24" preserveAspectRatio="none"><path d="M0,12 C20,12 25,4 40,4 C55,4 58,20 72,20 C86,20 90,8 105,8 L160,8 C175,8 180,18 195,18 C210,18 213,5 228,5 C243,5 247,16 262,16 L320,16 C335,16 340,4 355,4 C370,4 373,20 388,20 C403,20 407,8 422,8 L480,8 C495,8 500,17 515,17 C530,17 533,6 548,6 C563,6 566,14 580,14 L600,12" fill="none" stroke="#0F6E68" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 600 24" preserveAspectRatio="none"><path d="M0,12 C20,12 25,4 40,4 C55,4 58,20 72,20 C86,20 90,8 105,8 L160,8 C175,8 180,18 195,18 C210,18 213,5 228,5 C243,5 247,16 262,16 L320,16 C335,16 340,4 355,4 C370,4 373,20 388,20 C403,20 407,8 422,8 L480,8 C495,8 500,17 515,17 C530,17 533,6 548,6 C563,6 566,14 580,14 L600,12" fill="none" stroke="#0F6E68" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</div>
+
+<!-- ============================= AT A GLANCE ============================= -->
+<section id="glance">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">Overview</span>
+      <h2>The four jobs of physiotherapy in AECOPD</h2>
+      <p>Every intervention in this guideline is in service of one of these goals. Patient population: adults admitted with an AECOPD (chronic bronchitis, emphysema, chronic airflow limitation). Critically ill patients requiring invasive/non-invasive ventilatory support are outside its scope.</p>
+    </div>
+
+    <div class="goal-grid">
+      <div class="goal-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#0F6E68" stroke-width="1.8"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+        <h4>Reduce dyspnoea</h4>
+        <p>Breathing retraining, positioning and adjuncts to ease the sensation of breathlessness.</p>
+      </div>
+      <div class="goal-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#0F6E68" stroke-width="1.8"><path d="M4 19l4-6 4 3 4-8 4 5"/></svg>
+        <h4>Improve exercise capacity</h4>
+        <p>Preserve muscle strength and physical activity through and beyond the exacerbation.</p>
+      </div>
+      <div class="goal-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#0F6E68" stroke-width="1.8"><path d="M12 2c3 4 6 7.5 6 11.5A6 6 0 016 13.5C6 9.5 9 6 12 2z"/></svg>
+        <h4>Improve mucus clearance</h4>
+        <p>Match the airway-clearance technique to sputum load, expiratory force and collapse risk.</p>
+      </div>
+      <div class="goal-card reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#0F6E68" stroke-width="1.8"><path d="M12 20s6-4.5 6-10a6 6 0 00-12 0c0 5.5 6 10 6 10z"/><path d="M12 7v6"/></svg>
+        <h4>Build self-efficacy</h4>
+        <p>Knowledge, self-management skills and confidence to reduce future admissions.</p>
+      </div>
+    </div>
+
+    <div class="legend-box reveal">
+      <h4>How to read the evidence badges</h4>
+      <p class="sub">Every recommendation card carries two independent ratings: a <b>Level</b> (quality of the underlying studies) and a <b>Grade</b> (strength of the recommendation built on that evidence — SIGN 2011). A grade reflects evidence strength, <i>not</i> clinical importance — some of the best-graded evidence here supports <i>not</i> doing something.</p>
+      <div class="legend-flex">
+        <div class="legend-col">
+          <span class="tag">Level of evidence</span>
+          <div class="level-scale">
+            <span class="level-chip">1++ / 1+ / 1− RCTs &amp; meta-analyses</span>
+            <span class="level-chip">2++ / 2+ / 2− Cohort / case-control</span>
+            <span class="level-chip">3 Case series</span>
+            <span class="level-chip">4 Expert opinion</span>
+          </div>
+        </div>
+        <div class="legend-col">
+          <span class="tag">Grade of recommendation</span>
+          <div class="grade-scale">
+            <div class="grade-mini"><span class="g-badge" data-g="A">A</span> Strongest</div>
+            <div class="grade-mini"><span class="g-badge" data-g="B">B</span> Strong</div>
+            <div class="grade-mini"><span class="g-badge" data-g="C">C</span> Moderate</div>
+            <div class="grade-mini"><span class="g-badge" data-g="D">D</span> Expert-based</div>
+          </div>
+        </div>
+        <div class="legend-col">
+          <span class="tag">Card colour</span>
+          <div class="grade-mini" style="margin-bottom:6px;"><span class="stance-tag" data-s="recommend">Recommend</span> supported for routine use</div>
+          <div class="grade-mini" style="margin-bottom:6px;"><span class="stance-tag" data-s="consider">Consider</span> selected patients / adjunct</div>
+          <div class="grade-mini"><span class="stance-tag" data-s="avoid">Avoid</span> not recommended / caution</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 1. ASSESSMENT ============================= -->
+<section class="section-alt" id="assessment">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">01 · Workflow</span>
+      <h2>Assess, analyse, then plan</h2>
+      <p>Every episode of care follows the same three steps before a single technique is chosen.</p>
+    </div>
+
+    <div class="exam-row">
+      <div class="exam-item reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><span>Inspection</span></div>
+      <div class="exam-item reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h.01M12 12h.01M16 12h.01M3 12a9 9 0 1018 0 9 9 0 00-18 0z"/></svg><span>Palpation</span></div>
+      <div class="exam-item reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V6M15 18V9M12 18V3"/></svg><span>Percussion</span></div>
+      <div class="exam-item reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4v9a5 5 0 0010 0V6M18 9v3a2 2 0 11-4 0"/></svg><span>Auscultation</span></div>
+    </div>
+
+    <div class="two-col">
+      <div class="reveal">
+        <details class="accordion" open>
+          <summary>History taking</summary>
+          <div class="acc-body">
+            <ul>
+              <li>History of the current admission</li>
+              <li>Past history: asthma, allergy, sinusitis/polyps, childhood respiratory infection</li>
+              <li>Prior exacerbations or hospitalisations — patients may not recognise past episodes as "exacerbations"</li>
+              <li>Comorbidities that also restrict activity (cardiac disease, malignancy, osteoporosis, musculoskeletal disorders)</li>
+              <li>Exposure to risk factors — smoking, occupational/environmental exposure</li>
+              <li>Impact on life: activity limits, missed work, mood, family routines, social support</li>
+            </ul>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary>Analysis — what you're pulling together</summary>
+          <div class="acc-body">
+            <ul>
+              <li>Medical referral data, labs, CXR, pulmonary function tests</li>
+              <li>Whether medical treatment has already been optimised</li>
+              <li>Dyspnoea, reduced exercise performance and physical activity</li>
+              <li>Peripheral &amp; respiratory muscle tests, 6-minute walk test</li>
+              <li>Airway clearance: impaired clearance, mucus quality/quantity, cough efficacy</li>
+            </ul>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary>Treatment plan — the 4 goals in practice</summary>
+          <div class="acc-body">
+            <ul>
+              <li>Reduce or eliminate functional impairment</li>
+              <li>Improve participation in activity</li>
+              <li>Improve quality of life</li>
+              <li>Reduce dyspnoea · improve exercise capacity · improve mucus clearance · improve self-management</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <div class="cat-box reveal">
+        <h4>The COPD Assessment Test (CAT)</h4>
+        <p>An 8-item, self-scored questionnaire (0–5 per item, 0–40 total) that quantifies the impact of COPD on daily life. GOLD-recommended for assessing and monitoring COPD (Jones et al 2009).</p>
+        <div class="cat-bands">
+          <div class="cat-band"><span class="range">0–10</span><span class="bar" style="background:var(--teal-500); width:20%;"></span><span class="lab">Mild impact</span></div>
+          <div class="cat-band"><span class="range">11–20</span><span class="bar" style="background:var(--teal-500); width:45%;"></span><span class="lab">Moderate impact</span></div>
+          <div class="cat-band"><span class="range">21–30</span><span class="bar" style="background:var(--amber-500); width:70%;"></span><span class="lab">Severe impact</span></div>
+          <div class="cat-band"><span class="range">31–40</span><span class="bar" style="background:var(--coral-500); width:95%;"></span><span class="lab">Very severe</span></div>
+        </div>
+        <div class="cat-foot">A change of <b style="color:#fff;">≥2 points</b> is clinically significant · roughly a <b style="color:#fff;">5-point gap</b> is typically seen between stable COPD and an active exacerbation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 2. DYSPNOEA ============================= -->
+<section id="dyspnoea">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">02 · Chapter 2</span>
+      <h2>Managing dyspnoea</h2>
+      <p>"Breathing exercises" is an umbrella term — the six approaches below range from strongly recommended to actively cautioned. Match the technique to the patient in front of you.</p>
+    </div>
+
+    <div class="rec-grid" id="dyspnoeaGrid">
+      <article class="rec-card" data-stance="core">
+        <div class="rec-top">
+          <div><span class="g-badge" data-g="A">A</span><div class="rec-lvl">LEVEL 1++</div></div>
+          <span class="stance-tag" data-s="recommend">Recommend</span>
+        </div>
+        <h4>Inspiratory muscle training</h4>
+        <p>Best-evidenced adjunct in the whole dyspnoea chapter. For patients with dyspnoea who <b>can't manage standard exercise training</b> and show <b>reduced inspiratory muscle strength</b>. Controlled/threshold load ≥30% of maximal inspiratory pressure.</p>
+        <span class="cite">Geddes 2005 · Gosselink 2011 · Beaumont 2018</span>
+      </article>
+
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top">
+          <div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2−</div></div>
+          <span class="stance-tag" data-s="consider">Consider</span>
+        </div>
+        <h4>Pursed-lips breathing</h4>
+        <p>Reduces breathing frequency and dyspnoea, improves SpO₂, exercise endurance and tidal volume. Test the response in each individual; use during dyspnoea-provoking activity.</p>
+        <span class="cite">Bianchi 2004 · Cabral 2015</span>
+      </article>
+
+      <article class="rec-card" data-stance="avoid">
+        <div class="rec-top">
+          <div><span class="g-badge" data-g="B">B</span><div class="rec-lvl">LEVEL 1−</div></div>
+          <span class="stance-tag" data-s="avoid">Not recommended</span>
+        </div>
+        <h4>Diaphragmatic breathing</h4>
+        <p><b>Not recommended</b> for moderate–severe COPD — can increase work of breathing and provoke asynchronous / paradoxical movement. <b>Modify or stop</b> if abdominal paradox, worsening dyspnoea or fatigue appear.</p>
+        <span class="cite">Gosselink 1995 · Cahalin 2002</span>
+      </article>
+
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top">
+          <div><span class="g-badge" data-g="B">B</span><div class="rec-lvl">LEVEL 1−</div></div>
+          <span class="stance-tag" data-s="consider">Consider</span>
+        </div>
+        <h4>Relaxation exercises</h4>
+        <p>Short-term benefit for breathing frequency, dyspnoea and anxiety. Worth considering in anxious, breathless patients.</p>
+        <span class="cite">Brenes 2003</span>
+      </article>
+
+      <article class="rec-card" data-stance="core">
+        <div class="rec-top">
+          <div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2−</div></div>
+          <span class="stance-tag" data-s="recommend">Recommend</span>
+        </div>
+        <h4>Body positioning — forward lean</h4>
+        <p>Greater lung volumes, less accessory-muscle EMG activity, improved diaphragm function and reduced dyspnoea. Also effective during rollator-assisted walking.</p>
+        <span class="cite">Gosselink 2003 · Kim 2012</span>
+      </article>
+
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top">
+          <div><span class="g-badge" data-g="B">B</span><div class="rec-lvl">LEVEL 1−</div></div>
+          <span class="stance-tag" data-s="consider">Consider</span>
+        </div>
+        <h4>AcuTENS / acupressure</h4>
+        <p>TENS at acupoint EX-B1 or acupressure over several points has improved FEV₁, dyspnoea and CAT score in small trials. A reasonable additional adjunct.</p>
+        <span class="cite">Lau &amp; Jones 2008 · Maa 1997</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="trace-divider trace-wrap section-alt" aria-hidden="true">
+  <div class="trace-track">
+    <svg viewBox="0 0 600 24" preserveAspectRatio="none"><path d="M0,12 C20,12 25,4 40,4 C55,4 58,20 72,20 C86,20 90,8 105,8 L160,8 C175,8 180,18 195,18 C210,18 213,5 228,5 C243,5 247,16 262,16 L320,16 C335,16 340,4 355,4 C370,4 373,20 388,20 C403,20 407,8 422,8 L480,8 C495,8 500,17 515,17 C530,17 533,6 548,6 C563,6 566,14 580,14 L600,12" fill="none" stroke="#E2A33B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 600 24" preserveAspectRatio="none"><path d="M0,12 C20,12 25,4 40,4 C55,4 58,20 72,20 C86,20 90,8 105,8 L160,8 C175,8 180,18 195,18 C210,18 213,5 228,5 C243,5 247,16 262,16 L320,16 C335,16 340,4 355,4 C370,4 373,20 388,20 C403,20 407,8 422,8 L480,8 C495,8 500,17 515,17 C530,17 533,6 548,6 C563,6 566,14 580,14 L600,12" fill="none" stroke="#E2A33B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</div>
+
+<!-- ============================= 3. MUCUS ============================= -->
+<section class="section-alt" id="mucus">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">03 · Chapter 3</span>
+      <h2>Airway clearance &amp; mucus management</h2>
+      <p>Most trials behind this chapter are small and of mixed quality — read every "recommend" with appropriate caution, and pick the technique that matches the mechanical problem (weak cough vs. localized retention vs. airway collapse).</p>
+    </div>
+
+    <div class="rec-grid">
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top"><div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2−</div></div><span class="stance-tag" data-s="consider">Consider</span></div>
+        <h4>Postural drainage</h4>
+        <p>Lacks evidence as a standalone technique, but useful <b>alongside</b> forced expiratory manoeuvres or PEP when those are insufficient, or with localized mucus retention.</p>
+        <span class="cite">Ides 2011 · Bott 2009</span>
+      </article>
+
+      <article class="rec-card" data-stance="avoid">
+        <div class="rec-top"><div><span class="g-badge" data-g="B">B</span><div class="rec-lvl">LEVEL 2++</div></div><span class="stance-tag" data-s="avoid">Not recommended</span></div>
+        <h4>Chest percussion &amp; vibration</h4>
+        <p>No added benefit over postural drainage and coughing; sputum yield not statistically significant. <b>Probably not effective</b> as a routine technique in AECOPD.</p>
+        <span class="cite">Savci 2000 · Cross 2012</span>
+      </article>
+
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top"><div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2−</div></div><span class="stance-tag" data-s="consider">Selected patients</span></div>
+        <h4>Manual chest / abdominal compression</h4>
+        <p>Increases peak cough flow in muscle weakness — but <b>decreases</b> it in typical COPD patients. Reserve for patients with genuine expiratory muscle weakness.</p>
+        <span class="cite">Sivasothy 2001</span>
+      </article>
+
+      <article class="rec-card" data-stance="core">
+        <div class="rec-top"><div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2−</div></div><span class="stance-tag" data-s="recommend">Recommend</span></div>
+        <h4>Forced expiratory technique / ACBT</h4>
+        <p>Treat patients with mucus retention who can't expectorate effectively. If expiratory force is low or tracheobronchial collapse is present, <b>combine with other techniques</b>. ACBT improves sputum volume and reduces dyspnoea.</p>
+        <span class="cite">Jones &amp; Rowe 2000 · Zisi 2022</span>
+      </article>
+
+      <article class="rec-card" data-stance="core">
+        <div class="rec-top"><div><span class="g-badge" data-g="B">B</span><div class="rec-lvl">LEVEL 2++</div></div><span class="stance-tag" data-s="recommend">Recommend</span></div>
+        <h4>Positive expiratory pressure (PEP) breathing</h4>
+        <p>↑ functional residual capacity, ↓ airway resistance, opens closed small airways. Recommended for patients with <b>excessive mucus production</b>.</p>
+        <span class="cite">Bellone 2002 · Tang 2010</span>
+      </article>
+
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top"><div><span class="g-badge" data-g="B">B</span><div class="rec-lvl">LEVEL 2++</div></div><span class="stance-tag" data-s="consider">May be considered</span></div>
+        <h4>Positive-pressure oscillative breathing</h4>
+        <p>Flutter/Acapella devices — as effective as postural drainage / FET in small trials, with more durable clearance. Long-term efficacy in COPD still under-studied.</p>
+        <span class="cite">Bellone 2000 · Alghamdi 2023</span>
+      </article>
+
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top"><div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2−</div></div><span class="stance-tag" data-s="consider">Adjunct only</span></div>
+        <h4>Exercise (for mucus transport)</h4>
+        <p>Stimulates mucus transport via cilia beat frequency and expiratory airflow — but is <b>not as effective as coughing</b> and does not replace dedicated clearance techniques.</p>
+        <span class="cite">Oldenburg 1979 · Donaldson 2019</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 4. EXERCISE ============================= -->
+<section id="exercise">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">04 · Chapter 4</span>
+      <h2>Physical activity &amp; exercise training</h2>
+      <p>Exacerbations accelerate the loss of quadriceps strength and fat-free mass that's already under way in stable COPD — and a drop in activity after an exacerbation independently predicts re-hospitalisation.</p>
+    </div>
+
+    <div class="core-callout reveal">
+      <span class="g-badge" data-g="C">C</span>
+      <div>
+        <h4>The core rule: timing matters more than the modality</h4>
+        <p>Physical activity and exercise training are <b>not recommended during uncompensated respiratory failure</b>. Once the patient enters the <b>sub-acute phase</b>, walking or weight-bearing exercise should be initiated to counter deconditioning. <span class="cite" style="display:inline;">Level 2+ · Pitta 2006, Shibuya 2022</span></p>
+      </div>
+    </div>
+
+    <div class="rec-grid">
+      <article class="rec-card" data-stance="core">
+        <div class="rec-top"><div><span class="g-badge" data-g="D">D</span><div class="rec-lvl">LEVEL 2−</div></div><span class="stance-tag" data-s="recommend">Recommend</span></div>
+        <h4>Body positioning during exercise</h4>
+        <p>Forward leaning alleviates dyspnoea during exertion, same mechanism as at rest.</p>
+        <span class="cite">Elbehairy 2022</span>
+      </article>
+
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top"><div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 1−</div></div><span class="stance-tag" data-s="consider">Selected patients</span></div>
+        <h4>Breathing exercise during training</h4>
+        <p>Pursed-lip breathing, slow/deep breathing and active expiration can improve exercise tolerance in patients unable to undertake conventional training.</p>
+        <span class="cite">Holland 2012</span>
+      </article>
+
+      <article class="rec-card" data-stance="core">
+        <div class="rec-top"><div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2+</div></div><span class="stance-tag" data-s="recommend">Recommend</span></div>
+        <h4>Walking aids (rollator)</h4>
+        <p>Doesn't change SpO₂ but reduces the <b>sensation</b> of dyspnoea and improves self-paced walk distance — likely via the forward-lean position it encourages.</p>
+        <span class="cite">Solway 2002 · Vaes 2015</span>
+      </article>
+
+      <article class="rec-card" data-stance="core">
+        <div class="rec-top"><div><span class="g-badge" data-g="B">B</span><div class="rec-lvl">LEVEL 2++</div></div><span class="stance-tag" data-s="recommend">Recommend</span></div>
+        <h4>Lower-extremity strengthening</h4>
+        <p>Safe and feasible even during an exacerbation; counteracts skeletal-muscle dysfunction without raising systemic inflammation markers. Start as the exacerbation resolves to protect daily activity and cut exertional dyspnoea.</p>
+        <span class="cite">Troosters 2010 · Saey 2011</span>
+      </article>
+
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top"><div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2+</div></div><span class="stance-tag" data-s="consider">Depends on subgroup</span></div>
+        <h4>Supplemental oxygen during exercise</h4>
+        <p><b>On resting LTOT:</b> likely needs O₂ above resting levels during exercise. <b>No desaturation:</b> routine O₂ not recommended. <b>Exercise-induced desaturation only:</b> O₂ can improve post-exercise dyspnoea and QoL.</p>
+        <span class="cite">Bradley 2007 · Rooyackers 1997</span>
+      </article>
+
+      <article class="rec-card" data-stance="consider">
+        <div class="rec-top"><div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2+</div></div><span class="stance-tag" data-s="consider">Selected patients</span></div>
+        <h4>Neuromuscular electrical stimulation (NMES)</h4>
+        <p>For patients with severely impaired muscle strength who can't participate in regular exercise — especially those who cannot get out of bed. Preserves quadriceps strength and mass, improves dyspnoea and walking distance.</p>
+        <span class="cite">Zanotti 2003 · Trooster 2010</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="trace-divider trace-wrap section-alt" aria-hidden="true">
+  <div class="trace-track">
+    <svg viewBox="0 0 600 24" preserveAspectRatio="none"><path d="M0,12 C20,12 25,4 40,4 C55,4 58,20 72,20 C86,20 90,8 105,8 L160,8 C175,8 180,18 195,18 C210,18 213,5 228,5 C243,5 247,16 262,16 L320,16 C335,16 340,4 355,4 C370,4 373,20 388,20 C403,20 407,8 422,8 L480,8 C495,8 500,17 515,17 C530,17 533,6 548,6 C563,6 566,14 580,14 L600,12" fill="none" stroke="#7C6FBE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 600 24" preserveAspectRatio="none"><path d="M0,12 C20,12 25,4 40,4 C55,4 58,20 72,20 C86,20 90,8 105,8 L160,8 C175,8 180,18 195,18 C210,18 213,5 228,5 C243,5 247,16 262,16 L320,16 C335,16 340,4 355,4 C370,4 373,20 388,20 C403,20 407,8 422,8 L480,8 C495,8 500,17 515,17 C530,17 533,6 548,6 C563,6 566,14 580,14 L600,12" fill="none" stroke="#7C6FBE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</div>
+
+<!-- ============================= 5. EDUCATION ============================= -->
+<section class="section-alt" id="education">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">05 · Chapter 5</span>
+      <h2>Evaluation, documentation &amp; patient education</h2>
+      <p>Closing the loop: track progress, write it down consistently, and hand the patient the skills to manage their next exacerbation earlier.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="reveal">
+        <details class="accordion" open>
+          <summary>Re-evaluate against</summary>
+          <div class="acc-body">
+            <ul>
+              <li>Dyspnoea scale</li>
+              <li>Limb muscle strength</li>
+              <li>Self-management &amp; mucus-clearance efficacy</li>
+            </ul>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary>Document every episode</summary>
+          <div class="acc-body">
+            <ul>
+              <li>History taking &amp; physical examination</li>
+              <li>Dyspnoea scale at rest / on exercise, O₂ supplement + SpO₂</li>
+              <li>Respiratory pattern — rate, paradoxical thoraco-abdominal movement, accessory muscle use</li>
+              <li>Auscultation findings, coughing effort, muscle strength, BODE index</li>
+              <li>Problem list → treatment plan → post-treatment response</li>
+            </ul>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary>Topics for a patient education programme</summary>
+          <div class="acc-body">
+            <ul>
+              <li>COPD fact sheet: pathophysiology, treatment approach, self-management</li>
+              <li>Medication adherence &amp; inhaler technique</li>
+              <li>Smoking cessation</li>
+              <li>Increasing physical activity &amp; exercise</li>
+              <li>Managing breathlessness &amp; energy conservation</li>
+              <li>Avoiding aggravating factors (smoke, pollution) &amp; stress management</li>
+              <li>When to seek help; self-management, advance directives &amp; end-of-life planning</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <div class="rec-card reveal" data-stance="core" style="border-left-color:var(--teal-700);">
+        <div class="rec-top"><div><span class="g-badge" data-g="C">C</span><div class="rec-lvl">LEVEL 2++</div></div><span class="stance-tag" data-s="recommend">Recommend</span></div>
+        <h4>Self-management education</h4>
+        <p>Associated with <b>fewer hospital admissions</b> and better health-related quality of life, without excess mortality risk. Needs trained staff to select patients and provide structured follow-up — simply handing out leaflets isn't enough.</p>
+        <p style="margin-top:0.9rem;"><b>Didactic-only education</b> (information transfer alone, no skills training) shows <b>minimal effect</b> on quality of life, healthcare utilisation, exercise capacity or lung function — pair facts with practised self-management skills.</p>
+        <span class="cite">Effing 2009 · Schrijver 2022 · Blackstock &amp; Webster</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= QUICK REFERENCE ============================= -->
+<section id="reference">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">Quick reference</span>
+      <h2>Every recommendation, at a glance</h2>
+      <p>Filter by domain to find a technique fast — useful for a quick check before you walk into a bay.</p>
+    </div>
+
+    <div class="filter-row" id="filterRow">
+      <button class="chip active" data-filter="all">All 22</button>
+      <button class="chip" data-filter="dyspnoea">● Dyspnoea</button>
+      <button class="chip" data-filter="mucus">● Mucus</button>
+      <button class="chip" data-filter="exercise">● Exercise</button>
+      <button class="chip" data-filter="education">● Education</button>
+    </div>
+
+    <div class="table-wrap reveal">
+      <table class="ref-table" id="refTable">
+        <thead>
+          <tr>
+            <th>Domain</th>
+            <th>Intervention</th>
+            <th>Guidance</th>
+            <th>Level</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody id="refBody"><!-- populated by JS --></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= QUIZ ============================= -->
+<section class="section-alt" id="quiz">
+  <div class="container">
+    <div class="quiz-head reveal">
+      <div class="section-head" style="margin-bottom:0;">
+        <span class="section-num">Clinical knowledge check</span>
+        <h2>Five cases. Five decisions.</h2>
+        <p>Each question is a short clinical vignette drawn from this guideline. Pick an option to see the rationale immediately.</p>
+      </div>
+      <div class="score-pill">Score <b id="scoreNow">0</b>/5</div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <div class="quiz-summary" id="quizSummary">
+      <div class="eyebrow" style="color:#8FD9CC;">Session complete</div>
+      <div class="big" id="finalScore">0 / 5</div>
+      <p id="finalMsg">Review the cards above and try again any time.</p>
+      <button class="btn btn-primary" id="restartBtn" type="button">Restart quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= FOOTER ============================= -->
+<footer>
+  <div class="container">
+    <div>
+      <h5>Educational summary</h5>
+      <p>Prepared as an onboarding &amp; teaching aid for junior physiotherapists. This page condenses HAHO-COC-GL-PHY-001-v03 for quick reference — always consult the full guideline and current medical orders for clinical decision-making.</p>
+    </div>
+    <div class="meta">
+      Author: Specialty Group on Cardiopulmonary Physiotherapy<br>
+      Custodian: HO Allied Health Grade Department<br>
+      Approved by: COC-Grade in Physiotherapy<br>
+      Issue 30/06/2023 · Review 30/06/2026
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- Scroll progress ---------- */
+  var progressLine = document.getElementById('progressLine');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    var pct = height > 0 ? (scrollTop / height) * 100 : 0;
+    progressLine.style.setProperty('--pw', pct + '%');
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      window.requestAnimationFrame(function(){ updateProgress(); ticking = false; });
+      ticking = true;
+    }
+  }, {passive:true});
+  updateProgress();
+
+  /* ---------- Scroll-spy nav ---------- */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navPills a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var id = '#' + entry.target.id;
+      var link = navLinks.filter(function(a){ return a.getAttribute('href') === id; })[0];
+      if(!link) return;
+      if(entry.isIntersecting){
+        navLinks.forEach(function(a){ a.classList.remove('active'); });
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+  sections.forEach(function(s){ spy.observe(s); });
+
+  navLinks.forEach(function(a){
+    a.addEventListener('click', function(){
+      navLinks.forEach(function(x){ x.classList.remove('active'); });
+      a.classList.add('active');
+    });
+  });
+
+  /* ---------- Reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal, .rec-card');
+  var revealer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        revealer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(function(el){ revealer.observe(el); });
+
+  /* ---------- Quick reference table ---------- */
+  var refData = [
+    {d:'dyspnoea', name:'Inspiratory muscle training', note:'Adjunct for dyspnoea + reduced inspiratory strength; load ≥30% MIP', lvl:'1++', g:'A'},
+    {d:'dyspnoea', name:'Pursed-lip breathing', note:'Trial individually; use during dyspnoea-provoking activity', lvl:'2−', g:'C'},
+    {d:'dyspnoea', name:'Diaphragmatic breathing', note:'Not recommended, moderate–severe COPD; stop if paradox/fatigue', lvl:'1−', g:'B'},
+    {d:'dyspnoea', name:'Relaxation exercises', note:'Consider for anxiety + dyspnoea (short-term effect)', lvl:'1−', g:'B'},
+    {d:'dyspnoea', name:'Body positioning (forward lean)', note:'Eases dyspnoea; helpful with rollator', lvl:'2−', g:'C'},
+    {d:'dyspnoea', name:'AcuTENS / acupressure', note:'Additional adjunct for dyspnoea', lvl:'1−', g:'B'},
+    {d:'mucus', name:'Postural drainage', note:'Add when FET/PEP insufficient, or localized retention', lvl:'2−', g:'C'},
+    {d:'mucus', name:'Chest percussion & vibration', note:'Probably not effective — avoid as routine technique', lvl:'2++', g:'B'},
+    {d:'mucus', name:'Manual chest/abdominal compression', note:'Only for expiratory muscle weakness', lvl:'2−', g:'C'},
+    {d:'mucus', name:'Forced expiratory technique / ACBT', note:'Combine techniques if weak cough or airway collapse', lvl:'2−', g:'C'},
+    {d:'mucus', name:'PEP breathing', note:'Recommended for excessive mucus production', lvl:'2++', g:'B'},
+    {d:'mucus', name:'Oscillatory PEP (Flutter/Acapella)', note:'May be considered; long-term efficacy unclear', lvl:'2++', g:'B'},
+    {d:'mucus', name:'Exercise (mucus transport)', note:'Stimulates transport; doesn\'t replace clearance techniques', lvl:'2−', g:'C'},
+    {d:'exercise', name:'Exercise training in AECOPD', note:'Avoid if uncompensated resp. failure; start sub-acute phase', lvl:'2+', g:'C'},
+    {d:'exercise', name:'Body positioning during exercise', note:'Forward lean eases exertional dyspnoea', lvl:'2−', g:'D'},
+    {d:'exercise', name:'Breathing exercise during training', note:'Useful for patients unable to train conventionally', lvl:'1−', g:'C'},
+    {d:'exercise', name:'Walking aids (rollator)', note:'Reduces dyspnoea sensation, improves walk distance', lvl:'2+', g:'C'},
+    {d:'exercise', name:'Lower-limb strengthening', note:'Start as exacerbation resolves; safe, preserves strength', lvl:'2++', g:'B'},
+    {d:'exercise', name:'Supplemental O₂ during exercise', note:'Tailor to resting hypoxaemia / desaturation pattern', lvl:'2+', g:'C'},
+    {d:'exercise', name:'NMES', note:'Severe muscle weakness unable to exercise, e.g. bed-bound', lvl:'2+', g:'C'},
+    {d:'education', name:'Self-management education', note:'Fewer hospital admissions, better quality of life', lvl:'2++', g:'C'},
+    {d:'education', name:'Didactic-only education', note:'Minimal effect alone — pair with practised skills', lvl:'2++', g:'C'}
+  ];
+
+  var refBody = document.getElementById('refBody');
+  var domainLabel = {dyspnoea:'Dyspnoea', mucus:'Mucus', exercise:'Exercise', education:'Education'};
+  refData.forEach(function(row){
+    var tr = document.createElement('tr');
+    tr.setAttribute('data-domain', row.d);
+    tr.innerHTML =
+      '<td><span class="domain-dot">' + domainLabel[row.d] + '</span></td>' +
+      '<td class="itv">' + row.name + '</td>' +
+      '<td>' + row.note + '</td>' +
+      '<td class="lvl-cell">LEVEL ' + row.lvl + '</td>' +
+      '<td><span class="g-badge small-grade" data-g="' + row.g + '">' + row.g + '</span></td>';
+    refBody.appendChild(tr);
+  });
+
+  var chips = document.querySelectorAll('#filterRow .chip');
+  chips.forEach(function(chip){
+    chip.addEventListener('click', function(){
+      chips.forEach(function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+      var f = chip.getAttribute('data-filter');
+      document.querySelectorAll('#refBody tr').forEach(function(tr){
+        tr.style.display = (f === 'all' || tr.getAttribute('data-domain') === f) ? '' : 'none';
+      });
+    });
+  });
+
+  /* ---------- Quiz ---------- */
+  var quizData = [
+    {
+      vignette: "A 68-year-old man is admitted with an AECOPD. He is dyspnoeic at rest, and testing reveals significantly reduced maximal inspiratory pressure. He becomes too breathless to tolerate a standard walking or cycle exercise programme.",
+      question: "Which adjunct is best supported by the guideline for this patient?",
+      options: [
+        { text: "Diaphragmatic breathing retraining", correct:false, rationale:"Diaphragmatic breathing is not recommended for moderate-to-severe COPD (Level 1−, Grade B) — it can increase work of breathing and provoke a paradoxical breathing pattern." },
+        { text: "Inspiratory muscle training with a threshold load ≥30% of maximal inspiratory pressure", correct:true, rationale:"Correct. IMT is recommended precisely for patients with dyspnoea who cannot manage standard exercise training and who show reduced inspiratory muscle strength — the guideline's strongest rating, Level 1++, Grade A." },
+        { text: "Manual chest percussion", correct:false, rationale:"Percussion targets sputum clearance, not inspiratory muscle weakness — and is itself probably ineffective for clearance (Level 2++, Grade B)." },
+        { text: "Routine supplemental oxygen regardless of saturation", correct:false, rationale:"Oxygen is reserved for patients who are hypoxaemic at rest or desaturate on exertion. Inspiratory muscle weakness alone doesn't indicate it." }
+      ]
+    },
+    {
+      vignette: "A patient with copious, purulent sputum is struggling to clear secretions. She can generate an effective forced expiratory technique, but auscultation and imaging suggest localized tracheobronchial collapse, and the sputum remains hard to shift.",
+      question: "What is the most appropriate next step in her airway-clearance plan?",
+      options: [
+        { text: "Rely on manual chest percussion alone to loosen secretions", correct:false, rationale:"Manual percussion has shown no added benefit over postural drainage and coughing, and is probably not effective as a standalone technique (Level 2++, Grade B)." },
+        { text: "Add postural drainage and/or PEP breathing alongside her forced expiratory technique", correct:true, rationale:"Correct. When forced expiratory manoeuvres alone are insufficient — especially with localized retention or airway collapse — combining techniques such as postural drainage or PEP breathing is recommended (Level 2−, Grade C)." },
+        { text: "Stop physiotherapy input and rely on antibiotics alone", correct:false, rationale:"Physiotherapy still has a clear role wherever mucus clearance is mechanically impaired." },
+        { text: "Substitute diaphragmatic breathing for the forced expiratory technique", correct:false, rationale:"Diaphragmatic breathing isn't an airway-clearance technique, and isn't recommended in this population regardless." }
+      ]
+    },
+    {
+      vignette: "Day 1 of admission: a patient with AECOPD has uncompensated respiratory failure and is acutely unwell.",
+      question: "What is the guideline-consistent approach to physical activity right now?",
+      options: [
+        { text: "Begin a structured resistance-training programme immediately", correct:false, rationale:"Exercise training is not recommended during acute exacerbation with uncompensated respiratory failure." },
+        { text: "Withhold all physiotherapy input until the patient is ready for discharge", correct:false, rationale:"Reconditioning should begin early — just not while respiratory failure is uncompensated. Waiting until discharge misses the sub-acute window." },
+        { text: "Hold structured exercise for now; plan walking or weight-bearing activity once he enters the sub-acute phase", correct:true, rationale:"Correct (Level 2+, Grade C). The guideline is explicit: not recommended during uncompensated respiratory failure, but walking or weight-bearing exercise should be initiated during the sub-acute phase." },
+        { text: "Apply NMES as a substitute for all rehabilitation", correct:false, rationale:"NMES suits patients unable to participate in regular exercise (e.g. bed-bound) — it isn't a blanket Day-1 substitute while the patient is acutely unstable." }
+      ]
+    },
+    {
+      vignette: "You teach a patient with severe COPD a diaphragmatic breathing pattern. Partway through the session you notice increasing abdominal paradox, and she reports feeling more fatigued and breathless.",
+      question: "What should you do?",
+      options: [
+        { text: "Continue and increase repetitions — discomfort is expected while learning", correct:false, rationale:"Worsening paradox and fatigue are the specific warning signs the guideline flags — this is a signal to stop, not push through." },
+        { text: "Modify or stop the diaphragmatic breathing; consider pursed-lip breathing or a forward-lean position instead", correct:true, rationale:"Correct (Level 1−, Grade B). Diaphragmatic breathing is not recommended for moderate-severe COPD and should be modified or terminated if an abdominal paradoxical pattern, worsening dyspnoea or fatigue appear." },
+        { text: "Switch immediately to inspiratory muscle training at 80% of maximal inspiratory pressure", correct:false, rationale:"That load isn't supported by the guideline (≥30% MIP is the recommended starting threshold) and doesn't address her acute distress." },
+        { text: "Add manual chest percussion to relieve the breathlessness", correct:false, rationale:"Percussion addresses secretions, not breathing-pattern distress — it's the wrong tool for this problem." }
+      ]
+    },
+    {
+      vignette: "A patient on long-term home oxygen therapy is hypoxaemic at rest. During a supervised walk at his usual resting oxygen flow rate, his saturation drifts down further.",
+      question: "What is the most appropriate oxygen strategy for his exercise sessions?",
+      options: [
+        { text: "Keep him at his resting flow rate — no adjustment needed", correct:false, rationale:"His resting LTOT flow clearly isn't preventing exercise desaturation, so it needs review rather than being left unchanged." },
+        { text: "He likely needs oxygen supplementation above his resting level to prevent desaturation during exercise", correct:true, rationale:"Correct (Level 2+, Grade C). Patients who are hypoxaemic at rest and on long-term oxygen therapy probably need supplementation exceeding resting levels to prevent desaturation during exercise." },
+        { text: "Stop his oxygen during exercise to build tolerance", correct:false, rationale:"This isn't supported by the guideline and risks unsafe desaturation during exertion." },
+        { text: "Supplemental oxygen is only useful for patients with no resting hypoxaemia", correct:false, rationale:"That describes a different subgroup — exercise-induced desaturators without resting hypoxaemia — not this patient, who is already hypoxaemic at rest." }
+      ]
+    }
+  ];
+
+  var container = document.getElementById('quizContainer');
+  var scoreNow = document.getElementById('scoreNow');
+  var summaryBox = document.getElementById('quizSummary');
+  var finalScore = document.getElementById('finalScore');
+  var finalMsg = document.getElementById('finalMsg');
+  var score = 0;
+  var answered = 0;
+
+  function buildQuiz(){
+    container.innerHTML = '';
+    score = 0; answered = 0;
+    scoreNow.textContent = '0';
+    summaryBox.classList.remove('show');
+
+    quizData.forEach(function(q, qi){
+      var card = document.createElement('div');
+      card.className = 'q-card reveal';
+
+      var html = '<div class="q-index">CASE ' + (qi+1) + ' OF ' + quizData.length + '</div>';
+      html += '<div class="vignette">' + q.vignette + '</div>';
+      html += '<div class="question">' + q.question + '</div>';
+      html += '<div class="opt-list">';
+      q.options.forEach(function(opt, oi){
+        html += '<button type="button" class="opt-btn" data-q="' + qi + '" data-o="' + oi + '">' +
+                '<span class="opt-key">' + String.fromCharCode(65+oi) + '</span>' +
+                '<span>' + opt.text + '</span></button>';
+      });
+      html += '</div>';
+      html += '<div class="rationale" id="rationale-' + qi + '"></div>';
+
+      card.innerHTML = html;
+      container.appendChild(card);
+      revealer.observe(card);
+    });
+
+    container.querySelectorAll('.opt-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){ handleAnswer(btn); });
+    });
+  }
+
+  function handleAnswer(btn){
+    var qi = parseInt(btn.getAttribute('data-q'), 10);
+    var oi = parseInt(btn.getAttribute('data-o'), 10);
+    var q = quizData[qi];
+    var group = container.querySelectorAll('.opt-btn[data-q="' + qi + '"]');
+
+    // already answered? ignore
+    if(group[0].disabled) return;
+
+    var chosen = q.options[oi];
+    group.forEach(function(b){
+      b.disabled = true;
+      var bo = parseInt(b.getAttribute('data-o'), 10);
+      if(bo === oi){
+        b.classList.add(chosen.correct ? 'correct' : 'incorrect');
+      } else if(q.options[bo].correct){
+        b.classList.add('correct');
+      } else {
+        b.classList.add('dim');
+      }
+    });
+
+    var rBox = document.getElementById('rationale-' + qi);
+    rBox.className = 'rationale show ' + (chosen.correct ? 'good' : 'bad');
+    var prefix = chosen.correct ? '✓ Correct — ' : '✕ Not quite — ';
+    rBox.innerHTML = '<b>' + prefix + '</b>' + chosen.rationale;
+
+    if(chosen.correct) score++;
+    answered++;
+    scoreNow.textContent = score;
+
+    if(answered === quizData.length){
+      setTimeout(showSummary, 350);
+    }
+  }
+
+  function showSummary(){
+    finalScore.textContent = score + ' / ' + quizData.length;
+    var msg;
+    if(score === quizData.length) msg = "Excellent — your clinical reasoning is fully aligned with the guideline.";
+    else if(score >= 3) msg = "Good grasp of the key decisions — skim the cards above for the ones you missed.";
+    else msg = "Worth another pass through the guideline sections above before your next shift.";
+    finalMsg.textContent = msg;
+    summaryBox.classList.add('show');
+    summaryBox.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', buildQuiz);
+
+  buildQuiz();
+
+})();
+</script>
+</body>
+</html>
