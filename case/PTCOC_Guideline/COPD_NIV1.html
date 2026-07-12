@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIV in COPD — Physiotherapy Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --ink:#0E2A2B;
+    --paper:#F2F6F4;
+    --paper-dim:#E7EFEB;
+    --panel:#FFFFFF;
+    --line:#D9E3DF;
+    --teal:#0F7A75;
+    --teal-dark:#0A4644;
+    --teal-deeper:#082F2E;
+    --amber:#DB8A3C;
+    --sky:#3E82A6;
+    --brick:#AE432E;
+    --ochre:#B07A1B;
+    --moss:#3C8A5B;
+    --shadow: 0 1px 2px rgba(10,30,29,.06), 0 8px 24px -12px rgba(10,30,29,.18);
+    --radius:14px;
+    --maxw:1180px;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Big Shoulders Display', 'Inter', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.01em;
+    margin:0;
+    line-height:.98;
+    color:var(--ink);
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  .container{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  ::selection{background:var(--amber);color:#fff;}
+  :focus-visible{outline:3px solid var(--sky);outline-offset:2px;}
+
+  /* ============ PROGRESS BAR ============ */
+  #progressBar{
+    position:fixed;top:0;left:0;height:3px;width:0%;
+    background:linear-gradient(90deg,var(--teal),var(--amber));
+    z-index:200;transition:width .08s linear;
+  }
+
+  /* ============ TOP NAV ============ */
+  .topnav{
+    position:sticky;top:0;z-index:150;
+    background:rgba(242,246,244,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:0 12px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .brandmini{
+    font-family:'Big Shoulders Display';font-weight:800;font-size:15px;
+    letter-spacing:.03em;white-space:nowrap;padding:10px 10px 10px 4px;color:var(--teal-dark);
+    flex-shrink:0;
+  }
+  .pillrow{
+    display:flex;gap:6px;overflow-x:auto;padding:9px 4px;
+    scrollbar-width:thin;
+  }
+  .pillrow::-webkit-scrollbar{height:5px;}
+  .pillrow::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;}
+  .pill{
+    flex-shrink:0;
+    font-family:'IBM Plex Mono';font-size:11.5px;font-weight:500;
+    padding:7px 12px;border-radius:99px;border:1px solid var(--line);
+    background:var(--panel);color:var(--teal-dark);text-decoration:none;
+    white-space:nowrap;transition:.15s;
+  }
+  .pill b{font-weight:600;opacity:.55;margin-right:5px;}
+  .pill:hover{border-color:var(--teal);}
+  .pill.active{background:var(--teal-dark);color:#fff;border-color:var(--teal-dark);}
+  .pill.active b{opacity:.7;}
+
+  /* ============ HERO ============ */
+  .hero{
+    background:linear-gradient(180deg,var(--teal-deeper),var(--teal-dark) 60%, var(--teal) 130%);
+    color:#EAF4F1;position:relative;overflow:hidden;
+    padding:56px 0 40px;
+  }
+  .hero .container{position:relative;z-index:2;}
+  .eyebrow{
+    font-family:'IBM Plex Mono';font-size:12.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:#9FD8CE;display:flex;align-items:center;gap:10px;
+    margin-bottom:16px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:#9FD8CE;display:inline-block;}
+  .hero h1{
+    font-size:clamp(38px,7vw,84px);
+    color:#fff;
+  }
+  .hero h1 em{font-style:normal;color:var(--amber);}
+  .hero .sub{
+    font-family:'Big Shoulders Display';font-weight:600;
+    font-size:clamp(18px,2.4vw,26px);
+    color:#CFE9E3;text-transform:uppercase;letter-spacing:.02em;margin-top:6px;
+  }
+  .hero p.lede{
+    max-width:640px;margin-top:20px;font-size:15.5px;color:#D7ECE7;
+  }
+  .chartline{
+    display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:26px;
+    font-family:'IBM Plex Mono';font-size:11.5px;color:#9FD8CE;
+  }
+  .chartline span b{color:#EAF4F1;font-weight:600;}
+  .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
+  .btn{
+    font-family:'IBM Plex Mono';font-size:13px;font-weight:500;
+    padding:12px 20px;border-radius:10px;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;transition:.15s;border:1px solid transparent;
+  }
+  .btn-solid{background:var(--amber);color:#241305;}
+  .btn-solid:hover{background:#EDA05B;}
+  .btn-ghost{border-color:rgba(255,255,255,.35);color:#EAF4F1;}
+  .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08);}
+
+  /* waveform */
+  .wave-wrap{
+    margin-top:38px;height:96px;overflow:hidden;position:relative;
+    border-top:1px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(255,255,255,.18);
+  }
+  .wave-wrap::before,.wave-wrap::after{
+    content:"";position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none;
+  }
+  .wave-wrap::before{left:0;background:linear-gradient(90deg,var(--teal-deeper),transparent);}
+  .wave-wrap::after{right:0;background:linear-gradient(270deg,var(--teal-deeper),transparent);}
+  .wave-track{
+    display:flex;width:200%;height:100%;
+    animation:waveScroll 9s linear infinite;
+  }
+  @keyframes waveScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .wave-track svg{width:50%;height:100%;flex-shrink:0;}
+
+  /* ============ SECTIONS ============ */
+  .sec{padding:64px 0;scroll-margin-top:64px;border-bottom:1px solid var(--line);}
+  .sec:nth-of-type(even){background:var(--paper-dim);}
+  .sec-head{display:flex;gap:18px;align-items:baseline;margin-bottom:28px;flex-wrap:wrap;}
+  .sec-num{
+    font-family:'IBM Plex Mono';font-size:14px;color:var(--teal);
+    border:1px solid var(--teal);border-radius:99px;padding:3px 11px;flex-shrink:0;
+  }
+  .sec-head h2{font-size:clamp(26px,4vw,42px);color:var(--teal-dark);}
+  .sec-lead{max-width:760px;color:#33514F;font-size:15.5px;margin-bottom:30px;}
+  .sec-lead b{color:var(--ink);}
+
+  .grid{display:grid;gap:16px;}
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  .grid-4{grid-template-columns:repeat(4,1fr);}
+  @media(max-width:860px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 22px;box-shadow:var(--shadow);
+  }
+  .card h3{
+    font-family:'Inter';text-transform:none;font-weight:700;font-size:15.5px;
+    letter-spacing:0;margin-bottom:8px;color:var(--ink);
+  }
+  .card p{margin:0 0 8px;font-size:14px;color:#354b49;}
+  .card ul{margin:8px 0 0;padding-left:18px;font-size:13.8px;color:#354b49;}
+  .card ul li{margin-bottom:5px;}
+
+  .tag{
+    display:inline-block;font-family:'IBM Plex Mono';font-size:10.5px;font-weight:600;
+    letter-spacing:.03em;text-transform:uppercase;padding:3px 9px;border-radius:99px;
+    margin-bottom:10px;
+  }
+  .tag-good{background:#E3F1E7;color:var(--moss);}
+  .tag-warn{background:#F6E9D2;color:var(--ochre);}
+  .tag-bad{background:#F5E1DC;color:var(--brick);}
+  .tag-info{background:#DEEAF0;color:var(--sky);}
+  .tag-teal{background:#DCEEEB;color:var(--teal-dark);}
+
+  .callout{border-radius:var(--radius);padding:18px 20px;border:1px solid;margin-bottom:16px;}
+  .callout h4{font-family:'Inter';text-transform:none;font-weight:700;font-size:14px;margin-bottom:6px;}
+  .callout p,.callout ul{font-size:13.8px;margin:0;}
+  .callout ul{padding-left:18px;}
+  .callout ul li{margin-bottom:4px;}
+  .c-danger{background:#FBEEEA;border-color:#EBC4B8;color:#6E2A1A;}
+  .c-danger h4{color:var(--brick);}
+  .c-warn{background:#FBF3E4;border-color:#EBD3A0;color:#5C400C;}
+  .c-warn h4{color:var(--ochre);}
+  .c-good{background:#EAF5EE;border-color:#BFE1CB;color:#1F4A31;}
+  .c-good h4{color:var(--moss);}
+  .c-info{background:#E7F1F5;border-color:#BEDAE5;color:#173C4A;}
+  .c-info h4{color:var(--sky);}
+
+  /* readout / monitor style */
+  .readout{
+    background:var(--teal-deeper);color:#EAF4F1;border-radius:var(--radius);
+    padding:20px 22px;box-shadow:var(--shadow);
+  }
+  .readout h4{
+    font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:#9FD8CE;margin:0 0 12px;
+  }
+  .readout-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;}
+  .readout-item .num{font-family:'IBM Plex Mono';font-size:22px;font-weight:600;color:var(--amber);}
+  .readout-item.sky .num{color:#8FC7E0;}
+  .readout-item.good .num{color:#8FDCAB;}
+  .readout-item .lbl{font-size:11px;color:#B6D9D2;margin-top:2px;}
+
+  /* tables */
+  .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;font-size:13.6px;min-width:480px;}
+  thead th{
+    background:var(--teal-dark);color:#fff;text-align:left;padding:12px 16px;
+    font-family:'IBM Plex Mono';font-weight:500;font-size:12px;letter-spacing:.02em;
+  }
+  tbody td{padding:12px 16px;border-top:1px solid var(--line);vertical-align:top;color:#33514F;}
+  tbody tr:nth-child(even){background:var(--paper-dim);}
+
+  /* tabs */
+  .tabs{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);overflow:hidden;box-shadow:var(--shadow);}
+  .tab-list{display:flex;flex-wrap:wrap;background:var(--paper-dim);border-bottom:1px solid var(--line);}
+  .tab-btn{
+    font-family:'IBM Plex Mono';font-size:12.5px;font-weight:500;
+    padding:13px 18px;background:transparent;border:none;cursor:pointer;color:#4A6764;
+    border-bottom:2px solid transparent;transition:.15s;
+  }
+  .tab-btn:hover{color:var(--teal-dark);}
+  .tab-btn.active{color:var(--teal-dark);border-bottom-color:var(--amber);background:var(--panel);}
+  .tab-panel{display:none;padding:22px;}
+  .tab-panel.active{display:block;}
+
+  /* accordion */
+  .accordion-item{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);}
+  .accordion-header{
+    width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;
+    font-family:'Inter';font-weight:700;font-size:14.5px;color:var(--ink);
+  }
+  .accordion-header .plus{font-family:'IBM Plex Mono';font-size:18px;color:var(--teal);transition:.2s;flex-shrink:0;}
+  .accordion-item.open .plus{transform:rotate(45deg);}
+  .accordion-body{max-height:0;overflow:hidden;transition:max-height .25s ease;padding:0 20px;}
+  .accordion-item.open .accordion-body{padding-bottom:18px;}
+  .accordion-body .grid-2{margin-top:4px;}
+
+  /* steps */
+  .steps{list-style:none;margin:0;padding:0;counter-reset:step;}
+  .steps li{
+    counter-increment:step;position:relative;padding:0 0 20px 44px;
+    border-left:2px solid var(--line);margin-left:15px;font-size:14px;color:#33514F;
+  }
+  .steps li:last-child{border-color:transparent;padding-bottom:0;}
+  .steps li::before{
+    content:counter(step);position:absolute;left:-16px;top:-2px;
+    width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';font-size:13px;font-weight:600;
+  }
+  .steps li b{color:var(--ink);}
+
+  .divider-wave{height:34px;overflow:hidden;opacity:.5;margin:8px 0 32px;}
+  .divider-wave svg{width:100%;height:100%;}
+
+  .footnote{font-size:12.5px;color:#5A7370;margin-top:10px;}
+
+  /* quiz */
+  .quiz-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;margin-bottom:22px;box-shadow:var(--shadow);
+  }
+  .quiz-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  .quiz-num{font-family:'IBM Plex Mono';font-size:12px;color:var(--teal);background:#DCEEEB;padding:4px 11px;border-radius:99px;}
+  .quiz-status{font-family:'IBM Plex Mono';font-size:12px;color:#5A7370;}
+  .quiz-stem{font-size:15.5px;color:var(--ink);margin-bottom:18px;line-height:1.6;}
+  .quiz-options{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+    border:1px solid var(--line);background:var(--paper);border-radius:10px;
+    padding:13px 16px;cursor:pointer;font-family:'Inter';font-size:14px;color:var(--ink);transition:.15s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--teal);}
+  .opt .letter{
+    font-family:'IBM Plex Mono';font-weight:600;color:var(--teal-dark);flex-shrink:0;
+    width:22px;height:22px;border-radius:50%;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:12px;background:#fff;
+  }
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:#EAF5EE;border-color:var(--moss);}
+  .opt.correct .letter{background:var(--moss);color:#fff;border-color:var(--moss);}
+  .opt.incorrect{background:#FBEEEA;border-color:var(--brick);}
+  .opt.incorrect .letter{background:var(--brick);color:#fff;border-color:var(--brick);}
+  .opt.dim{opacity:.55;}
+  .rationale{
+    margin-top:16px;padding:16px 18px;border-radius:10px;background:var(--paper-dim);
+    border-left:3px solid var(--teal);font-size:13.8px;color:#33514F;display:none;
+  }
+  .rationale.show{display:block;}
+  .rationale b{color:var(--ink);}
+  .rationale .verdict{font-family:'IBM Plex Mono';font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:8px;}
+  .rationale.right .verdict{color:var(--moss);}
+  .rationale.wrong .verdict{color:var(--brick);}
+
+  .score-card{
+    background:var(--teal-deeper);color:#EAF4F1;border-radius:var(--radius);
+    padding:30px;text-align:center;display:none;box-shadow:var(--shadow);
+  }
+  .score-card.show{display:block;}
+  .score-card .big{font-family:'Big Shoulders Display';font-size:64px;color:var(--amber);}
+  .score-card p{color:#CFE9E3;font-size:14.5px;max-width:480px;margin:8px auto 18px;}
+
+  footer{padding:34px 0 60px;text-align:center;}
+  footer p{font-size:12.5px;color:#5A7370;max-width:640px;margin:6px auto;}
+
+  .backtop{
+    position:fixed;right:18px;bottom:18px;z-index:120;
+    width:44px;height:44px;border-radius:50%;background:var(--teal-dark);color:#fff;
+    display:flex;align-items:center;justify-content:center;text-decoration:none;
+    box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.2s;font-size:18px;
+  }
+  .backtop.show{opacity:1;pointer-events:auto;}
+
+  @media(max-width:640px){
+    .sec{padding:44px 0;}
+    .card,.tab-panel,.quiz-card{padding:16px;}
+    .readout-item .num{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<nav class="topnav" aria-label="Section navigation">
+  <div class="topnav-inner">
+    <span class="brandmini">NIV·COPD</span>
+    <div class="pillrow" id="pillrow">
+      <a class="pill" data-target="indications" href="#indications"><b>01</b>Indications</a>
+      <a class="pill" data-target="complications" href="#complications"><b>02</b>Benefits &amp; Risks</a>
+      <a class="pill" data-target="infection" href="#infection"><b>03</b>Infection Control</a>
+      <a class="pill" data-target="modes" href="#modes"><b>04</b>Modes &amp; Titration</a>
+      <a class="pill" data-target="interfaces" href="#interfaces"><b>05</b>Interfaces</a>
+      <a class="pill" data-target="asynchrony" href="#asynchrony"><b>06</b>Asynchrony</a>
+      <a class="pill" data-target="interventions" href="#interventions"><b>07</b>Physio Care</a>
+      <a class="pill" data-target="weaning" href="#weaning"><b>08</b>Weaning &amp; Rehab</a>
+      <a class="pill" data-target="telemonitoring" href="#telemonitoring"><b>09</b>Home &amp; Tele</a>
+      <a class="pill" data-target="quiz" href="#quiz"><b>10</b>Knowledge Check</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">HA Cardiopulmonary Physiotherapy · Field Guide</div>
+    <h1>NIV in <em>COPD</em></h1>
+    <div class="sub">A bedside reference for junior physiotherapists</div>
+    <p class="lede">Non-invasive ventilation (NIV) applies positive pressure via a nasal or face interface to augment alveolar ventilation. It's a first-line treatment for hypercapnic respiratory failure in COPD — physiotherapy's job is to reduce work of breathing, keep ventilation efficient, clear secretions, and rebuild function around it.</p>
+    <div class="chartline">
+      <span>Doc No. <b>HAHO-COC-GL-PHY-003-v04</b></span>
+      <span>Edition <b>4.0</b></span>
+      <span>Issued <b>25/09/2025</b></span>
+      <span>Review <b>25/09/2028</b></span>
+      <span>Source <b>Specialty Group on Cardiopulmonary Service</b></span>
+    </div>
+    <div class="hero-ctas">
+      <a class="btn btn-solid" href="#indications">Start learning ↓</a>
+      <a class="btn btn-ghost" href="#quiz">Jump to knowledge check →</a>
+    </div>
+  </div>
+  <div class="wave-wrap" aria-hidden="true">
+    <div class="wave-track">
+      <svg viewBox="0 0 800 120" preserveAspectRatio="none"><path d="M0,80 L40,80 L55,20 L70,80 L100,80 L100,80 C120,80 120,60 140,60 L220,60 C240,60 240,80 260,80 L340,80 L355,25 L370,80 L400,80 C420,80 420,58 440,58 L520,58 C540,58 540,80 560,80 L640,80 L655,22 L670,80 L700,80 C720,80 720,60 740,60 L800,60" fill="none" stroke="#3FBBAE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 800 120" preserveAspectRatio="none"><path d="M0,80 L40,80 L55,20 L70,80 L100,80 L100,80 C120,80 120,60 140,60 L220,60 C240,60 240,80 260,80 L340,80 L355,25 L370,80 L400,80 C420,80 420,58 440,58 L520,58 C540,58 540,80 560,80 L640,80 L655,22 L670,80 L700,80 C720,80 720,60 740,60 L800,60" fill="none" stroke="#3FBBAE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ 01 INDICATIONS ============ -->
+<section class="sec" id="indications">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Deciding to start NIV</h2></div>
+    <p class="sec-lead">NIV is indicated in <b>acute hypercapnic respiratory acidosis</b> that persists or develops despite optimal medical therapy — but only once you've screened out reasons it may do more harm than good.</p>
+
+    <div class="grid grid-2" style="margin-bottom:16px;">
+      <div class="callout c-good">
+        <h4>Indications</h4>
+        <ul>
+          <li>pH &lt;7.35, PaCO₂ &gt;6.5 kPa, RR &gt;23</li>
+          <li>Most effective &amp; beneficial: pH 7.25–7.35</li>
+          <li>pH &lt;7.25 may still work, but higher failure rate — use in an appropriate clinical setting with rapid access to intubation</li>
+        </ul>
+      </div>
+      <div class="readout">
+        <h4>Benefits vs. failure flags</h4>
+        <div class="readout-grid">
+          <div class="readout-item good"><div class="num">↓</div><div class="lbl">Work of breathing &amp; RR</div></div>
+          <div class="readout-item good"><div class="num">↑</div><div class="lbl">Tidal volume &amp; gas exchange</div></div>
+          <div class="readout-item"><div class="num">60min</div><div class="lbl">no improvement → consider intubation</div></div>
+          <div class="readout-item"><div class="num">pH&lt;7.2</div><div class="lbl">→ consider intubation</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="callout c-danger">
+        <h4>Absolute contraindications — do not proceed / escalate care</h4>
+        <ul>
+          <li>Severe facial deformity</li>
+          <li>Facial burns / trauma / recent facial or airway surgery</li>
+          <li>Fixed upper airway obstruction</li>
+          <li>Cardiorespiratory arrest / unable to sustain spontaneous breathing</li>
+          <li>Haemodynamic instability (e.g. hypotension with impaired perfusion, serious dysrhythmias)</li>
+          <li>Unable to protect own airway</li>
+          <li>Copious, unmanageable secretions</li>
+          <li>Untreated pneumothorax</li>
+          <li>Cerebrospinal fluid rhinorrhoea</li>
+        </ul>
+      </div>
+      <div class="callout c-warn">
+        <h4>Relative contraindications — proceed with heightened supervision</h4>
+        <ul>
+          <li>pH &lt;7.15 (or pH &lt;7.25 plus an additional adverse feature)</li>
+          <li>GCS &lt;8</li>
+          <li>Confusion / agitation</li>
+          <li>Cognitive impairment</li>
+        </ul>
+        <p style="margin-top:10px;">Any of these warrant a higher level of supervision, consideration of HDU/ICU placement, and an early appraisal of whether to continue NIV or convert to invasive ventilation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 COMPLICATIONS ============ -->
+<section class="sec" id="complications">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Complications &amp; fixes</h2></div>
+    <p class="sec-lead">Most NIV complications are predictable and preventable at the bedside — know the fix before you need it.</p>
+    <div class="grid grid-3">
+      <div class="card"><span class="tag tag-warn">Interface</span><h3>Facial &amp; nasal pressure injury</h3><p>Minimise mask pressure with intermittent NIV; schedule breaks every 30–90 min; balance strap tension; protect vulnerable points with dressings; consider mask rotation.</p></div>
+      <div class="card"><span class="tag tag-warn">Pressure</span><h3>Gastric distension</h3><p>Minimise by keeping peak inspiratory pressure below 25 cmH₂O.</p></div>
+      <div class="card"><span class="tag tag-info">Airway</span><h3>Dry mucosa &amp; thick secretions</h3><p>Provide humidification when indicated, plus daily oral care.</p></div>
+      <div class="card"><span class="tag tag-bad">Safety</span><h3>Aspiration of gastric contents</h3><p>Avoid NIV in patients with ongoing vomiting or haematemesis.</p></div>
+      <div class="card"><span class="tag tag-good">Reassurance</span><h3>Barotrauma</h3><p>Lower risk with NIV compared to invasive mechanical ventilation.</p></div>
+      <div class="card"><span class="tag tag-bad">Cardiovascular</span><h3>Hypotension</h3><p>Monitor blood pressure — positive intrathoracic pressure can reduce venous return.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 INFECTION CONTROL ============ -->
+<section class="sec" id="infection">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Infection control &amp; PPE</h2></div>
+    <p class="sec-lead">NIV (BiPAP &amp; CPAP) is an <b>aerosol-generating procedure (AGP)</b>. Apply standard precautions, plus transmission-based precautions where indicated, for every patient.</p>
+
+    <div class="table-wrap" style="margin-bottom:18px;">
+      <table>
+        <thead><tr><th>Area</th><th>Recommended PPE (CCIDER, 2024)</th></tr></thead>
+        <tbody>
+          <tr><td><b>High-risk patient areas</b><br>Fever rooms of GOPCs; isolation rooms incl. ICU &amp; AEDs</td><td>Surgical respirator · Eye protection · Isolation gown · Disposable gloves · Cap (optional)</td></tr>
+          <tr><td><b>Other patient areas</b></td><td>Surgical mask / surgical respirator · Eye protection · Isolation gown · Disposable gloves</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="callout c-info">
+        <h4>Room requirements</h4>
+        <ul>
+          <li><b>No known infection:</b> adequate ventilation, ≥6 air changes/hour (ACH); local exhaust suction if unavailable</li>
+          <li><b>Transmissible respiratory infection:</b> isolation room ≥12 ACH via negative pressure, exhausted outside or HEPA-filtered</li>
+          <li>If unavailable: well-ventilated single room with en-suite, doors closed — <b>never</b> a positive-pressure single room</li>
+          <li>No separate room? Cohort patients sharing the same confirmed pathogen</li>
+        </ul>
+      </div>
+      <div class="callout c-warn">
+        <h4>Practical AGP precautions</h4>
+        <ul>
+          <li>Never use an oro-nasal mask connected to a whisper-swivel device — it can contaminate room air</li>
+          <li>Minimise leaks and avoid excessive inspiratory pressure</li>
+          <li>Avoid heated humidification when infection risk is present</li>
+          <li>Consider double-circuit tubing, or a full-face mask/helmet with a tight neck seal, in ICU/HDU</li>
+        </ul>
+      </div>
+    </div>
+    <p class="footnote">AGPs with documented increased transmission risk: intubation/extubation, CPR, awake bronchoscopy, open suctioning (incl. tracheostomy care), autopsy, NIV (BiPAP/CPAP), sputum induction, and spray-generating dental procedures. Nebulisers, NPA/NPS and high-flow O₂ (≥6 L/min) carry theoretical droplet-dispersal risk — treat with the same precautions as AGPs in high-risk areas; give nebulisers via mouthpiece where possible.</p>
+  </div>
+</section>
+
+<!-- ============ 04 MODES & TITRATION ============ -->
+<section class="sec" id="modes">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Modes, set-up &amp; titration</h2></div>
+    <p class="sec-lead">Two pressures do the work in BiPAP — know what each one is buying you before you touch the dial.</p>
+
+    <div class="table-wrap" style="margin-bottom:22px;">
+      <table>
+        <thead><tr><th>EPAP (expiratory)</th><th>IPAP (inspiratory)</th></tr></thead>
+        <tbody>
+          <tr><td>Offsets intrinsic PEEP, ↓ work of breathing</td><td>Supports inspiratory effort, ↓ work of breathing</td></tr>
+          <tr><td>Keeps alveoli partially inflated</td><td>Improves tidal volume</td></tr>
+          <tr><td>Improves oxygenation</td><td>Improves CO₂ removal</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tabs" style="margin-bottom:22px;">
+      <div class="tab-list" role="tablist" data-group="modes">
+        <button class="tab-btn active" data-tab="bipap">BiPAP: S / ST / T</button>
+        <button class="tab-btn" data-tab="vaps">Volume Assured (VAPS)</button>
+        <button class="tab-btn" data-tab="rare">Rarely used: PAV / NAVA</button>
+      </div>
+      <div class="tab-panel active" data-panel="bipap">
+        <div class="grid grid-3">
+          <div class="card"><span class="tag tag-teal">S</span><h3>Spontaneous</h3><p>Machine delivers IPAP when flow sensors detect the patient's own inspiratory effort, then cycles back to EPAP. Fully patient-triggered.</p></div>
+          <div class="card"><span class="tag tag-teal">ST</span><h3>Spontaneous-timed</h3><p>Same as spontaneous mode, plus a backup rate — guarantees a minimum breaths/min if the patient fails to trigger. Most commonly used in COPD.</p></div>
+          <div class="card"><span class="tag tag-teal">T</span><h3>Timed</h3><p>IPAP/EPAP cycling is purely machine-triggered at a set rate (breaths/min) — no reliance on patient effort.</p></div>
+        </div>
+      </div>
+      <div class="tab-panel" data-panel="vaps">
+        <div class="grid grid-2">
+          <div class="card"><h3>Volume Assured Pressure Support (VAPS)</h3><p>Varies the pressure-support level automatically to hit a preset tidal volume, minute ventilation, or target alveolar ventilation. Better comfort, fewer side effects (e.g. gastric distension) than fixed pressure.</p></div>
+          <div class="card"><h3>AVAPS-AE / iVAPS-AE</h3><p>Auto-adjust EPAP to keep the upper airway open during sleep on top of volume assurance — can mean lower overall pressure delivery, better comfort and compliance.</p></div>
+        </div>
+      </div>
+      <div class="tab-panel" data-panel="rare">
+        <div class="grid grid-2">
+          <div class="card"><h3>Proportional Assist Ventilation (PAV)</h3><p>Responds rapidly to the patient's own ventilatory effort; adjusting the gain on flow/volume signals selects what proportion of the work of breathing is assisted.</p></div>
+          <div class="card"><h3>Neurally-Adjusted Ventilatory Assist (NAVA)</h3><p>Uses a diaphragmatic EMG signal (via a specialised naso-gastric catheter) to control breath delivery, proportional to the patient's own effort — effective for synchrony via oro-nasal/helmet interfaces, though observational data show no clear difference vs. standard NIV-pressure support.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1.1fr .9fr;gap:16px;">
+      <div class="card">
+        <h3>Initial set-up, in order</h3>
+        <ol class="steps">
+          <li>Sit the patient up; explain the therapy clearly</li>
+          <li>Choose the right interface and size; hold gently over the face; cue nose-breathing with a closed mouth seal</li>
+          <li>Connect O₂ and adjust to current demand</li>
+          <li>Confirm the exhalation port is patent and correctly connected</li>
+          <li>Start <b>IPAP 15 / EPAP 3 cmH₂O</b> — severe acidosis (pH&lt;7.25): start <b>IPAP 20</b></li>
+          <li>Set backup rate <b>16–20/min</b></li>
+          <li>Set inspiratory time <b>0.8–1.2 s</b> (target I:E 1:3)</li>
+          <li>Set FiO₂ to reach SpO₂ <b>88–92%</b></li>
+          <li>Once tolerated, tighten straps just enough to avoid major leak; pad pressure areas</li>
+        </ol>
+        <p class="footnote">Final settings always follow the physician's decision, per patient tolerance and the model available.</p>
+      </div>
+      <div class="readout">
+        <h4>Titration &amp; monitoring</h4>
+        <div class="readout-grid">
+          <div class="readout-item"><div class="num">+2–3</div><div class="lbl">cmH₂O IPAP steps, q10–30min, max 20–30, target TV 5–7 mL/kg</div></div>
+          <div class="readout-item sky"><div class="num">+1–2</div><div class="lbl">cmH₂O EPAP steps, max 8 — caution in OSA / obesity-hypoventilation / cardiogenic oedema / ARDS</div></div>
+          <div class="readout-item"><div class="num">1 hr</div><div class="lbl">check ABG after start &amp; after every setting change</div></div>
+          <div class="readout-item"><div class="num">4–6 hr</div><div class="lbl">no PaCO₂/pH improvement → escalate (e.g. early intubation)</div></div>
+        </div>
+        <p style="font-size:12px;color:#B6D9D2;margin-top:14px;">Optimise NIV settings before raising FiO₂ further. IPAP &gt;30 cmH₂O → get specialist input.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 INTERFACES ============ -->
+<section class="sec" id="interfaces">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Interfaces &amp; mask fitting</h2></div>
+    <p class="sec-lead">The full-face (oro-nasal) mask is the default at the start of acute NIV — mouth leaks and dislodgement make nasal interfaces less effective until the patient stabilises.</p>
+
+    <div class="grid grid-3" style="margin-bottom:18px;">
+      <div class="card"><span class="tag tag-info">Comfort-first</span><h3>Nasal pillow / prongs</h3><p><b>Pros:</b> minimal deadspace, well tolerated in claustrophobia, allows speech, expectoration &amp; glasses.<br><b>Cons:</b> uncomfortable, poor with nasal congestion or mouth-breathing.</p></div>
+      <div class="card"><span class="tag tag-info">Comfort-first</span><h3>Nasal mask</h3><p><b>Pros:</b> less deadspace, tolerated in claustrophobia, lower aspiration risk if vomiting.<br><b>Cons:</b> nasal bridge pressure, more leak, limited if nasal deformity/blockage.</p></div>
+      <div class="card" style="border-color:var(--teal);"><span class="tag tag-good">Start here — acute default</span><h3>Full face (oro-nasal) mask</h3><p><b>Pros:</b> handles mouth leak, suits edentulous or mouth-breathing patients, better general ventilation, suited to higher illness severity.<br><b>Cons:</b> interferes with speech/eating, higher aspiration/rebreathing &amp; claustrophobia risk.</p></div>
+      <div class="card"><span class="tag tag-warn">Skin-sparing alternative</span><h3>Total face mask</h3><p><b>Pros:</b> good option when a seal can't be achieved with a nasal mask, or skin breakdown develops.<br><b>Cons:</b> interferes with speech/eating/expectoration, eye dryness.</p></div>
+      <div class="card"><span class="tag tag-warn">Prolonged / hypoxaemic failure</span><h3>Helmet</h3><p><b>Pros:</b> suited to hypoxaemic acute failure needing many days of continuous ventilation.<br><b>Cons:</b> higher claustrophobic reaction risk.</p></div>
+      <div class="card"><span class="tag tag-teal">Strategy</span><h3>Mask rotation</h3><p>During acute 24-hour NIV: oro-nasal by day, total face at night — relieves the nasal bridge. As the patient improves, switch to a nasal mask and train nasal breathing.</p></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Fitting basics</h3>
+        <ul>
+          <li>Strap tight enough to prevent leak, loose enough for 1–2 fingers to slide underneath</li>
+          <li>Size using the manufacturer's sizing gauge against facial landmarks (sides of nostrils, nasal bridge zone, below nose/above lip — or around the mouth for a full-face mask)</li>
+          <li>Check pressure points at the nasal bridge/forehead, cheeks, chin and ears before and after treatment</li>
+          <li>Humidification isn't routine — consider heated humidification for mucosal dryness or thick secretions (avoid if infection risk is present)</li>
+        </ul>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Problem</th><th>Adjustment</th></tr></thead>
+          <tbody>
+            <tr><td>Leak around/below mouth</td><td>Raise stability selector — more pressure to base of cushion</td></tr>
+            <tr><td>Leak around nose / into eyes</td><td>Lower stability selector — more pressure to top of cushion</td></tr>
+            <tr><td>Air leak to eye + lip pressure sore</td><td>Selector too high / bottom strap too tight — click down, loosen bottom strap</td></tr>
+            <tr><td>Air leak to mouth + forehead/nose-bridge sore</td><td>Selector too low / top strap too tight — click up, loosen top strap</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 ASYNCHRONY ============ -->
+<section class="sec" id="asynchrony">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Reading patient–ventilator asynchrony</h2></div>
+    <p class="sec-lead">Asynchrony is the mismatch between the patient's own breath and the ventilator's delivered breath. Spot it from the patient (RR, accessory muscle use, nasal flaring) and confirm it on the waveform.</p>
+
+    <div class="accordion" id="accordion">
+      <div class="accordion-item open">
+        <button class="accordion-header"><span>Trigger asynchrony — ineffective triggering</span><span class="plus">+</span></button>
+        <div class="accordion-body">
+          <p>Patient effort fails to trigger a breath → ↓minute ventilation, ↓inspiratory flow, ↑work of breathing.</p>
+          <div class="grid grid-2">
+            <div class="callout c-warn"><h4>Possible causes</h4><ul><li>↓ Respiratory drive (check sedation / consciousness)</li><li>Weak respiratory muscles (hyperinflation, neuromuscular disease)</li><li>Excessive mask leak</li><li>Trigger sensitivity too low</li><li>Intrinsic PEEP — common in COPD hyperinflation</li><li>Untreated bronchospasm/air-trapping</li></ul></div>
+            <div class="callout c-good"><h4>Fixes</h4><ul><li>Address sedation/consciousness as appropriate</li><li>↑ trigger sensitivity + respiratory muscle training</li><li>Recheck and refit the mask</li><li>Titrate trigger sensitivity</li><li>↑ EPAP to offset intrinsic PEEP</li><li>Treat the underlying disease (e.g. bronchodilators)</li></ul></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header"><span>Trigger asynchrony — auto-triggering</span><span class="plus">+</span></button>
+        <div class="accordion-body">
+          <p>A breath is delivered with <b>no</b> patient effort — may feel like "air-stacking"; a sudden or persistently high RR shows on the ventilator.</p>
+          <div class="grid grid-2">
+            <div class="callout c-warn"><h4>Possible causes</h4><ul><li>Circuit leak misread by the machine as inspiratory effort</li><li>Trigger sensitivity too high</li></ul></div>
+            <div class="callout c-good"><h4>Fixes</h4><ul><li>Check circuit integrity and connections</li><li>Titrate trigger sensitivity down</li></ul></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header"><span>Cycle asynchrony — prolonged inspiration</span><span class="plus">+</span></button>
+        <div class="accordion-body">
+          <p>Ventilator continues insufflation beyond the patient's own inspiratory phase → "air-stacking", shortened expiratory time, possible auto-PEEP, an abrupt end-inspiratory pressure spike.</p>
+          <div class="grid grid-2">
+            <div class="callout c-warn"><h4>Possible causes</h4><ul><li>Excessive inspiratory time</li><li>Excessive air leak</li></ul></div>
+            <div class="callout c-good"><h4>Fixes</h4><ul><li>Decrease inspiratory time</li><li>Check mask fit/circuit — with leak present, time-cycled PSV synchronises better than flow-cycled PSV</li></ul></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header"><span>Cycle asynchrony — shortened inspiration</span><span class="plus">+</span></button>
+        <div class="accordion-body">
+          <p>The exhalation valve opens during the patient's own inspiration → "air-starvation", ↑work of breathing and RR.</p>
+          <div class="callout c-good"><h4>Fix</h4><p>Increase inspiratory time.</p></div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header"><span>Flow &amp; demand asynchrony</span><span class="plus">+</span></button>
+        <div class="accordion-body">
+          <div class="grid grid-3">
+            <div class="card"><h3>Low tidal volume</h3><p>&lt;6–8 mL/kg (obstructive) or &lt;8–10 mL/kg (restrictive); ↑RR, accessory muscle use.<br><b>Consider:</b> ↑IPAP/PS, ↑Ti, ↓rise time.</p></div>
+            <div class="card"><h3>Rise time too slow</h3><p>Takes too long to reach target pressure → ↑work of breathing.<br><b>Fix:</b> shorten the rise time.</p></div>
+            <div class="card"><h3>Rise time too short</h3><p>"Air overshoot" sensation, may cause premature cycle termination from high pressure.<br><b>Fix:</b> lengthen the rise time.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 INTERVENTIONS ============ -->
+<section class="sec" id="interventions">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Physiotherapy assessment &amp; intervention</h2></div>
+    <p class="sec-lead">Aims shift with the blood gas picture: stabilise and clear first, then rebuild function once compensated.</p>
+
+    <div class="grid grid-2" style="margin-bottom:20px;">
+      <div class="callout c-warn"><h4>Aims — decompensated (pH &lt;7.35)</h4><ul><li>Optimise V/Q matching</li><li>Reduce work of breathing</li><li>Improve ventilation efficiency</li><li>Facilitate airway clearance</li><li>Prevent complications</li></ul></div>
+      <div class="callout c-good"><h4>Aims — compensated (pH ≥7.35)</h4><ul><li>Facilitate the weaning process</li><li>Improve functional ability around the bedside</li><li>Improve exercise tolerance</li></ul></div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3>Assessment checklist</h3>
+      <div class="grid grid-4">
+        <ul><li>History &amp; premorbid mobility</li><li>Conscious level &amp; subjective complaint</li></ul>
+        <ul><li>Vitals: T, BP, HR, ECG, RR, SpO₂, TcCO₂</li><li>Breathing pattern, accessory muscles, auscultation, cough, sputum</li></ul>
+        <ul><li>Limbs: oedema, ROM, power, mobility</li><li>CXR, ABGs, CBP, NPA/culture</li></ul>
+        <ul><li>NIV: mode/settings, O₂, mask fit/leak, TV/MV, synchrony, pressure sores, compliance, airway protection, gastric distension</li><li>DNACPR / advance directives</li></ul>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-bottom:20px;">
+      <div class="card">
+        <h3>Dyspnoea management</h3>
+        <ul><li>Positioning — lean forward with arm support</li><li>Pursed-lip / relaxed controlled breathing once weaned off NIV</li><li>Relaxation exercises, e.g. mindful breathing</li><li>AcuTENS / acupressure</li><li>Fan therapy during NIV-off periods</li></ul>
+      </div>
+      <div class="card">
+        <h3>Secretion management</h3>
+        <ul><li>Effective coughing technique</li><li>Postural drainage &amp; manual techniques</li><li>High-frequency chest wall oscillation</li><li>Oscillating PEP therapy</li><li>Mechanical in-exsufflator (neuromuscular disease)</li><li>Suction, if indicated</li></ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3>Open suctioning on a patient using NIV — the safe sequence</h3>
+      <ol class="steps">
+        <li>Explain indication/procedure/risk; respect refusal or a preferred alternative</li>
+        <li>Note baseline vital signs</li>
+        <li>Maintain SpO₂ above 92% by adjusting FiO₂ or flow</li>
+        <li>Pre-oxygenate by increasing FiO₂ if necessary</li>
+        <li>Place NIV on "stand-by"; unlock and remove the headgear</li>
+        <li>Apply a matching oxygen delivery device — <span class="mono">FiO₂ 0.21–0.4: nasal cannula 1–6 L</span> · <span class="mono">0.4–0.6: mask 5–8 L/min</span> · <span class="mono">&gt;0.6: non-rebreathing mask 12–15 L/min or HFNO</span></li>
+        <li>If unable to cough it out, perform open suctioning under standard infection-control precautions</li>
+        <li>Closely monitor SpO₂, heart rate and rhythm throughout</li>
+        <li>Reapply the interface; adjust headgear tension (1–2 fingers should fit underneath)</li>
+        <li>Restart NIV; continue monitoring SpO₂, increasing FiO₂ if needed; cue synchrony</li>
+        <li>Auscultate, tidy up, ask for the patient's feedback; recheck usual settings; document vitals and report if they fail to return to baseline</li>
+      </ol>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Physical activity, by phase</h3>
+        <ul>
+          <li><b>Decompensated (pH &lt;7.35):</b> ROM exercises + ankle pumps ± neuromuscular electrical stimulation if indicated</li>
+          <li><b>Compensated (pH ≥7.35, ± NIV):</b> ROM/ankle pumps → sitting out → standing ± stepping → walking (± aid) → strength &amp; endurance training</li>
+        </ul>
+        <p style="margin-top:10px;"><b>Points to note:</b> restore correct NIV settings after treatment; minimise aerosol risk; have a matched oxygen delivery device ready if off NIV; pre-oxygenate through NIV before chest physio if needed.</p>
+      </div>
+      <div class="readout">
+        <h4>Titrating NIV around a treatment session</h4>
+        <div class="readout-grid">
+          <div class="readout-item"><div class="num">88–92%</div><div class="lbl">titrate O₂ to this SpO₂ target</div></div>
+          <div class="readout-item"><div class="num">+2–3</div><div class="lbl">cmH₂O IPAP as tolerated for adequate TV/SpO₂</div></div>
+          <div class="readout-item sky"><div class="num">+1–2</div><div class="lbl">cmH₂O EPAP (max 8) to aid triggering</div></div>
+          <div class="readout-item"><div class="num">↺</div><div class="lbl">resume initial settings once treatment ends</div></div>
+        </div>
+        <p style="font-size:12px;color:#B6D9D2;margin-top:14px;">Monitor throughout and after: HR/ECG, SpO₂, RR, BP (prn), breathing pattern/accessory muscle use, auscultation, conscious level, perceived dyspnoea, patient–ventilator synchrony, air leak, expired TV, TcCO₂. If settings still need adjustment after treatment, notify nursing/medical staff.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 WEANING & REHAB ============ -->
+<section class="sec" id="weaning">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">08</span><h2>Weaning &amp; the rehabilitation pathway</h2></div>
+    <p class="sec-lead">There's no single mandated weaning protocol — the guideline offers three approaches. The constant principle: maximise NIV time in the first 24 hours, then taper.</p>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3>Weaning criteria — all should be met</h3>
+      <div class="grid grid-4">
+        <ul><li>Arterial pH ≥ 7.35</li></ul>
+        <ul><li>SpO₂ &gt;90% on FiO₂ ≤50% (or PaO₂/FiO₂ &gt;200 mmHg)</li></ul>
+        <ul><li>RR ≤25/min · HR ≤120/min · SBP ≥90 mmHg</li></ul>
+        <ul><li>No agitation, diaphoresis or anxiety</li></ul>
+      </div>
+    </div>
+
+    <div class="tabs" style="margin-bottom:22px;">
+      <div class="tab-list" role="tablist" data-group="wean">
+        <button class="tab-btn active" data-tab="w1">Stepwise ↓ NIV time</button>
+        <button class="tab-btn" data-tab="w2">Stepwise ↓ pressure support</button>
+        <button class="tab-btn" data-tab="w3">Immediate withdrawal</button>
+      </div>
+      <div class="tab-panel active" data-panel="w1"><p>Discontinue NIV for 1–3 hours during the day, providing O₂ via cannula or mask, monitoring SpO₂/vitals closely. Extend the off-periods over 2–3 days (daytime NIV down from 8–10 hours to 4–6 hours) while preserving nocturnal NIV. NIV is often discontinued by day 3–4, or at the physician's discretion.</p></div>
+      <div class="tab-panel" data-panel="w2"><p>Gradually reduce IPAP and EPAP by 2–4 cmH₂O every 4–6 hours. NIV may be removed once the patient tolerates IPAP 6–8 cmH₂O and EPAP 4–6 cmH₂O.</p></div>
+      <div class="tab-panel" data-panel="w3"><p>Remove NIV immediately once weaning criteria are fulfilled. Evidence suggests this does not increase weaning failure, though sample sizes have been underpowered — more trials are needed to confirm the effect.</p></div>
+    </div>
+    <div class="callout c-info" style="margin-bottom:26px;">
+      <p>Whichever strategy is used: return the patient to their previous NIV settings immediately at any sign of distress, wean gradually, and let PaCO₂ trends on/off NIV guide the pace.</p>
+    </div>
+
+    <div class="grid grid-3">
+      <div class="card"><span class="tag tag-warn">Acute phase</span><h3>Decompensated blood gases</h3><ul><li>Correct positioning, breathing control &amp; synchronisation, pre-weaning strategies</li><li>Chest physiotherapy as indicated</li><li>Passive exercise as appropriate; NMES if indicated</li></ul></div>
+      <div class="card"><span class="tag tag-info">Intermediate phase</span><h3>Gases compensated, PaCO₂ not yet at baseline</h3><ul><li>Active weaning strategies with daily case review</li><li>Active + passive exercise ± NIV, sitting out, standing</li><li>Strength &amp; endurance training begins</li></ul></div>
+      <div class="card"><span class="tag tag-good">Long-term phase (&gt;21 days)</span><h3>PaCO₂ may be back to baseline</h3><ul><li>Ambulation, strength &amp; endurance training, functional measurement</li><li>Regular case review, proactive discharge planning ± NIV</li><li>Discharge to step-down ward, extended facility, or home</li></ul></div>
+    </div>
+
+    <div class="callout c-good" style="margin-top:20px;">
+      <h4>Home NIV — who benefits</h4>
+      <ul>
+        <li>Reduces hospitalisations and exacerbations, improves quality of life</li>
+        <li>Titrate to normalise/reduce PaCO₂; fixed pressure-support mode is the first-choice ventilator mode</li>
+        <li>Candidates: chronic stable hypercapnic COPD, or after a life-threatening hypercapnic failure episode where hypercapnia persists</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 TELEMONITORING ============ -->
+<section class="sec" id="telemonitoring">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">09</span><h2>Home NIV &amp; telemonitoring</h2></div>
+    <p class="sec-lead">Telemonitoring turns a home NIV device into an early-warning system — use it to catch problems before they become an admission.</p>
+
+    <div class="grid grid-2" style="margin-bottom:20px;">
+      <div class="card">
+        <h3>When to use it</h3>
+        <ul><li>New NIV users, or current users on a new setting</li><li>Poor compliance, or frequent hospital admission</li><li>Deteriorating hypercapnic symptoms — morning headache, tiredness, desaturation, general malaise</li></ul>
+      </div>
+      <div class="card">
+        <h3>What it's for</h3>
+        <ul><li>Builds compliance &amp; self-efficacy in home NIV management</li><li>Objectively documents SpO₂ and therapy compliance</li><li>Enables remote titration of NIV/O₂ settings</li><li>Cuts travel and home-visit burden</li><li>Flags emergencies early, reducing unplanned admission</li><li>Facilitates earlier discharge</li></ul>
+      </div>
+    </div>
+
+    <div class="grid grid-3" style="margin-bottom:20px;">
+      <div class="callout c-warn"><h4>Poor application</h4><p>Poor mask fitting or missing accessories → excessive leak.</p></div>
+      <div class="callout c-warn"><h4>Poor compliance</h4><p>Short total study time — check for discomfort (dry mouth, nasal bleeding, alarm noise), poor insight, or claustrophobia.</p></div>
+      <div class="callout c-warn"><h4>Sub-optimal therapy</h4><p>Low TV (&lt;8–10 mL/kg), sub-optimal pressure support or insufficient triggered RR — check for chest deterioration, asynchrony, mouth-breathing, or circuit fault.</p></div>
+    </div>
+
+    <div class="readout" style="margin-bottom:20px;">
+      <h4>Abnormal SpO₂ flag in COPD</h4>
+      <div class="readout-grid">
+        <div class="readout-item"><div class="num">&lt;90%</div><div class="lbl">for ≥5 min, nadir ≤85%</div></div>
+        <div class="readout-item"><div class="num">≥30%</div><div class="lbl">of total recording time with SpO₂ &lt;90%</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Community workflow</h3>
+      <p>Retrieve telemonitoring data → analyse → identify the likely cause of desaturation/poor compliance → phone follow-up to reassess and coach self-management → ad-hoc community physiotherapy visit for urgent/complex cases → escalate to the respiratory physician for further investigation, crisis protocol activation, re-titration, device replacement, an earlier follow-up, or admission → document for the whole team.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 QUIZ ============ -->
+<section class="sec" id="quiz">
+  <div class="container">
+    <div class="sec-head"><span class="sec-num">10</span><h2>Clinical knowledge check</h2></div>
+    <p class="sec-lead">Five case-based questions. Pick an option to see the rationale immediately — work through your clinical reasoning, not just recall.</p>
+
+    <div id="quizContainer"></div>
+
+    <div class="score-card" id="scoreCard">
+      <div class="big mono" id="scoreBig">0/5</div>
+      <p id="scoreMsg">Review any rationale above, then try again to lock in your reasoning.</p>
+      <a class="btn btn-solid" href="#quiz" id="restartBtn" style="cursor:pointer;">Restart quiz</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p><b>Educational summary only</b> — adapted for teaching purposes from <span class="mono">HAHO-COC-GL-PHY-003-v04</span> (4th edition, issued 25/09/2025, HA Cardiopulmonary Physiotherapy Specialty Group). This page is a learning aid, not a substitute for the full guideline, your unit's protocols, or physician orders — always check the current electronic version before acting on it clinically.</p>
+  </div>
+</footer>
+
+<a href="#" class="backtop" id="backtop" aria-label="Back to top">↑</a>
+
+<script>
+(function(){
+  /* ---------- progress bar ---------- */
+  var bar=document.getElementById('progressBar');
+  function onScroll(){
+    var h=document.documentElement;
+    var pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+    bar.style.width=pct+'%';
+    document.getElementById('backtop').classList.toggle('show',h.scrollTop>600);
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  /* ---------- scrollspy ---------- */
+  var pills=Array.prototype.slice.call(document.querySelectorAll('.pill'));
+  var sections=pills.map(function(p){return document.getElementById(p.dataset.target);});
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id=entry.target.id;
+        pills.forEach(function(p){p.classList.toggle('active',p.dataset.target===id);});
+      }
+    });
+  },{rootMargin:'-40% 0px -55% 0px',threshold:0});
+  sections.forEach(function(s){ if(s) io.observe(s); });
+
+  /* ---------- tabs ---------- */
+  document.querySelectorAll('.tabs').forEach(function(box){
+    var btns=box.querySelectorAll('.tab-btn');
+    var panels=box.querySelectorAll('.tab-panel');
+    btns.forEach(function(btn){
+      btn.addEventListener('click',function(){
+        btns.forEach(function(b){b.classList.remove('active');});
+        panels.forEach(function(p){p.classList.remove('active');});
+        btn.classList.add('active');
+        box.querySelector('.tab-panel[data-panel="'+btn.dataset.tab+'"]').classList.add('active');
+      });
+    });
+  });
+
+  /* ---------- accordion ---------- */
+  document.querySelectorAll('.accordion-item').forEach(function(item){
+    var header=item.querySelector('.accordion-header');
+    var body=item.querySelector('.accordion-body');
+    function setHeight(){ body.style.maxHeight=item.classList.contains('open') ? body.scrollHeight+'px' : '0px'; }
+    setHeight();
+    header.addEventListener('click',function(){
+      item.classList.toggle('open');
+      setHeight();
+    });
+    window.addEventListener('resize',function(){ if(item.classList.contains('open')) setHeight(); });
+  });
+
+  /* ---------- quiz ---------- */
+  var quizData=[
+    {
+      stem:"A 68-year-old man with an infective COPD exacerbation is established on BiPAP (mode S/T) via an oro-nasal mask. On review his respiratory rate has crept up, he is using accessory muscles, and his chest visibly rises without a corresponding breath from the ventilator on several occasions. A repeat ABG shows persisting hypercapnia despite settings that were optimised only an hour ago. Which action addresses the MOST likely underlying mechanism?",
+      options:[
+        "Increase the inspiratory time to prolong support",
+        "Reduce the trigger sensitivity so the machine responds less easily",
+        "Increase EPAP in increments to counteract intrinsic PEEP",
+        "Switch to a total face mask to remove any leak"
+      ],
+      correct:2,
+      rationale:"This is <b>ineffective triggering</b> — effort isn't translating into a delivered breath. In hyperinflated COPD, intrinsic PEEP is a common cause: the patient must first overcome auto-PEEP before generating enough pressure/flow change to trigger the machine. Titrating <b>EPAP up</b> (1–2 cmH₂O steps, max 8 cmH₂O, with caution in co-existing OSA/obesity-hypoventilation/cardiogenic oedema/ARDS) helps offset this. Reducing trigger sensitivity (B) would make triggering <i>harder</i>, not easier — that fix belongs to auto-triggering, the opposite problem. Prolonging Ti (A) addresses cycle asynchrony, not a triggering problem. Changing the interface (D) is reasonable only once leak is confirmed as the cause — always check mask fit first, but this hyperinflated picture points most directly to intrinsic PEEP."
+    },
+    {
+      stem:"A patient in acute hypercapnic respiratory failure is started on NIV. He is anxious and breathing through an open mouth, with a significant air leak heard around his lips whenever a nasal mask is trialled, undermining delivered pressures. Which interface should be selected as the initial default?",
+      options:[
+        "Nasal pillows, for a lighter and less claustrophobic feel",
+        "Full face (oro-nasal) mask, covering nose and mouth",
+        "Total face mask, sealing at the perimeter of the face",
+        "Helmet interface"
+      ],
+      correct:1,
+      rationale:"The <b>full-face (oro-nasal) mask</b> is the recommended default interface at the start of acute NIV, and is specifically suited to mouth-breathers and patients with excessive mouth leak — it captures both the nasal and oral airway and delivers pressure more reliably in the acute, higher-severity phase. Nasal pillows/masks (A) are more leak-prone at the mouth and are better reserved for patients who find the oro-nasal mask claustrophobic, or once stabilised enough to train in nasal breathing. A total face mask (C) is a comfort alternative when a good seal can't be achieved or skin breaks down — not the acute first choice. A helmet (D) suits prolonged continuous ventilation in hypoxaemic failure, not this obstructive, mouth-leak presentation."
+    },
+    {
+      stem:"A COPD patient started on NIV overnight has responded well — by hour 10, ABGs have normalised and he is comfortable, with no other complications. The attending team asks your opinion on weaning. What is the MOST appropriate next step?",
+      options:[
+        "Discontinue NIV immediately, since blood gases have normalised",
+        "Begin stepwise reduction of pressure support right away, dropping IPAP/EPAP every hour",
+        "Continue to maximise NIV use through the remainder of the first 24 hours, then begin tapering daytime use over the following 2–3 days",
+        "Switch straight to long-term home NIV planning"
+      ],
+      correct:2,
+      rationale:"The guideline is explicit that time on NIV should be <b>maximised in the first 24 hours</b> according to tolerance and complications, even once gases improve early — gains in the first few hours can still be fragile. Weaning proper — tapering daytime use with progressively longer self-ventilation periods before stopping overnight NIV, guided by PaCO₂ trends on/off NIV — is planned over the following 2–3 days, not at hour 10. Immediate withdrawal (A) is a valid strategy, but it's applied once formal weaning criteria are met and sustained, not simply on early improvement within the first day. Hourly pressure cuts (B) are far faster than the 4–6-hourly steps described for that strategy. Long-term home NIV planning (D) is a separate, later decision reserved for persistent hypercapnia or chronic stable hypercapnic COPD."
+    },
+    {
+      stem:"You need to perform open airway suction on a COPD patient with copious secretions who is currently on NIV via a full-face mask. Which sequence correctly reflects safe practice?",
+      options:[
+        "Suction directly through the mask's exhalation port without removing the interface, to avoid interrupting therapy",
+        "Pre-oxygenate, place NIV on stand-by and remove the headgear, apply an oxygen delivery device matched to the patient's FiO₂, then suction while continuously monitoring SpO₂ and heart rate",
+        "Increase EPAP to maximum before suctioning, to prevent alveolar derecruitment",
+        "Suction first, then check vital signs afterwards only if the patient looks distressed"
+      ],
+      correct:1,
+      rationale:"The correct sequence is: explain the procedure, note baseline vitals, keep SpO₂ above 92% by adjusting FiO₂/flow, pre-oxygenate if needed, place NIV on <b>stand-by and remove the headgear</b>, apply an oxygen delivery device that matches the patient's current FiO₂ (nasal cannula, mask, non-rebreathing mask, or HFNO depending on requirement), then suction only if the patient can't cough it out — with <b>continuous</b> monitoring of SpO₂, heart rate and rhythm throughout, followed by reapplying the interface, restarting NIV, and confirming return to baseline. Suctioning through an intact mask/exhalation port (A) isn't the described technique and raises contamination and interruption risk. Maximising EPAP (C) isn't part of the suction protocol. Checking vitals only if the patient 'looks' distressed (D) skips the required proactive, continuous monitoring."
+    },
+    {
+      stem:"A patient with confirmed active pulmonary tuberculosis develops an acute hypercapnic COPD exacerbation requiring NIV. Which infection control approach is correct, given that NIV is an aerosol-generating procedure?",
+      options:[
+        "Use a positive-pressure single room, as the best available alternative to a true isolation room",
+        "Care for the patient in a negative-pressure isolation room (≥12 ACH) with full airborne PPE, avoiding heated humidification and any oro-nasal mask connected to a whisper-swivel device",
+        "A surgical mask and gloves are adequate, since NIV is non-invasive and doesn't need airborne precautions",
+        "Any single room is acceptable, since AGP precautions only apply to endotracheal procedures"
+      ],
+      correct:1,
+      rationale:"NIV (BiPAP/CPAP) is listed as an aerosol-generating procedure with documented transmission risk. For a transmissible respiratory infection, the guideline calls for an isolation room with <b>≥12 air changes/hour via negative pressure</b> (exhausted outside or HEPA-filtered), full airborne PPE (surgical respirator, eye protection, gown, gloves), minimised leak/inspiratory pressure, avoiding heated humidification, and specifically avoiding an oro-nasal mask connected to a whisper-swivel device, since that setup can contaminate room air. Positive-pressure single rooms (A) are explicitly <b>not</b> to be used for this purpose. A surgical mask and gloves alone (C) is the level for patients with no infection risk, not confirmed airborne TB. AGP precautions apply to NIV itself, not only to intubation-related procedures (D)."
+    }
+  ];
+
+  var container=document.getElementById('quizContainer');
+  var answered=new Array(quizData.length).fill(false);
+  var scoreCorrect=0;
+
+  quizData.forEach(function(q,qi){
+    var card=document.createElement('div');
+    card.className='quiz-card';
+    var lettters=['A','B','C','D'];
+    var optsHtml='';
+    q.options.forEach(function(opt,oi){
+      optsHtml+='<button class="opt" data-qi="'+qi+'" data-oi="'+oi+'"><span class="letter">'+lettters[oi]+'</span><span>'+opt+'</span></button>';
+    });
+    card.innerHTML =
+      '<div class="quiz-top"><span class="quiz-num mono">Case '+(qi+1)+' of '+quizData.length+'</span><span class="quiz-status mono" id="status-'+qi+'">Not answered</span></div>'+
+      '<div class="quiz-stem">'+q.stem+'</div>'+
+      '<div class="quiz-options">'+optsHtml+'</div>'+
+      '<div class="rationale" id="rationale-'+qi+'"><span class="verdict"></span><span class="text"></span></div>';
+    container.appendChild(card);
+  });
+
+  container.addEventListener('click',function(e){
+    var btn=e.target.closest('.opt');
+    if(!btn) return;
+    var qi=parseInt(btn.dataset.qi,10);
+    var oi=parseInt(btn.dataset.oi,10);
+    if(answered[qi]) return;
+    answered[qi]=true;
+
+    var q=quizData[qi];
+    var card=btn.closest('.quiz-card');
+    var opts=card.querySelectorAll('.opt');
+    opts.forEach(function(o){
+      var idx=parseInt(o.dataset.oi,10);
+      o.disabled=true;
+      if(idx===q.correct){ o.classList.add('correct'); }
+      else if(idx===oi){ o.classList.add('incorrect'); }
+      else { o.classList.add('dim'); }
+    });
+
+    var isRight = oi===q.correct;
+    if(isRight) scoreCorrect++;
+
+    var status=document.getElementById('status-'+qi);
+    status.textContent = isRight ? 'Correct' : 'Incorrect';
+    status.style.color = isRight ? '#3C8A5B' : '#AE432E';
+
+    var rat=document.getElementById('rationale-'+qi);
+    rat.classList.add('show', isRight ? 'right':'wrong');
+    rat.querySelector('.verdict').textContent = isRight ? '✓ Correct — here\'s why' : '✕ Not quite — here\'s the reasoning';
+    rat.querySelector('.text').innerHTML = q.rationale;
+
+    if(answered.every(Boolean)){
+      showScore();
+    }
+  });
+
+  function showScore(){
+    var sc=document.getElementById('scoreCard');
+    var big=document.getElementById('scoreBig');
+    var msg=document.getElementById('scoreMsg');
+    big.textContent=scoreCorrect+'/'+quizData.length;
+    if(scoreCorrect===quizData.length){
+      msg.textContent='Full marks — your clinical reasoning is tracking well with the guideline. Keep applying it at the bedside.';
+    } else if(scoreCorrect>=quizData.length-2){
+      msg.textContent='Solid attempt — revisit the rationale on any missed case, then re-check that section above.';
+    } else {
+      msg.textContent='Worth another pass — scroll back through the relevant sections, then retry the quiz to consolidate.';
+    }
+    sc.classList.add('show');
+  }
+
+  document.getElementById('restartBtn').addEventListener('click',function(e){
+    e.preventDefault();
+    answered=new Array(quizData.length).fill(false);
+    scoreCorrect=0;
+    container.innerHTML='';
+    quizData.forEach(function(q,qi){
+      var card=document.createElement('div');
+      card.className='quiz-card';
+      var lettters=['A','B','C','D'];
+      var optsHtml='';
+      q.options.forEach(function(opt,oi){
+        optsHtml+='<button class="opt" data-qi="'+qi+'" data-oi="'+oi+'"><span class="letter">'+lettters[oi]+'</span><span>'+opt+'</span></button>';
+      });
+      card.innerHTML =
+        '<div class="quiz-top"><span class="quiz-num mono">Case '+(qi+1)+' of '+quizData.length+'</span><span class="quiz-status mono" id="status-'+qi+'">Not answered</span></div>'+
+        '<div class="quiz-stem">'+q.stem+'</div>'+
+        '<div class="quiz-options">'+optsHtml+'</div>'+
+        '<div class="rationale" id="rationale-'+qi+'"><span class="verdict"></span><span class="text"></span></div>';
+      container.appendChild(card);
+    });
+    document.getElementById('scoreCard').classList.remove('show');
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+  });
+
+})();
+</script>
+</body>
+</html>
