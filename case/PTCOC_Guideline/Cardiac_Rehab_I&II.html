@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiac Rehabilitation Phase I &amp; II — Clinical Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --bg:#F2F6F5;
+    --bg-deep:#E8EFED;
+    --ink:#0E272B;
+    --muted:#4C6A69;
+    --muted-2:#7C9997;
+    --line:#D9E4E1;
+    --navy:#0D323A;
+    --navy-2:#123F49;
+    --red:#D2412C;
+    --red-bg:#FBE9E5;
+    --amber:#DB9A2C;
+    --amber-bg:#FCF1E0;
+    --green:#1C9873;
+    --green-bg:#E4F5EE;
+    --cyan:#2AAEBB;
+    --cyan-bg:#E4F5F6;
+    --font-display:'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;
+    --font-body:'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    --font-mono:'IBM Plex Mono', 'Courier New', monospace;
+    --radius:14px;
+    --radius-sm:8px;
+    --maxw:1180px;
+    --shadow:0 1px 2px rgba(13,50,58,.04), 0 10px 30px -14px rgba(13,50,58,.18);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-padding-top:96px;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit;}
+  ul{margin:0; padding:0; list-style:none;}
+  p{margin:0 0 .8em;}
+  p:last-child{margin-bottom:0;}
+  h1,h2,h3,h4{margin:0; font-family:var(--font-display); font-weight:700; letter-spacing:.01em;}
+  button{font-family:inherit; cursor:pointer;}
+  :focus-visible{outline:3px solid var(--cyan); outline-offset:2px;}
+
+  .mono{font-family:var(--font-mono);}
+
+  /* ---------- Scroll progress ---------- */
+  .progress-rail{
+    position:fixed; top:0; left:0; width:100%; height:4px;
+    background:rgba(13,50,58,.08); z-index:200;
+  }
+  .progress-fill{
+    height:100%; width:0%;
+    background:linear-gradient(90deg,var(--cyan),var(--green));
+    transition:width .08s linear;
+  }
+
+  /* ---------- Top nav ---------- */
+  .chart-nav{
+    position:sticky; top:4px; z-index:150;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .chart-nav-inner{
+    max-width:var(--maxw); margin:0 auto;
+    display:flex; align-items:center; gap:.35rem;
+    padding:.6rem .9rem;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .chart-nav-inner::-webkit-scrollbar{display:none;}
+  .nav-brand{
+    display:flex; align-items:center; gap:.45rem;
+    font-family:var(--font-display); font-weight:700; font-size:.82rem;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--navy);
+    padding-right:.6rem; margin-right:.3rem; border-right:1px solid var(--line);
+    white-space:nowrap; flex:none;
+  }
+  .nav-brand svg{width:20px; height:16px; flex:none;}
+  .nav-pill{
+    flex:none;
+    font-family:var(--font-body); font-size:.82rem; font-weight:500;
+    color:var(--muted); background:transparent;
+    border:1px solid transparent; border-radius:999px;
+    padding:.4rem .8rem; white-space:nowrap;
+    text-decoration:none;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .nav-pill:hover{background:var(--bg-deep); color:var(--ink);}
+  .nav-pill.is-active{
+    background:var(--navy); color:#fff; border-color:var(--navy);
+  }
+
+  /* ---------- Layout helpers ---------- */
+  .section{padding:clamp(2.6rem,5vw,4.5rem) 1.1rem;}
+  .section-inner{max-width:var(--maxw); margin:0 auto;}
+  .section--alt{background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:.5rem;
+    font-family:var(--font-mono); font-size:.72rem; font-weight:600;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--cyan);
+    margin-bottom:.9rem;
+  }
+  .eyebrow::before{content:''; width:18px; height:2px; background:var(--cyan); display:inline-block;}
+  .section-title{
+    font-size:clamp(1.5rem,3vw,2.2rem);
+    color:var(--navy); margin-bottom:.9rem; max-width:44ch;
+  }
+  .section-lead{
+    color:var(--muted); max-width:64ch; font-size:1.02rem; margin-bottom:2rem;
+  }
+  .subhead{
+    font-family:var(--font-display); font-weight:700; font-size:1.05rem;
+    color:var(--navy); margin:2.2rem 0 .9rem;
+    display:flex; align-items:baseline; gap:.5rem;
+  }
+  .subhead .mono{font-size:.72rem; color:var(--muted-2); font-weight:500;}
+  .grid{display:grid; gap:1.1rem;}
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  .grid-4{grid-template-columns:repeat(4,1fr);}
+  @media (max-width:920px){
+    .grid-3,.grid-4{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:640px){
+    .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
+  }
+
+  .card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1.3rem 1.4rem; box-shadow:var(--shadow);
+  }
+  .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.68rem; font-weight:600;
+    letter-spacing:.06em; text-transform:uppercase; padding:.22rem .55rem;
+    border-radius:5px; background:var(--bg-deep); color:var(--navy);
+  }
+  .citation{
+    font-family:var(--font-mono); font-size:.72rem; color:var(--muted-2);
+  }
+
+  .check-list li, .cross-list li{
+    position:relative; padding-left:1.6rem; margin-bottom:.55rem; font-size:.95rem; color:var(--ink);
+  }
+  .check-list li:last-child, .cross-list li:last-child{margin-bottom:0;}
+  .check-list li::before{
+    content:''; position:absolute; left:0; top:.28em; width:16px; height:16px; border-radius:50%;
+    background:var(--green-bg); border:1.5px solid var(--green);
+  }
+  .check-list li::after{
+    content:''; position:absolute; left:4px; top:.5em; width:8px; height:4px;
+    border-left:2px solid var(--green); border-bottom:2px solid var(--green); transform:rotate(-45deg);
+  }
+  .cross-list li::before{
+    content:''; position:absolute; left:0; top:.28em; width:16px; height:16px; border-radius:50%;
+    background:var(--red-bg); border:1.5px solid var(--red);
+  }
+  .cross-list li::after{
+    content:'×'; position:absolute; left:3.5px; top:-1px; font-weight:700; color:var(--red); font-size:.85rem;
+  }
+  .dot-list li{position:relative; padding-left:1.1rem; margin-bottom:.5rem; font-size:.95rem;}
+  .dot-list li:last-child{margin-bottom:0;}
+  .dot-list li::before{content:''; position:absolute; left:0; top:.55em; width:5px; height:5px; border-radius:50%; background:var(--cyan);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative; background:var(--navy); color:#fff; overflow:hidden;
+    padding:clamp(2.6rem,6vw,4.5rem) 1.1rem clamp(3rem,7vw,5rem);
+  }
+  .hero::before{
+    content:''; position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:34px 34px;
+    mask-image:linear-gradient(to bottom, black, transparent 85%);
+  }
+  .hero-inner{max-width:var(--maxw); margin:0 auto; position:relative; z-index:2;}
+  .hero-kicker{
+    display:inline-flex; align-items:center; gap:.5rem;
+    font-family:var(--font-mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--cyan); border:1px solid rgba(42,174,187,.4); background:rgba(42,174,187,.1);
+    padding:.35rem .7rem; border-radius:999px; margin-bottom:1.4rem;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem,5.5vw,3.6rem); line-height:1.05; max-width:16ch; color:#fff;
+  }
+  .hero h1 em{font-style:normal; color:var(--cyan);}
+  .hero-sub{
+    max-width:56ch; color:#CFE3E2; font-size:clamp(1rem,1.6vw,1.15rem); margin:1.2rem 0 2rem;
+  }
+  .hero-ecg-wrap{
+    width:100%; max-width:760px; margin:1rem 0 2.2rem; opacity:.9;
+  }
+  .trace-bg{fill:none; stroke:rgba(255,255,255,.14); stroke-width:2;}
+  .trace-fg{
+    fill:none; stroke:var(--cyan); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:2400; stroke-dashoffset:0;
+    filter:drop-shadow(0 0 7px rgba(42,174,187,.55));
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .trace-fg{animation:draw-in 2.4s cubic-bezier(.3,.7,.3,1) both, trace-pulse 1.15s ease-in-out 2.5s infinite;}
+  }
+  @keyframes draw-in{from{stroke-dashoffset:2400;} to{stroke-dashoffset:0;}}
+  @keyframes trace-pulse{0%,100%{opacity:1;} 50%{opacity:.5;}}
+
+  .hero-stats{display:flex; flex-wrap:wrap; gap:.9rem 2.2rem; margin-bottom:1.6rem;}
+  .stat{min-width:110px;}
+  .stat .num{font-family:var(--font-mono); font-weight:600; font-size:1.7rem; color:var(--cyan); display:block;}
+  .stat .lbl{font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:#9FC0BE;}
+  .hero-meta{
+    font-family:var(--font-mono); font-size:.74rem; color:#84A9A7; border-top:1px solid rgba(255,255,255,.14);
+    padding-top:1rem; display:flex; flex-wrap:wrap; gap:.4rem 1.4rem;
+  }
+  .hero-cta{
+    display:inline-flex; align-items:center; gap:.5rem;
+    background:var(--cyan); color:var(--navy); font-weight:600; font-size:.9rem;
+    padding:.7rem 1.15rem; border-radius:999px; text-decoration:none; margin-bottom:2rem;
+    border:1px solid var(--cyan); transition:transform .15s ease, background .15s ease;
+  }
+  .hero-cta:hover{background:#3FC3D0; transform:translateY(-1px);}
+
+  /* ---------- Phase cards ---------- */
+  .phase-card{position:relative; padding-top:1.6rem;}
+  .phase-num{
+    font-family:var(--font-mono); font-weight:600; font-size:.78rem; color:#fff;
+    background:var(--navy); border-radius:6px; padding:.15rem .5rem; position:absolute; top:-.7rem; left:1.2rem;
+  }
+  .phase-card h3{font-size:1.15rem; color:var(--navy); margin-bottom:.5rem;}
+  .phase-card .phase-setting{font-size:.82rem; color:var(--cyan); font-weight:600; margin-bottom:.7rem; display:block;}
+
+  /* ---------- Risk cards ---------- */
+  .risk-card{border-radius:var(--radius); padding:1.3rem 1.4rem; border:1px solid var(--line); background:var(--paper); box-shadow:var(--shadow);}
+  .risk-card .risk-flag{
+    display:inline-flex; align-items:center; gap:.4rem; font-family:var(--font-display); font-weight:700;
+    font-size:1rem; padding:.25rem .7rem; border-radius:999px; margin-bottom:.9rem;
+  }
+  .risk-card--low{border-top:4px solid var(--green);}
+  .risk-card--low .risk-flag{background:var(--green-bg); color:var(--green);}
+  .risk-card--moderate{border-top:4px solid var(--amber);}
+  .risk-card--moderate .risk-flag{background:var(--amber-bg); color:#8A5F0F;}
+  .risk-card--high{border-top:4px solid var(--red);}
+  .risk-card--high .risk-flag{background:var(--red-bg); color:var(--red);}
+  .risk-supervision{
+    margin-top:1rem; padding-top:.9rem; border-top:1px dashed var(--line);
+    font-size:.85rem; color:var(--muted);
+  }
+  .risk-supervision strong{color:var(--ink); display:block; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:.25rem;}
+
+  /* ---------- Spec list (definition rows) ---------- */
+  .spec-list{border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--paper);}
+  .spec-row{display:grid; grid-template-columns:minmax(140px,220px) 1fr; gap:1rem; padding:.8rem 1.1rem; border-bottom:1px solid var(--line);}
+  .spec-row:last-child{border-bottom:none;}
+  .spec-row:nth-child(even){background:var(--bg);}
+  .spec-row dt{font-weight:600; color:var(--navy); font-size:.88rem;}
+  .spec-row dd{margin:0; font-size:.88rem; color:var(--muted);}
+  @media (max-width:600px){
+    .spec-row{grid-template-columns:1fr; gap:.2rem;}
+  }
+
+  /* ---------- Timeline (surgical POD) ---------- */
+  .timeline{position:relative; margin-left:.4rem; padding-left:1.8rem; border-left:2px solid var(--line);}
+  .timeline-item{position:relative; padding-bottom:1.6rem;}
+  .timeline-item:last-child{padding-bottom:0;}
+  .timeline-item::before{
+    content:''; position:absolute; left:-2.35rem; top:.15rem; width:14px; height:14px; border-radius:50%;
+    background:var(--cyan); border:3px solid var(--paper); box-shadow:0 0 0 2px var(--cyan);
+  }
+  .timeline-item h4{font-size:.95rem; color:var(--navy); margin-bottom:.4rem;}
+  .timeline-item p, .timeline-item ul{font-size:.88rem; color:var(--muted);}
+  .timeline-item ul{margin-top:.3rem;}
+  .timeline-item ul li{position:relative; padding-left:.9rem; margin-bottom:.25rem;}
+  .timeline-item ul li::before{content:'–'; position:absolute; left:0; color:var(--muted-2);}
+
+  /* ---------- Step cards (7-step) ---------- */
+  .step-card{border-left:4px solid var(--cyan);}
+  .step-card .step-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--cyan); font-weight:600; text-transform:uppercase; letter-spacing:.06em;}
+  .step-card h4{font-size:1rem; color:var(--navy); margin:.3rem 0 .6rem;}
+  .step-meta{display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:.7rem;}
+  .step-meta span{font-family:var(--font-mono); font-size:.72rem; background:var(--bg-deep); color:var(--navy); padding:.15rem .5rem; border-radius:5px;}
+
+  /* ---------- FITT table ---------- */
+  .fitt-grid{display:grid; grid-template-columns:120px 1fr; gap:0; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--paper);}
+  .fitt-grid > div{padding:.85rem 1rem; border-bottom:1px solid var(--line); font-size:.9rem;}
+  .fitt-grid > div:nth-last-child(-n+2){border-bottom:none;}
+  .fitt-label{font-family:var(--font-mono); font-weight:600; color:#fff; background:var(--navy-2); display:flex; align-items:center; font-size:.78rem !important; letter-spacing:.04em; text-transform:uppercase;}
+  .fitt-value{color:var(--muted);}
+  @media (max-width:600px){
+    .fitt-grid{grid-template-columns:1fr;}
+    .fitt-label{padding-bottom:.3rem !important;}
+  }
+
+  /* ---------- Callout ---------- */
+  .callout{
+    border-radius:var(--radius); padding:1.4rem 1.5rem; border:1px solid;
+  }
+  .callout--warn{background:var(--red-bg); border-color:#F1C3B8; color:#7A2A1B;}
+  .callout--info{background:var(--cyan-bg); border-color:#B9E1E4; color:#0E4E54;}
+  .callout--amber{background:var(--amber-bg); border-color:#F0DBAF; color:#734C0B;}
+  .callout h4{font-size:.95rem; margin-bottom:.5rem; color:inherit;}
+  .callout p, .callout li{font-size:.88rem;}
+
+  .definition-block{
+    background:var(--navy); color:#EAF3F2; border-radius:var(--radius); padding:1.8rem 2rem;
+    font-family:var(--font-display); font-size:clamp(1.05rem,2.2vw,1.35rem); line-height:1.45;
+    position:relative;
+  }
+  .definition-block::before{content:'“'; font-family:var(--font-display); font-size:3.5rem; color:var(--cyan); position:absolute; top:.2rem; left:1rem; opacity:.5; line-height:1;}
+  .definition-block p{position:relative; z-index:1; padding-left:1.6rem;}
+  .definition-block .src{display:block; margin-top:1rem; font-family:var(--font-mono); font-size:.72rem; color:#9FC0BE; padding-left:1.6rem;}
+
+  hr.beat-rule{
+    border:none; height:22px; margin:2.6rem 0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='22' viewBox='0 0 220 22'%3E%3Cpath d='M0 11 H80 L92 2 L104 20 L114 6 L122 11 H220' fill='none' stroke='%23D9E4E1' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat:repeat-x; background-size:220px 22px; opacity:.9;
+  }
+
+  /* ---------- Footer table style small ---------- */
+  .indicator-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.7rem;}
+  @media (max-width:640px){.indicator-grid{grid-template-columns:1fr;}}
+  .indicator-item{display:flex; gap:.7rem; align-items:flex-start; padding:.7rem .9rem; background:var(--bg); border-radius:var(--radius-sm); border:1px solid var(--line);}
+  .indicator-item .idx{font-family:var(--font-mono); font-weight:700; color:var(--cyan); font-size:.85rem; flex:none;}
+  .indicator-item p{font-size:.86rem; color:var(--muted); margin:0;}
+  .indicator-item strong{color:var(--ink);}
+
+  /* =====================================================
+     QUIZ
+  ===================================================== */
+  .quiz-section{background:var(--navy); color:#fff;}
+  .quiz-section .eyebrow{color:var(--cyan);}
+  .quiz-section .section-title{color:#fff;}
+  .quiz-section .section-lead{color:#B9D4D2;}
+  .quiz-toolbar{
+    display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+    margin-bottom:1.6rem; padding-bottom:1rem; border-bottom:1px solid rgba(255,255,255,.15);
+  }
+  .quiz-progress-text{font-family:var(--font-mono); font-size:.85rem; color:#CFE3E2;}
+  .quiz-progress-text span{color:var(--cyan); font-weight:700;}
+  .btn-ghost{
+    background:transparent; border:1px solid rgba(255,255,255,.35); color:#fff; border-radius:999px;
+    padding:.5rem 1rem; font-size:.82rem; font-weight:500; transition:background .15s ease, border-color .15s ease;
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.1); border-color:#fff;}
+
+  .quiz-list{display:flex; flex-direction:column; gap:1.4rem;}
+  .case-card{
+    background:#0F3B44; border:1px solid rgba(255,255,255,.12); border-radius:var(--radius);
+    padding:1.5rem 1.5rem 1.6rem;
+  }
+  .case-head{display:flex; align-items:center; justify-content:space-between; gap:.8rem; flex-wrap:wrap; margin-bottom:1rem;}
+  .case-tag{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--cyan); font-weight:600;}
+  .case-status{
+    font-family:var(--font-mono); font-size:.7rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em;
+    padding:.2rem .6rem; border-radius:999px; background:rgba(255,255,255,.1); color:#CFE3E2;
+  }
+  .case-status.ok{background:var(--green-bg); color:var(--green);}
+  .case-status.no{background:var(--red-bg); color:var(--red);}
+
+  .case-vignette{
+    background:rgba(255,255,255,.06); border:1px dashed rgba(255,255,255,.25); border-radius:var(--radius-sm);
+    padding:.9rem 1.05rem; margin-bottom:1.1rem;
+  }
+  .vignette-label{
+    font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:#8FBAB8;
+    margin-bottom:.4rem;
+  }
+  .case-vignette p{font-size:.93rem; color:#E5F1F0; margin:0;}
+  .case-vignette .mono{color:var(--cyan);}
+
+  .case-question{font-size:1.02rem; font-weight:600; color:#fff; margin-bottom:1rem;}
+
+  .case-options{display:flex; flex-direction:column; gap:.6rem; margin-bottom:0;}
+  .option-btn{
+    display:flex; gap:.7rem; align-items:flex-start; text-align:left; width:100%;
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.18); border-radius:var(--radius-sm);
+    padding:.75rem .9rem; color:#EAF3F2; font-size:.9rem; transition:background .15s ease, border-color .15s ease, transform .1s ease;
+  }
+  .option-btn:hover:not(:disabled){background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.4);}
+  .option-btn:disabled{cursor:default;}
+  .option-letter{
+    flex:none; width:24px; height:24px; border-radius:50%; border:1px solid rgba(255,255,255,.35);
+    display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:.75rem; font-weight:600;
+  }
+  .option-btn.is-correct{background:var(--green-bg); border-color:var(--green); color:#0E3B2C;}
+  .option-btn.is-correct .option-letter{background:var(--green); border-color:var(--green); color:#fff;}
+  .option-btn.is-incorrect{background:var(--red-bg); border-color:var(--red); color:#5C1A0F;}
+  .option-btn.is-incorrect .option-letter{background:var(--red); border-color:var(--red); color:#fff;}
+
+  .rationale{
+    margin-top:1.1rem; padding:1rem 1.1rem; border-radius:var(--radius-sm);
+    background:rgba(255,255,255,.07); border-left:3px solid var(--cyan); animation:fade-in .35s ease;
+  }
+  @keyframes fade-in{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);}}
+  .rationale-verdict{font-family:var(--font-display); font-weight:700; font-size:.95rem; margin-bottom:.4rem;}
+  .rationale-verdict.ok{color:#5FE3B4;}
+  .rationale-verdict.no{color:#F09080;}
+  .rationale p{font-size:.88rem; color:#D8ECEA; margin:0 0 .5rem;}
+  .rationale .citation{color:#8FBAB8;}
+
+  .quiz-results{
+    margin-top:2rem; padding:1.8rem; border-radius:var(--radius); background:#0F3B44;
+    border:1px solid rgba(255,255,255,.15); text-align:center;
+  }
+  .quiz-results .result-score{font-family:var(--font-mono); font-size:2.4rem; font-weight:700; color:var(--cyan);}
+  .quiz-results h3{color:#fff; margin:.4rem 0 .5rem;}
+  .quiz-results p{color:#CFE3E2; max-width:52ch; margin:0 auto;}
+
+  .score-widget{
+    position:fixed; right:1rem; bottom:1rem; z-index:180;
+    display:flex; align-items:center; gap:.6rem;
+    background:var(--navy); color:#fff; border-radius:999px; padding:.55rem .95rem .55rem .65rem;
+    box-shadow:0 10px 30px -8px rgba(13,50,58,.5); border:1px solid rgba(255,255,255,.15);
+    opacity:0; transform:translateY(12px); pointer-events:none; transition:opacity .3s ease, transform .3s ease;
+  }
+  .score-widget.is-visible{opacity:1; transform:translateY(0); pointer-events:auto;}
+  .score-widget svg{width:22px; height:22px;}
+  .score-widget .score-label{display:block; font-size:.62rem; letter-spacing:.06em; text-transform:uppercase; color:#9FC0BE;}
+  .score-widget .score-value{font-family:var(--font-mono); font-weight:700; font-size:1rem; color:var(--cyan);}
+  @media (prefers-reduced-motion:no-preference){
+    .score-widget svg .beat{animation:heartbeat 1.15s ease-in-out infinite;}
+  }
+  @keyframes heartbeat{0%,100%{transform:scale(1);} 25%{transform:scale(1.18);} 40%{transform:scale(1);}}
+
+  /* ---------- Footer ---------- */
+  .site-footer{
+    background:var(--bg-deep); border-top:1px solid var(--line); padding:2.4rem 1.1rem;
+  }
+  .site-footer .section-inner{display:flex; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;}
+  .site-footer .foot-brand{font-family:var(--font-display); font-weight:700; color:var(--navy); font-size:1rem; margin-bottom:.4rem;}
+  .site-footer p{font-size:.82rem; color:var(--muted); max-width:60ch;}
+  .site-footer .mono{color:var(--muted-2);}
+
+  @media (max-width:640px){
+    .hero-stats{gap:.8rem 1.4rem;}
+    .stat{min-width:78px;}
+    .stat .num{font-size:1.3rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-rail" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="chart-nav" aria-label="Section navigation">
+  <div class="chart-nav-inner">
+    <span class="nav-brand">
+      <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12 H12 L15 3 L20 20 L24 7 L27 12 H40" fill="none" stroke="#2AAEBB" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      CR Field Guide
+    </span>
+    <a class="nav-pill" href="#background">Background</a>
+    <a class="nav-pill" href="#phases">4 Phases</a>
+    <a class="nav-pill" href="#indications">Indications</a>
+    <a class="nav-pill" href="#risk">Risk &amp; Staging</a>
+    <a class="nav-pill" href="#phase1">Phase I</a>
+    <a class="nav-pill" href="#phase2">Phase II</a>
+    <a class="nav-pill" href="#empowerment">Empowerment</a>
+    <a class="nav-pill" href="#evaluation">Outcomes</a>
+    <a class="nav-pill" href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <span class="hero-kicker">HA Cardiopulmonary Physiotherapy · Junior PT Education Module</span>
+    <h1>Cardiac Rehabilitation, <em>Phase I &amp; II</em></h1>
+    <p class="hero-sub">A bedside-to-gym field guide to the Hospital Authority guideline for physiotherapists — risk stratification, exercise prescription, precautions and patient empowerment, distilled for daily ward and gym use.</p>
+
+    <div class="hero-ecg-wrap">
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true">
+        <path class="trace-bg" d="M-50,60 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118"/>
+        <path class="trace-fg" d="M-50,60 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118 h40 l10,-30 l14,60 l10,-40 l8,10 h118"/>
+      </svg>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat"><span class="num">4</span><span class="lbl">CR Phases</span></div>
+      <div class="stat"><span class="num">3</span><span class="lbl">AACVPR Risk Tiers</span></div>
+      <div class="stat"><span class="num">7</span><span class="lbl">Step Inpatient Program</span></div>
+      <div class="stat"><span class="num">5</span><span class="lbl">Quiz Cases</span></div>
+    </div>
+
+    <a href="#background" class="hero-cta">Start the field guide ↓</a>
+
+    <div class="hero-meta">
+      <span>Doc No. HAHO-COC-GL-PHY-007-v03</span>
+      <span>Issued 1/2/2024</span>
+      <span>Review due 1/2/2027</span>
+      <span>Source: HA Task Group on Cardiac Service, COC-Grade(PT)</span>
+    </div>
+  </div>
+</header>
+
+<!-- ================= BACKGROUND ================= -->
+<section class="section" id="background">
+  <div class="section-inner">
+    <span class="eyebrow">01 · Why this matters</span>
+    <h2 class="section-title">Background &amp; definition</h2>
+    <p class="section-lead">Cardiac disease is the third commonest cause of death in Hong Kong, accounting for 13.0% of all deaths (2020), and referrals into HA cardiac rehabilitation grow every year. Rehab is one of the few interventions proven to cut cardiac mortality and reinfarction — which is why the physiotherapist's role in it is protocol-driven, not optional.</p>
+
+    <div class="definition-block">
+      <p>Cardiac rehabilitation is the process by which patients, in partnership with a multidisciplinary team, are supported to optimise health and physical fitness, prevent recurrence, reduce mortality, and return to work and life roles — with partners, family and carers involved throughout.</p>
+      <span class="src">§1.1 Definition of Cardiac Rehabilitation</span>
+    </div>
+
+    <div class="grid grid-3" style="margin-top:1.6rem;">
+      <div class="card">
+        <span class="tag">Multidisciplinary</span>
+        <p style="margin-top:.6rem; font-size:.92rem; color:var(--muted);">Individualised risk-profile management, dietary advice, exercise prescription, activity counselling and psychosocial support delivered as one package of care.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Goal</span>
+        <p style="margin-top:.6rem; font-size:.92rem; color:var(--muted);">Optimise fitness and health, prevent recurrence, reduce mortality — and hand the patient the skills to self-manage for the long term.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Family &amp; carers</span>
+        <p style="margin-top:.6rem; font-size:.92rem; color:var(--muted);">Involvement of partners, family and carers is written into the definition itself — not an optional extra to education.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 4 PHASES ================= -->
+<section class="section section--alt" id="phases">
+  <div class="section-inner">
+    <span class="eyebrow">02 · The care pathway</span>
+    <h2 class="section-title">Four phases, one continuum</h2>
+    <p class="section-lead">Cardiac rehab in Hong Kong runs across four linked phases. Physiotherapists lead the exercise components of Phase I and II, and hand off into Phase III/IV community and long-term maintenance. Hybrid tele-components are increasingly layered across every phase.</p>
+
+    <div class="grid grid-4">
+      <div class="card phase-card">
+        <span class="phase-num">PHASE I</span>
+        <span class="phase-setting">In-patient</span>
+        <h3>Stabilise &amp; educate</h3>
+        <ul class="dot-list">
+          <li>Medical evaluation</li>
+          <li>Reassurance &amp; education</li>
+          <li>Correct cardiac misconceptions</li>
+          <li>Risk assessment</li>
+          <li>Discharge planning</li>
+          <li>Family involvement</li>
+        </ul>
+      </div>
+      <div class="card phase-card">
+        <span class="phase-num">PHASE II</span>
+        <span class="phase-setting">Out-patient, early post-discharge</span>
+        <h3>Supervised rebuild</h3>
+        <ul class="dot-list">
+          <li>Structured programme</li>
+          <li>Supervised exercise</li>
+          <li>Counselling &amp; secondary-prevention reinforcement</li>
+          <li>Structured empowerment / self-help programme</li>
+        </ul>
+      </div>
+      <div class="card phase-card">
+        <span class="phase-num">PHASE III</span>
+        <span class="phase-setting">Community / home</span>
+        <h3>Consolidate habits</h3>
+        <ul class="dot-list">
+          <li>Psychological support</li>
+          <li>Menu-based approach</li>
+          <li>Education &amp; training, smoking cessation</li>
+          <li>Regular exercise, weight management</li>
+          <li>Vocational rehab, peer support</li>
+        </ul>
+      </div>
+      <div class="card phase-card">
+        <span class="phase-num">PHASE IV</span>
+        <span class="phase-setting">Long-term, community</span>
+        <h3>Sustain for life</h3>
+        <ul class="dot-list">
+          <li>Collaborate with NGOs, support groups, leisure centres</li>
+          <li>Maintain physical activity &amp; lifestyle change</li>
+          <li>Telemedicine woven across phases</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout--info" style="margin-top:1.4rem;">
+      <h4>Hybrid / telehealth is now mainstream</h4>
+      <p>Evidence supports telehealth or hybrid delivery as safe and effective alongside face-to-face rehab. Think video platforms, pedometers/accelerometers, tele-ECG, chest/wrist HR sensors, home BP monitors and AI-supported digital tools — usable across Phase I–IV, not just Phase III/IV. <span class="citation">§1.2 &amp; §7</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INDICATIONS / CONTRAINDICATIONS ================= -->
+<section class="section" id="indications">
+  <div class="section-inner">
+    <span class="eyebrow">03 · Screening at the door</span>
+    <h2 class="section-title">Who's in, who waits</h2>
+    <p class="section-lead">Before any patient enters Phase I or II, screen against the guideline's indication and contraindication lists. Contraindications are checked at every session, not just at intake — a patient can be indicated today and contraindicated tomorrow.</p>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3 style="font-size:1.05rem; color:var(--green); margin-bottom:1rem;">Indicated for Phase I &amp; II</h3>
+        <ul class="check-list">
+          <li>Medically stable post-MI</li>
+          <li>Stable angina</li>
+          <li>CABG surgery</li>
+          <li>Percutaneous coronary angioplasty (PTCA)</li>
+          <li>Stable heart failure (systolic or diastolic)</li>
+          <li>Heart transplantation</li>
+          <li>Valvular heart surgery</li>
+          <li>Peripheral arterial disease</li>
+          <li>At CAD risk: diabetes, dyslipidaemia, hypertension or obesity</li>
+          <li>Others per physician referral &amp; team consensus</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="font-size:1.05rem; color:var(--red); margin-bottom:1rem;">Contraindicated — hold the session</h3>
+        <ul class="cross-list">
+          <li>Unstable angina</li>
+          <li>Uncontrolled hypertension (SBP&gt;180 and/or DBP&gt;110 mmHg)</li>
+          <li>Orthostatic BP drop &gt;20 mmHg with symptoms</li>
+          <li>Significant aortic stenosis (valve area &lt;1.0 cm²)</li>
+          <li>Uncontrolled atrial/ventricular arrhythmia or sinus tachycardia &gt;120 bpm</li>
+          <li>Uncompensated heart failure</li>
+          <li>3rd-degree AV block without pacemaker</li>
+          <li>Active pericarditis / myocarditis</li>
+          <li>Recent embolism, thrombophlebitis, aortic dissection</li>
+          <li>Acute systemic illness, fever, or uncontrolled DM</li>
+          <li>Severe orthopedic or uncorrected metabolic conditions</li>
+          <li>Severe psychological disorder</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RISK & STAGING ================= -->
+<section class="section section--alt" id="risk">
+  <div class="section-inner">
+    <span class="eyebrow">04 · Stratify before you prescribe</span>
+    <h2 class="section-title">Risk stratification &amp; disease staging</h2>
+    <p class="section-lead">Use <strong>AACVPR</strong> for anyone with a cardiac diagnosis, and <strong>ACSM</strong> for apparently healthy individuals being screened for CAD risk. Risk tier drives how tightly you supervise and monitor exercise.</p>
+
+    <div class="grid grid-3">
+      <div class="risk-card risk-card--low">
+        <span class="risk-flag">● Low risk</span>
+        <p style="font-size:.88rem; color:var(--muted); margin-bottom:.7rem;">ALL of these must be true:</p>
+        <ul class="dot-list" style="font-size:.85rem;">
+          <li>No complex ventricular dysrhythmia on test/recovery</li>
+          <li>No angina or significant symptoms</li>
+          <li>Normal haemodynamic response</li>
+          <li>Functional capacity ≥7 METs</li>
+          <li>LVEF ≥50%, uncomplicated MI/revasc</li>
+          <li>No CHF, no post-event ischaemia, no depression</li>
+        </ul>
+        <div class="risk-supervision">
+          <strong>Supervision (Appendix 1)</strong>
+          Direct medical supervision 6–18 sessions or 30 days; continuous ECG tapering as tolerated.
+        </div>
+      </div>
+      <div class="risk-card risk-card--moderate">
+        <span class="risk-flag">● Moderate risk</span>
+        <p style="font-size:.88rem; color:var(--muted); margin-bottom:.7rem;">ANY one of these:</p>
+        <ul class="dot-list" style="font-size:.85rem;">
+          <li>Angina/symptoms only at high exertion (≥7 METs)</li>
+          <li>Mild–moderate silent ischaemia (ST dep &lt;2mm)</li>
+          <li>Functional capacity &lt;5 METs</li>
+          <li>LVEF 40–49%</li>
+        </ul>
+        <div class="risk-supervision">
+          <strong>Supervision (Appendix 1)</strong>
+          Direct staff supervision 12–24 sessions or 60 days; continuous ECG tapering to intermittent/none.
+        </div>
+      </div>
+      <div class="risk-card risk-card--high">
+        <span class="risk-flag">● High risk</span>
+        <p style="font-size:.88rem; color:var(--muted); margin-bottom:.7rem;">ANY one of these:</p>
+        <ul class="dot-list" style="font-size:.85rem;">
+          <li>Complex ventricular dysrhythmia on test/recovery</li>
+          <li>Angina/symptoms at low exertion (&lt;5 METs) or recovery</li>
+          <li>High silent ischaemia (ST dep ≥2mm)</li>
+          <li>Abnormal haemodynamics (chronotropic incompetence, flat/falling SBP, severe post-ex hypotension)</li>
+          <li>LVEF &lt;40%, arrest history, CHF, complex resting dysrhythmia, depression</li>
+        </ul>
+        <div class="risk-supervision">
+          <strong>Supervision (Appendix 1)</strong>
+          Direct staff supervision 18–36 sessions or 90 days; continuous ECG tapering to intermittent. Follow the 7-step protocol strictly — no step-jumping.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--amber" style="margin-top:1.2rem;">
+      <h4>AACVPR blind spot</h4>
+      <p>This algorithm does not account for comorbidities such as Type 2 diabetes, morbid obesity, severe pulmonary disease or debilitating neuro/orthopaedic conditions — use clinical judgement to add caution on top. <span class="citation">§4.1.3 note</span></p>
+    </div>
+
+    <h3 class="subhead">ACSM risk categories <span class="mono">for apparently healthy screening — §4.3</span></h3>
+    <div class="spec-list">
+      <div class="spec-row"><dt>Low risk</dt><dd>Asymptomatic, &lt;2 CVD risk factors</dd></div>
+      <div class="spec-row"><dt>Moderate risk</dt><dd>Asymptomatic, ≥2 CVD risk factors</dd></div>
+      <div class="spec-row"><dt>High risk</dt><dd>Symptomatic, or known cardiovascular / pulmonary / renal / metabolic disease</dd></div>
+    </div>
+    <p class="section-lead" style="margin-top:1rem; margin-bottom:0; font-size:.88rem;">Positive risk factors counted: age (M≥45/F≥55), family history, smoking, sedentary lifestyle, obesity, hypertension, dyslipidaemia, diabetes. High HDL (≥60 mg·dL⁻¹) subtracts one risk factor.</p>
+
+    <h3 class="subhead">Disease staging quick-reference</h3>
+    <div class="grid grid-2">
+      <div class="card">
+        <span class="tag">NYHA functional class</span>
+        <div class="spec-list" style="margin-top:.8rem; border:none;">
+          <div class="spec-row" style="padding:.6rem 0;"><dt>I</dt><dd>No limitation — ordinary activity causes no undue symptoms</dd></div>
+          <div class="spec-row" style="padding:.6rem 0;"><dt>II</dt><dd>Slight limitation — comfortable at rest, symptoms with ordinary activity</dd></div>
+          <div class="spec-row" style="padding:.6rem 0;"><dt>III</dt><dd>Marked limitation — comfortable at rest, symptoms with less-than-ordinary activity</dd></div>
+          <div class="spec-row" style="padding:.6rem 0;"><dt>IV</dt><dd>Symptoms at rest; any activity increases discomfort</dd></div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="tag">ACC/AHA heart failure stage</span>
+        <div class="spec-list" style="margin-top:.8rem; border:none;">
+          <div class="spec-row" style="padding:.6rem 0;"><dt>A</dt><dd>At risk — no symptoms or structural disease yet</dd></div>
+          <div class="spec-row" style="padding:.6rem 0;"><dt>B</dt><dd>Pre-HF — structural disease, no current/prior symptoms</dd></div>
+          <div class="spec-row" style="padding:.6rem 0;"><dt>C</dt><dd>Symptomatic heart failure, current or previous</dd></div>
+          <div class="spec-row" style="padding:.6rem 0;"><dt>D</dt><dd>Advanced HF — interferes with daily life or repeated admissions</dd></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHASE I ================= -->
+<section class="section" id="phase1">
+  <div class="section-inner">
+    <span class="eyebrow">05 · Ward-based rehabilitation</span>
+    <h2 class="section-title">Phase I: the in-patient programme</h2>
+    <p class="section-lead">Before mobilising, confirm the AACVPR in-patient readiness parameters. Then progress through self-care, active/passive ROM and early ambulation, monitored tightly against fixed HR, RPE and symptom ceilings.</p>
+
+    <div class="callout callout--info">
+      <h4>Ready to mobilise? — AACVPR in-patient parameters</h4>
+      <ul class="dot-list">
+        <li>No new or recurrent chest pain in the previous 8 hours</li>
+        <li>Stable or falling creatine kinase and troponin values</li>
+        <li>No sign of decompensated heart failure (e.g. resting dyspnoea, bibasilar rales)</li>
+        <li>Normal cardiac rhythm and stable ECG</li>
+      </ul>
+    </div>
+
+    <h3 class="subhead">General exercise guidelines <span class="mono">§5.3</span></h3>
+    <div class="fitt-grid">
+      <div class="fitt-label">Frequency</div><div class="fitt-value">2–4 mobilisation sessions/day for the first 3 days of stay.</div>
+      <div class="fitt-label">Intensity</div><div class="fitt-value">Post-MI: HR<sub>rest</sub> + 20 bpm. Post-surgery: HR<sub>rest</sub> + 30 bpm. Hard ceiling ≤120 bpm and RPE ≤13 (6–20 scale).</div>
+      <div class="fitt-label">Duration</div><div class="fitt-value">Intermittent walking bouts of 3–5 min, building up; rest periods shorter than work — aim for a 2:1 exercise:rest ratio.</div>
+      <div class="fitt-label">Type</div><div class="fitt-value">Walking.</div>
+      <div class="fitt-label">Progression</div><div class="fitt-value">Once continuous 10–15 min is tolerated, increase intensity within RPE/HR limits.</div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:1.2rem;">
+      <div class="callout callout--warn">
+        <h4>Stop exercise if the patient reports</h4>
+        <ul class="dot-list"><li>Chest pain or discomfort</li><li>Severe shortness of breath</li><li>Fatigue or dizziness</li><li>Cold sweating</li><li>Muscle cramp</li></ul>
+      </div>
+      <div class="callout callout--amber">
+        <h4>House rules</h4>
+        <ul class="dot-list"><li>Pulse should not rise &gt;20 bpm after exercise</li><li>Always warm up and cool down</li><li>TNG on standby if prescribed</li><li>Caution with fixed-rate (non-rate-responsive) pacemakers</li><li>Avoid: post-meal (&lt;1h), when upset, temperature extremes, isometric work, small-muscle work, over-fatigue</li></ul>
+      </div>
+    </div>
+
+    <h3 class="subhead">Surgical cardiac patients — day-by-day <span class="mono">§5.4</span></h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4>Pre-operative</h4>
+        <p>Assess chest &amp; musculoskeletal status, baseline 6MWT if applicable. Teach breathing exercises, wound-support coughing, active limb exercises, ankle pumps.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Operative day</h4>
+        <p>Monitor vitals, drainage and ventilator status; treat on request only.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>POD 1 (after extubation)</h4>
+        <ul>
+          <li>Bilateral lower-costal &amp; diaphragmatic breathing, wound-support coughing</li>
+          <li>Incentive spirometry, active limb exercises, transfers, ankle pumps</li>
+          <li>Sit out of bed ± cycling if stable</li>
+          <li><strong>No chest physiotherapy if the sternum has not closed</strong> — passive limb ROM only, with caution</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <h4>POD 2</h4>
+        <p>Add vasomotor training, encourage sitting out, standing/stepping, and walking if haemodynamically stable.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>POD 3</h4>
+        <p>Continue walking; address postural awareness — watch for post-op kyphosis from wound-pain guarding.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>POD 4</h4>
+        <p>Stair-walking training if haemodynamically stable and asymptomatic.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>POD 5</h4>
+        <p>Home exercise and ADL advice; select suitable candidates for Phase II.</p>
+      </div>
+    </div>
+
+    <div class="callout callout--info" style="margin-top:1.4rem;">
+      <h4>Sternotomy wound care essentials</h4>
+      <ul class="dot-list">
+        <li>Check for oozing, swelling, erythema; assess wound pain before exercising</li>
+        <li>Cough with the wound supported; secure drains/lines with enough slack to move</li>
+        <li>Resume trunk/shoulder ROM early; unilateral exercise if pain is severe</li>
+        <li>Avoid moderate–heavy resistance training for 3 months post-op</li>
+        <li>Use sustained-hold technique, not bouncing, to ease muscle guarding</li>
+        <li>Lifting limit ~5–10 lb (&lt;50% MVC) for 10–12 weeks; keep an upright posture</li>
+      </ul>
+    </div>
+
+    <h3 class="subhead">Medical cardiac patients — the 7-step programme <span class="mono">§5.5.3</span></h3>
+    <div class="grid grid-3">
+      <div class="card step-card"><span class="step-tag">Step 1</span><h4>Active/passive limb ROM, lying</h4><div class="step-meta"><span>Self-feeding</span><span>Bedside commode</span></div><p style="font-size:.86rem; color:var(--muted);">Understand CR purpose &amp; importance of pacing.</p></div>
+      <div class="card step-card"><span class="step-tag">Step 2</span><h4>Same ROM, sitting on bedside</h4><div class="step-meta"><span>Bathe at bedside</span><span>Dangle legs</span></div></div>
+      <div class="card step-card"><span class="step-tag">Step 3</span><h4>Warm-up/cool-down + walk 100 ft slow</h4><div class="step-meta"><span>Chair sitting</span><span>~30 m</span></div></div>
+      <div class="card step-card"><span class="step-tag">Step 4</span><h4>Walk 150 ft average pace</h4><div class="step-meta"><span>Warm shower</span><span>~50 m</span></div><p style="font-size:.86rem; color:var(--muted);">Teach pulse self-monitoring.</p></div>
+      <div class="card step-card"><span class="step-tag">Step 5</span><h4>Walk 300 ft, try a few stairs (2×/day)</h4><div class="step-meta"><span>Bathroom privileges</span><span>~100 m</span></div><p style="font-size:.86rem; color:var(--muted);">Introduce home &amp; Phase II exercise plan.</p></div>
+      <div class="card step-card"><span class="step-tag">Step 6</span><h4>Walk 500 ft + half flight of stairs</h4><div class="step-meta"><span>Standing self-care</span><span>~150 m</span></div></div>
+      <div class="card step-card"><span class="step-tag">Step 7</span><h4>Walk 500 ft + 1 full flight of stairs</h4><div class="step-meta"><span>Discharge-ready</span></div><p style="font-size:.86rem; color:var(--muted);">Patient demonstrates pulse-monitoring &amp; warm-up independently.</p></div>
+      <div class="card" style="background:var(--bg-deep); display:flex; flex-direction:column; justify-content:center;">
+        <span class="tag" style="margin-bottom:.6rem;">Jumping steps?</span>
+        <p style="font-size:.86rem; color:var(--muted); margin:0;">Allowed only for Low/Moderate-risk patients, and only while HR, BP, ECG, RPE and symptoms all stay within limits (see below). <strong>High-risk patients must follow all 7 steps in strict order.</strong></p>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:1.2rem;">
+      <div class="callout callout--info">
+        <h4>Criteria to allow jumping a step</h4>
+        <p>Patient exceeds the current step already, is Low/Moderate risk, and <strong>none</strong> of the following are present:</p>
+        <ul class="dot-list">
+          <li>HR ≥120 bpm or ≥ HR<sub>rest</sub>+20</li>
+          <li>SBP &gt;180 &amp; DBP &gt;100 mmHg, or SBP fails to rise / rises &lt;20 mmHg</li>
+          <li>Abnormal ECG changes (ST shift &gt;2mm, septal Q wave, AV block, arrhythmia)</li>
+          <li>RPE ≥13</li>
+          <li>Angina, nausea, dyspnoea, dizziness, unsteadiness, cyanosis, confusion, cold sweating</li>
+        </ul>
+      </div>
+      <div class="callout callout--warn">
+        <h4>Discontinue exercise in Phase I if</h4>
+        <ul class="dot-list">
+          <li>Diastolic BP ≥110 mmHg</li>
+          <li>Systolic BP drops &gt;10 mmHg with increasing workload</li>
+          <li>Significant ventricular/atrial dysrhythmia, with or without symptoms</li>
+          <li>2nd- or 3rd-degree heart block</li>
+          <li>Angina, marked dyspnoea, or ischaemic ECG changes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHASE II ================= -->
+<section class="section section--alt" id="phase2">
+  <div class="section-inner">
+    <span class="eyebrow">06 · Outpatient reconditioning</span>
+    <h2 class="section-title">Phase II: building capacity safely</h2>
+    <p class="section-lead">Phase II opens with objective assessment, then applies structured FITT prescriptions for aerobic and resistance training — adjusted for sternotomy, diabetes and weight-management goals.</p>
+
+    <h3 class="subhead">Assessment before you prescribe <span class="mono">§6.1</span></h3>
+    <div class="grid grid-2">
+      <div class="card">
+        <span class="tag">6-Minute Walk Test</span>
+        <p style="margin-top:.6rem; font-size:.9rem; color:var(--muted);">Self-paced walking capacity over a flat 30m+ course, using standardised encouragement phrases every 60s. Distance walked is the primary outcome.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Submaximal exercise test</span>
+        <p style="margin-top:.6rem; font-size:.9rem; color:var(--muted);">Treadmill preferred; cycle ergometry for obesity/orthopaedic/vascular/neuro limitations (expect 5–20% lower peak capacity). Target test duration 8–12 min. <strong>Terminate at 70% heart-rate reserve (≈85% age-predicted max HR)</strong> even without symptoms.</p>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:1.1rem;">
+      <div class="callout callout--warn">
+        <h4>Absolute contraindications to testing</h4>
+        <ul class="dot-list">
+          <li>MI within 2 days; ongoing unstable angina</li>
+          <li>Uncontrolled arrhythmia with haemodynamic compromise</li>
+          <li>Active endocarditis, myo/pericarditis</li>
+          <li>Symptomatic severe aortic stenosis; decompensated HF</li>
+          <li>Acute PE, pulmonary infarction, DVT, aortic dissection</li>
+          <li>Physical disability precluding safe testing</li>
+        </ul>
+      </div>
+      <div class="callout callout--amber">
+        <h4>Relative contraindications to testing</h4>
+        <ul class="dot-list">
+          <li>Known left main coronary stenosis</li>
+          <li>Moderate–severe AS of uncertain symptom relationship</li>
+          <li>Uncontrolled tachyarrhythmia; advanced/complete heart block</li>
+          <li>Recent stroke/TIA; limited ability to cooperate</li>
+          <li>Resting SBP &gt;200 or DBP &gt;110 mmHg</li>
+          <li>Uncorrected anaemia, electrolyte imbalance, hyperthyroidism</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout--info" style="margin-top:1.1rem;">
+      <h4>Cardiac Exercise Self-Efficacy Instrument (CESEI-C)</h4>
+      <p>A validated 16-item, 5-point Likert questionnaire (score range 16–80) measuring a patient's confidence to exercise safely, correctly, at the right dose and intensity — useful alongside physical outcome measures to track readiness for self-management. <span class="citation">§6.1.2, Appendix 4</span></p>
+    </div>
+
+    <h3 class="subhead">Principles of exercise training <span class="mono">§6.2.1</span></h3>
+    <div class="grid grid-4">
+      <div class="card"><span class="tag">Overload</span><p style="margin-top:.5rem; font-size:.85rem; color:var(--muted);">Train above habitual load — manipulate load, reps, speed, volume or rest.</p></div>
+      <div class="card"><span class="tag">Specificity</span><p style="margin-top:.5rem; font-size:.85rem; color:var(--muted);">Adaptations match the muscles, movement pattern, energy system and intensity trained.</p></div>
+      <div class="card"><span class="tag">Individual differences</span><p style="margin-top:.5rem; font-size:.85rem; color:var(--muted);">Response varies with baseline fitness — prescribe to the person, not the protocol.</p></div>
+      <div class="card"><span class="tag">Reversibility</span><p style="margin-top:.5rem; font-size:.85rem; color:var(--muted);">Detraining starts within 1–2 weeks; most gains fade within months of stopping.</p></div>
+    </div>
+
+    <h3 class="subhead">Aerobic exercise prescription <span class="mono">§6.3</span></h3>
+    <div class="fitt-grid">
+      <div class="fitt-label">Intensity</div><div class="fitt-value">40–80% of exercise capacity (HRR / VO₂R / VO₂peak); or HR<sub>rest</sub>+20–30 bpm if untested; RPE 12–16 (6–20 scale). Keep ≥10 bpm below any known ischaemic threshold.</div>
+      <div class="fitt-label">Frequency</div><div class="fitt-value">≥3 days/week, preferably ≥5 days/week.</div>
+      <div class="fitt-label">Duration</div><div class="fitt-value">5–10 min warm-up and cool-down; 20–60 min conditioning phase. Start from as little as 5–10 min and progress 10–20%/week.</div>
+      <div class="fitt-label">Type</div><div class="fitt-value">Rhythmic, large-muscle-group activity — arm/leg ergometers, treadmill, cycles, stepper, rower, elliptical.</div>
+      <div class="fitt-label">Progression</div><div class="fitt-value">No fixed formula — individualise to tolerance, fitness, motivation, symptoms and musculoskeletal limits.</div>
+    </div>
+
+    <h3 class="subhead">Resistance training prescription <span class="mono">§6.4</span></h3>
+    <div class="callout callout--amber">
+      <h4>Eligibility &amp; timing</h4>
+      <p>Low–moderate risk (high risk only with supervision). Start ≥5 weeks post-MI/surgery (with 4 weeks of consistent endurance training first), or ≥2–3 weeks post-PTCA (2 weeks consistent endurance training). ROM and very light 1–3 lb loads may start earlier if tolerated. No CHF, uncontrolled dysrhythmia, severe valvular disease, uncontrolled hypertension, or unstable symptoms.</p>
+    </div>
+    <div class="fitt-grid" style="margin-top:1rem;">
+      <div class="fitt-label">Intensity</div><div class="fitt-value">10–15 reps without straining (~30–40% 1RM upper body, ~50–60% lower body); low-risk patients may progress to 8–12 reps at 60–80% 1RM. RPE 11–14 as a subjective guide.</div>
+      <div class="fitt-label">Time</div><div class="fitt-value">1 set/major muscle group initially, 8–10 exercises, 1–3 sets; large muscles before small; include multi-joint "compound" exercises.</div>
+      <div class="fitt-label">Frequency</div><div class="fitt-value">2–3 non-consecutive days/week, ≥48h between sessions for the same muscle group; after the aerobic component, once warmed up.</div>
+      <div class="fitt-label">Technique</div><div class="fitt-value">Slow, controlled through full extension; regular breathing — avoid Valsalva/straining and sustained tight gripping.</div>
+      <div class="fitt-label">Progression</div><div class="fitt-value">~2–5 lb/week upper body, ~5–10 lb/week lower body — or add reps/sets/training days instead of load.</div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:1.1rem;">
+      <div class="callout callout--warn">
+        <h4>Sternotomy resistance precautions <span class="citation">§6.4.2</span></h4>
+        <ul class="dot-list">
+          <li>&lt;6 weeks: minimise UL load, no lifting &gt;5 lb, no bench press / pec fly / lat pulldown; LL training unaffected</li>
+          <li>Sternal instability reported in up to 16% of cases even in uncomplicated healing (typical union 8–10 weeks)</li>
+          <li>5–6 to &lt;12 weeks: pain-free unloaded UL ROM; lifting ≤5–10 lb (&lt;50% MVC)</li>
+          <li>&gt;12 weeks: progressive gentle UL resistance as tolerated</li>
+        </ul>
+      </div>
+      <div class="callout callout--warn">
+        <h4>Cap intensity if you see <span class="citation">§6.4.3</span></h4>
+        <ul class="dot-list">
+          <li>Angina or other cardiac-insufficiency symptoms</li>
+          <li>SBP plateau/drop &gt;10 mmHg, SBP &gt;240, or DBP ≥110 mmHg</li>
+          <li>1mm ST depression, horizontal or downsloping</li>
+          <li>Increasing ventricular arrhythmia frequency, or other significant ECG change</li>
+        </ul>
+        <p style="margin-top:.5rem;">Keep peak exercise HR ≥10 bpm below whatever HR triggered these findings.</p>
+      </div>
+    </div>
+
+    <h3 class="subhead">Exercise for patients with diabetes <span class="mono">§6.5</span></h3>
+    <div class="fitt-grid">
+      <div class="fitt-label">Frequency</div><div class="fitt-value">3–7 days/week.</div>
+      <div class="fitt-label">Intensity</div><div class="fitt-value">40–59% VO₂R/HRR (RPE 11–12); better glycaemic control possible at 60–89% VO₂R (RPE 14–17) once regularly active.</div>
+      <div class="fitt-label">Time</div><div class="fitt-value">≥150 min/week moderate-or-greater intensity; extra benefit accrues to ≥300 min/week.</div>
+      <div class="fitt-label">Type</div><div class="fitt-value">Large-muscle, rhythmic, continuous activity matched to patient interest. Resistance training also encouraged unless contraindicated.</div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:1.1rem;">
+      <div class="card">
+        <span class="tag">Complication-specific cautions</span>
+        <ul class="dot-list" style="margin-top:.7rem;">
+          <li><strong>Retinopathy:</strong> avoid BP spikes, vigorous/jumping/jarring, head-down positions, Valsalva</li>
+          <li><strong>Autonomic neuropathy:</strong> HR/BP may be blunted — lean on RPE; watch for silent ischaemia (unusual SOB/back pain)</li>
+          <li><strong>Peripheral neuropathy:</strong> proactive foot care to prevent ulcers</li>
+        </ul>
+      </div>
+      <div class="callout callout--info">
+        <h4>Pre-exercise glucose protocol (insulin users)</h4>
+        <ul class="dot-list">
+          <li>≤100 mg·dL⁻¹ → delay, give up to 15g carbohydrate, re-test in 15 min</li>
+          <li>≥250 mg·dL⁻¹ → exercise only if well, hydrated and ketone-negative; monitor closely</li>
+          <li>≥350 mg·dL⁻¹ → correct with insulin before exercising, even without ketones</li>
+          <li>Avoid exercising at peak insulin action; inject away from the muscle being exercised</li>
+          <li>Caution: delayed hypoglycaemia possible up to 12h after exercise</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="subhead">Exercise for weight management <span class="mono">§6.6</span></h3>
+    <div class="spec-list">
+      <div class="spec-row"><dt>Prevent weight gain</dt><dd>150–250 min/week moderate-intensity activity</dd></div>
+      <div class="spec-row"><dt>Weight loss</dt><dd>150–250 min/week gives modest loss; &gt;225–250 min/week gives clinically significant loss</dd></div>
+      <div class="spec-row"><dt>Maintain loss</dt><dd>&gt;250–300 min/week moderate-to-vigorous activity helps prevent regain</dd></div>
+      <div class="spec-row"><dt>ACSM baseline</dt><dd>≥150 min/week (30 min × 5 days) as a starting target, plus strength training; diet + activity beats diet alone</dd></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EMPOWERMENT ================= -->
+<section class="section" id="empowerment">
+  <div class="section-inner">
+    <span class="eyebrow">07 · Beyond the gym session</span>
+    <h2 class="section-title">Patient empowerment &amp; self-management</h2>
+    <p class="section-lead">Every Phase I and II contact is also a teaching contact. Build these into routine sessions rather than a single discharge talk.</p>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <span class="tag">Teach every patient</span>
+        <ul class="dot-list" style="margin-top:.8rem;">
+          <li>What the CR team does and why exercise helps their heart</li>
+          <li>How to self-monitor with RPE and heart rate</li>
+          <li>Smoking cessation, and a diet low in salt, sugar, cholesterol, saturated and trans-fat</li>
+          <li>Stress management</li>
+          <li>Safe ADL, household, occupational and recreational activity levels</li>
+          <li>A home exercise plan with clear precautions</li>
+        </ul>
+      </div>
+      <div class="callout callout--warn">
+        <h4>Warning signs — report to a doctor immediately</h4>
+        <ul class="dot-list">
+          <li>Chest pain radiating to neck/jaw, not relieved by TNG</li>
+          <li>Resting palpitations or shortness of breath</li>
+          <li>Dizziness or excessive fatigue</li>
+          <li>Nausea, vomiting, or headache</li>
+          <li>Swelling of the extremities</li>
+          <li>Cold sweating or cyanosis</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EVALUATION & STAFF ================= -->
+<section class="section section--alt" id="evaluation">
+  <div class="section-inner">
+    <span class="eyebrow">08 · Closing the loop</span>
+    <h2 class="section-title">Outcome indicators &amp; staff competence</h2>
+    <p class="section-lead">The programme is judged on the same things you should be tracking chairside — completion, safety, risk-factor change, and how the patient says it's going.</p>
+
+    <div class="indicator-grid">
+      <div class="indicator-item"><span class="idx">01</span><p><strong>Referral &amp; completion rates</strong> for Phase I and Phase II programmes</p></div>
+      <div class="indicator-item"><span class="idx">02</span><p><strong>Clinical events</strong> — hospitalisation and mortality, attenders vs non-attenders</p></div>
+      <div class="indicator-item"><span class="idx">03</span><p><strong>Adverse events / safety</strong> during sessions</p></div>
+      <div class="indicator-item"><span class="idx">04</span><p><strong>CV risk-factor modification</strong> — BP, cholesterol, diabetes control, smoking, weight</p></div>
+      <div class="indicator-item"><span class="idx">05</span><p><strong>Exercise capacity / tolerance</strong> reassessment</p></div>
+      <div class="indicator-item"><span class="idx">06</span><p><strong>Health behaviour</strong> — disease knowledge, exercise self-efficacy, medication adherence</p></div>
+      <div class="indicator-item"><span class="idx">07</span><p><strong>Patient-reported outcomes</strong> — satisfaction, quality of life, mental health</p></div>
+      <div class="indicator-item"><span class="idx">08</span><p><strong>Staff competence</strong> — see below</p></div>
+    </div>
+
+    <div class="callout callout--info" style="margin-top:1.3rem;">
+      <h4>To practise independently in cardiac rehab <span class="citation">§9</span></h4>
+      <p>A valid Basic Life Support certificate, plus ≥5 years' experience in cardiopulmonary specialty — preferably <strong>plus one of:</strong> ACSM Certified Clinical Exercise Physiologist; a Master's in Cardiology / Exercise Physiology / Exercise &amp; Nutrition (or equivalent); or HA's Advanced Specialty Program in Cardiopulmonary Service.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="beat-rule" aria-hidden="true">
+
+<!-- ================= QUIZ ================= -->
+<section class="section quiz-section" id="quiz">
+  <div class="section-inner">
+    <span class="eyebrow">09 · Test yourself</span>
+    <h2 class="section-title">Clinical Knowledge Quiz</h2>
+    <p class="section-lead">Five ward-and-gym cases, straight from the guideline. Pick an option to see the rationale immediately — every case is answerable from the sections above.</p>
+
+    <div class="quiz-toolbar">
+      <div class="quiz-progress-text">Answered <span id="answeredCount">0</span> / 5 · Correct <span id="correctCount">0</span></div>
+      <button class="btn-ghost" id="resetQuiz" type="button">↺ Reset quiz</button>
+    </div>
+
+    <div class="quiz-list" id="quizContainer"></div>
+
+    <div class="quiz-results" id="quizResults" hidden>
+      <span class="result-score" id="resultScore">0/5</span>
+      <h3 id="resultTitle">Nice work</h3>
+      <p id="resultText">Review the flagged cases above, then revisit the matching section of the field guide.</p>
+    </div>
+  </div>
+</section>
+
+<div class="score-widget" id="scoreWidget" aria-live="polite">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path class="beat" d="M12 20.5 C6 15.8 2 12 2 8.3 2 5.4 4.3 3 7.2 3 9 3 10.6 3.9 12 5.4 13.4 3.9 15 3 16.8 3 19.7 3 22 5.4 22 8.3 22 12 18 15.8 12 20.5Z" fill="#2AAEBB"/></svg>
+  <div><span class="score-label">Quiz score</span><span class="score-value"><span id="scoreVal">0</span>/5</span></div>
+</div>
+
+<footer class="site-footer">
+  <div class="section-inner">
+    <div>
+      <div class="foot-brand">Cardiac Rehabilitation — Phase I &amp; II Field Guide</div>
+      <p>Built as a condensed education aid for junior physiotherapists. It summarises, and does not replace, the full guideline — always confirm dosing, precautions and edge cases against the current controlled document before independent practice.</p>
+    </div>
+    <p class="mono">HAHO-COC-GL-PHY-007-v03 · v3.0 · Effective 1/2/2024 · Review 1/2/2027<br>Source: HA Task Group on Cardiac Service / Specialty Group on Cardiopulmonary Service, COC-Grade(PT)</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Scroll progress bar ---------- */
+  var fill = document.getElementById('progressFill');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    fill.style.width = pct + '%';
+  }
+  document.addEventListener('scroll', updateProgress, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  /* ---------- Active nav highlighting ---------- */
+  var navPills = Array.prototype.slice.call(document.querySelectorAll('.nav-pill'));
+  var sections = navPills.map(function(p){
+    var id = p.getAttribute('href').slice(1);
+    return document.getElementById(id);
+  }).filter(Boolean);
+
+  if ('IntersectionObserver' in window){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var pill = document.querySelector('.nav-pill[href="#' + entry.target.id + '"]');
+        if (!pill) return;
+        if (entry.isIntersecting){
+          navPills.forEach(function(p){ p.classList.remove('is-active'); });
+          pill.classList.add('is-active');
+        }
+      });
+    }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+
+  /* ---------- Quiz data ---------- */
+  var quizData = [
+    {
+      tag: 'Case 1 · Phase I — Medical Patient Monitoring',
+      vignetteLabel: 'Patient chart',
+      vignette: 'Mr. Chan, day 3 post inferior STEMI (uncomplicated), is on Step 3 of the ward programme — walking 100 ft at a slow pace. Resting HR this morning: <span class="mono">74 bpm</span>. Two minutes into the walk: HR <span class="mono">96 bpm</span>, RPE <span class="mono">15/20</span>, and he reports new central chest tightness that wasn\'t there before.',
+      question: 'What is the most appropriate immediate action?',
+      citation: '§5.3 General Exercise Guidelines · §5.5.5 Adverse Responses in Phase I',
+      options: [
+        {label:'A', text:'Slow his pace, let him finish the 100 ft, then re-check HR at the end.', correct:false,
+          rationale:'RPE 15 is already above the ≤13 ceiling, and new chest tightness is an explicit stop sign on its own. Finishing the distance at any pace risks letting ischaemia progress rather than addressing it.'},
+        {label:'B', text:'Stop the exercise immediately, help him rest, and alert the medical team.', correct:true,
+          rationale:'His HR (96) has crept past HR_rest+20 (94), his RPE (15) exceeds the ≤13 ceiling, and new chest discomfort is one of the explicit "ask the patient to stop" symptoms — and matches the Phase I discontinuation criterion of exercise intolerance including angina. Stop, rest him, and escalate to the doctor.'},
+        {label:'C', text:'Switch him to isometric arm exercises to reduce cardiac workload.', correct:false,
+          rationale:'Isometric exercise is specifically flagged to avoid in Phase I — it drives an exaggerated pressor response and is not an appropriate substitute when a patient is already symptomatic.'},
+        {label:'D', text:'Document the finding and continue monitoring at the next scheduled session.', correct:false,
+          rationale:'Adverse signs during exercise call for immediate cessation and physician notification — not deferred documentation. Waiting risks missing an evolving ischaemic event.'}
+      ]
+    },
+    {
+      tag: 'Case 2 · Risk Stratification',
+      vignetteLabel: 'Patient chart',
+      vignette: 'Ms. Wong, 3 weeks post-anterior MI with primary PCI, is being risk-stratified before starting Phase II. Her recent symptom-limited exercise test showed no angina or arrhythmia, an appropriate HR/BP response, and a functional capacity of <span class="mono">8 METs</span>. Resting echo: <span class="mono">LVEF 33%</span>. Coronary care notes mention a resolved episode of decompensated heart failure during her admission.',
+      question: 'How should Ms. Wong be classified, and what does that mean for supervision?',
+      citation: '§4.1.3 High Risk · Appendix 1',
+      options: [
+        {label:'A', text:'Low risk — her normal exercise test findings qualify her for minimal supervision.', correct:false,
+          rationale:'Risk stratification weighs non-exercise-testing findings just as heavily. An LVEF under 40% and a history of CHF each independently place a patient in the high-risk tier, regardless of how the exercise test itself looked.'},
+        {label:'B', text:'Moderate risk — her functional capacity is below the moderate-risk cutoff.', correct:false,
+          rationale:'Her functional capacity (8 METs) is actually above the moderate-risk trigger of <5 METs — that criterion doesn\'t apply here, and this option overlooks the more serious LVEF and CHF findings entirely.'},
+        {label:'C', text:'High risk — LVEF &lt;40% and a CHF history each meet high-risk criteria; she needs directly supervised sessions starting with continuous ECG monitoring.', correct:true,
+          rationale:'Either a resting ejection fraction under 40% or a history of congestive heart failure is sufficient alone to classify a patient as high risk. Appendix 1 then calls for direct staff supervision for a minimum of 18–36 sessions or 90 days, beginning with continuous ECG monitoring and tapering as tolerated.'},
+        {label:'D', text:'Risk category can\'t be determined until a repeat echocardiogram is performed.', correct:false,
+          rationale:'Stratification uses the data already on the chart — a recent LVEF and documented clinical history are valid inputs. A repeat echo isn\'t a prerequisite for classifying today\'s risk.'}
+      ]
+    },
+    {
+      tag: 'Case 3 · Phase II Exercise Testing',
+      vignetteLabel: 'Patient chart',
+      vignette: 'Mr. Lee is booked for a submaximal exercise test as part of his Phase II baseline assessment. On arrival, resting BP is <span class="mono">208/118 mmHg</span>, and he mentions — for the first time — intermittent chest discomfort at rest over the past 24 hours.',
+      question: 'What should the physiotherapist do?',
+      citation: '§6.1.1.2.1 Contraindications to Exercise Testing',
+      options: [
+        {label:'A', text:'Proceed with the test, and stop early if his BP rises further.', correct:false,
+          rationale:'This treats a pre-test contraindication as something to manage mid-test. With these resting findings, the test should not be started at all — the decision point is before the test, not during it.'},
+        {label:'B', text:'Reduce the treadmill or cycle workload and proceed cautiously.', correct:false,
+          rationale:'Lowering intensity doesn\'t resolve the underlying red flags. The question here is whether to test today, not how hard to make the protocol.'},
+        {label:'C', text:'Defer the test, inform the medical team, and reassess once the chest discomfort and BP are medically addressed.', correct:true,
+          rationale:'Resting hypertension with SBP &gt;200 or DBP &gt;110 mmHg is a relative contraindication, and new unreported resting chest discomfort raises concern for unstable angina — an absolute contraindication. Both findings warrant medical review before any test proceeds.'},
+        {label:'D', text:'Let him rest 5 minutes, re-check BP once, and proceed if it drops below 200/110.', correct:false,
+          rationale:'Even if a repeat BP normalises, the unreported episodes of resting chest discomfort still need medical evaluation first — new or worsening symptoms suggesting unstable angina aren\'t cleared by a single repeat blood pressure reading.'}
+      ]
+    },
+    {
+      tag: 'Case 4 · Phase II Resistance Training',
+      vignetteLabel: 'Patient chart',
+      vignette: 'Mr. Ho is <span class="mono">4 weeks</span> post-CABG via median sternotomy. His wound is well-healed with no visible instability, and he\'s progressing well with aerobic walking. He asks to start the cable machines and free weights for his upper body "to speed up his recovery."',
+      question: 'What is the most appropriate guidance?',
+      citation: '§6.4.2 Resistance Training After Sternotomy',
+      options: [
+        {label:'A', text:'Encourage light-to-moderate resistance training now, since his wound looks stable.', correct:false,
+          rationale:'A good-looking wound is not the same as a stable sternum. Sternal instability has been reported in up to 16% of cases even when healing looks uncomplicated — appearance alone isn\'t reassurance enough at 4 weeks.'},
+        {label:'B', text:'At 4 weeks, keep upper-limb loading minimal — no lifting over ~5 lb, avoid bench press, pectoral flys and lat pulldowns; lower-limb strengthening can continue as planned.', correct:true,
+          rationale:'For roughly the first 6 weeks after sternotomy, upper-limb load should be minimised — no lifting over about 5 lb, elbows kept by the side and pain-free, and specific chest-loading exercises (bench press, pec fly, lat pulldown) avoided. Lower-limb strengthening is unaffected and can proceed.'},
+        {label:'C', text:'He should avoid all upper-limb movement entirely until 12 weeks post-surgery.', correct:false,
+          rationale:'Total immobilisation isn\'t supported — pain-free active ROM is encouraged early, with graded light loading (5–10 lb, &lt;50% MVC) allowed from roughly 6–12 weeks before progressive resistance begins after 12 weeks. It\'s graded restriction, not a blanket ban.'},
+        {label:'D', text:'It\'s fine as long as he stays below an RPE of 14.', correct:false,
+          rationale:'RPE is a useful general intensity guide, but it doesn\'t override the sternotomy-specific load and exercise-selection restrictions — these are structural precautions that apply regardless of how easy the movement feels.'}
+      ]
+    },
+    {
+      tag: 'Case 5 · Phase II — Patient with Diabetes',
+      vignetteLabel: 'Patient chart',
+      vignette: 'Ms. Tsang, who has type 2 diabetes managed with insulin, arrives for her supervised aerobic session. Pre-exercise capillary blood glucose is <span class="mono">92 mg·dL⁻¹</span>. She feels well and is keen to start.',
+      question: 'What should the physiotherapist do before starting the session?',
+      citation: '§6.5.1 Exercise Training in Patients with Diabetes',
+      options: [
+        {label:'A', text:'Proceed as planned — 92 mg·dL⁻¹ is within a normal range.', correct:false,
+          rationale:'For insulin-treated patients, the pre-exercise precaution threshold is set higher than a routine "normal" reading — values ≤100 mg·dL⁻¹ call for action before exercising, not just very low values.'},
+        {label:'B', text:'Delay exercise, give up to 15g of carbohydrate, and re-check glucose in 15 minutes before deciding.', correct:true,
+          rationale:'For patients on insulin or insulin secretagogues, a pre-exercise glucose ≤100 mg·dL⁻¹ should prompt delaying exercise and giving up to 15g of carbohydrate, then re-testing after 15 minutes. The session can proceed once the reading is back above 100 mg·dL⁻¹.'},
+        {label:'C', text:'Cancel the session and refer her back to her endocrinologist.', correct:false,
+          rationale:'This over-escalates a manageable reading. A brief carbohydrate-and-retest protocol is the guideline-directed first step — not cancellation or an outside referral.'},
+        {label:'D', text:'Have her take a small correction dose of insulin before starting.', correct:false,
+          rationale:'This is close to the opposite of the correct action — insulin would push glucose lower still, raising hypoglycaemia risk during exercise. A correction dose is only discussed for high readings (≥350 mg·dL⁻¹), not low-normal ones.'}
+      ]
+    }
+  ];
+
+  var container = document.getElementById('quizContainer');
+  var answeredCountEl = document.getElementById('answeredCount');
+  var correctCountEl = document.getElementById('correctCount');
+  var scoreValEl = document.getElementById('scoreVal');
+  var scoreWidget = document.getElementById('scoreWidget');
+  var resultsBox = document.getElementById('quizResults');
+  var resultScoreEl = document.getElementById('resultScore');
+  var resultTitleEl = document.getElementById('resultTitle');
+  var resultTextEl = document.getElementById('resultText');
+
+  var answered = 0;
+  var correct = 0;
+
+  function letterOnly(str){ return str; }
+
+  function buildCard(q, idx){
+    var card = document.createElement('article');
+    card.className = 'case-card';
+    card.setAttribute('data-qindex', idx);
+
+    var head = document.createElement('div');
+    head.className = 'case-head';
+    var tagEl = document.createElement('span');
+    tagEl.className = 'case-tag';
+    tagEl.textContent = q.tag;
+    var statusEl = document.createElement('span');
+    statusEl.className = 'case-status';
+    statusEl.textContent = 'Unanswered';
+    head.appendChild(tagEl);
+    head.appendChild(statusEl);
+    card.appendChild(head);
+
+    var vign = document.createElement('div');
+    vign.className = 'case-vignette';
+    var vlabel = document.createElement('p');
+    vlabel.className = 'vignette-label';
+    vlabel.textContent = q.vignetteLabel;
+    var vtext = document.createElement('p');
+    vtext.innerHTML = q.vignette;
+    vign.appendChild(vlabel);
+    vign.appendChild(vtext);
+    card.appendChild(vign);
+
+    var qEl = document.createElement('p');
+    qEl.className = 'case-question';
+    qEl.textContent = q.question;
+    card.appendChild(qEl);
+
+    var optionsWrap = document.createElement('div');
+    optionsWrap.className = 'case-options';
+
+    var rationaleBox = document.createElement('div');
+    rationaleBox.className = 'rationale';
+    rationaleBox.hidden = true;
+
+    q.options.forEach(function(opt){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'option-btn';
+      var letterSpan = document.createElement('span');
+      letterSpan.className = 'option-letter';
+      letterSpan.textContent = opt.label;
+      var textSpan = document.createElement('span');
+      textSpan.innerHTML = opt.text;
+      btn.appendChild(letterSpan);
+      btn.appendChild(textSpan);
+
+      btn.addEventListener('click', function(){
+        if (card.classList.contains('answered')) return;
+        card.classList.add('answered');
+
+        var allBtns = optionsWrap.querySelectorAll('.option-btn');
+        allBtns.forEach(function(b){ b.disabled = true; });
+
+        btn.classList.add(opt.correct ? 'is-correct' : 'is-incorrect');
+        if (!opt.correct){
+          q.options.forEach(function(other, oi){
+            if (other.correct){
+              allBtns[oi].classList.add('is-correct');
+            }
+          });
+        }
+
+        var verdict = document.createElement('p');
+        verdict.className = 'rationale-verdict ' + (opt.correct ? 'ok' : 'no');
+        verdict.textContent = opt.correct ? 'Correct.' : 'Not quite — here\'s the reasoning:';
+        var body = document.createElement('p');
+        body.innerHTML = opt.rationale;
+        var cite = document.createElement('p');
+        cite.className = 'citation';
+        cite.textContent = q.citation;
+
+        rationaleBox.innerHTML = '';
+        rationaleBox.appendChild(verdict);
+        rationaleBox.appendChild(body);
+        rationaleBox.appendChild(cite);
+        rationaleBox.hidden = false;
+
+        statusEl.textContent = opt.correct ? 'Correct' : 'Incorrect';
+        statusEl.classList.add(opt.correct ? 'ok' : 'no');
+
+        answered++;
+        if (opt.correct) correct++;
+        refreshScore();
+      });
+
+      optionsWrap.appendChild(btn);
+    });
+
+    card.appendChild(optionsWrap);
+    card.appendChild(rationaleBox);
+    return card;
+  }
+
+  function renderQuiz(){
+    container.innerHTML = '';
+    quizData.forEach(function(q, idx){
+      container.appendChild(buildCard(q, idx));
+    });
+  }
+
+  function refreshScore(){
+    answeredCountEl.textContent = answered;
+    correctCountEl.textContent = correct;
+    scoreValEl.textContent = correct;
+
+    if (answered >= quizData.length){
+      var pct = correct / quizData.length;
+      resultScoreEl.textContent = correct + '/' + quizData.length;
+      if (pct === 1){
+        resultTitleEl.textContent = 'Full marks';
+        resultTextEl.textContent = 'Strong grasp of risk stratification, monitoring limits and the special-population precautions. You\'re ready to apply this independently under normal supervision arrangements.';
+      } else if (pct >= 0.6){
+        resultTitleEl.textContent = 'Solid foundation';
+        resultTextEl.textContent = 'Good overall reasoning — revisit the rationale on any missed case and the matching section above before your next clinic.';
+      } else {
+        resultTitleEl.textContent = 'Worth a re-read';
+        resultTextEl.textContent = 'Work back through the flagged rationale above, then re-read the Risk Stratification and Phase I/II sections before applying this independently.';
+      }
+      resultsBox.hidden = false;
+    }
+  }
+
+  function resetQuiz(){
+    answered = 0;
+    correct = 0;
+    resultsBox.hidden = true;
+    refreshScore();
+    renderQuiz();
+  }
+
+  document.getElementById('resetQuiz').addEventListener('click', resetQuiz);
+
+  renderQuiz();
+
+  /* ---------- Floating score widget visibility ---------- */
+  var quizSection = document.getElementById('quiz');
+  if ('IntersectionObserver' in window){
+    var scoreObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          scoreWidget.classList.add('is-visible');
+        } else {
+          scoreWidget.classList.remove('is-visible');
+        }
+      });
+    }, {threshold:0.05});
+    scoreObserver.observe(quizSection);
+  }
+})();
+</script>
+
+</body>
+</html>

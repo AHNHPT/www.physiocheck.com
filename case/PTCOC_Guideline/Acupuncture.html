@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acupuncture in Physiotherapy — Clinical Practice Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ============ TOKENS ============ */
+:root{
+  --ink:#17223B;
+  --ink-2:#223256;
+  --paper:#F1ECDF;
+  --paper-2:#E7DFC8;
+  --paper-3:#FBF9F2;
+  --gold:#B8863B;
+  --gold-light:#D9B673;
+  --teal:#1F7A6D;
+  --teal-light:#2F9C8C;
+  --brick:#A6493A;
+  --brick-light:#C56958;
+  --text:#1E2433;
+  --text-soft:#5B6472;
+  --border:rgba(23,34,59,0.14);
+  --radius:14px;
+  --shadow:0 14px 34px -16px rgba(23,34,59,0.35);
+  --font-display:'Fraunces', serif;
+  --font-body:'Inter', sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{display:block; max-width:100%;}
+a{color:inherit;}
+button{font-family:inherit;}
+
+.wrap{
+  max-width:1080px;
+  margin:0 auto;
+  padding:0 24px;
+}
+
+@media (max-width:640px){
+  .wrap{padding:0 18px;}
+}
+
+:focus-visible{
+  outline:3px solid var(--teal);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* ============ PROGRESS BAR ============ */
+#progressBar{
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:linear-gradient(90deg,var(--brick),var(--gold),var(--teal));
+  z-index:1000;
+  transition:width .1s linear;
+}
+
+/* ============ TOP NAV ============ */
+.topnav{
+  position:sticky; top:0; z-index:900;
+  background:rgba(241,236,223,0.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+}
+.topnav-inner{
+  max-width:1080px; margin:0 auto; padding:0 24px;
+  display:flex; align-items:center; gap:6px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.topnav-inner::-webkit-scrollbar{display:none;}
+.topnav-brand{
+  font-family:var(--font-mono);
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:.04em;
+  color:var(--ink);
+  padding:14px 12px 14px 0;
+  white-space:nowrap;
+  border-right:1px solid var(--border);
+  margin-right:6px;
+}
+.topnav a{
+  flex:0 0 auto;
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.03em;
+  color:var(--text-soft);
+  text-decoration:none;
+  padding:14px 10px;
+  white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:color .15s ease, border-color .15s ease;
+}
+.topnav a:hover{color:var(--ink);}
+.topnav a.active{color:var(--ink); border-bottom-color:var(--gold);}
+.topnav a.quiz-link{
+  color:var(--teal); font-weight:600;
+}
+.topnav a.quiz-link.active{border-bottom-color:var(--teal);}
+
+/* ============ HERO ============ */
+.hero{
+  background:radial-gradient(120% 140% at 15% 0%, var(--ink-2) 0%, var(--ink) 60%);
+  color:var(--paper-3);
+  padding:72px 0 56px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap:40px;
+  align-items:center;
+}
+@media (max-width:860px){
+  .hero-grid{grid-template-columns:1fr; gap:28px;}
+  .hero-art{order:-1;}
+}
+.hero-eyebrow{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--gold-light);
+  margin:0 0 18px;
+}
+.hero h1{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(2.2rem, 5.2vw, 3.6rem);
+  line-height:1.05;
+  margin:0 0 18px;
+  letter-spacing:-0.01em;
+}
+.hero h1 em{
+  font-style:italic;
+  font-weight:500;
+  color:var(--teal-light);
+}
+.hero p.lede{
+  font-size:1.05rem;
+  color:#CFD6E4;
+  max-width:46ch;
+  margin:0 0 28px;
+}
+.hero-meta{
+  display:flex; flex-wrap:wrap; gap:14px 22px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:#9FAAC4;
+  margin-bottom:30px;
+  border-top:1px solid rgba(255,255,255,0.14);
+  padding-top:16px;
+}
+.hero-meta strong{color:#E7DFC8; font-weight:600;}
+.hero-ctas{display:flex; flex-wrap:wrap; gap:12px;}
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:12px 20px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:600;
+  text-decoration:none;
+  border:1px solid transparent;
+  cursor:pointer;
+  transition:transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--teal); color:#fff;}
+.btn-primary:hover{background:var(--teal-light);}
+.btn-ghost{background:transparent; color:var(--paper-3); border-color:rgba(255,255,255,0.35);}
+.btn-ghost:hover{border-color:var(--gold-light); color:var(--gold-light);}
+
+.hero-art svg{width:100%; height:auto;}
+.meridian-path{
+  fill:none; stroke:var(--gold-light); stroke-width:2.5; stroke-linecap:round;
+  stroke-dasharray:900; stroke-dashoffset:900;
+  animation:draw 2.4s ease forwards;
+}
+.nerve-path{
+  fill:none; stroke:var(--teal-light); stroke-width:2.5; stroke-linecap:round;
+  stroke-dasharray:600; stroke-dashoffset:600;
+  animation:draw 2.4s ease .4s forwards;
+}
+.nerve-dot{fill:var(--teal-light); opacity:0; animation:fadeIn .6s ease 1.8s forwards;}
+@keyframes draw{to{stroke-dashoffset:0;}}
+@keyframes fadeIn{to{opacity:1;}}
+
+/* ============ SECTION SHELL ============ */
+.section{padding:72px 0;}
+.section + .section{border-top:1px solid var(--border);}
+@media (max-width:640px){.section{padding:52px 0;}}
+
+.section-head{max-width:680px; margin-bottom:40px;}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:flex; align-items:center; gap:10px;
+  margin:0 0 14px;
+}
+.eyebrow::before{
+  content:"";
+  width:26px; height:2px;
+  background:var(--gold);
+  display:inline-block;
+}
+.section-head h2{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(1.6rem, 3.4vw, 2.3rem);
+  margin:0 0 12px;
+  color:var(--ink);
+  letter-spacing:-0.01em;
+}
+.section-head p{
+  color:var(--text-soft);
+  font-size:1.02rem;
+  margin:0;
+}
+
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+.reveal.in-view{opacity:1; transform:translateY(0);}
+
+/* ============ INTRO / TIMELINE ============ */
+.timeline{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-top:8px;
+}
+@media (max-width:760px){.timeline{grid-template-columns:repeat(2,1fr);}}
+.timeline-item{
+  background:var(--paper-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px 16px;
+}
+.timeline-item .yr{
+  font-family:var(--font-mono);
+  font-weight:600;
+  font-size:13px;
+  color:var(--teal);
+  display:block;
+  margin-bottom:6px;
+}
+.timeline-item p{margin:0; font-size:13.5px; color:var(--text-soft);}
+
+.definition-card{
+  margin-top:28px;
+  background:var(--ink);
+  color:var(--paper-3);
+  border-radius:var(--radius);
+  padding:26px 28px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:20px;
+  align-items:start;
+}
+@media (max-width:600px){.definition-card{grid-template-columns:1fr;}}
+.definition-card .glyph{
+  font-family:var(--font-display);
+  font-style:italic;
+  font-size:2.6rem;
+  color:var(--gold-light);
+  line-height:1;
+}
+.definition-card p{margin:0; color:#D7DCE8; font-size:15px;}
+.definition-card .term{font-family:var(--font-mono); color:var(--gold-light); font-size:13px; letter-spacing:.05em;}
+
+/* ============ THEORY SPLIT ============ */
+.split{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  border-radius:var(--radius);
+  overflow:hidden;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+@media (max-width:760px){.split{grid-template-columns:1fr;}}
+.split-col{padding:28px 26px;}
+.split-col.tca{background:#FBF6EA; border-right:1px solid var(--border);}
+.split-col.ma{background:#F1FAF7;}
+@media (max-width:760px){.split-col.tca{border-right:none; border-bottom:1px solid var(--border);}}
+.split-tag{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:4px 10px;
+  border-radius:999px;
+  display:inline-block;
+  margin-bottom:14px;
+}
+.tca .split-tag{background:var(--gold); color:#fff;}
+.ma .split-tag{background:var(--teal); color:#fff;}
+.split-col h3{
+  font-family:var(--font-display);
+  font-size:1.3rem;
+  margin:0 0 16px;
+}
+.split-row{padding:12px 0; border-top:1px dashed var(--border);}
+.split-col .split-row:first-of-type{border-top:none;}
+.split-row .label{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-soft);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:4px;
+  display:block;
+}
+.split-row p{margin:0; font-size:14px;}
+
+.mech-note{
+  margin-top:24px;
+  display:flex; gap:14px; align-items:flex-start;
+  background:var(--paper-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px 20px;
+}
+.mech-note svg{flex:0 0 auto; width:34px; height:34px; color:var(--teal); margin-top:2px;}
+.mech-note p{margin:0; font-size:14px; color:var(--text-soft);}
+.mech-note strong{color:var(--ink);}
+
+/* ============ EVIDENCE SIGNATURE ============ */
+.evidence-scale{
+  height:10px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--brick) 0%, var(--brick-light) 18%, var(--gold-light) 42%, var(--gold) 58%, var(--teal-light) 82%, var(--teal) 100%);
+  margin:8px 0 26px;
+}
+.evidence-zones{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+@media (max-width:760px){.evidence-zones{grid-template-columns:1fr;}}
+.evidence-zone{border-top:4px solid var(--zone-color, var(--gold)); padding-top:14px;}
+.evidence-zone.negative{--zone-color:var(--brick);}
+.evidence-zone.inconclusive{--zone-color:var(--gold);}
+.evidence-zone.positive{--zone-color:var(--teal);}
+.zone-label{
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--zone-color, var(--text));
+  font-weight:600;
+  margin-bottom:12px;
+  display:block;
+}
+.chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:500;
+  padding:8px 14px;
+  border-radius:999px;
+  background:var(--paper-3);
+  border:1.5px solid var(--zone-color, var(--border));
+  color:var(--ink);
+  cursor:pointer;
+  transition:background .15s ease, color .15s ease;
+}
+.chip:hover{background:var(--zone-color, var(--paper-2)); color:#fff;}
+.chip.is-active{background:var(--zone-color, var(--paper-2)); color:#fff;}
+
+.evidence-detail{
+  margin-top:26px;
+  padding:20px 22px;
+  border-radius:var(--radius);
+  background:var(--paper-3);
+  border-left:5px solid var(--detail-color, var(--gold));
+  font-size:14.5px;
+  color:var(--text);
+  transition:border-color .2s ease;
+}
+.evidence-detail .cond{
+  font-family:var(--font-mono);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--detail-color, var(--gold));
+  display:block;
+  margin-bottom:6px;
+  font-weight:600;
+}
+.evidence-detail p{margin:0; color:var(--text-soft);}
+
+details.accordion{
+  margin-top:28px;
+  background:var(--paper-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px 20px;
+}
+details.accordion summary{
+  cursor:pointer;
+  font-weight:600;
+  font-size:14.5px;
+  color:var(--ink);
+  list-style:none;
+  display:flex; align-items:center; justify-content:space-between;
+}
+details.accordion summary::-webkit-details-marker{display:none;}
+details.accordion summary::after{
+  content:"+";
+  font-family:var(--font-mono);
+  font-size:18px;
+  color:var(--teal);
+}
+details.accordion[open] summary::after{content:"−";}
+details.accordion ul{margin:14px 0 2px; padding-left:20px; color:var(--text-soft); font-size:13.5px;}
+details.accordion li{margin-bottom:6px;}
+.caveat{
+  margin-top:18px;
+  font-family:var(--font-display);
+  font-style:italic;
+  font-size:1.05rem;
+  color:var(--ink);
+  border-left:3px solid var(--gold);
+  padding-left:16px;
+}
+
+.stat-row{
+  margin-top:36px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:24px;
+  align-items:center;
+  background:var(--ink);
+  border-radius:var(--radius);
+  padding:26px 28px;
+  color:var(--paper-3);
+}
+@media (max-width:600px){.stat-row{grid-template-columns:1fr;}}
+.stat-row .num{
+  font-family:var(--font-mono);
+  font-size:clamp(1.8rem,4vw,2.6rem);
+  font-weight:600;
+  color:var(--teal-light);
+  white-space:nowrap;
+}
+.stat-row p{margin:0; color:#CFD6E4; font-size:14.5px;}
+.stat-row p strong{color:#fff;}
+
+/* ============ PRACTICE SCOPE ============ */
+.legal-card{
+  background:#FBF6EA;
+  border:1px solid var(--border);
+  border-left:5px solid var(--gold);
+  border-radius:var(--radius);
+  padding:22px 24px;
+  margin-bottom:32px;
+}
+.legal-card .tag{
+  font-family:var(--font-mono);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--gold);
+  font-weight:600;
+}
+.legal-card p{margin:8px 0 0; font-size:14.5px; color:var(--text);}
+.legal-card code{
+  background:rgba(184,134,59,0.15);
+  padding:1px 6px;
+  border-radius:4px;
+  font-family:var(--font-mono);
+  font-size:13px;
+}
+
+.level-track{
+  display:flex;
+  gap:8px;
+  margin-top:6px;
+}
+@media (max-width:600px){.level-track{flex-wrap:wrap;}}
+.level-seg{
+  flex:1;
+  min-width:60px;
+  text-align:center;
+  padding:16px 8px;
+  border-radius:10px;
+  background:var(--paper-3);
+  border:1.5px solid var(--border);
+  cursor:pointer;
+  transition:background .15s ease, color .15s ease, border-color .15s ease;
+  position:relative;
+}
+.level-seg .lv{
+  font-family:var(--font-mono);
+  font-weight:600;
+  font-size:13px;
+  display:block;
+}
+.level-seg.active{background:var(--teal); border-color:var(--teal); color:#fff;}
+.level-seg .flag{
+  position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+  font-family:var(--font-mono);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  background:var(--ink);
+  color:var(--gold-light);
+  padding:4px 8px;
+  border-radius:6px;
+  white-space:nowrap;
+  opacity:0;
+  transition:opacity .2s ease;
+}
+.level-seg[data-level="4"] .flag{opacity:1;}
+.level-track-labels{
+  display:flex; justify-content:space-between;
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-soft);
+  margin-top:10px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.level-desc{
+  margin-top:22px;
+  padding:18px 20px;
+  background:var(--paper-3);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  font-size:14.5px;
+  color:var(--text-soft);
+  min-height:24px;
+}
+.level-desc strong{color:var(--ink);}
+
+/* ============ QA PILLARS ============ */
+.qa-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:18px;
+}
+.qa-card{
+  background:var(--paper-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px 20px;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.qa-card:hover{transform:translateY(-3px); box-shadow:var(--shadow);}
+.qa-card svg{width:30px; height:30px; color:var(--teal); margin-bottom:14px;}
+.qa-card h3{
+  font-family:var(--font-display);
+  font-size:1.05rem;
+  margin:0 0 8px;
+  color:var(--ink);
+}
+.qa-card p{margin:0; font-size:13.5px; color:var(--text-soft);}
+
+/* ============ APPENDIX GRID ============ */
+.appendix-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+@media (max-width:700px){.appendix-grid{grid-template-columns:1fr;}}
+.appendix-card{
+  background:var(--paper-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px 22px;
+}
+.appendix-card .cat{
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--teal);
+  font-weight:600;
+  display:block;
+  margin-bottom:10px;
+}
+.appendix-card ul{margin:0; padding-left:18px; font-size:14px; color:var(--text);}
+.appendix-card li{margin-bottom:5px;}
+.research-note{
+  margin-top:20px;
+  font-size:13.5px;
+  color:var(--text-soft);
+  display:flex; align-items:center; gap:10px;
+}
+.research-note svg{width:20px; height:20px; color:var(--gold); flex:0 0 auto;}
+
+/* ============ QUIZ ============ */
+.quiz-section{background:var(--ink); color:var(--paper-3);}
+.quiz-section .eyebrow{color:var(--gold-light);}
+.quiz-section .eyebrow::before{background:var(--gold-light);}
+.quiz-section .section-head h2{color:#fff;}
+.quiz-section .section-head p{color:#CFD6E4;}
+
+.quiz-progress{
+  display:flex; gap:8px; margin-bottom:28px;
+}
+.quiz-dot{
+  width:34px; height:6px; border-radius:999px;
+  background:rgba(255,255,255,0.18);
+  transition:background .2s ease;
+}
+.quiz-dot.done{background:var(--teal-light);}
+.quiz-dot.current{background:var(--gold-light);}
+
+.quiz-card{
+  background:var(--paper-3);
+  color:var(--text);
+  border-radius:var(--radius);
+  padding:30px 30px 26px;
+  box-shadow:0 20px 50px -18px rgba(0,0,0,0.5);
+}
+@media (max-width:600px){.quiz-card{padding:22px 20px;}}
+.case-label{
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--teal);
+  font-weight:600;
+  margin-bottom:12px;
+  display:block;
+}
+.vignette{
+  font-family:var(--font-display);
+  font-style:italic;
+  font-size:1.08rem;
+  line-height:1.55;
+  color:var(--ink);
+  margin:0 0 18px;
+  padding-bottom:18px;
+  border-bottom:1px dashed var(--border);
+}
+.quiz-question{
+  font-weight:700;
+  font-size:1.02rem;
+  margin:0 0 20px;
+  color:var(--ink);
+}
+.options{display:flex; flex-direction:column; gap:10px;}
+.option-wrap{display:flex; flex-direction:column;}
+.option{
+  text-align:left;
+  padding:14px 16px;
+  border-radius:10px;
+  border:1.5px solid var(--border);
+  background:#fff;
+  font-size:14.5px;
+  color:var(--text);
+  cursor:pointer;
+  display:flex; gap:12px; align-items:flex-start;
+  transition:border-color .15s ease, background .15s ease;
+}
+.option:hover:not(:disabled){border-color:var(--teal);}
+.option:disabled{cursor:default;}
+.option .bullet{
+  flex:0 0 auto;
+  width:22px; height:22px;
+  border-radius:50%;
+  border:1.5px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-soft);
+  margin-top:1px;
+}
+.option.selected.is-correct{border-color:var(--teal); background:#EEFAF7;}
+.option.selected.is-correct .bullet{background:var(--teal); border-color:var(--teal); color:#fff;}
+.option.selected.is-incorrect{border-color:var(--brick); background:#FCEFEC;}
+.option.selected.is-incorrect .bullet{background:var(--brick); border-color:var(--brick); color:#fff;}
+.option.reveal-correct:not(.selected){border-color:var(--teal);}
+.option.reveal-correct:not(.selected) .bullet{border-color:var(--teal); color:var(--teal);}
+
+.rationale{
+  display:none;
+  margin:8px 2px 2px;
+  padding:12px 14px;
+  border-radius:8px;
+  font-size:13.5px;
+  line-height:1.5;
+}
+.rationale.show{display:block;}
+.rationale.r-correct{background:#EEFAF7; color:#0F5449; border-left:3px solid var(--teal);}
+.rationale.r-incorrect{background:#FCEFEC; color:#7A2E22; border-left:3px solid var(--brick);}
+
+.quiz-nav{
+  margin-top:24px;
+  display:flex; justify-content:flex-end;
+}
+.next-btn{
+  display:none;
+  padding:12px 22px;
+  border-radius:999px;
+  border:none;
+  background:var(--ink);
+  color:#fff;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+}
+.next-btn.show{display:inline-flex; align-items:center; gap:8px;}
+.next-btn:hover{background:var(--ink-2);}
+
+/* summary */
+.summary{display:none;}
+.summary.show{display:block;}
+.summary .score-num{
+  font-family:var(--font-display);
+  font-size:clamp(2.4rem,6vw,3.4rem);
+  font-weight:600;
+  color:var(--ink);
+  margin:0;
+}
+.summary .score-label{
+  font-family:var(--font-mono);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--text-soft);
+}
+.summary-msg{
+  margin:14px 0 22px;
+  font-size:15px;
+  color:var(--text);
+  padding:16px 18px;
+  background:var(--paper-2);
+  border-radius:10px;
+  border-left:4px solid var(--gold);
+}
+.summary-list{list-style:none; margin:0 0 24px; padding:0; display:flex; flex-direction:column; gap:8px;}
+.summary-list li{
+  display:flex; align-items:center; gap:10px;
+  font-size:13.5px;
+  padding:10px 12px;
+  border-radius:8px;
+  background:#fff;
+  border:1px solid var(--border);
+}
+.summary-list .ic{
+  width:20px; height:20px; border-radius:50%;
+  flex:0 0 auto;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; color:#fff; font-weight:700;
+}
+.summary-list .ic.ok{background:var(--teal);}
+.summary-list .ic.no{background:var(--brick);}
+.restart-btn{
+  padding:12px 22px;
+  border-radius:999px;
+  border:1.5px solid var(--ink);
+  background:transparent;
+  color:var(--ink);
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+}
+.restart-btn:hover{background:var(--ink); color:#fff;}
+
+/* ============ FOOTER ============ */
+footer{
+  background:var(--paper-2);
+  padding:44px 0 60px;
+  border-top:1px solid var(--border);
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--text-soft);
+}
+@media (max-width:700px){.footer-grid{grid-template-columns:1fr 1fr;}}
+.footer-grid .k{display:block; text-transform:uppercase; letter-spacing:.05em; color:var(--ink); font-weight:600; margin-bottom:4px;}
+.footer-disclaimer{
+  margin-top:28px;
+  padding-top:20px;
+  border-top:1px dashed var(--border);
+  font-size:12.5px;
+  color:var(--text-soft);
+  max-width:70ch;
+}
+
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<nav class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <span class="topnav-brand">MANUAL · ACUPUNCTURE&nbsp;IN&nbsp;PT</span>
+    <a href="#sec1" data-nav>01 Origins</a>
+    <a href="#sec2" data-nav>02 Theory</a>
+    <a href="#sec3" data-nav>03 Evidence</a>
+    <a href="#sec4" data-nav>04 Scope</a>
+    <a href="#sec5" data-nav>05 Governance</a>
+    <a href="#sec6" data-nav>06 In Practice</a>
+    <a href="#sec7" data-nav class="quiz-link">Knowledge Check →</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="hero-eyebrow">Hospital Authority · Clinical Practice Guide</p>
+      <h1>Acupuncture in <em>Physiotherapy</em></h1>
+      <p class="lede">A working field guide to Modern Acupuncture within Hospital Authority physiotherapy — where it sits legally, what the evidence actually supports, and how to practise it safely and accountably.</p>
+      <div class="hero-meta">
+        <span>Issue date <strong>29/10/2024</strong></span>
+        <span>Review date <strong>29/10/2027</strong></span>
+        <span>Author <strong>Specialty Group on Acupuncture &amp; Integrative Medicine</strong></span>
+      </div>
+      <div class="hero-ctas">
+        <a href="#sec1" class="btn btn-primary">Start reading ↓</a>
+        <a href="#sec7" class="btn btn-ghost">Jump to the quiz</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
+        <path class="meridian-path" d="M40,330 C120,180 180,360 260,220 S420,120 520,90"/>
+        <path class="meridian-path" d="M60,120 C140,200 160,60 240,110 S360,200 460,150" style="animation-delay:.2s"/>
+        <path class="nerve-path" d="M90,240 L210,240 M210,240 L270,180 M210,240 L270,300 M270,180 L340,140 M270,300 L340,360 M340,140 L410,110 M340,360 L410,390"/>
+        <circle class="nerve-dot" cx="410" cy="110" r="5"/>
+        <circle class="nerve-dot" cx="410" cy="390" r="5" style="animation-delay:2s"/>
+        <circle class="nerve-dot" cx="90" cy="240" r="5" style="animation-delay:1.6s"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= SECTION 1 : ORIGINS ================= -->
+  <section class="section" id="sec1">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">01 — Origins</p>
+        <h2>Two thousand years, two frameworks</h2>
+        <p>Acupuncture's history runs long before physiotherapy adopted it — and that history is exactly why two distinct theoretical schools exist side by side today.</p>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <span class="yr">≈200 BC</span>
+          <p>First described in China's <em>Huang Di Nei Jing</em> (Yellow Emperor's Classic of Internal Medicine).</p>
+        </div>
+        <div class="timeline-item">
+          <span class="yr">1450–2000 yrs</span>
+          <p>Independently practised across Japan, Korea and Vietnam for well over a millennium each.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="yr">Late 1600s</span>
+          <p>The word "acupuncture" is coined in Europe, from Latin <em>acus</em> (needle) + <em>punctura</em> (to puncture).</p>
+        </div>
+        <div class="timeline-item">
+          <span class="yr">Today</span>
+          <p>Practised in Hospital Authority physiotherapy as an adjunctive modality for pain and neurological conditions.</p>
+        </div>
+      </div>
+
+      <div class="definition-card reveal">
+        <span class="glyph">針灸</span>
+        <div>
+          <span class="term">Working definition</span>
+          <p style="margin-top:8px;">Acupuncture is rooted in the Daoist principles of Yin–Yang balance and the Five Elements — but as physiotherapists use it, the term simply refers to the use of needles to treat or prevent symptoms and conditions, applied on the basis of an orthodox clinical diagnosis rather than a meridian-based one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2 : THEORY ================= -->
+  <section class="section" id="sec2">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">02 — Two roots, one practice</p>
+        <h2>Traditional Chinese Acupuncture vs. Modern Acupuncture</h2>
+        <p>Physiotherapists in Hong Kong practise <strong>Modern Acupuncture (Western Medical Acupuncture)</strong> — a distinct discipline from Traditional Chinese Acupuncture, though both use the same needles.</p>
+      </div>
+
+      <div class="split reveal">
+        <div class="split-col tca">
+          <span class="split-tag">Traditional Chinese Acupuncture</span>
+          <h3>Qi, meridians, balance</h3>
+          <div class="split-row">
+            <span class="label">Theoretical basis</span>
+            <p>Part of TCM; a holistic approach centred on the unity of the body and its environment.</p>
+          </div>
+          <div class="split-row">
+            <span class="label">Patient assessment</span>
+            <p>The four inspections — looking (望), listening/smelling (聞), questioning (問), palpation (切).</p>
+          </div>
+          <div class="split-row">
+            <span class="label">Point selection</span>
+            <p>Based on meridian theory.</p>
+          </div>
+          <div class="split-row">
+            <span class="label">Intended effect</span>
+            <p>Restoring free flow of Qi and the balance of Yin and Yang.</p>
+          </div>
+        </div>
+        <div class="split-col ma">
+          <span class="split-tag">Modern Acupuncture</span>
+          <h3>Diagnosis, neurophysiology, evidence</h3>
+          <div class="split-row">
+            <span class="label">Theoretical basis</span>
+            <p>Scientific application of acupuncture following orthodox clinical diagnosis; grounded in neuroanatomy and physiology.</p>
+          </div>
+          <div class="split-row">
+            <span class="label">Patient assessment</span>
+            <p>Clinical history, physical examination, and supplementary findings (imaging, labs) reaching a clinical diagnosis.</p>
+          </div>
+          <div class="split-row">
+            <span class="label">Point selection</span>
+            <p>Trigger points, tender points, segmental points and traditional points, chosen from empirical study results.</p>
+          </div>
+          <div class="split-row">
+            <span class="label">Intended effect</span>
+            <p>Sensory stimulation triggering neurophysiological and neuropharmacological responses; endorphin release is the leading hypothesised mechanism.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mech-note reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4"/></svg>
+        <p><strong>How it works, in modern terms:</strong> needling stimulates A-delta afferents to produce analgesia at the segmental (spinal) level, and stimulates the mid-brain to release enkephalin and endorphin at a higher level — activating a descending pain-inhibition system.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3 : EVIDENCE (SIGNATURE) ================= -->
+  <section class="section" id="sec3">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">03 — Reading the evidence</p>
+        <h2>Let the evidence set the ceiling, not the floor</h2>
+        <p>This guideline's clinical rule of thumb: don't offer acupuncture where the evidence is conclusively negative; use it adjunctively where evidence is inconclusive and clinically indicated; and where evidence is conclusively positive, it may even become the primary intervention — always weighed against the individual's indications and contraindications.</p>
+      </div>
+
+      <div class="reveal">
+        <div class="evidence-scale" aria-hidden="true"></div>
+        <div class="evidence-zones">
+          <div class="evidence-zone negative">
+            <span class="zone-label">Conclusively negative</span>
+            <div class="chip-row">
+              <button class="chip" data-zone="negative" data-condition="Smoking cessation">Smoking cessation</button>
+              <button class="chip" data-zone="negative" data-condition="Weight loss">Weight loss</button>
+            </div>
+          </div>
+          <div class="evidence-zone inconclusive">
+            <span class="zone-label">Inconclusive</span>
+            <div class="chip-row">
+              <button class="chip" data-zone="inconclusive" data-condition="Experimental pain">Experimental pain</button>
+              <button class="chip" data-zone="inconclusive" data-condition="Neck pain">Neck pain</button>
+              <button class="chip" data-zone="inconclusive" data-condition="Headache / migraine">Headache / migraine</button>
+              <button class="chip" data-zone="inconclusive" data-condition="Osteoarthritis">Osteoarthritis</button>
+              <button class="chip" data-zone="inconclusive" data-condition="Inflammatory rheumatic diseases">Inflammatory rheumatic diseases</button>
+              <button class="chip" data-zone="inconclusive" data-condition="Stroke">Stroke</button>
+              <button class="chip" data-zone="inconclusive" data-condition="Addictions">Addictions</button>
+              <button class="chip" data-zone="inconclusive" data-condition="Asthma">Asthma</button>
+            </div>
+          </div>
+          <div class="evidence-zone positive">
+            <span class="zone-label">Conclusively positive</span>
+            <div class="chip-row">
+              <button class="chip" data-zone="positive" data-condition="Dental pain">Dental pain</button>
+              <button class="chip" data-zone="positive" data-condition="Low back pain">Low back pain</button>
+              <button class="chip" data-zone="positive" data-condition="Nausea / vomiting">Nausea / vomiting</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="evidence-detail" id="evidenceDetail">
+          <span class="cond" id="evidenceCond">Tap a condition above</span>
+          <p id="evidenceText">Each condition sits in an evidence tier drawn from Ernst's (1999) categorisation of the acupuncture literature. Tap one to see how this guideline frames the clinical decision.</p>
+        </div>
+      </div>
+
+      <details class="accordion reveal">
+        <summary>Why is the acupuncture evidence base so messy?</summary>
+        <ul>
+          <li>Incomplete literature searches</li>
+          <li>Poorly described or inadequate inclusion criteria</li>
+          <li>No consistent definition of "acupuncture" across studies</li>
+          <li>Inconsistent quality assessment of included studies</li>
+          <li>No assessment of whether the acupuncture "dose" given was adequate</li>
+          <li>Low sample sizes</li>
+          <li>Inappropriate evaluation of results</li>
+        </ul>
+        <p class="caveat" style="margin-top:16px;">"The absence of evidence is not equal to the evidence of absence." — Ernst, 1999</p>
+      </details>
+
+      <div class="stat-row reveal">
+        <span class="num">1:10,000–1:100,000</span>
+        <p>Reported incidence of <strong>serious</strong> acupuncture adverse events across surveys. Acupuncture is regarded as a relatively safe treatment overall, and most serious effects reported in the literature are preventable with straightforward precautions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4 : SCOPE ================= -->
+  <section class="section" id="sec4">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">04 — Where physiotherapy practice sits</p>
+        <h2>Distinct from TCM, by law and by framework</h2>
+        <p>Physiotherapists don't practise acupuncture as a lesser version of TCM — it's a separately defined scope of practice, both legally in Hong Kong and conceptually.</p>
+      </div>
+
+      <div class="legal-card reveal">
+        <span class="tag">Legal basis</span>
+        <p>Under <code>Chinese Medicine Ordinance CAP 549, s.108(2)(3)</code>, physiotherapists in Hong Kong practise acupuncture with distinguishable differences from TCM-based practice. Within this framework, physiotherapists practise <strong>Modern Acupuncture</strong>, not Traditional Chinese Medicine.</p>
+      </div>
+
+      <div class="reveal">
+        <p style="font-size:14.5px; color:var(--text-soft); margin-bottom:14px;">Birch &amp; Felt (1999) frame acupuncture practice along a five-level spectrum, from full adherence to traditional concepts through to full adherence to biomedical concepts. Tap a level to read it — physiotherapy practice consistently sits at <strong>Level 4</strong>.</p>
+        <div class="level-track" id="levelTrack">
+          <div class="level-seg" data-level="1"><span class="lv">L1</span></div>
+          <div class="level-seg" data-level="2"><span class="lv">L2</span></div>
+          <div class="level-seg" data-level="3"><span class="lv">L3</span></div>
+          <div class="level-seg active" data-level="4"><span class="flag">PT practice</span><span class="lv">L4</span></div>
+          <div class="level-seg" data-level="5"><span class="lv">L5</span></div>
+        </div>
+        <div class="level-track-labels">
+          <span>← Traditional</span>
+          <span>Biomedical →</span>
+        </div>
+        <div class="level-desc" id="levelDesc">
+          <strong>Level 4 —</strong> Adherence to and belief in biomedical concepts, with traditional TCM concepts subsumed only where they fit that biomedical model. This is the level at which physiotherapists practise, giving their acupuncture a de facto difference from Traditional Chinese Acupuncture.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5 : GOVERNANCE ================= -->
+  <section class="section" id="sec5">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">05 — Five pillars of safe practice</p>
+        <h2>How HA keeps acupuncture accountable</h2>
+        <p>A quality assurance system, established by the Coordinating Committee in Physiotherapy, underpins every physiotherapist's acupuncture practice in HA.</p>
+      </div>
+
+      <div class="qa-grid reveal">
+        <div class="qa-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          <h3>Accreditation</h3>
+          <p>All HA physiotherapists practising acupuncture must complete accreditation set out by the Hong Kong Physiotherapy Association (HKPA), benchmarked against the International Acupuncture Association of Physical Therapists (IAAPT).</p>
+        </div>
+        <div class="qa-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5M9 13h6M9 17h6M9 9h3"/></svg>
+          <h3>Operation guidelines</h3>
+          <p>HA's <em>Operation Guidelines for Physiotherapists Practising Acupuncture</em> plus HKPA's 2003 <em>Practice Guidelines on Acupuncture</em> set the standards of practice and safety precautions.</p>
+        </div>
+        <div class="qa-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>
+          <h3>Condition protocols</h3>
+          <p>Intervention protocols for specific conditions — such as osteoarthritis and stroke — are being developed by the Working Group on Acupuncture to guide condition-specific practice.</p>
+        </div>
+        <div class="qa-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L2.6 18a1.7 1.7 0 001.5 2.6h15.8a1.7 1.7 0 001.5-2.6L13.7 3.9a1.7 1.7 0 00-3.4 0z"/></svg>
+          <h3>Incident reporting</h3>
+          <p>A dedicated incident reporting system records and evaluates every incident and adverse event arising from acupuncture practice.</p>
+        </div>
+        <div class="qa-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
+          <h3>Continuing education</h3>
+          <p>Physiotherapists are required to keep attending continuing education programmes on contemporary developments in Modern Acupuncture.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6 : IN PRACTICE ================= -->
+  <section class="section" id="sec6">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">06 — Where it shows up in HA practice</p>
+        <h2>Common practice patterns</h2>
+        <p>Acupuncture is used as an adjunct physiotherapeutic across neurology, orthopaedics, cardiopulmonary care and other pain presentations.</p>
+      </div>
+
+      <div class="appendix-grid reveal">
+        <div class="appendix-card">
+          <span class="cat">Neurology</span>
+          <ul>
+            <li>Stroke</li>
+            <li>Peripheral &amp; cranial nerve lesions</li>
+          </ul>
+        </div>
+        <div class="appendix-card">
+          <span class="cat">Orthopaedics</span>
+          <ul>
+            <li>Heel pain</li>
+            <li>Osteoarthritis, with or without surgical intervention</li>
+            <li>Chronic low back pain</li>
+            <li>Frozen shoulder</li>
+            <li>Tennis elbow</li>
+            <li>De Quervain disease</li>
+          </ul>
+        </div>
+        <div class="appendix-card">
+          <span class="cat">Cardiopulmonary</span>
+          <ul>
+            <li>Allergic rhinitis</li>
+            <li>Post-cardiothoracic surgery</li>
+          </ul>
+        </div>
+        <div class="appendix-card">
+          <span class="cat">Other</span>
+          <ul>
+            <li>Other painful conditions, assessed case-by-case</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="research-note reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3v4M15 3v4M4 9h16M5 21h14a1 1 0 001-1V6a1 1 0 00-1-1H5a1 1 0 00-1 1v14a1 1 0 001 1z"/></svg>
+        <span>These practice patterns sit alongside an active strand of clinical research studies within HA.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 7 : QUIZ ================= -->
+  <section class="section quiz-section" id="sec7">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Knowledge check</p>
+        <h2>Five cases. Test your clinical reasoning.</h2>
+        <p>Each case mirrors the kind of decision you'll actually face on the floor. Pick an answer to see the rationale immediately.</p>
+      </div>
+
+      <div class="quiz-progress" id="quizProgress"></div>
+
+      <div class="quiz-card" id="quizCard"></div>
+
+      <div class="quiz-card summary" id="quizSummary" style="margin-top:0;">
+        <span class="score-label">Your result</span>
+        <p class="score-num"><span id="scoreNum">0</span>/5</p>
+        <div class="summary-msg" id="summaryMsg"></div>
+        <ul class="summary-list" id="summaryList"></ul>
+        <button class="restart-btn" id="restartBtn">Retake the quiz</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div><span class="k">Author</span>Specialty Group on Acupuncture and Integrative Medicine</div>
+      <div><span class="k">Custodian</span>HO Allied Health Grade Department</div>
+      <div><span class="k">Approved / Endorsed by</span>COC-Grade in Physiotherapy</div>
+      <div><span class="k">Issue / Review</span>29/10/2024 → 29/10/2027</div>
+    </div>
+    <p class="footer-disclaimer">This page summarises the internal Hospital Authority Manual on Acupuncture in Physiotherapy for junior physiotherapist education. It is provided for internal reference only, is not an HA-endorsed document in its own right, and does not replace the source manual, HA Operation Guidelines, or HKPA Practice Guidelines. Always confirm current protocols with your department before applying acupuncture clinically.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+
+  /* ---------- progress bar ---------- */
+  const progressBar = document.getElementById('progressBar');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const height = h.scrollHeight - h.clientHeight;
+    progressBar.style.width = (height > 0 ? (scrolled/height)*100 : 0) + '%';
+  }
+  document.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  /* ---------- reveal on scroll ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); }
+      });
+    }, {threshold:0.12});
+    revealEls.forEach(el=>io.observe(el));
+  } else {
+    revealEls.forEach(el=>el.classList.add('in-view'));
+  }
+
+  /* ---------- nav active state ---------- */
+  const navLinks = document.querySelectorAll('.topnav a[data-nav]');
+  const sections = Array.from(document.querySelectorAll('main .section'));
+  function setActiveNav(){
+    let activeId = sections[0] && sections[0].id;
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(sec=>{
+      if(sec.offsetTop <= scrollPos) activeId = sec.id;
+    });
+    navLinks.forEach(a=>{
+      a.classList.toggle('active', a.getAttribute('href') === '#'+activeId);
+    });
+  }
+  document.addEventListener('scroll', setActiveNav, {passive:true});
+  setActiveNav();
+
+  /* ---------- evidence spectrum ---------- */
+  const evidenceStance = {
+    positive: 'Conclusively positive evidence. This guideline holds that acupuncture may even be considered the primary intervention for this condition, once the indications and contraindications of the individual patient have been weighed.',
+    inconclusive: 'Inconclusive evidence. Acupuncture may be used as one of the adjunctive interventions for this condition, when clinically indicated — but it should not replace first-line care.',
+    negative: 'Conclusively negative evidence. This guideline holds that acupuncture should not be given as either a primary or an adjunctive intervention for this condition.'
+  };
+  const zoneColor = {positive:'var(--teal)', inconclusive:'var(--gold)', negative:'var(--brick)'};
+
+  const chips = document.querySelectorAll('.chip');
+  const evidenceDetail = document.getElementById('evidenceDetail');
+  const evidenceCond = document.getElementById('evidenceCond');
+  const evidenceText = document.getElementById('evidenceText');
+
+  chips.forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      chips.forEach(c=>c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      const zone = chip.dataset.zone;
+      evidenceDetail.style.setProperty('--detail-color', zoneColor[zone]);
+      evidenceCond.textContent = chip.dataset.condition;
+      evidenceCond.style.color = zoneColor[zone];
+      evidenceText.textContent = evidenceStance[zone];
+    });
+  });
+
+  /* ---------- level spectrum ---------- */
+  const levelDescriptions = {
+    1: 'Level 1 — Adherence to and belief in traditional (East Asian) concepts only, with complete rejection of the biomedical model.',
+    2: 'Level 2 — Adherence to and belief in both traditional and biomedical concepts, with only limited use of biomedical concepts.',
+    3: 'Level 3 — An interweaving and mixing of traditional and biomedical concepts.',
+    4: 'Level 4 — Adherence to and belief in biomedical concepts, with traditional concepts subsumed only where they fit that biomedical model. This is where physiotherapy practice sits — giving it a de facto difference from Traditional Chinese Acupuncture.',
+    5: 'Level 5 — Adherence to and belief in only biomedical concepts, with complete rejection of traditional models.'
+  };
+  const levelSegs = document.querySelectorAll('.level-seg');
+  const levelDesc = document.getElementById('levelDesc');
+  levelSegs.forEach(seg=>{
+    seg.addEventListener('click', ()=>{
+      levelSegs.forEach(s=>s.classList.remove('active'));
+      seg.classList.add('active');
+      const lv = seg.dataset.level;
+      levelDesc.innerHTML = levelDescriptions[lv];
+    });
+  });
+
+  /* ---------- quiz ---------- */
+  const quizData = [
+    {
+      case: 'Case 1 of 5',
+      vignette: 'A 58-year-old office worker presents with chronic non-specific low back pain of 8 months\u2019 duration, unresponsive to first-line exercise therapy alone. Imaging is unremarkable, with no red flags or contraindications to needling.',
+      question: 'Based on this guideline\u2019s evidence categorisation, how might acupuncture be positioned in this patient\u2019s plan of care?',
+      options: [
+        {text:'As the primary intervention, since low back pain sits in the conclusively positive evidence category', correct:true, rationale:'Correct. Low back pain is one of the few conditions with conclusively positive evidence (Ernst, 1999). For conditions with convincing evidence, this guideline states acupuncture may even be considered the primary intervention, once individual indications and contraindications have been weighed \u2014 which is the case here.'},
+        {text:'Only as an adjunct, because acupuncture should never replace exercise-based physiotherapy', correct:false, rationale:'Not quite. The guideline doesn\u2019t set a blanket rule that acupuncture must always stay adjunctive. For conditions with conclusively positive evidence \u2014 like low back pain \u2014 it may be escalated to a primary intervention when appropriate for the individual patient.'},
+        {text:'It should be withheld, since systematic reviews in acupuncture are often methodologically flawed', correct:false, rationale:'Not quite. That critique applies to the overall evidence base and doesn\u2019t override a condition-specific classification. Low back pain is graded as conclusively positive, so general concerns about review quality don\u2019t change the guideline\u2019s stance for this condition.'},
+        {text:'It should only proceed once a Traditional Chinese Medicine diagnosis confirms a Qi blockage', correct:false, rationale:'Not quite. Physiotherapists practise Modern Acupuncture, grounded in orthodox clinical diagnosis, not meridian-based TCM diagnosis. A TCM diagnostic step isn\u2019t part of the physiotherapy scope of practice.'}
+      ]
+    },
+    {
+      case: 'Case 2 of 5',
+      vignette: 'A 34-year-old teacher presents with chronic mechanical neck pain. Having read about acupuncture online, she asks her physiotherapist whether it can be added to her treatment plan.',
+      question: 'Which evidence category does neck pain fall into, and what does that mean for how acupuncture should be used?',
+      options: [
+        {text:'Inconclusive evidence \u2014 it may be used as one of the adjunctive interventions when clinically indicated', correct:true, rationale:'Correct. Neck pain sits in the inconclusive evidence category. Per this guideline, acupuncture may be used as one of the adjunctive interventions for such conditions, when clinically indicated \u2014 but not promoted to a primary intervention.'},
+        {text:'Conclusively positive evidence \u2014 it may be considered the primary intervention', correct:false, rationale:'Not quite. That level of evidence applies to dental pain, low back pain, and nausea/vomiting \u2014 not neck pain, which this guideline places in the inconclusive category.'},
+        {text:'Conclusively negative evidence \u2014 it should not be offered at all', correct:false, rationale:'Not quite. The conclusively negative category is reserved for smoking cessation and weight loss. Neck pain sits in the inconclusive tier, where adjunctive use is still appropriate when indicated.'},
+        {text:'Evidence category is irrelevant \u2014 the decision should rest on patient preference alone', correct:false, rationale:'Not quite. This guideline explicitly grades interventions by evidence tier to guide clinical decision-making \u2014 patient preference is one input, but it doesn\u2019t stand alone in place of the evidence classification.'}
+      ]
+    },
+    {
+      case: 'Case 3 of 5',
+      vignette: 'A patient in a structured weight-management programme asks the physiotherapist to add acupuncture for appetite suppression, believing it will speed up fat loss.',
+      question: 'How should the physiotherapist respond, per this guideline\u2019s evidence-based stance?',
+      options: [
+        {text:'Explain that weight loss has conclusively negative evidence, so acupuncture should not be offered as either a primary or adjunctive intervention for this indication', correct:true, rationale:'Correct. Weight loss is one of only two conditions with conclusively negative evidence in this guideline. The stated position is that acupuncture should not be given as primary or adjunctive intervention where evidence conclusively shows it is ineffective.'},
+        {text:'Offer it as an adjunct anyway, since the patient specifically requested it', correct:false, rationale:'Not quite. Patient preference doesn\u2019t override a conclusively negative evidence classification \u2014 this guideline is explicit that such conditions should not receive acupuncture as either a primary or adjunctive intervention.'},
+        {text:'Offer it as the primary intervention, since acupuncture is generally a safe treatment', correct:false, rationale:'Not quite. Safety and efficacy are separate questions. Acupuncture\u2019s good safety profile doesn\u2019t offset conclusively negative evidence of effectiveness for this specific indication.'},
+        {text:'Refer the patient to a Traditional Chinese Medicine practitioner instead, since only TCM addresses weight-related Qi imbalance', correct:false, rationale:'Not quite. This conflates the physiotherapist\u2019s Modern Acupuncture scope with TCM. The evidence classification itself is what argues against offering acupuncture for this indication \u2014 not which practitioner delivers it.'}
+      ]
+    },
+    {
+      case: 'Case 4 of 5',
+      vignette: 'A newly qualified physiotherapist has just completed an external 2-day acupuncture workshop and wants to begin using needling techniques with patients in an HA outpatient clinic next week.',
+      question: 'What does this guideline\u2019s quality assurance framework require before this therapist may practise acupuncture in HA?',
+      options: [
+        {text:'Completion of the accreditation procedures set out by the Hong Kong Physiotherapy Association, benchmarked against the International Acupuncture Association of Physical Therapists', correct:true, rationale:'Correct. All HA physiotherapists practising acupuncture are required to go through HKPA\u2019s accreditation procedures, which are benchmarked against the IAAPT standard \u2014 a 2-day external workshop alone does not satisfy this.'},
+        {text:'Nothing further \u2014 a 2-day external workshop already satisfies HA requirements', correct:false, rationale:'Not quite. HA requires formal accreditation through HKPA, benchmarked against IAAPT standards, plus ongoing continuing education \u2014 an external workshop alone is not a substitute for this accreditation pathway.'},
+        {text:'Only verbal sign-off from a senior colleague, with no formal accreditation needed', correct:false, rationale:'Not quite. The guideline describes a formal accreditation system, not an informal peer sign-off, as the gatekeeping step before a physiotherapist practises acupuncture in HA.'},
+        {text:'Registration with the Chinese Medicine Council as a Traditional Chinese Medicine practitioner', correct:false, rationale:'Not quite. Physiotherapists practise acupuncture under a distinct legal basis (Chinese Medicine Ordinance CAP 549, s.108(2)(3)), separate from TCM Council registration.'}
+      ]
+    },
+    {
+      case: 'Case 5 of 5',
+      vignette: 'During a needling session for frozen shoulder, a patient reports sudden sharp chest discomfort and mild breathlessness after a needle is inserted near the upper trapezius. Symptoms settle after the needle is removed and the patient is monitored, with no lasting harm.',
+      question: 'According to this guideline\u2019s quality assurance system, what should happen next?',
+      options: [
+        {text:'The event should be logged through HA\u2019s incident reporting system, which exists specifically to record and evaluate incidents and adverse events in acupuncture practice', correct:true, rationale:'Correct. The quality assurance system includes a dedicated incident reporting system, set up precisely to record and evaluate incidents and adverse events like this one \u2014 regardless of how quickly the patient recovered.'},
+        {text:'No action is needed, since serious adverse events are rare and this one resolved without lasting harm', correct:false, rationale:'Not quite. Rarity is exactly why each event matters \u2014 the incident reporting system exists to track these low-frequency events, and a good outcome doesn\u2019t remove the obligation to report.'},
+        {text:'The therapist should quietly avoid that point in future, without any formal record', correct:false, rationale:'Not quite. Informal self-correction isn\u2019t a substitute for entering the event into the formal incident reporting system, which allows the wider service to learn from it.'},
+        {text:'The case should be escalated straight to external legal counsel before any internal documentation', correct:false, rationale:'Not quite. This guideline\u2019s pathway for adverse events is internal incident reporting and evaluation \u2014 not immediate escalation to external counsel.'}
+      ]
+    }
+  ];
+
+  let qIndex = 0;
+  let score = 0;
+  const userAnswers = [];
+
+  const quizCard = document.getElementById('quizCard');
+  const quizProgress = document.getElementById('quizProgress');
+  const quizSummary = document.getElementById('quizSummary');
+
+  function renderProgress(){
+    quizProgress.innerHTML = '';
+    quizData.forEach((_, i)=>{
+      const dot = document.createElement('div');
+      dot.className = 'quiz-dot';
+      if(i < qIndex) dot.classList.add('done');
+      if(i === qIndex) dot.classList.add('current');
+      quizProgress.appendChild(dot);
+    });
+  }
+
+  function renderQuestion(){
+    if(qIndex >= quizData.length){
+      renderSummary();
+      return;
+    }
+    quizSummary.classList.remove('show');
+    quizCard.style.display = '';
+    renderProgress();
+
+    const q = quizData[qIndex];
+    quizCard.innerHTML = '';
+
+    const caseLabel = document.createElement('span');
+    caseLabel.className = 'case-label';
+    caseLabel.textContent = q.case;
+    quizCard.appendChild(caseLabel);
+
+    const vignette = document.createElement('p');
+    vignette.className = 'vignette';
+    vignette.textContent = q.vignette;
+    quizCard.appendChild(vignette);
+
+    const question = document.createElement('p');
+    question.className = 'quiz-question';
+    question.textContent = q.question;
+    quizCard.appendChild(question);
+
+    const optionsWrap = document.createElement('div');
+    optionsWrap.className = 'options';
+
+    const letters = ['A','B','C','D'];
+
+    q.options.forEach((opt, i)=>{
+      const wrap = document.createElement('div');
+      wrap.className = 'option-wrap';
+
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.innerHTML = '<span class="bullet">'+letters[i]+'</span><span>'+opt.text+'</span>';
+
+      const rationale = document.createElement('div');
+      rationale.className = 'rationale ' + (opt.correct ? 'r-correct' : 'r-incorrect');
+      rationale.textContent = opt.rationale;
+
+      btn.addEventListener('click', ()=>{
+        if(wrap.dataset.answered) return;
+        optionsWrap.dataset.answered = 'true';
+        Array.from(optionsWrap.children).forEach(w=>{ w.dataset.answered = 'true'; });
+
+        const allBtns = optionsWrap.querySelectorAll('.option');
+        allBtns.forEach(b=>b.disabled = true);
+
+        if(opt.correct){
+          btn.classList.add('selected','is-correct');
+          score++;
+        } else {
+          btn.classList.add('selected','is-incorrect');
+          // reveal the correct one too
+          const correctIdx = q.options.findIndex(o=>o.correct);
+          allBtns[correctIdx].classList.add('reveal-correct');
+        }
+        rationale.classList.add('show');
+
+        userAnswers[qIndex] = opt.correct;
+
+        const nextBtn = document.getElementById('nextBtnDynamic');
+        if(nextBtn) nextBtn.classList.add('show');
+      });
+
+      wrap.appendChild(btn);
+      wrap.appendChild(rationale);
+      optionsWrap.appendChild(wrap);
+    });
+
+    quizCard.appendChild(optionsWrap);
+
+    const navRow = document.createElement('div');
+    navRow.className = 'quiz-nav';
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'next-btn';
+    nextBtn.id = 'nextBtnDynamic';
+    nextBtn.textContent = (qIndex === quizData.length - 1) ? 'See your result →' : 'Next case →';
+    nextBtn.addEventListener('click', ()=>{
+      qIndex++;
+      renderQuestion();
+      quizCard.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+    navRow.appendChild(nextBtn);
+    quizCard.appendChild(navRow);
+  }
+
+  function renderSummary(){
+    quizCard.style.display = 'none';
+    quizProgress.innerHTML = '';
+    quizData.forEach(()=>{
+      const dot = document.createElement('div');
+      dot.className = 'quiz-dot done';
+      quizProgress.appendChild(dot);
+    });
+
+    document.getElementById('scoreNum').textContent = score;
+
+    let msg = '';
+    if(score === 5){
+      msg = 'Exemplary. You\u2019re applying the evidence tiers, the accreditation pathway, and the incident reporting system exactly as this guideline intends \u2014 ready to reason through acupuncture decisions independently.';
+    } else if(score >= 3){
+      msg = 'Solid grasp of the framework. Before your next case discussion, it\u2019s worth re-reading the evidence spectrum in Section 03 and the governance pillars in Section 05.';
+    } else {
+      msg = 'Worth a closer look. Revisit Sections 03\u201305 \u2014 the evidence tiers, the legal scope of practice, and the quality assurance system \u2014 before applying acupuncture clinically.';
+    }
+    document.getElementById('summaryMsg').textContent = msg;
+
+    const list = document.getElementById('summaryList');
+    list.innerHTML = '';
+    quizData.forEach((q,i)=>{
+      const li = document.createElement('li');
+      const ok = userAnswers[i];
+      li.innerHTML = '<span class="ic '+(ok?'ok':'no')+'">'+(ok?'\u2713':'\u2715')+'</span><span>'+q.case+' \u2014 '+q.question+'</span>';
+      list.appendChild(li);
+    });
+
+    quizSummary.classList.add('show');
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', ()=>{
+    qIndex = 0;
+    score = 0;
+    userAnswers.length = 0;
+    renderQuestion();
+    document.getElementById('sec7').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  renderQuestion();
+
+})();
+</script>
+
+</body>
+</html>

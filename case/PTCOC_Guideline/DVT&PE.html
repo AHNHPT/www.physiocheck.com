@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DVT &amp; PE — Physiotherapy Bedside Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+/* ============ TOKENS ============ */
+:root{
+  --navy-deep:#0A1420;
+  --navy:#0F1D2B;
+  --panel:#152738;
+  --panel-2:#1B3247;
+  --line:#28425A;
+  --line-soft:#1F3648;
+  --ink:#EAF0F5;
+  --ink-dim:#9FB4C7;
+  --ink-faint:#5F7A90;
+
+  --amber:#F2A93B;
+  --amber-ink:#3A2607;
+  --amber-dim:rgba(242,169,59,.14);
+  --amber-line:rgba(242,169,59,.45);
+
+  --maroon:#D95C7C;
+  --maroon-ink:#3A0714;
+  --maroon-dim:rgba(217,92,124,.14);
+  --maroon-line:rgba(217,92,124,.45);
+
+  --teal:#45C7B4;
+  --teal-ink:#04231E;
+  --teal-dim:rgba(69,199,180,.14);
+  --teal-line:rgba(69,199,180,.45);
+
+  --plum:#A98CE0;
+  --plum-ink:#1C1330;
+  --plum-dim:rgba(169,140,224,.14);
+  --plum-line:rgba(169,140,224,.45);
+
+  --font-display:'Archivo',ui-sans-serif,'Segoe UI',Arial,sans-serif;
+  --font-body:'Inter',ui-sans-serif,'Segoe UI',Helvetica,Arial,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+
+  --radius-s:8px;
+  --radius-m:14px;
+  --radius-l:22px;
+  --maxw:1180px;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse 1200px 700px at 12% -10%, rgba(69,199,180,.10), transparent 55%),
+    radial-gradient(ellipse 900px 600px at 100% 0%, rgba(217,92,124,.08), transparent 50%),
+    var(--navy-deep);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+a{color:inherit;}
+h1,h2,h3,h4{font-family:var(--font-display);margin:0;letter-spacing:-.01em;}
+p{margin:0;}
+ul{margin:0;padding:0;}
+button{font-family:inherit;}
+
+::selection{background:var(--teal);color:var(--teal-ink);}
+
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px;}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+@media (max-width:640px){.wrap{padding:0 16px;}}
+
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:var(--ink-faint);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.eyebrow::before{
+  content:"";
+  width:7px;height:7px;border-radius:50%;
+  background:currentColor;
+  display:inline-block;
+}
+
+.section{
+  padding:76px 0;
+  border-bottom:1px solid var(--line-soft);
+  scroll-margin-top:96px;
+}
+@media (max-width:768px){.section{padding:52px 0;}}
+
+.section-head{
+  max-width:720px;
+  margin-bottom:40px;
+}
+.section-head h2{
+  font-size:clamp(1.7rem,3.4vw,2.5rem);
+  font-weight:800;
+  margin-top:10px;
+  color:var(--ink);
+}
+.section-head .lede{
+  margin-top:14px;
+  color:var(--ink-dim);
+  font-size:1.02rem;
+  max-width:62ch;
+}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+.reveal.is-visible{opacity:1;transform:none;}
+
+/* ============ HEADER / NAV ============ */
+.site-header{
+  position:sticky; top:0; z-index:60;
+  background:rgba(10,20,32,.86);
+  backdrop-filter:blur(10px) saturate(140%);
+  border-bottom:1px solid var(--line-soft);
+}
+.header-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 0;
+  gap:16px;
+}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;}
+.brand-mark{
+  width:34px;height:34px;flex:none;position:relative;
+}
+.brand-mark svg{width:100%;height:100%;display:block;}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;min-width:0;}
+.brand-text .b1{font-family:var(--font-display);font-weight:800;font-size:1.02rem;white-space:nowrap;}
+.brand-text .b2{font-family:var(--font-mono);font-size:.66rem;color:var(--ink-faint);letter-spacing:.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.doc-chip{
+  font-family:var(--font-mono);
+  font-size:.68rem;
+  color:var(--ink-faint);
+  border:1px solid var(--line);
+  padding:5px 10px;
+  border-radius:100px;
+  white-space:nowrap;
+  flex:none;
+}
+@media (max-width:640px){.doc-chip{display:none;}}
+
+.tab-nav{
+  position:sticky; top:63px; z-index:59;
+  background:rgba(10,20,32,.94);
+  border-bottom:1px solid var(--line-soft);
+}
+.tab-scroll{
+  display:flex; gap:6px;
+  overflow-x:auto;
+  padding:10px 24px;
+  scrollbar-width:thin;
+  scrollbar-color:var(--line) transparent;
+}
+.tab-scroll::-webkit-scrollbar{height:5px;}
+.tab-scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
+@media (max-width:640px){.tab-scroll{padding:10px 16px;}}
+
+.tab-btn{
+  --acc:var(--ink-faint);
+  flex:none;
+  display:flex; align-items:center; gap:7px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-bottom:2px solid var(--acc);
+  color:var(--ink-dim);
+  font-size:.78rem;
+  font-weight:600;
+  padding:8px 14px 7px;
+  border-radius:10px 10px 4px 4px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:background .2s, color .2s, border-color .2s, transform .15s;
+}
+.tab-btn .dot{width:6px;height:6px;border-radius:50%;background:var(--acc);flex:none;}
+.tab-btn:hover{color:var(--ink);transform:translateY(-1px);}
+.tab-btn.active{
+  color:var(--ink);
+  background:var(--panel-2);
+  border-color:var(--acc);
+}
+
+/* ============ HERO ============ */
+.hero{padding:64px 0 56px;border-bottom:1px solid var(--line-soft);position:relative;}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:48px;
+  align-items:start;
+}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+
+.hero h1{
+  font-size:clamp(2.3rem,5.4vw,3.6rem);
+  font-weight:900;
+  line-height:1.02;
+  margin-top:14px;
+}
+.hero h1 .hl-maroon{color:var(--maroon);}
+.hero h1 .hl-teal{color:var(--teal);}
+.hero-sub{
+  margin-top:18px;
+  font-size:1.08rem;
+  color:var(--ink-dim);
+  max-width:56ch;
+}
+.hero-meta{
+  margin-top:26px;
+  display:flex; flex-wrap:wrap; gap:10px;
+}
+.meta-pill{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  color:var(--ink-faint);
+  border:1px solid var(--line);
+  padding:6px 11px;
+  border-radius:100px;
+}
+
+/* vitals monitor */
+.monitor{
+  background:linear-gradient(180deg,var(--panel),var(--navy));
+  border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:20px 20px 16px;
+  position:relative;
+  overflow:hidden;
+}
+.monitor::before{
+  content:"";
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(180deg, rgba(255,255,255,.025) 0 1px, transparent 1px 26px);
+  pointer-events:none;
+}
+.monitor-head{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:14px;
+}
+.monitor-head .lbl{font-family:var(--font-mono);font-size:.68rem;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;}
+.live-dot{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.66rem;color:var(--teal);}
+.live-dot span{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(69,199,180,.6);animation:pulse 1.8s infinite;}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(69,199,180,.55);}
+  70%{box-shadow:0 0 0 8px rgba(69,199,180,0);}
+  100%{box-shadow:0 0 0 0 rgba(69,199,180,0);}
+}
+
+.vitals{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--radius-m);overflow:hidden;position:relative;}
+.vital{background:var(--panel);padding:14px 14px;}
+.vital .num{font-family:var(--font-mono);font-weight:600;font-size:1.5rem;color:var(--ink);}
+.vital .num small{font-size:.9rem;color:var(--ink-faint);font-weight:400;}
+.vital .cap{margin-top:4px;font-size:.72rem;color:var(--ink-dim);line-height:1.3;}
+.vital.tone-maroon .num{color:var(--maroon);}
+.vital.tone-teal .num{color:var(--teal);}
+.vital.tone-amber .num{color:var(--amber);}
+
+.monitor-foot{margin-top:12px;font-size:.74rem;color:var(--ink-faint);position:relative;}
+
+/* ============ CHIP / TAG SYSTEM ============ */
+.chip{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:.76rem; font-weight:600;
+  padding:6px 11px;
+  border-radius:100px;
+  border:1px solid var(--line);
+  color:var(--ink-dim);
+  background:var(--panel);
+}
+.chip.amber{color:var(--amber);background:var(--amber-dim);border-color:var(--amber-line);}
+.chip.maroon{color:var(--maroon);background:var(--maroon-dim);border-color:var(--maroon-line);}
+.chip.teal{color:var(--teal);background:var(--teal-dim);border-color:var(--teal-line);}
+.chip.plum{color:var(--plum);background:var(--plum-dim);border-color:var(--plum-line);}
+
+/* ============ CARD GRID ============ */
+.grid{display:grid;gap:16px;}
+.grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.grid.cols-2{grid-template-columns:repeat(2,1fr);}
+.grid.cols-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:900px){.grid.cols-3,.grid.cols-4{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:600px){.grid.cols-3,.grid.cols-4,.grid.cols-2{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius-m);
+  padding:20px;
+}
+.card h4{font-size:1.02rem;font-weight:700;color:var(--ink);}
+.card p{color:var(--ink-dim);font-size:.92rem;margin-top:8px;}
+
+.riskcard{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-left:3px solid var(--amber);
+  border-radius:var(--radius-s);
+  padding:14px 16px;
+  display:flex; gap:12px; align-items:flex-start;
+}
+.riskcard .ico{flex:none;width:30px;height:30px;color:var(--amber);}
+.riskcard .txt b{display:block;font-size:.88rem;color:var(--ink);font-weight:700;}
+.riskcard .txt span{font-size:.8rem;color:var(--ink-dim);}
+
+/* ============ WELLS SCORE WIDGET ============ */
+.wells{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:24px;
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:28px;
+}
+@media (max-width:820px){.wells{grid-template-columns:1fr;}}
+.wells-title{font-family:var(--font-display);font-weight:800;font-size:1.15rem;}
+.wells-sub{color:var(--ink-dim);font-size:.85rem;margin-top:6px;}
+.wells-list{margin-top:16px;display:flex;flex-direction:column;gap:2px;}
+.wells-item{
+  display:flex; align-items:center; gap:12px;
+  padding:10px 8px;
+  border-bottom:1px dashed var(--line-soft);
+  cursor:pointer;
+}
+.wells-item:last-child{border-bottom:none;}
+.wells-item input{
+  width:18px;height:18px;accent-color:var(--teal);flex:none;cursor:pointer;
+}
+.wells-item label{font-size:.86rem;color:var(--ink-dim);cursor:pointer;flex:1;}
+.wells-item.negative label{color:var(--maroon);}
+.wells-item .pts{font-family:var(--font-mono);font-size:.76rem;color:var(--ink-faint);flex:none;}
+.wells-item input:checked ~ label{color:var(--ink);}
+
+.wells-result{
+  background:var(--navy);
+  border:1px solid var(--line);
+  border-radius:var(--radius-m);
+  padding:20px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center;
+  gap:8px;
+  position:sticky; top:150px;
+}
+.wells-score{font-family:var(--font-mono);font-size:3rem;font-weight:700;color:var(--ink);}
+.wells-score span{font-size:1.1rem;color:var(--ink-faint);}
+.wells-badge{
+  font-weight:800; font-size:.92rem; padding:8px 16px; border-radius:100px;
+  transition:background .25s,color .25s,border-color .25s;
+  border:1px solid var(--line);
+}
+.wells-badge.unlikely{background:var(--teal-dim);color:var(--teal);border-color:var(--teal-line);}
+.wells-badge.likely{background:var(--maroon-dim);color:var(--maroon);border-color:var(--maroon-line);}
+.wells-note{font-size:.74rem;color:var(--ink-faint);margin-top:4px;}
+
+/* ============ DIAGNOSTIC TRIO ============ */
+.dx-card{
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-m);
+  padding:18px; position:relative; overflow:hidden;
+}
+.dx-card .tag{font-family:var(--font-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);}
+.dx-card h4{margin-top:6px;}
+.dx-card p{margin-top:8px;}
+
+/* ============ NUMBERED STEPS (exam techniques) ============ */
+.steps{counter-reset:step;display:flex;flex-direction:column;gap:0;}
+.step{
+  display:grid; grid-template-columns:40px 1fr; gap:14px;
+  padding:16px 0;
+  border-bottom:1px solid var(--line-soft);
+}
+.step:last-child{border-bottom:none;}
+.step .num{
+  counter-increment:step;
+  font-family:var(--font-mono); font-weight:700; color:var(--amber);
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--amber-line); background:var(--amber-dim);
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;
+}
+.step .num::before{content:counter(step);}
+.step .body b{display:block;font-size:.94rem;color:var(--ink);}
+.step .body span{font-size:.86rem;color:var(--ink-dim);}
+
+.callout{
+  border-radius:var(--radius-m);
+  padding:16px 18px;
+  border:1px solid var(--amber-line);
+  background:var(--amber-dim);
+  display:flex; gap:12px; align-items:flex-start;
+  margin-top:18px;
+}
+.callout .ico{flex:none;color:var(--amber);width:22px;height:22px;margin-top:2px;}
+.callout b{color:var(--amber);font-size:.86rem;}
+.callout p{color:var(--ink-dim);font-size:.86rem;margin-top:4px;}
+.callout.maroon{border-color:var(--maroon-line);background:var(--maroon-dim);}
+.callout.maroon .ico,.callout.maroon b{color:var(--maroon);}
+.callout.teal{border-color:var(--teal-line);background:var(--teal-dim);}
+.callout.teal .ico,.callout.teal b{color:var(--teal);}
+
+/* limb compare visual */
+.limb-compare{display:flex;align-items:flex-end;gap:26px;justify-content:center;padding:18px 0 4px;}
+.limb-col{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.limb-bar{width:46px;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,var(--teal),var(--panel-2));}
+.limb-col.affected .limb-bar{background:linear-gradient(180deg,var(--maroon),var(--panel-2));}
+.limb-label{font-size:.76rem;color:var(--ink-dim);text-align:center;}
+.limb-cm{font-family:var(--font-mono);font-size:.82rem;color:var(--ink);}
+
+/* ============ INDICATION / CONTRAINDICATION LISTS ============ */
+.iclist{display:flex;flex-direction:column;gap:8px;}
+.iclist li{list-style:none;display:flex;gap:9px;align-items:flex-start;font-size:.87rem;color:var(--ink-dim);}
+.iclist li .mk{flex:none;width:18px;height:18px;margin-top:1px;}
+.iclist.ind li .mk{color:var(--teal);}
+.iclist.contra li .mk{color:var(--maroon);}
+
+.evidence-grade{
+  font-family:var(--font-mono); font-size:.68rem; font-weight:600;
+  padding:3px 9px; border-radius:6px;
+  border:1px solid var(--teal-line); color:var(--teal); background:var(--teal-dim);
+  display:inline-block;
+}
+
+/* ============ DECISION TOOL (signature) ============ */
+.tool{
+  background:radial-gradient(circle at 15% 0%, rgba(69,199,180,.10), transparent 60%), var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius-l);
+  padding:28px;
+}
+@media (max-width:640px){.tool{padding:20px;}}
+.tool-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.tool-top h3{font-size:1.25rem;}
+.segmented{
+  display:inline-flex; gap:4px; background:var(--navy); border:1px solid var(--line);
+  border-radius:100px; padding:4px;
+}
+.seg-btn{
+  border:none; background:transparent; color:var(--ink-dim);
+  font-family:var(--font-mono); font-size:.78rem; font-weight:600;
+  padding:8px 16px; border-radius:100px; cursor:pointer;
+  transition:background .2s, color .2s;
+}
+.seg-btn.active{background:var(--panel-2); color:var(--ink); box-shadow:inset 0 0 0 1px var(--line);}
+@media (max-width:560px){.segmented{flex-wrap:wrap;justify-content:center;}}
+
+.tool-body{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;}
+@media (max-width:820px){.tool-body{grid-template-columns:1fr;}}
+
+.tool-input-label{font-size:.82rem;color:var(--ink-dim);margin-bottom:10px;}
+.tool-input-label b{color:var(--ink);}
+.range-row{display:flex;align-items:center;gap:14px;}
+.range-row input[type=range]{
+  flex:1; accent-color:var(--teal); height:6px;cursor:pointer;
+}
+.range-readout{
+  font-family:var(--font-mono); font-weight:700; font-size:1.05rem; color:var(--ink);
+  border:1px solid var(--line); border-radius:8px; padding:6px 10px; min-width:64px; text-align:center; flex:none;
+  background:var(--navy);
+}
+.tool-scale{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--font-mono);font-size:.66rem;color:var(--ink-faint);}
+
+.readout{
+  border-radius:var(--radius-m);
+  border:1px solid var(--line);
+  background:var(--navy);
+  padding:22px;
+  text-align:center;
+  transition:border-color .3s, background .3s;
+}
+.readout .status-dot{
+  width:12px;height:12px;border-radius:50%;
+  margin:0 auto 12px;
+  background:var(--ink-faint);
+}
+.readout .status-text{
+  font-family:var(--font-display); font-weight:900; font-size:1.4rem;
+  letter-spacing:.02em;
+}
+.readout .status-rule{
+  margin-top:10px; font-size:.8rem; color:var(--ink-dim); line-height:1.4;
+}
+.readout.state-stop{border-color:var(--maroon-line);}
+.readout.state-stop .status-dot{background:var(--maroon); box-shadow:0 0 0 5px var(--maroon-dim);}
+.readout.state-stop .status-text{color:var(--maroon);}
+.readout.state-check{border-color:var(--amber-line);}
+.readout.state-check .status-dot{background:var(--amber); box-shadow:0 0 0 5px var(--amber-dim);}
+.readout.state-check .status-text{color:var(--amber);}
+.readout.state-go{border-color:var(--teal-line);}
+.readout.state-go .status-dot{background:var(--teal); box-shadow:0 0 0 5px var(--teal-dim);}
+.readout.state-go .status-text{color:var(--teal);}
+
+.tool-notes{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;}
+.tool-note{
+  flex:1 1 220px;
+  font-size:.78rem; color:var(--ink-dim);
+  border:1px solid var(--line); border-radius:10px; padding:11px 13px;
+  background:var(--navy);
+}
+.tool-note b{color:var(--ink);display:block;font-size:.78rem;margin-bottom:3px;}
+
+/* ============ TABLE ============ */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius-m);}
+table.pharm{width:100%;border-collapse:collapse;min-width:640px;}
+table.pharm caption{caption-side:top;text-align:left;padding:16px 18px 0;font-size:.8rem;color:var(--ink-faint);font-family:var(--font-mono);}
+table.pharm th, table.pharm td{padding:14px 18px;text-align:left;font-size:.86rem;border-bottom:1px solid var(--line-soft);}
+table.pharm thead th{
+  font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.06em; font-size:.68rem;
+  color:var(--ink-faint); background:var(--navy); border-bottom:1px solid var(--line);
+}
+table.pharm tbody th{color:var(--plum);font-weight:700;font-family:var(--font-mono);font-size:.82rem;white-space:nowrap;}
+table.pharm td{color:var(--ink-dim);}
+table.pharm tbody tr:last-child td, table.pharm tbody tr:last-child th{border-bottom:none;}
+table.pharm tbody tr:hover{background:var(--panel-2);}
+
+@media (max-width:700px){
+  table.pharm, table.pharm thead, table.pharm tbody, table.pharm tr, table.pharm td, table.pharm th{display:block;}
+  table.pharm thead{display:none;}
+  table.pharm tr{border-bottom:1px solid var(--line);padding:14px 16px;}
+  table.pharm td{border:none;padding:6px 0;display:flex;justify-content:space-between;gap:14px;}
+  table.pharm td::before{content:attr(data-label);font-family:var(--font-mono);font-size:.66rem;text-transform:uppercase;color:var(--ink-faint);flex:none;}
+  table.pharm tbody th{padding-bottom:8px;}
+  .tbl-wrap{min-width:0;}
+  table.pharm{min-width:0;}
+}
+
+.drug-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.drug-pill{
+  font-family:var(--font-mono); font-size:.74rem;
+  border:1px solid var(--line); background:var(--panel); border-radius:100px; padding:6px 12px; color:var(--ink-dim);
+}
+.drug-pill b{color:var(--ink);}
+
+/* ============ FLOWCHART ============ */
+.flow{display:flex;flex-direction:column;align-items:center;gap:0;max-width:640px;margin:0 auto;}
+.flow-box{
+  width:100%;
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-m);
+  padding:14px 18px; text-align:center; font-size:.88rem; color:var(--ink);
+  position:relative;
+}
+.flow-box.start{background:var(--panel-2);font-weight:700;}
+.flow-box.decision{border-style:dashed;color:var(--ink-dim);font-family:var(--font-mono);font-size:.78rem;}
+.flow-arrow{height:26px;width:2px;background:var(--line);position:relative;}
+.flow-arrow::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--line);}
+.flow-branch{display:grid;grid-template-columns:1fr 1fr;gap:22px;width:100%;margin:10px 0;}
+@media (max-width:560px){.flow-branch{grid-template-columns:1fr;}}
+.flow-branch .flow-box{height:100%;}
+.branch-lbl{font-family:var(--font-mono);font-size:.68rem;color:var(--ink-faint);text-align:center;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;}
+.flow-box.stop{border-color:var(--maroon-line);background:var(--maroon-dim);color:var(--maroon);font-weight:700;}
+.flow-box.go{border-color:var(--teal-line);background:var(--teal-dim);color:var(--teal);font-weight:700;}
+.flow-box.amber{border-color:var(--amber-line);background:var(--amber-dim);color:var(--amber);font-weight:700;}
+
+/* ============ QUIZ ============ */
+.quiz-progress{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap;}
+.progress-track{flex:1;min-width:160px;height:6px;border-radius:100px;background:var(--panel-2);overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--plum));width:0%;transition:width .4s ease;}
+.progress-label{font-family:var(--font-mono);font-size:.76rem;color:var(--ink-dim);white-space:nowrap;}
+.score-pill{
+  font-family:var(--font-mono);font-size:.76rem;font-weight:600;
+  border:1px solid var(--teal-line);color:var(--teal);background:var(--teal-dim);
+  padding:6px 12px;border-radius:100px;white-space:nowrap;
+}
+
+.qcard{
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-l);
+  padding:26px; margin-bottom:22px;
+}
+@media (max-width:640px){.qcard{padding:18px;}}
+.qcard .qnum{font-family:var(--font-mono);font-size:.72rem;color:var(--plum);text-transform:uppercase;letter-spacing:.1em;}
+.qcard .vignette{margin-top:10px;font-size:1rem;color:var(--ink);line-height:1.55;}
+.qcard .vignette b{color:var(--ink);}
+.qcard .prompt{margin-top:14px;font-weight:700;font-size:.92rem;color:var(--ink-dim);}
+
+.opts{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
+.opt{
+  display:flex; gap:12px; align-items:flex-start; text-align:left;
+  width:100%;
+  background:var(--navy); border:1px solid var(--line); border-radius:12px;
+  padding:13px 15px; cursor:pointer; color:var(--ink-dim); font-size:.9rem;
+  transition:border-color .2s, background .2s, transform .15s;
+}
+.opt:hover:not(:disabled){border-color:var(--ink-faint); transform:translateY(-1px);}
+.opt:disabled{cursor:default;}
+.opt .letter{
+  flex:none; width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--line); display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono); font-size:.76rem; color:var(--ink-faint);
+}
+.opt.is-correct{border-color:var(--teal-line);background:var(--teal-dim);color:var(--ink);}
+.opt.is-correct .letter{border-color:var(--teal-line);color:var(--teal);background:rgba(0,0,0,.15);}
+.opt.is-wrong{border-color:var(--maroon-line);background:var(--maroon-dim);color:var(--ink);}
+.opt.is-wrong .letter{border-color:var(--maroon-line);color:var(--maroon);background:rgba(0,0,0,.15);}
+
+.rationale{
+  margin-top:14px; padding:14px 16px; border-radius:12px;
+  background:var(--navy); border:1px solid var(--line);
+  font-size:.86rem; color:var(--ink-dim); display:none;
+}
+.rationale.show{display:block;}
+.rationale b{color:var(--ink);}
+.rationale .tag{
+  display:inline-block; font-family:var(--font-mono); font-size:.66rem; text-transform:uppercase;
+  letter-spacing:.08em; padding:3px 9px; border-radius:6px; margin-bottom:8px;
+}
+.rationale .tag.right{color:var(--teal);background:var(--teal-dim);border:1px solid var(--teal-line);}
+.rationale .tag.wrong{color:var(--maroon);background:var(--maroon-dim);border:1px solid var(--maroon-line);}
+
+.quiz-results{
+  display:none;
+  text-align:center; padding:40px 24px;
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-l);
+}
+.quiz-results.show{display:block;}
+.quiz-results .score-big{font-family:var(--font-mono);font-weight:700;font-size:3.4rem;color:var(--ink);}
+.quiz-results .score-big span{font-size:1.4rem;color:var(--ink-faint);}
+.quiz-results .verdict{margin-top:8px;font-family:var(--font-display);font-weight:800;font-size:1.3rem;}
+.quiz-results p.msg{margin-top:10px;color:var(--ink-dim);max-width:48ch;margin-left:auto;margin-right:auto;}
+.btn{
+  margin-top:22px;
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--teal); color:var(--teal-ink); font-weight:700; font-size:.88rem;
+  border:none; padding:12px 22px; border-radius:100px; cursor:pointer;
+  transition:transform .15s, box-shadow .2s;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(69,199,180,.25);}
+
+/* ============ FOOTER ============ */
+footer{padding:44px 0 60px;}
+footer .fwrap{display:flex;flex-direction:column;gap:10px;color:var(--ink-faint);font-size:.78rem;max-width:70ch;}
+footer b{color:var(--ink-dim);}
+
+.section-num{font-family:var(--font-mono);font-size:.8rem;color:var(--ink-faint);}
+
+/* small helpers */
+.mt-24{margin-top:24px;}
+.mt-32{margin-top:32px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media (max-width:820px){.two-col{grid-template-columns:1fr;}}
+.subhead{font-size:1.05rem;font-weight:700;color:var(--ink);margin-top:4px;}
+.body-txt{color:var(--ink-dim);font-size:.92rem;margin-top:8px;line-height:1.6;}
+.body-txt + .body-txt{margin-top:10px;}
+ul.bullets{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+ul.bullets li{list-style:none;display:flex;gap:10px;font-size:.88rem;color:var(--ink-dim);}
+ul.bullets li::before{content:"–";color:var(--ink-faint);flex:none;}
+
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="wrap header-row">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none">
+          <path d="M20 4C20 4 8 16.5 8 24.5C8 31 13.5 36 20 36C26.5 36 32 31 32 24.5C32 16.5 20 4 20 4Z" stroke="#45C7B4" stroke-width="2.2"/>
+          <path d="M12 24C12 28.5 15.5 32 20 32" stroke="#D95C7C" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="b1">DVT &amp; PE Bedside Guide</span>
+        <span class="b2">Physiotherapy · Acute Care Inpatient</span>
+      </div>
+    </div>
+    <span class="doc-chip">HAHO-COC-GL-PHY-016-v01 · Ed. 13/05/2026</span>
+  </div>
+  <nav class="tab-nav" aria-label="Section navigation">
+    <div class="tab-scroll" id="tabScroll">
+      <button class="tab-btn" data-target="overview" style="--acc:var(--ink-faint)"><span class="dot"></span>Overview</button>
+      <button class="tab-btn" data-target="risk" style="--acc:var(--amber)"><span class="dot"></span>Risk &amp; Diagnosis</button>
+      <button class="tab-btn" data-target="exam" style="--acc:var(--amber)"><span class="dot"></span>Clinical Exam</button>
+      <button class="tab-btn" data-target="prevention" style="--acc:var(--teal)"><span class="dot"></span>Prevention</button>
+      <button class="tab-btn" data-target="confirmed" style="--acc:var(--teal)"><span class="dot"></span>Mobilization Tool</button>
+      <button class="tab-btn" data-target="pharm" style="--acc:var(--plum)"><span class="dot"></span>Pharmacology</button>
+      <button class="tab-btn" data-target="workflow" style="--acc:var(--ink-faint)"><span class="dot"></span>Referral Workflow</button>
+      <button class="tab-btn" data-target="quiz" style="--acc:var(--amber)"><span class="dot"></span>Quiz</button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO / OVERVIEW ============ -->
+<section class="section hero" id="overview">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Introduction &amp; scope</span>
+      <h1>Two clots.<br><span class="hl-maroon">One leg.</span> <span class="hl-teal">One lung.</span><br>Your call at the bedside.</h1>
+      <p class="hero-sub">Venous thromboembolism (VTE) — deep vein thrombosis (DVT) and pulmonary embolism (PE) — is common, under-recognised in Asian populations, and squarely within a physiotherapist's decision-making every time you decide whether to mobilise a patient. This guide condenses the HA physiotherapy guideline into a working reference: who's at risk, how to examine, how to reason about mechanical and pharmacological prophylaxis, and — most importantly — when it is and isn't safe to get a patient up.</p>
+      <div class="hero-meta">
+        <span class="meta-pill">Author: Quality &amp; Safety Subcommittee</span>
+        <span class="meta-pill">Distribution: HA Physiotherapists</span>
+        <span class="meta-pill">Review due: 13/05/2029</span>
+      </div>
+    </div>
+    <div class="monitor reveal">
+      <div class="monitor-head">
+        <span class="lbl">Hong Kong · annual incidence</span>
+        <span class="live-dot"><span></span>local data</span>
+      </div>
+      <div class="vitals">
+        <div class="vital tone-maroon"><div class="num">30.0<small>/100k</small></div><div class="cap">DVT alone</div></div>
+        <div class="vital tone-amber"><div class="num">8.7<small>/100k</small></div><div class="cap">PE alone</div></div>
+        <div class="vital tone-maroon"><div class="num">3.0<small>/100k</small></div><div class="cap">PE with DVT</div></div>
+        <div class="vital tone-teal"><div class="num">⅓<small></small></div><div class="cap">develop post-thrombotic syndrome within 5 years</div></div>
+        <div class="vital tone-maroon"><div class="num">9.0<small>%</small></div><div class="cap">30-day mortality, DVT</div></div>
+        <div class="vital tone-maroon"><div class="num">17.4<small>%</small></div><div class="cap">30-day mortality, PE alone</div></div>
+      </div>
+      <p class="monitor-foot">Postoperative annual incidence: DVT 0.20% · PE alone 0.08% · PE with DVT 0.04%. Both conditions are highly preventable and treatable with early detection.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RISK & DIAGNOSIS ============ -->
+<section class="section" id="risk">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--amber)">01 — Identify</span>
+      <h2>Who is at risk, and how do you screen them?</h2>
+      <p class="lede">Risk stratification starts before you touch the patient — from the chart — then continues through subjective and objective assessment.</p>
+    </div>
+
+    <div class="grid cols-3 reveal">
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.4 7.4H22l-6.2 4.6 2.4 7.4L12 16.8 5.8 21.4l2.4-7.4L2 9.4h7.6z"/></svg><div class="txt"><b>Recent major surgery</b><span>Within the last 12 weeks</span></div></div>
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><div class="txt"><b>Active cancer</b><span>On treatment, within 6 months, or palliative</span></div></div>
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M4 12a4 4 0 018 0M4 12a4 4 0 008 0"/></svg><div class="txt"><b>Prolonged immobilisation</b><span>Bedrest ≥3 days, paralysis, post-stroke</span></div></div>
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h18M12 3v18"/></svg><div class="txt"><b>History of DVT/PE</b><span>Prior documented episode</span></div></div>
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><div class="txt"><b>Pregnancy / postpartum</b><span>Up to 6 weeks postpartum</span></div></div>
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg><div class="txt"><b>Acute medical illness</b><span>Heart failure, sepsis, COVID-19, IBD</span></div></div>
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="8" width="16" height="10" rx="2"/><path d="M8 8V6a4 4 0 018 0v2"/></svg><div class="txt"><b>Indwelling devices</b><span>Central venous catheter, pacemaker</span></div></div>
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3v18M18 3v18M6 12h12"/></svg><div class="txt"><b>Venous insufficiency</b><span>Chronic impaired venous return</span></div></div>
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/></svg><div class="txt"><b>Obesity</b><span>Independent risk factor</span></div></div>
+    </div>
+
+    <div class="two-col mt-32 reveal">
+      <div>
+        <h3 class="subhead">Subjective red flags</h3>
+        <p class="body-txt">What the patient tells you is often the earliest signal — ask directly.</p>
+        <ul class="bullets">
+          <li>Pain over the leg</li>
+          <li>Swelling in the leg</li>
+          <li>Change in sensation in the leg</li>
+          <li>Chest discomfort</li>
+          <li>Palpitations</li>
+          <li>Shortness of breath</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="subhead">On assessment for PE</h3>
+        <p class="body-txt">Chest discomfort with tachycardia and tachypnoea forms part of essential screening for PE alongside DVT signs — don't examine the leg in isolation from the chest.</p>
+        <div class="chip amber mt-24">Chest + leg together, always</div>
+      </div>
+    </div>
+
+    <!-- Wells score -->
+    <div class="mt-32 reveal">
+      <h3 class="subhead" style="font-size:1.2rem;">Interactive: Two-level DVT Wells score</h3>
+      <p class="body-txt">Tick every clinical feature that applies. The score updates live — this is the same simplified tool used to stratify pre-test probability of DVT.</p>
+      <div class="wells mt-24">
+        <div>
+          <div class="wells-list" id="wellsList">
+            <div class="wells-item"><input type="checkbox" data-pts="1" id="w1"><label for="w1">Active cancer (on-going treatment, within 6 months, or palliative)</label><span class="pts">+1</span></div>
+            <div class="wells-item"><input type="checkbox" data-pts="1" id="w2"><label for="w2">Paralysis, paresis or recent plaster cast immobilisation of lower extremity</label><span class="pts">+1</span></div>
+            <div class="wells-item"><input type="checkbox" data-pts="1" id="w3"><label for="w3">Bedridden ≥3 days, or major surgery within 12 weeks under general/regional anaesthesia</label><span class="pts">+1</span></div>
+            <div class="wells-item"><input type="checkbox" data-pts="1" id="w4"><label for="w4">Localised tenderness along the distribution of the deep venous system</label><span class="pts">+1</span></div>
+            <div class="wells-item"><input type="checkbox" data-pts="1" id="w5"><label for="w5">Entire leg swollen</label><span class="pts">+1</span></div>
+            <div class="wells-item"><input type="checkbox" data-pts="1" id="w6"><label for="w6">Calf swelling ≥3cm larger than the asymptomatic side</label><span class="pts">+1</span></div>
+            <div class="wells-item"><input type="checkbox" data-pts="1" id="w7"><label for="w7">Pitting oedema confined to the symptomatic leg</label><span class="pts">+1</span></div>
+            <div class="wells-item"><input type="checkbox" data-pts="1" id="w8"><label for="w8">Collateral superficial veins (non-varicose)</label><span class="pts">+1</span></div>
+            <div class="wells-item"><input type="checkbox" data-pts="1" id="w9"><label for="w9">Previously documented DVT</label><span class="pts">+1</span></div>
+            <div class="wells-item negative"><input type="checkbox" data-pts="-2" id="w10"><label for="w10">An alternative diagnosis is at least as likely as DVT</label><span class="pts">−2</span></div>
+          </div>
+        </div>
+        <div class="wells-result">
+          <span class="wells-sub" style="margin:0;">Total score</span>
+          <div class="wells-score" id="wellsScore">0</div>
+          <div class="wells-badge unlikely" id="wellsBadge">DVT unlikely</div>
+          <p class="wells-note">≥2 points = DVT likely · ≤1 point = DVT unlikely</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Diagnostic tests -->
+    <div class="mt-32 reveal">
+      <h3 class="subhead" style="font-size:1.2rem;">Confirmatory investigations</h3>
+      <p class="body-txt">Interpret all diagnostic tests alongside clinical probability (e.g. Wells score) — no single test stands alone.</p>
+      <div class="grid cols-3 mt-24">
+        <div class="dx-card"><span class="tag">Imaging</span><h4>Venous ultrasonography</h4><p>High sensitivity and specificity for detecting DVT — first-line confirmatory test.</p></div>
+        <div class="dx-card"><span class="tag">Blood test</span><h4>D-dimer</h4><p>High sensitivity and negative predictive value — most useful for <em>ruling out</em> VTE, not confirming it.</p></div>
+        <div class="dx-card"><span class="tag">Imaging</span><h4>CT pulmonary angiography</h4><p>High sensitivity and specificity for detecting PE.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLINICAL EXAM ============ -->
+<section class="section" id="exam">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--amber)">02 — Examine</span>
+      <h2>Two bedside tests physiotherapists actually perform</h2>
+      <p class="lede">Neither test is diagnostic alone — both feed into your overall clinical picture alongside the Wells score and the medical team's investigations.</p>
+    </div>
+
+    <div class="two-col reveal">
+      <div class="card">
+        <h4>Homans sign</h4>
+        <div class="steps mt-24">
+          <div class="step"><div class="num"></div><div class="body"><b>Support</b><span>Support the patient's thigh with one hand and the foot with the other.</span></div></div>
+          <div class="step"><div class="num"></div><div class="body"><b>Position</b><span>Bend the leg slightly at the knee.</span></div></div>
+          <div class="step"><div class="num"></div><div class="body"><b>Test</b><span>Firmly and abruptly dorsiflex the ankle.</span></div></div>
+          <div class="step"><div class="num"></div><div class="body"><b>Interpret</b><span>Deep calf pain on dorsiflexion = a positive Homans sign.</span></div></div>
+        </div>
+        <div class="callout amber">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 18a1.6 1.6 0 001.4 2.4h15.8a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/></svg>
+          <div><b>Use with caution</b><p>Homans sign alone is considered unreliable. Treat it as one input alongside more accurate, specific procedures such as ultrasonography and venography.</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4>Limb circumference comparison</h4>
+        <p class="body-txt">Use a measuring tape 10cm below the tibial tuberosity, and always compare against the opposite leg.</p>
+        <div class="limb-compare">
+          <div class="limb-col"><div class="limb-bar" style="height:70px;"></div><span class="limb-label">Unaffected side</span><span class="limb-cm">baseline</span></div>
+          <div class="limb-col affected"><div class="limb-bar" style="height:100px;"></div><span class="limb-label">Symptomatic side</span><span class="limb-cm">+3cm or more</span></div>
+        </div>
+        <div class="callout maroon mt-24">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l9 16H3z"/><path d="M12 9v4M12 16h.01"/></svg>
+          <div><b>Positive sign</b><p>A symptomatic-side circumference ≥3cm greater than the asymptomatic side indicates a positive sign of DVT.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREVENTION ============ -->
+<section class="section" id="prevention">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--teal)">03 — Prevent</span>
+      <h2>Mechanical prophylaxis for patients at risk</h2>
+      <p class="lede">The goal of mechanical prophylaxis is simple: keep venous blood moving. Four tools do this — movement itself, compression stockings, pneumatic compression, and, in select high-risk cases, an IVC filter.</p>
+    </div>
+
+    <div class="grid cols-2 reveal">
+      <div class="card">
+        <span class="chip teal">Active, non-instrumental</span>
+        <h4 class="mt-24">Mobilisation &amp; ambulation</h4>
+        <p>Physical movement enhances circulation and prevents clot formation. There is strong evidence supporting a culture of mobility and physical activity for patients at risk of VTE — or already diagnosed with a lower-extremity DVT.</p>
+      </div>
+      <div class="card">
+        <span class="chip plum">Percutaneous</span>
+        <h4 class="mt-24">Inferior vena cava (IVC) filter</h4>
+        <p>Placed by an interventional radiologist (via right internal jugular or right femoral vein) for patients at high risk of PE who have contraindications to anticoagulants, or for whom medication hasn't been effective.</p>
+        <div class="callout teal" style="margin-top:14px;">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg>
+          <div><b>Mobilise once</b><p>Haemodynamically stable, and no bleeding at the puncture site.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-24 reveal">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <h4>Graduated compression elastic stockings (GCES)</h4>
+        <span class="evidence-grade">Grade B — general &amp; post-op abdominal surgery</span>
+      </div>
+      <p>Anti-embolism stockings conforming to the Sigel pressure profile reduce the rate of DVT by roughly 50%, and increase blood flow at the femoral vein by about 38%. They also aid oedema control by promoting venous and lymphatic return. In cancer patients, prescription of GCES is a good-practice point.</p>
+
+      <div class="two-col mt-24">
+        <div>
+          <p class="subhead" style="font-size:.94rem;color:var(--teal);">Indicated for</p>
+          <ul class="iclist ind mt-24">
+            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Leg symptoms, varicose veins, chronic venous deficiency</li>
+            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Thrombosis or embolism risk, non-venous oedema</li>
+            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Pregnancy, venous circulatory disorders</li>
+            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>High clinical probability of developing DVT</li>
+          </ul>
+        </div>
+        <div>
+          <p class="subhead" style="font-size:.94rem;color:var(--maroon);">Contraindicated in</p>
+          <ul class="iclist contra mt-24">
+            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Massive oedema, gangrenous limb, recent graft</li>
+            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Arteriosclerosis, cardiac failure</li>
+            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Severe PAD with ABPI &lt; 0.8</li>
+            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Limb deformity / out-of-size limb, severe peripheral neuropathy</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout amber mt-24">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 18a1.6 1.6 0 001.4 2.4h15.8a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/></svg>
+        <div><b>Fitting &amp; monitoring checklist</b><p>Correct size and length · check skin colour, capillary refill and pressure points regularly · avoid creases or folds (tourniquet effect / pressure necrosis) · replace as limb circumference or elasticity changes · wean once fully mobile · issue the "Precautions for Elastic Stocking Application" fact sheet at discharge.</p></div>
+      </div>
+    </div>
+
+    <div class="card mt-24 reveal">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <h4>Intermittent pneumatic compression (IPC) / sequential compression devices (SCD)</h4>
+        <span class="evidence-grade" style="border-color:var(--plum-line);color:var(--plum);background:var(--plum-dim);">Grade B–C</span>
+      </div>
+      <p>Mechanical inflatable devices that improve venous circulation in limbs affected by oedema or at risk of DVT. Supported by evidence for total hip replacement, hip fracture surgery, general surgery, and cardiac, thoracic and vascular surgery. Apply to the lower extremities until the patient is fully mobile.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONFIRMED DVT / MOBILIZATION TOOL ============ -->
+<section class="section" id="confirmed">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--teal)">04 — Decide</span>
+      <h2>Managing a confirmed DVT: should you mobilise today?</h2>
+      <p class="lede">Bed rest has no proven benefit in DVT and is associated with worse outcomes than early mobilisation. NICE also does not support GCES specifically to prevent post-thrombotic syndrome or VTE recurrence after a DVT (this doesn't rule out stockings for managing leg symptoms). The decision to mobilise instead hinges on anticoagulation status.</p>
+    </div>
+
+    <div class="grid cols-2 reveal">
+      <div class="card">
+        <span class="chip teal">Evidence</span>
+        <ul class="bullets mt-24">
+          <li>Early mobilisation is associated with a lower incidence of new PE or DVT progression compared with bed rest.</li>
+          <li>There is no benefit to prescribing bed rest in patients with DVT.</li>
+          <li>Immediate mobilisation with compression in the acute stage reduces the incidence and severity of post-thrombotic syndrome.</li>
+          <li>Supervised exercise reduces calf circumference in patients with DVT.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="chip amber">Bottom line</span>
+        <p class="mt-24">With adequate monitoring and safety measures, mobilise patients with lower-extremity DVT as early as during the hospital stay — once therapeutic anticoagulant levels have been reached. Below is that decision logic as a live tool.</p>
+      </div>
+    </div>
+
+    <!-- SIGNATURE: Mobilization decision tool -->
+    <div class="tool mt-32 reveal" id="tool">
+      <div class="tool-top">
+        <div>
+          <span class="eyebrow" style="color:var(--teal)">Bedside decision console</span>
+          <h3 class="mt-24" style="margin-top:8px;">Mobilisation status by anticoagulant</h3>
+        </div>
+        <div class="segmented" id="drugSeg">
+          <button class="seg-btn active" data-drug="warfarin">Warfarin</button>
+          <button class="seg-btn" data-drug="ufh">UFH</button>
+          <button class="seg-btn" data-drug="lmwh">LMWH</button>
+          <button class="seg-btn" data-drug="doac">DOAC</button>
+        </div>
+      </div>
+
+      <div class="tool-body">
+        <div>
+          <p class="tool-input-label" id="toolInputLabel"><b>INR level</b> — most recent result</p>
+          <div class="range-row">
+            <input type="range" id="toolRange" min="0" max="6" step="0.1" value="1.2">
+            <div class="range-readout" id="toolReadoutVal">1.2</div>
+          </div>
+          <div class="tool-scale" id="toolScale"><span>0</span><span>3</span><span>6</span></div>
+        </div>
+        <div class="readout state-stop" id="readoutBox">
+          <div class="status-dot"></div>
+          <div class="status-text" id="statusText">NO MOBILITY</div>
+          <div class="status-rule" id="statusRule">INR below 2 — anticoagulation not yet therapeutic.</div>
+        </div>
+      </div>
+
+      <div class="tool-notes">
+        <div class="tool-note"><b>INR not in range for 3 days</b>If a warfarin patient hasn't reached INR 2–3 within 3 days of starting, check with the physician for a mobility order.</div>
+        <div class="tool-note"><b>IVC filter in place</b>Patients with a documented DVT can start mobilisation once an IVC filter has been inserted.</div>
+        <div class="tool-note"><b>Anticoagulation contraindicated, no filter yet</b>Consult the case physician about mobilising versus keeping the patient on bed rest.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHARMACOLOGY ============ -->
+<section class="section" id="pharm">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--plum)">05 — Understand</span>
+      <h2>The pharmacological landscape</h2>
+      <p class="lede">Anticoagulation is the primary pharmacological treatment for DVT — different agents act at different points in the coagulation cascade to stop a clot forming or extending. Individuals typically continue anticoagulation for 3–6 months after a first VTE episode.</p>
+    </div>
+
+    <div class="tbl-wrap reveal">
+      <table class="pharm">
+        <caption>Summary of clotting profile monitoring</caption>
+        <thead>
+          <tr><th>Anticoagulant</th><th>Coagulation monitoring</th><th>Therapeutic range</th><th>Monitoring time</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th data-label="Anticoagulant">Warfarin</th>
+            <td data-label="Monitoring">International normalised ratio (INR)</td>
+            <td data-label="Range">2–3</td>
+            <td data-label="Timing">24–36h after administration</td>
+          </tr>
+          <tr>
+            <th data-label="Anticoagulant">UFH</th>
+            <td data-label="Monitoring">Activated partial thromboplastin time (aPTT)</td>
+            <td data-label="Range">0.2–0.4 U/ml, or 1.5–2.5× control</td>
+            <td data-label="Timing">6h post IV infusion or SC injection</td>
+          </tr>
+          <tr>
+            <th data-label="Anticoagulant">LMWH</th>
+            <td data-label="Monitoring">Anti-factor Xa</td>
+            <td data-label="Range">0.6–1.0 U/ml (BD dose) or 1.0–2.0 U/ml (daily dose)</td>
+            <td data-label="Timing">4–6h post SC injection, or 2–4h after PO</td>
+          </tr>
+          <tr>
+            <th data-label="Anticoagulant">DOACs</th>
+            <td data-label="Monitoring">No routine coagulation monitoring needed</td>
+            <td data-label="Range">N/A</td>
+            <td data-label="Timing">N/A</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-col mt-24 reveal">
+      <div>
+        <p class="subhead" style="font-size:.9rem;">Commonly used LMWH in HA</p>
+        <div class="drug-row">
+          <span class="drug-pill"><b>Enoxaparin</b> · Clexane</span>
+          <span class="drug-pill"><b>Nadroparin</b> · Fraxiparine</span>
+          <span class="drug-pill"><b>Tinzaparin</b> · Innohep</span>
+        </div>
+      </div>
+      <div>
+        <p class="subhead" style="font-size:.9rem;">Commonly used DOACs in HA</p>
+        <div class="drug-row">
+          <span class="drug-pill"><b>Apixaban</b> · Eliquis</span>
+          <span class="drug-pill"><b>Dabigatran</b> · Pradaxa</span>
+          <span class="drug-pill"><b>Rivaroxaban</b> · Xarelto</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout amber mt-32 reveal">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 18a1.6 1.6 0 001.4 2.4h15.8a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/></svg>
+      <div><b>Targets are individualised</b><p>Therapeutic ranges shown are usual defaults — the actual target may differ per patient's medical background. Always confirm the specific target with the case physician when in doubt.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORKFLOW ============ -->
+<section class="section" id="workflow">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">06 — Apply</span>
+      <h2>The referral-to-mobilisation workflow</h2>
+      <p class="lede">Every patient referred to physiotherapy with suspected or confirmed DVT/PE follows the same decision path.</p>
+    </div>
+
+    <div class="flow reveal">
+      <div class="flow-box start">Patient with suspected or confirmed DVT/PE referred to physiotherapy</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-branch">
+        <div>
+          <div class="branch-lbl">Suspected</div>
+          <div class="flow-box">Await investigation result</div>
+        </div>
+        <div>
+          <div class="branch-lbl">Confirmed</div>
+          <div class="flow-box">Confirm site of DVT/PE and check anticoagulation status</div>
+        </div>
+      </div>
+      <div class="flow-arrow"></div>
+      <div class="flow-box decision">Anticoagulation started AND therapeutic range met?</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-branch">
+        <div>
+          <div class="branch-lbl">No</div>
+          <div class="flow-box stop">Withhold ambulation · apply VTE preventive measures</div>
+        </div>
+        <div>
+          <div class="branch-lbl">Yes</div>
+          <div class="flow-box go">Cross-check activity restrictions, then mobilise with monitoring</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section class="section" id="quiz" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:var(--amber)">07 — Test yourself</span>
+      <h2>Clinical Knowledge Quiz</h2>
+      <p class="lede">Five bedside case scenarios. Choose an answer to see the rationale immediately — reasoning matters more than the label.</p>
+    </div>
+
+    <div class="quiz-progress reveal">
+      <span class="progress-label" id="progLabel">Question 1 of 5</span>
+      <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+      <span class="score-pill" id="scorePill">Score: 0 / 5</span>
+    </div>
+
+    <div id="quizMount" class="reveal"></div>
+
+    <div class="quiz-results" id="quizResults">
+      <span class="eyebrow" style="justify-content:center;">Final result</span>
+      <div class="score-big" id="finalScore">0<span> / 5</span></div>
+      <div class="verdict" id="finalVerdict"></div>
+      <p class="msg" id="finalMsg"></p>
+      <button class="btn" id="restartBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+        Restart quiz
+      </button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fwrap">
+    <p><b>Educational summary</b> — adapted for bedside teaching from HAHO-COC-GL-PHY-016-v01, "Physiotherapy Guidelines on Management of Deep Vein Thrombosis and Pulmonary Embolism in Acute Care Inpatient Setting" (effective 13/05/2026, review due 13/05/2029).</p>
+    <p>This page is a training aid for junior physiotherapists and is not a substitute for the controlled guideline document or individual clinical judgement. Always confirm anticoagulation status and mobility orders with the case physician, and refer to the current electronic version of the HA guideline when in doubt.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Tab navigation + active-state on scroll ---------- */
+  var tabBtns = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+  var sections = tabBtns.map(function(b){ return document.getElementById(b.dataset.target); });
+
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = document.getElementById(btn.dataset.target);
+      if(target){
+        var y = target.getBoundingClientRect().top + window.pageYOffset - 118;
+        window.scrollTo({top:y, behavior:'smooth'});
+      }
+    });
+  });
+
+  function setActiveTab(id){
+    tabBtns.forEach(function(b){
+      b.classList.toggle('active', b.dataset.target === id);
+    });
+    var active = document.querySelector('.tab-btn.active');
+    if(active && active.scrollIntoView){
+      active.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+    }
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        setActiveTab(entry.target.id);
+      }
+    });
+  }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+  sections.forEach(function(s){ if(s) io.observe(s); });
+
+  /* ---------- Reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  var rio = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        rio.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.08});
+  revealEls.forEach(function(el){ rio.observe(el); });
+
+  /* ---------- Wells score calculator ---------- */
+  var wellsInputs = document.querySelectorAll('#wellsList input[type=checkbox]');
+  var wellsScoreEl = document.getElementById('wellsScore');
+  var wellsBadgeEl = document.getElementById('wellsBadge');
+
+  function updateWells(){
+    var total = 0;
+    wellsInputs.forEach(function(inp){
+      if(inp.checked) total += parseFloat(inp.dataset.pts);
+    });
+    wellsScoreEl.textContent = total;
+    if(total >= 2){
+      wellsBadgeEl.textContent = 'DVT likely';
+      wellsBadgeEl.className = 'wells-badge likely';
+    } else {
+      wellsBadgeEl.textContent = 'DVT unlikely';
+      wellsBadgeEl.className = 'wells-badge unlikely';
+    }
+  }
+  wellsInputs.forEach(function(inp){ inp.addEventListener('change', updateWells); });
+
+  /* ---------- Mobilisation decision tool ---------- */
+  var drugConfig = {
+    warfarin: {
+      label: 'INR level', unitLabel: '<b>INR level</b> — most recent result',
+      min:0, max:6, step:0.1, def:1.2, scale:['0','3','6'],
+      evaluate: function(v){
+        if(v > 5) return {state:'check', text:'CHECK WITH PHYSICIAN', rule:'INR above 5 — bleeding risk. Confirm the mobility order with the physician before proceeding.'};
+        if(v < 2) return {state:'stop', text:'NO MOBILITY', rule:'INR below 2 — anticoagulation not yet therapeutic.'};
+        return {state:'go', text:'MOBILIZE', rule:'INR 2–5 — therapeutic range reached. Mobilise with standard monitoring.'};
+      }
+    },
+    ufh: {
+      label:'Hours since administration', unitLabel:'<b>Time since administration</b> — unfractionated heparin',
+      min:0, max:72, step:1, def:12, scale:['0h','36h','72h'],
+      evaluate: function(v){
+        if(v > 48) return {state:'go', text:'MOBILIZE', rule:'More than 48 hours since administration — mobilise with standard monitoring.'};
+        if(v < 24) return {state:'stop', text:'NO MOBILITY', rule:'Fewer than 24 hours since administration — hold mobility.'};
+        return {state:'check', text:'CHECK WITH PHYSICIAN', rule:'24–48 hours since administration — confirm the mobility order with the physician.'};
+      }
+    },
+    lmwh: {
+      label:'Hours since administration', unitLabel:'<b>Time since administration</b> — low molecular weight heparin',
+      min:0, max:24, step:0.5, def:2, scale:['0h','12h','24h'],
+      evaluate: function(v){
+        if(v > 5) return {state:'go', text:'MOBILIZE', rule:'More than 5 hours since administration — mobilise with standard monitoring.'};
+        if(v < 3) return {state:'stop', text:'NO MOBILITY', rule:'Fewer than 3 hours since administration — hold mobility.'};
+        return {state:'check', text:'CHECK WITH PHYSICIAN', rule:'3–5 hours since administration — confirm the mobility order with the physician.'};
+      }
+    },
+    doac: {
+      label:'Hours since administration', unitLabel:'<b>Time since administration</b> — direct oral anticoagulant',
+      min:0, max:12, step:0.25, def:1, scale:['0h','6h','12h'],
+      evaluate: function(v){
+        if(v > 3) return {state:'go', text:'MOBILIZE', rule:'More than 3 hours since administration — mobilise with standard monitoring.'};
+        if(v < 2) return {state:'stop', text:'NO MOBILITY', rule:'Fewer than 2 hours since administration — hold mobility.'};
+        return {state:'check', text:'CHECK WITH PHYSICIAN', rule:'2–3 hours since administration — confirm the mobility order with the physician.'};
+      }
+    }
+  };
+
+  var segBtns = document.querySelectorAll('#drugSeg .seg-btn');
+  var toolRange = document.getElementById('toolRange');
+  var toolReadoutVal = document.getElementById('toolReadoutVal');
+  var toolInputLabel = document.getElementById('toolInputLabel');
+  var toolScale = document.getElementById('toolScale');
+  var readoutBox = document.getElementById('readoutBox');
+  var statusText = document.getElementById('statusText');
+  var statusRule = document.getElementById('statusRule');
+  var currentDrug = 'warfarin';
+
+  function fmt(v, drug){
+    if(drug === 'warfarin') return parseFloat(v).toFixed(1);
+    return (Math.round(parseFloat(v)*4)/4).toString().replace(/\.00$/,'') + 'h';
+  }
+
+  function renderTool(){
+    var cfg = drugConfig[currentDrug];
+    toolRange.min = cfg.min; toolRange.max = cfg.max; toolRange.step = cfg.step; toolRange.value = cfg.def;
+    toolInputLabel.innerHTML = cfg.unitLabel;
+    toolScale.innerHTML = '<span>'+cfg.scale[0]+'</span><span>'+cfg.scale[1]+'</span><span>'+cfg.scale[2]+'</span>';
+    updateToolReadout();
+  }
+
+  function updateToolReadout(){
+    var cfg = drugConfig[currentDrug];
+    var v = parseFloat(toolRange.value);
+    toolReadoutVal.textContent = fmt(v, currentDrug);
+    var result = cfg.evaluate(v);
+    readoutBox.className = 'readout state-' + result.state;
+    statusText.textContent = result.text;
+    statusRule.textContent = result.rule;
+  }
+
+  segBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      segBtns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentDrug = btn.dataset.drug;
+      renderTool();
+    });
+  });
+  toolRange.addEventListener('input', updateToolReadout);
+  renderTool();
+
+  /* ---------- Quiz ---------- */
+  var quizData = [
+    {
+      vignette: "A patient is <b>post-op day 1 following hip fracture surgery</b> and was given a dose of <b>enoxaparin (LMWH) 4 hours ago</b>. She is haemodynamically stable with no bleeding, and the ward has referred her to you for mobilisation.",
+      prompt: "What is the correct action?",
+      options: [
+        { text:"Mobilise immediately — surgery was yesterday, so enough time has passed.", correct:false, rationale:"Time since surgery isn't the trigger here — it's time since the last LMWH dose. At 4 hours post-dose, LMWH sits in the 3–5 hour \"check with physician\" window, not the \">5 hour, mobilise\" window." },
+        { text:"Withhold mobility indefinitely until exactly 5 hours have passed, with no further action.", correct:false, rationale:"Close, but passive waiting isn't the guideline's instruction. Within the 3–5 hour window the recommended step is to actively check with the physician, not simply watch the clock." },
+        { text:"Check with the physician before mobilising, since 4 hours post-injection falls in the 3–5 hour window.", correct:true, rationale:"Correct. Per the mobilisation algorithm for LMWH: <3h = no mobility, 3–5h = check with physician, >5h = mobilise. Four hours sits in the middle band, so the safe step is to confirm the mobility order with the physician." },
+        { text:"Apply intermittent pneumatic compression only, and never mobilise a patient on LMWH.", correct:false, rationale:"LMWH does not preclude mobilisation — the guideline explicitly supports mobilising once enough time has elapsed since the dose (>5h). IPC is a prophylactic adjunct, not a substitute for the mobility decision." }
+      ]
+    },
+    {
+      vignette: "A physiotherapy referral describes a patient with a <b>Wells score of 3 (\"DVT likely\")</b>, currently <b>awaiting a duplex ultrasound</b>. No anticoagulation has been started yet.",
+      prompt: "Following the referral workflow, what should you do?",
+      options: [
+        { text:"Start full ambulation now, since imaging hasn't confirmed DVT yet.", correct:false, rationale:"A high Wells score with imaging pending is still managed as \"suspected DVT\" — the workflow calls for caution until either the diagnosis is excluded or anticoagulation is adequately underway, not for full ambulation." },
+        { text:"Withhold ambulation and apply VTE preventive measures while awaiting the result.", correct:true, rationale:"Correct. In the referral workflow, a suspected DVT/PE with anticoagulation not yet started is managed the same as a confirmed case with anticoagulation not started or not yet therapeutic: withhold ambulation and apply VTE preventive measures until the picture is clearer." },
+        { text:"Apply GCES and proceed with full mobilisation regardless of the pending scan.", correct:false, rationale:"GCES can be part of preventive measures, but pairing it with full mobilisation skips the key step — the workflow specifically withholds ambulation while a suspected DVT is unresolved." },
+        { text:"Refer directly for IVC filter insertion before doing anything else.", correct:false, rationale:"IVC filters are reserved for patients at high risk with a contraindication to anticoagulation, or where medication has failed — not the default next step for a routine suspected-DVT referral." }
+      ]
+    },
+    {
+      vignette: "A patient with a confirmed DVT started <b>warfarin 4 days ago</b>. Today's <b>INR is 1.5</b> — it has not reached the 2–3 therapeutic range at any point since starting.",
+      prompt: "What is the most appropriate next step?",
+      options: [
+        { text:"Continue holding mobility with no further action needed — this is expected.", correct:false, rationale:"An INR that hasn't reached the therapeutic range after 3 days isn't simply \"expected and fine\" — the guideline treats this as a trigger to escalate, not just to keep waiting passively." },
+        { text:"Mobilise anyway, since 4 days have already passed since starting warfarin.", correct:false, rationale:"Days elapsed on treatment doesn't override the INR reading. An INR of 1.5 is below 2 — by the warfarin rule alone this is a \"no mobility\" reading." },
+        { text:"Escalate to the physician — when INR hasn't reached the 2–3 range for 3 days since starting warfarin, a mobility order should be confirmed.", correct:true, rationale:"Correct. The guideline specifically flags this scenario: when INR has not reached the therapeutic range for 3 days since starting warfarin, check with the physician for the order on mobility, rather than continuing to wait indefinitely." },
+        { text:"Apply GCES and mobilise fully — stockings substitute for inadequate anticoagulation.", correct:false, rationale:"Compression stockings support venous return but do not substitute for anticoagulation status in this decision — the mobility call still depends on the INR / physician input, not on whether stockings are applied." }
+      ]
+    },
+    {
+      vignette: "A patient has a newly confirmed DVT. <b>Anticoagulation is contraindicated</b> (active GI bleeding) and an <b>IVC filter has not yet been placed</b>. The ward asks you to mobilise the patient today.",
+      prompt: "What does the guideline direct you to do?",
+      options: [
+        { text:"Mobilise immediately — bed rest is never appropriate in DVT, no exceptions.", correct:false, rationale:"It's true that bed rest generally has no proven benefit in DVT, but that principle assumes the usual anticoagulation pathway. When anticoagulation is contraindicated and no IVC filter is in place, the guideline calls for a different step — physician consultation — not an automatic default to mobilise." },
+        { text:"Withhold mobilisation completely and permanently with no further discussion.", correct:false, rationale:"This isn't a permanent blanket withhold either — the guideline frames it as a case for discussion, not a fixed rule in either direction." },
+        { text:"Consult the case physician to weigh mobilising versus keeping the patient on bed rest, given the anticoagulation contraindication and pending IVC filter.", correct:true, rationale:"Correct. For a confirmed DVT where anticoagulation is contraindicated and an IVC filter hasn't yet been placed, the guideline directs the physiotherapist to consult the case physician regarding mobilising versus keeping the patient on bed rest — this scenario falls outside the standard anticoagulant-timing algorithm." },
+        { text:"Apply GCES and proceed with mobilisation independently, without involving the physician.", correct:false, rationale:"This is exactly the scenario the guideline says needs physician input before a decision is made — proceeding independently skips that required consultation." }
+      ]
+    },
+    {
+      vignette: "A patient has a confirmed DVT and known <b>severe peripheral arterial disease with an ABPI of 0.65</b>. Nursing colleagues ask you whether graduated compression stockings should be applied for oedema control.",
+      prompt: "What should you advise?",
+      options: [
+        { text:"Apply GCES now — any confirmed DVT with a high clinical probability should receive compression stockings.", correct:false, rationale:"High clinical probability of DVT is generally an indication for GCES, but a specific contraindication overrides that here — arterial compromise takes priority over the DVT indication." },
+        { text:"GCES is contraindicated — an ABPI below 0.8 with severe PAD risks compromising arterial supply; use alternative measures and flag this to the team.", correct:true, rationale:"Correct. Severe peripheral arterial disease with an ABPI < 0.8 is a listed contraindication to compression stockings, because compressing a limb with compromised arterial flow can worsen ischaemia. Flag the finding and consider other mechanical measures (e.g. IPC, with its own checks) plus medical input." },
+        { text:"Apply intermittent pneumatic compression instead, since it bypasses arterial contraindications entirely.", correct:false, rationale:"IPC is a reasonable alternative to discuss with the team, but it is not automatically exempt from arterial considerations either — it isn't a guaranteed \"bypass\" and the decision still needs clinical judgement, not an assumption of safety." },
+        { text:"Apply GCES but choose a looser size to reduce the pressure exerted on the limb.", correct:false, rationale:"Downsizing pressure informally isn't a recognised way to manage this contraindication — an incorrectly fitted stocking also risks localised constriction. The correct response is to withhold GCES rather than improvise the fit." }
+      ]
+    }
+  ];
+
+  var quizMount = document.getElementById('quizMount');
+  var progLabel = document.getElementById('progLabel');
+  var progFill = document.getElementById('progFill');
+  var scorePill = document.getElementById('scorePill');
+  var quizResults = document.getElementById('quizResults');
+  var finalScore = document.getElementById('finalScore');
+  var finalVerdict = document.getElementById('finalVerdict');
+  var finalMsg = document.getElementById('finalMsg');
+  var restartBtn = document.getElementById('restartBtn');
+
+  var currentQ = 0;
+  var score = 0;
+  var answered = [];
+
+  var letters = ['A','B','C','D'];
+
+  function renderQuestion(idx){
+    var q = quizData[idx];
+    var card = document.createElement('div');
+    card.className = 'qcard';
+    card.innerHTML =
+      '<span class="qnum">Case ' + (idx+1) + ' of ' + quizData.length + '</span>' +
+      '<p class="vignette">' + q.vignette + '</p>' +
+      '<p class="prompt">' + q.prompt + '</p>' +
+      '<div class="opts"></div>';
+
+    var optsWrap = card.querySelector('.opts');
+
+    q.options.forEach(function(opt, i){
+      var optBtn = document.createElement('button');
+      optBtn.className = 'opt';
+      optBtn.innerHTML = '<span class="letter">' + letters[i] + '</span><span>' + opt.text + '</span>';
+
+      var rationale = document.createElement('div');
+      rationale.className = 'rationale';
+      rationale.innerHTML = '<span class="tag ' + (opt.correct ? 'right' : 'wrong') + '">' + (opt.correct ? 'Correct' : 'Not quite') + '</span><p>' + opt.rationale + '</p>';
+
+      optBtn.addEventListener('click', function(){
+        if(card.dataset.answered) return;
+        card.dataset.answered = 'true';
+
+        var allOpts = optsWrap.querySelectorAll('.opt');
+        allOpts.forEach(function(o){ o.disabled = true; });
+
+        if(opt.correct){
+          optBtn.classList.add('is-correct');
+          score += 1;
+        } else {
+          optBtn.classList.add('is-wrong');
+          var correctIndex = q.options.findIndex(function(o){ return o.correct; });
+          allOpts[correctIndex].classList.add('is-correct');
+          allOpts[correctIndex].nextRationale && (allOpts[correctIndex].nextRationale.className = 'rationale show');
+        }
+        rationale.classList.add('show');
+        scorePill.textContent = 'Score: ' + score + ' / ' + quizData.length;
+
+        setTimeout(function(){
+          currentQ += 1;
+          if(currentQ < quizData.length){
+            updateProgress();
+            renderQuestion(currentQ);
+          } else {
+            updateProgress();
+            showResults();
+          }
+        }, 450);
+      });
+
+      var pair = document.createElement('div');
+      pair.appendChild(optBtn);
+      pair.appendChild(rationale);
+      optBtn.nextRationale = rationale;
+      optsWrap.appendChild(pair);
+    });
+
+    quizMount.innerHTML = '';
+    quizMount.appendChild(card);
+  }
+
+  function updateProgress(){
+    var shown = Math.min(currentQ + (currentQ < quizData.length ? 1 : 0), quizData.length);
+    progLabel.textContent = currentQ < quizData.length ? ('Question ' + (currentQ+1) + ' of ' + quizData.length) : 'Complete';
+    var pct = (currentQ / quizData.length) * 100;
+    progFill.style.width = pct + '%';
+  }
+
+  function showResults(){
+    quizMount.style.display = 'none';
+    quizResults.classList.add('show');
+    finalScore.innerHTML = score + '<span> / ' + quizData.length + '</span>';
+    progFill.style.width = '100%';
+    var verdict, msg;
+    if(score === 5){
+      verdict = 'Ward-ready'; msg = 'Full marks — your reasoning on anticoagulant timing, contraindications and the referral workflow is sound. Keep this page bookmarked for the edge cases.';
+    } else if(score >= 3){
+      verdict = 'Solid foundation'; msg = 'A good grasp of the core logic, with a gap or two. Revisit the mobilisation decision tool and the contraindications list above before your next shift.';
+    } else {
+      verdict = 'Revisit the guideline'; msg = 'Worth another pass through the Prevention and Mobilisation Tool sections above before applying this independently at the bedside — talk it through with a senior colleague in the meantime.';
+    }
+    finalVerdict.textContent = verdict;
+    finalMsg.textContent = msg;
+  }
+
+  restartBtn.addEventListener('click', function(){
+    currentQ = 0; score = 0;
+    scorePill.textContent = 'Score: 0 / ' + quizData.length;
+    quizResults.classList.remove('show');
+    quizMount.style.display = '';
+    updateProgress();
+    renderQuestion(0);
+  });
+
+  updateProgress();
+  renderQuestion(0);
+
+})();
+</script>
+</body>
+</html>

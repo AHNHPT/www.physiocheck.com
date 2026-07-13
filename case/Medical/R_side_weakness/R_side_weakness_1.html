@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>R side weakness (Part 1)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
+    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
+    .choice:hover { background-color: #d0d0d0; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
+    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    label { display: block; margin-bottom: 10px; cursor: pointer; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Case: R side weakness (Part 1)</h2>
+  <p>Mr. Jimmy Lau, a 70-year-old man, was sent to AED at 17:30 on 23/1 due to sudden onset of R sided weakness, gaze deviation, aphasia and facial asymmetry at 16:50 at home, last seen well at 16:30 on 23/1.
+<br><br>You are the physiotherapy working in medical ward (ASU).
+<br>You are responding to stroke call from stroke nurse.
+<br>On 24/1 morning, you approach Mr. Lau.
+<img src="Patient1.png" alt="Patient Image" style="width:100%; max-width:600px; margin-top:10px; border-radius:5px;">
+<br><br>----------------------------Adm Note-------------------------
+<br>SHx: 
+<br>Lives with wife (housewife) 
+<br>Premorbid walks with stick
+<br>Liftlanding home 
+<br>Communicable, RHD 
+<br><br>PMH: 
+<br>HT / SVT / BPH / LBP 
+<br><br>HPI:
+<br>“E” adm x sudden onset of R sided weakness, gaze deviation and slurring of speech at 16:50 at home, LSW at 16:30 on 23/1.
+<br>Arrive AED on 18:00
+<br><br>P/E:
+<br>GCS: E4V1M6
+<br>BP: 168/96 HR: 75
+<br>SpO2: 98% on 1L O2 via n.c.
+<br>H'stix: 8
+<br>Limb power: 
+<br>3|5 
+<br>3|5 
+<br><br>WCC 12
+<br>ECG: SR, with occasional supraventricular premature complexes
+<br>CTB: no ICH / SOL / MLS 
+<br>CT Brain, Head and Neck Angiogram: no obvious large vessel occlusion (LVO)
+<br>CT Perfusion Scan: L ACA territory ischemia
+<br><br>Stroke call initiated.
+<br>As within time window, intravenous thrombolysis (IVT) was administered at 18:30
+<br>Not for endovascular thrombectomy (EVT) as no LVO 
+<br>Management: 
+<br>NPOEM 
+<br>Repeat CTB 18:30 mane
+<br>Inform if neurological deterioration 
+<br>PT/OT/ST x stroke rehab 
+<br>Sputum c/st if any 
+<br>----------------------------------------------------<br></p>
+
+</div>
+
+<div class="box" id="question1">
+  <h3>🩺 What investigation or physical exam would you perform?</h3>
+  
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Vital signs stat</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Check CXR</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Assess Mobility level </div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Neurological exam </div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3>💊 Select all management options you would provide:</h3>
+  
+  <label><input type="checkbox" id="man-check0" /> 1. Keep bed rest & inform case nurse</label>
+  <label><input type="checkbox" id="man-check1" /> 2. Prescribe TED stockings </label>
+  <label><input type="checkbox" id="man-check2" /> 3. Bedside sitting / walking +/- sit out of bed </label>
+  <label><input type="checkbox" id="man-check3" /> 4. Chest physiotherapy </label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+  <p id="final-score"></p>
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+  
+  <div style="margin-top:20px;"><strong>🧪 Investigations – Explanation</strong>
+ <br><strong>Q1-Option 1: Vital signs stat</strong>
+ <br>When attending patients, vital signs must be checked as they may affect our choice of subsequent assessment and treatment. In Mr. Lau's case, measuring BP is especially important as he has received IVT.
+ <br>According to 2026 AHA/ASA Guideline for the Early Management of Patients With Acute Ischemic Stroke [1], <strong>BP should be maintained at < 180/105 mmHg</strong> for at least the first 24 hours after IVT treatment.
+ <br><br>This is because high BP after IVT may increase the risk of hemorrhagic transformation. In fact, the risk of symptomatic intracranial hemorrhage following IVT was reported to range from <strong>2 to 7%</strong> [2]. 
+ <br><br><br><strong>Q1-Option 2: CXR</strong>
+ <br>As Mr. Lau has increased oxygen demand, CXR should be checked to identify the cause of low oxygen level so that suitable physiotherapy treatment could be provided to Mr. Lau. We can see <strong>right lower zone hazziness</strong> in his CXR.
+ <br><br><br><strong>Q1-Option 3: Mobility level</strong>
+ <br>As mentioned previously, <strong>BP should be maintained at < 180/105 mmHg</strong> for at least the first 24 hours after IVT treatment. As Mr. Lau's BP was 190/90 mmHg, out-of-bed assessment should be refrained to avoid any further rise in BP.
+ <br><br><br><strong>Q1-Option 4: Neurological exam</strong>
+ <br>Although mobility assessment could not be performed due to highish BP, stroke assessment on bed should still be performed to assess neurological function and severity of disability in Mr. Lau. This is because of the following reasons. 
+ <br><br>First, we have to know Mr. Lau’s impairment and disability level in order to better formulate his rehabilitation plan. For example, for Mr. Lau whose hemiplegic limb power scored only grade 3, equipment that provides stable upper limb and truncal support e.g. cardiac support walker could be considered during weight-bearing exercises. On the other hand, for a stroke patient with hemiplegic limb power scoring grade 4+, less supportive equipment e.g. frame or stick may be considered.
+ <br><br>Second, monitoring Mr. Lau’s neurological function is important as Lauges of signs and increased severity of neurological deficits may indicate stroke progression / recurrent stroke which requires medical attention.
+ <br><br>In addition, doctors will assess whether patients’ clinical signs match with CTB findings. If they do not match, further imaging / investigations, e.g. MRI Brain may need to be performed.
+ <br><br><br><br><strong>💊 Management – Explanation</strong>
+ <br><strong>Q2-Option 1: Keep bed rest & inform case nurse + Option 3: Bedside sitting / walking +/- sit out of bed</strong>
+ <br>As mentioned above, <strong>BP should be maintained at < 180/105 mmHg</strong> for at least the first 24 hours after IVT treatment. Noting poor BP control of Mr. Lau, mobilization should be suspended and case nurse should be informed.
+ <br><br><strong>Q2-Option 2: Prescribe TED stockings</strong>
+ <br>According to 2026 AHA/ASA Guideline for the Early Management of Patients With Acute Ischemic Stroke [1], elastic compression stockings cause harm, including skin breakdown, ulceration, and tissue necrosis in patients with acute ischemic stroke who have impaired mobility. 
+ <br><br>Hence, TED stockings should not be given to Mr. Lau. On the other hand, <strong>pneumatic compression is recommended for DVT prophylaxis in patients with acute ischemic stroke who have impaired mobility.</strong>
+ <br><img src="TED.png" alt="TED/Pneumatic Compression" style="width:100%; max-width:600px; margin-top:10px; border-radius:5px;">
+ <br><br><strong>Q2-Option 4: Chest physiotherapy</strong>
+ <br>As Mr. Lau has increased oxygen demand and his CXR is showing right lower zone hazziness, chest infection is highly suspected, hence chest physiotherapy should be performed.
+ <br><br><h6>References:
+ <br>[1] Prabhakaran S, Gonzalez NR, Zachrison KS, Adeoye O, Alexandrov AW, Ansari SA, et al. 2026 Guideline for the early management of patients with acute ischemic stroke: a guideline from the American Heart Association/American Stroke Association. Stroke. 2026. doi: 10.1161/STR.0000000000000513.
+ <br>[2] Seet RC, Rabinstein AA. Symptomatic intracranial hemorrhage following intravenous thrombolysis for acute ischemic stroke: a critical review of case definitions. Cerebrovasc Dis. 2012;34:106–114. doi: 10.1159/000339675
+ <br><br>Case Creator: Ms. Jamie Ip, Mr. Eric Chan</h6></div>
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+<script>
+  const investigations = [{"opt":"Vital signs stat","res":"Afebrile <br>BP: 190/90 mmHg <br>HR: 85 bpm <br>SpO2: 98% on 1L O2 via n.c. ","cor":true},
+  {"opt":"Check CXR","res":"<img src='cxr1.jpeg' alt='CXR' style='width:100%; max-width:600px; margin-top:10px; border-radius:5px;'>","cor":true},
+  {"opt":"Assess Mobility level ","res":"Transfer with assistance <br>Able to sit unsupported stably <br>Able to stand with cardiac support walker <br><br><strong>MFAC 2/7</strong> ","cor":false},
+  {"opt":"Neurological exam ","res":"No gaze deviation  <br>No facial weakness  <br>No obvious slurred speech  <br><br>Sensation of limbs grossly intact  <br>MMT <br>4 | 5  <br>   3 | 5 <br>calves soft  <br><br>Neglect -ve <br>Ataxia -ve ","cor":true}];
+  const management = [{"opt":"Keep bed rest & inform case nurse","exp":"","cor":true},
+  {"opt":"Prescribe TED stockings ","exp":"","cor":false},
+  {"opt":"Bedside sitting / walking +/- sit out of bed ","exp":"","cor":false},
+  {"opt":"Chest physiotherapy ","exp":"","cor":true}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+    
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
+    
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+    
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>

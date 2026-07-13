@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual of Physiotherapy for High-Risk Infants — Clinical Field Guide</title>
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --paper:#F5F8F7;
+  --paper-alt:#EAF1EF;
+  --card:#FFFFFF;
+  --ink:#12232E;
+  --ink-soft:#48606C;
+  --ink-faint:#7C919B;
+  --navy:#173A5C;
+  --navy-deep:#0C2033;
+  --teal:#127F7F;
+  --teal-deep:#0B5F5F;
+  --teal-tint:#E0F1EE;
+  --amber:#D98A2B;
+  --amber-tint:#FBEEDA;
+  --coral:#D65B57;
+  --coral-tint:#FBE7E5;
+  --line:#D7E2DF;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Cascadia Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(18,35,46,.04), 0 8px 24px -12px rgba(18,35,46,.18);
+  --nav-h: 58px;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:var(--sans);
+  color:var(--navy-deep);
+  line-height:1.15;
+  margin:0 0 .4em;
+  letter-spacing:-0.01em;
+}
+p{margin:0 0 1em;}
+a{color:var(--teal-deep);}
+img,svg{display:block;max-width:100%;}
+ul{margin:0;padding:0;}
+button{font-family:inherit;}
+section{scroll-margin-top: calc(var(--nav-h) + 14px);}
+.readout{font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;}
+
+::selection{background:var(--teal);color:#fff;}
+
+:focus-visible{
+  outline:3px solid var(--teal);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+}
+
+/* ============================================================
+   TOP NAV — styled like a monitor channel bar
+   ============================================================ */
+.topnav{
+  position:sticky;top:0;z-index:60;
+  background:var(--navy-deep);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  height:var(--nav-h);
+}
+.topnav-inner{
+  max-width:1180px;margin:0 auto;padding:0 20px;
+  height:100%;display:flex;align-items:center;gap:18px;
+}
+.brand{
+  display:flex;align-items:center;gap:9px;
+  color:#fff;font-weight:700;font-size:.92rem;white-space:nowrap;
+  flex:0 0 auto;
+}
+.brand .dot{
+  width:9px;height:9px;border-radius:50%;background:#39D9A6;
+  box-shadow:0 0 0 3px rgba(57,217,166,.22);
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:.55;transform:scale(.8);}
+}
+.navlinks{
+  display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;
+  -ms-overflow-style:none; flex:1 1 auto; height:100%;
+}
+.navlinks::-webkit-scrollbar{display:none;}
+.navlinks a{
+  flex:0 0 auto;
+  display:flex;align-items:center;
+  padding:0 13px;height:100%;
+  color:rgba(255,255,255,.62);
+  text-decoration:none;
+  font-size:.78rem;font-weight:600;
+  font-family:var(--mono);letter-spacing:.04em;
+  border-bottom:2px solid transparent;
+  white-space:nowrap;
+  transition:color .15s, border-color .15s;
+}
+.navlinks a:hover{color:#fff;}
+.navlinks a.active{color:#fff;border-bottom-color:#39D9A6;}
+.navlinks a.quiz-link{color:#FFD79A;}
+.navlinks a.quiz-link.active{border-bottom-color:var(--amber);}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  background:linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 78%, var(--navy) 100%);
+  color:#fff;
+  padding:56px 0 0;
+  overflow:hidden;
+  position:relative;
+}
+.hero-grid{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:40px;
+  align-items:center;
+}
+.eyebrow{
+  font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;
+  color:#7FD9C4;margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.eyebrow::before{content:"";width:22px;height:1px;background:#7FD9C4;display:inline-block;}
+.hero h1{
+  color:#fff;
+  font-size:clamp(1.9rem, 4.2vw, 3rem);
+  max-width:14ch;
+  margin-bottom:.32em;
+}
+.hero .lede{
+  color:rgba(255,255,255,.78);
+  font-size:1.05rem;
+  max-width:52ch;
+  margin-bottom:26px;
+}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:34px;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 20px;border-radius:999px;
+  font-weight:700;font-size:.88rem;
+  text-decoration:none;cursor:pointer;border:1px solid transparent;
+  transition:transform .15s, box-shadow .15s, background .15s;
+}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:#39D9A6;color:#08281F;}
+.btn-primary:hover{box-shadow:0 8px 18px -6px rgba(57,217,166,.55);}
+.btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35);}
+.btn-ghost:hover{background:rgba(255,255,255,.08);}
+
+.chart-strip{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:0;border-top:1px solid rgba(255,255,255,.14);
+  border-bottom:1px solid rgba(255,255,255,.14);
+  margin-top:6px;
+}
+.chart-strip div{
+  padding:14px 4px 14px 0;border-right:1px solid rgba(255,255,255,.14);
+}
+.chart-strip div:last-child{border-right:none;}
+.chart-strip .k{font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:#7FD9C4;margin-bottom:4px;}
+.chart-strip .v{font-size:.86rem;font-weight:600;color:#fff;}
+
+.vitals-panel{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:16px;
+  padding:20px 20px 12px;
+  backdrop-filter:blur(2px);
+}
+.vitals-head{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);margin-bottom:6px;
+}
+.vitals-head .live{color:#39D9A6;display:flex;align-items:center;gap:6px;}
+.vitals-head .live::before{content:"";width:7px;height:7px;border-radius:50%;background:#39D9A6;animation:pulse 2s ease-in-out infinite;}
+.trace-svg{width:100%;height:110px;}
+.trace-path{
+  fill:none;stroke:#39D9A6;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:900;stroke-dashoffset:900;
+  animation:draw 2.1s ease-out forwards .3s;
+}
+.trace-path.p2{stroke:#4FB4E8;opacity:.55;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 2.4s ease-out forwards .6s;}
+@keyframes draw{to{stroke-dashoffset:0;}}
+.vitals-readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.16);}
+.vitals-readouts div{text-align:left;}
+.vitals-readouts .lbl{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:rgba(255,255,255,.5);text-transform:uppercase;}
+.vitals-readouts .num{font-family:var(--mono);font-size:1.05rem;font-weight:700;color:#fff;}
+.vitals-readouts .num span{color:#39D9A6;}
+
+.trace-divider{line-height:0;margin:0;}
+.trace-divider svg{width:100%;height:34px;display:block;}
+
+@media (max-width: 860px){
+  .hero-grid{grid-template-columns:1fr;}
+  .hero{padding-top:34px;}
+}
+
+/* ============================================================
+   SECTION SHELLS
+   ============================================================ */
+.section{padding:64px 0;}
+.section.alt{background:var(--paper-alt);}
+.section-head{max-width:70ch;margin-bottom:34px;}
+.section-num{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--teal-deep);
+  text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px;
+}
+.section-num .tick{
+  width:34px;height:22px;border:1px solid var(--teal-deep);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--teal-deep);
+  background:var(--teal-tint);
+}
+.section h2{font-size:clamp(1.4rem,2.6vw,2rem);}
+.section .desc{color:var(--ink-soft);font-size:1rem;max-width:66ch;}
+
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease, transform .55s ease;}
+.reveal.in-view{opacity:1;transform:translateY(0);}
+
+/* ============================================================
+   GENERIC COMPONENTS
+   ============================================================ */
+.card-grid{display:grid;gap:16px;}
+.cols-2{grid-template-columns:repeat(2,1fr);}
+.cols-3{grid-template-columns:repeat(3,1fr);}
+.cols-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:920px){.cols-4{grid-template-columns:repeat(2,1fr);} .cols-3{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:640px){.cols-4,.cols-3,.cols-2{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  box-shadow:var(--shadow);
+}
+.card h4{font-size:1rem;margin-bottom:6px;}
+.card .tiny{font-size:.85rem;color:var(--ink-soft);}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:999px;
+  background:var(--teal-tint);color:var(--teal-deep);
+  font-size:.8rem;font-weight:600;border:1px solid rgba(18,127,127,.18);
+}
+.chip.amber{background:var(--amber-tint);color:#8A5514;border-color:rgba(217,138,43,.28);}
+.chip.coral{background:var(--coral-tint);color:#9A342F;border-color:rgba(214,91,87,.28);}
+.chip.navy{background:#E7EEF4;color:var(--navy);border-color:rgba(23,58,92,.18);}
+
+.rec-box{
+  background:linear-gradient(180deg,#FFFFFF, var(--teal-tint) 220%);
+  border:1px solid rgba(18,127,127,.28);
+  border-left:5px solid var(--teal);
+  border-radius:12px;
+  padding:18px 22px;
+  margin-top:20px;
+}
+.rec-box .lbl{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--teal-deep);font-weight:700;margin-bottom:8px;display:block;
+}
+.rec-box p{margin:0;color:var(--ink);}
+.rec-box ul{margin-top:8px;padding-left:1.2em;}
+.rec-box li{margin-bottom:4px;}
+
+.pullquote{
+  border-left:3px solid var(--navy);
+  padding:6px 0 6px 20px;
+  font-size:1.06rem;
+  font-style:italic;
+  color:var(--navy);
+  margin:22px 0;
+}
+.pullquote cite{display:block;margin-top:6px;font-style:normal;font-size:.78rem;color:var(--ink-faint);font-family:var(--mono);}
+
+.evidence-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.03em;
+  padding:3px 9px;border-radius:6px;text-transform:uppercase;
+}
+.ev-I{background:#0B5F5F;color:#fff;}
+.ev-II{background:var(--teal-tint);color:var(--teal-deep);border:1px solid rgba(18,127,127,.3);}
+.ev-III{background:var(--amber-tint);color:#8A5514;border:1px solid rgba(217,138,43,.3);}
+
+.legend-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:16px;font-size:.84rem;color:var(--ink-soft);}
+.legend-row .item{display:flex;align-items:center;gap:8px;}
+
+/* stat bars */
+.statbar-list{display:flex;flex-direction:column;gap:12px;}
+.statbar{}
+.statbar .head{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:5px;}
+.statbar .head .lab{font-weight:600;color:var(--ink);}
+.statbar .head .val{font-family:var(--mono);font-weight:700;color:var(--teal-deep);}
+.statbar .track{height:9px;border-radius:6px;background:var(--paper-alt);overflow:hidden;border:1px solid var(--line);}
+.statbar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--teal),var(--teal-deep));}
+.statbar.risk .fill{background:linear-gradient(90deg,#E7A15A,var(--coral));}
+
+/* checklist */
+.check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 20px;}
+@media (max-width:640px){.check-grid{grid-template-columns:1fr;}}
+.check-item{
+  display:flex;gap:10px;align-items:flex-start;
+  font-size:.92rem;padding:9px 0;border-bottom:1px dashed var(--line);
+}
+.check-item .mark{
+  flex:0 0 auto;width:20px;height:20px;border-radius:5px;background:var(--coral-tint);
+  color:#9A342F;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;
+  margin-top:1px;
+}
+
+/* tabs */
+.tabbar{display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid var(--line);margin-bottom:22px;}
+.tab-btn{
+  background:none;border:none;cursor:pointer;
+  padding:10px 16px;font-size:.86rem;font-weight:700;color:var(--ink-soft);
+  border-bottom:3px solid transparent;margin-bottom:-1px;
+  font-family:var(--sans);
+}
+.tab-btn:hover{color:var(--teal-deep);}
+.tab-btn.active{color:var(--teal-deep);border-bottom-color:var(--teal-deep);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+/* synactive monitor table */
+.synactive{display:flex;flex-direction:column;gap:2px;border-radius:14px;overflow:hidden;border:1px solid var(--line);}
+.syn-row{display:grid;grid-template-columns:.9fr 1.5fr 1.5fr;background:var(--card);}
+.syn-row.head{background:var(--navy-deep);color:#fff;}
+.syn-row.head div{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:10px 16px;}
+.syn-row:not(.head){border-top:1px solid var(--line);}
+.syn-row div{padding:13px 16px;font-size:.88rem;}
+.syn-name{font-weight:700;color:var(--navy);display:flex;align-items:center;background:var(--paper-alt);}
+.syn-stable{background:#F1FAF6;color:#155F45;border-left:3px solid #39D9A6;}
+.syn-stress{background:#FDF3F2;color:#8C2F2B;border-left:3px solid var(--coral);}
+@media (max-width:760px){
+  .syn-row{grid-template-columns:1fr;}
+  .syn-name{border-left:3px solid var(--navy);}
+}
+
+/* timeline (screening schedule) */
+.timeline{display:flex;gap:0;overflow-x:auto;padding:10px 4px 18px;margin-top:8px;}
+.tl-node{flex:0 0 168px;position:relative;padding:0 10px 0 0;}
+.tl-node .stem{height:3px;background:var(--line);position:relative;margin-bottom:14px;}
+.tl-node .stem::before{content:"";position:absolute;left:0;top:-5px;width:13px;height:13px;border-radius:50%;background:var(--teal);border:3px solid var(--card);box-shadow:0 0 0 1.5px var(--teal);}
+.tl-node .age{font-family:var(--mono);font-weight:700;color:var(--navy);font-size:.92rem;margin-bottom:8px;}
+.tl-node .tools{display:flex;flex-wrap:wrap;gap:5px;}
+.tl-node .tools span{
+  font-size:.68rem;font-weight:700;padding:3px 7px;border-radius:5px;
+  background:var(--teal-tint);color:var(--teal-deep);white-space:nowrap;
+}
+
+/* accordion tool cards */
+details.tool{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;
+}
+details.tool summary{
+  cursor:pointer;list-style:none;padding:15px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;
+  font-weight:700;color:var(--navy);
+}
+details.tool summary::-webkit-details-marker{display:none;}
+details.tool summary .sname{display:flex;align-items:center;gap:12px;}
+details.tool summary .full{font-weight:400;color:var(--ink-soft);font-size:.85rem;}
+details.tool summary .arrow{transition:transform .2s;color:var(--ink-faint);}
+details.tool[open] summary .arrow{transform:rotate(90deg);}
+.tool-body{padding:0 20px 20px;border-top:1px solid var(--line);}
+.tool-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0;}
+@media (max-width:640px){.tool-meta{grid-template-columns:1fr 1fr;}}
+.tool-meta .m-lbl{font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);}
+.tool-meta .m-val{font-weight:700;color:var(--ink);font-size:.9rem;}
+.psy-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.psy-stat{background:var(--paper-alt);border:1px solid var(--line);border-radius:9px;padding:8px 12px;min-width:130px;}
+.psy-stat .n{font-family:var(--mono);font-weight:800;color:var(--teal-deep);font-size:1.05rem;}
+.psy-stat .d{font-size:.72rem;color:var(--ink-soft);}
+
+/* flow diagram (referral) */
+.flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+.flow-card{
+  flex:1 1 220px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:18px;box-shadow:var(--shadow);position:relative;
+}
+.flow-arrow{
+  flex:0 0 46px;display:flex;align-items:center;justify-content:center;color:var(--teal-deep);font-size:1.4rem;
+}
+@media (max-width:860px){
+  .flow{flex-direction:column;}
+  .flow-arrow{transform:rotate(90deg);flex-basis:30px;}
+}
+.flow-card .stage{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;color:var(--teal-deep);margin-bottom:6px;}
+
+/* footer */
+footer{
+  background:var(--navy-deep);color:rgba(255,255,255,.65);padding:38px 0 30px;font-size:.82rem;
+}
+footer strong{color:#fff;}
+footer .fgrid{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+footer a{color:#7FD9C4;}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+.quiz-shell{
+  background:var(--navy-deep);
+  border-radius:20px;
+  padding:30px;
+  color:#fff;
+  box-shadow:var(--shadow);
+}
+@media (max-width:640px){.quiz-shell{padding:20px 16px;}}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:22px;}
+.progress-dots{display:flex;gap:8px;}
+.pd{
+  width:30px;height:8px;border-radius:6px;background:rgba(255,255,255,.18);
+  transition:background .2s;
+}
+.pd.answered-correct{background:#39D9A6;}
+.pd.answered-wrong{background:var(--coral);}
+.pd.current{outline:2px solid rgba(255,255,255,.5);outline-offset:2px;}
+.score-readout{font-family:var(--mono);font-size:.85rem;color:#fff;background:rgba(255,255,255,.08);padding:6px 14px;border-radius:999px;}
+.score-readout span{color:#39D9A6;font-weight:800;}
+
+.case-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:22px;}
+.case-label{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:#7FD9C4;margin-bottom:10px;}
+.case-vignette{
+  background:rgba(0,0,0,.18);border-left:3px solid #7FD9C4;border-radius:8px;
+  padding:14px 16px;font-size:.92rem;color:rgba(255,255,255,.88);margin-bottom:16px;
+}
+.case-question{font-size:1.08rem;font-weight:700;color:#fff;margin-bottom:16px;}
+
+.opt-list{display:flex;flex-direction:column;gap:10px;}
+.opt{
+  display:block;width:100%;text-align:left;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:11px;
+  padding:13px 16px;
+  color:#fff;font-size:.92rem;
+  cursor:pointer;
+  transition:background .15s, border-color .15s;
+  font-family:var(--sans);
+}
+.opt:hover:not(.locked){background:rgba(255,255,255,.12);}
+.opt .opt-letter{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.14);
+  font-family:var(--mono);font-size:.72rem;font-weight:700;margin-right:10px;
+}
+.opt.correct{background:rgba(57,217,166,.16);border-color:#39D9A6;}
+.opt.correct .opt-letter{background:#39D9A6;color:#08281F;}
+.opt.incorrect{background:rgba(214,91,87,.16);border-color:var(--coral);}
+.opt.incorrect .opt-letter{background:var(--coral);color:#fff;}
+.opt.dim{opacity:.55;}
+.opt-rationale{
+  display:none;margin-top:9px;padding-top:9px;border-top:1px dashed rgba(255,255,255,.2);
+  font-size:.85rem;color:rgba(255,255,255,.82);line-height:1.5;
+}
+.opt.answered .opt-rationale{display:block;}
+.opt.locked{cursor:default;}
+
+.verdict-banner{
+  margin-top:16px;padding:12px 16px;border-radius:10px;font-weight:700;font-size:.92rem;
+  display:none;align-items:center;gap:10px;
+}
+.verdict-banner.show{display:flex;}
+.verdict-banner.good{background:rgba(57,217,166,.16);color:#39D9A6;border:1px solid rgba(57,217,166,.4);}
+.verdict-banner.bad{background:rgba(214,91,87,.16);color:#FF9C98;border:1px solid rgba(214,91,87,.4);}
+
+.quiz-nav{display:flex;justify-content:flex-end;margin-top:20px;}
+.btn-next{
+  background:#39D9A6;color:#08281F;border:none;padding:11px 22px;border-radius:999px;font-weight:800;
+  font-size:.88rem;cursor:pointer;display:none;align-items:center;gap:8px;
+}
+.btn-next.show{display:inline-flex;}
+.btn-next:hover{transform:translateY(-1px);}
+
+.results-card{display:none;text-align:center;padding:20px 10px;}
+.results-card.show{display:block;}
+.results-card .big{font-family:var(--mono);font-size:3.2rem;font-weight:800;color:#39D9A6;line-height:1;}
+.results-card .msg{font-size:1.05rem;max-width:52ch;margin:14px auto 22px;color:rgba(255,255,255,.85);}
+.btn-restart{
+  background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;padding:10px 20px;border-radius:999px;
+  font-weight:700;cursor:pointer;font-size:.86rem;
+}
+.btn-restart:hover{background:rgba(255,255,255,.1);}
+.quiz-intro-copy{color:rgba(255,255,255,.7);font-size:.92rem;max-width:60ch;margin-bottom:20px;}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand"><span class="dot"></span> HRI · PT Field Guide</div>
+    <div class="navlinks" id="navlinks">
+      <a href="#identify">01 · Identify</a>
+      <a href="#timing">02 · Timing</a>
+      <a href="#nicu">03 · NICU Care</a>
+      <a href="#parent">04 · Parents</a>
+      <a href="#screening">05 · Screening</a>
+      <a href="#referral">06 · Referral</a>
+      <a href="#exit">07 · Exit</a>
+      <a href="#quiz" class="quiz-link">★ Quiz</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Hospital Authority · Paediatrics Specialty Group</div>
+        <h1>Manual of Physiotherapy for High-Risk Infants</h1>
+        <p class="lede">A bedside field guide to the HA guideline — from spotting a high-risk infant on the ward, through NICU positioning and handling, to follow-up screening and community referral. Built for junior physiotherapist onboarding.</p>
+        <div class="hero-cta">
+          <a href="#identify" class="btn btn-primary">Start reading →</a>
+          <a href="#quiz" class="btn btn-ghost">Jump to the quiz</a>
+        </div>
+        <div class="chart-strip">
+          <div><div class="k">Author</div><div class="v">Paediatrics Specialty Group</div></div>
+          <div><div class="k">Custodian</div><div class="v">HO Allied Health Grade Dept</div></div>
+          <div><div class="k">Endorsed by</div><div class="v">COC – Grade in Physiotherapy</div></div>
+          <div><div class="k">Version</div><div class="v">2 &nbsp;·&nbsp; Issued 24 Mar 2025</div></div>
+        </div>
+      </div>
+      <div class="vitals-panel">
+        <div class="vitals-head"><span>Monitor · Synactive Signals</span><span class="live">Reading</span></div>
+        <svg class="trace-svg" viewBox="0 0 400 110" preserveAspectRatio="none">
+          <path class="trace-path" d="M0,70 C20,70 25,55 35,55 C48,55 50,80 62,80 L78,80 84,20 90,95 96,80 L112,80 C124,80 128,60 140,60 C152,60 156,75 168,75 L400,75" />
+          <path class="trace-path p2" d="M0,40 C40,20 60,60 100,40 C140,20 160,60 200,40 C240,20 260,60 300,40 C330,26 360,52 400,40" />
+        </svg>
+        <div class="vitals-readouts">
+          <div><div class="lbl">GA threshold</div><div class="num"><span>30+</span> wks PMA</div></div>
+          <div><div class="lbl">Review date</div><div class="num">Mar '28</div></div>
+          <div><div class="lbl">Evidence tiers</div><div class="num">I – III‑1</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="trace-divider">
+    <svg viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,17 L1200,17" stroke="rgba(255,255,255,.15)" stroke-width="1"/></svg>
+  </div>
+</header>
+
+<!-- ============================================================
+     OVERVIEW / EVIDENCE LEGEND
+     ============================================================ -->
+<section class="section" id="overview">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"><span class="tick">i</span> Overview</div>
+      <h2>Why this guideline exists</h2>
+      <p class="desc">Since January 1993, the territory-wide Very Low Birth Weight (VLBW, &lt;1.5&nbsp;kg) Babies Outcome Surveillance Programme has tracked developmental outcomes of VLBW infants across all HA hospitals and Child Assessment Centres, assessed historically at 18 months corrected age. As individual hospitals developed their own high-risk infant programmes, the Physiotherapy Coordinating Committee Paediatric Specialty Group built this manual to streamline practice across clusters and care settings.</p>
+    </div>
+    <div class="card reveal">
+      <h4>Reading the evidence tags used throughout this guide</h4>
+      <p class="tiny">Levels follow the NHMRC (2000) hierarchy. Every recommendation card below is graded so you can weigh how much confidence to place in it.</p>
+      <div class="legend-row">
+        <div class="item"><span class="evidence-pill ev-I">Level I</span> Systematic review of Level II studies</div>
+        <div class="item"><span class="evidence-pill ev-II">Level II</span> Randomised controlled trial</div>
+        <div class="item"><span class="evidence-pill ev-III">Level III‑1</span> Pseudorandomised trial / other controlled method</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     1. IDENTIFYING THE HIGH-RISK INFANT
+     ============================================================ -->
+<section class="section alt" id="identify">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"><span class="tick">1</span> Identify</div>
+      <h2>Identifying the high-risk infant</h2>
+      <p class="desc">Three overlapping groups trigger high-risk follow-up: prematurity, infants with special-needs red flags, and infants who have undergone major surgery.</p>
+    </div>
+
+    <div class="card-grid cols-2 reveal">
+      <div class="card">
+        <h4>1.1 Birthweight → mortality (Stevenson et al, 1998)</h4>
+        <div class="statbar-list" style="margin-top:12px;">
+          <div class="statbar risk"><div class="head"><span class="lab">501–750 g</span><span class="val">51% mortality</span></div><div class="track"><div class="fill" style="width:51%"></div></div></div>
+          <div class="statbar risk"><div class="head"><span class="lab">751–1000 g</span><span class="val">15% mortality</span></div><div class="track"><div class="fill" style="width:15%"></div></div></div>
+          <div class="statbar risk"><div class="head"><span class="lab">1001–1250 g</span><span class="val">7% mortality</span></div><div class="track"><div class="fill" style="width:7%"></div></div></div>
+          <div class="statbar risk"><div class="head"><span class="lab">1251–1500 g</span><span class="val">4% mortality</span></div><div class="track"><div class="fill" style="width:4%"></div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Morbidity in VLBW infants</h4>
+        <p class="tiny">Common comorbidities reported in the VLBW population:</p>
+        <div class="tag-row" style="margin-top:10px;">
+          <span class="chip amber">RDS · 52%</span>
+          <span class="chip amber">ICH · 32%</span>
+          <span class="chip amber">CLD · 19%</span>
+          <span class="chip amber">PVL · 6%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid cols-2 reveal" style="margin-top:16px;">
+      <div class="card">
+        <h4>1.1.2 Gestational age → cerebral palsy prevalence (Himpens et al, 2008)</h4>
+        <div class="statbar-list" style="margin-top:12px;">
+          <div class="statbar risk"><div class="head"><span class="lab">22–27 weeks</span><span class="val">15%</span></div><div class="track"><div class="fill" style="width:15%"></div></div></div>
+          <div class="statbar risk"><div class="head"><span class="lab">28–31 weeks</span><span class="val">6%</span></div><div class="track"><div class="fill" style="width:6%"></div></div></div>
+          <div class="statbar risk"><div class="head"><span class="lab">32–36 weeks</span><span class="val">0.7%</span></div><div class="track"><div class="fill" style="width:2%"></div></div></div>
+          <div class="statbar risk"><div class="head"><span class="lab">Full term</span><span class="val">0.1%</span></div><div class="track"><div class="fill" style="width:.5%"></div></div></div>
+        </div>
+        <p class="tiny" style="margin-top:12px;">CP prevalence drops sharply beyond 32 weeks — but Boyle &amp; Boyle (2013) argue moderate (32–33wk) and late (34–36wk) preterm infants still warrant follow-up, since subtler long-term outcomes persist.</p>
+      </div>
+      <div class="card">
+        <h4>1.2 Red-flag checklist beyond prematurity <span class="tiny">(Purdy, 2012)</span></h4>
+        <div class="check-grid" style="margin-top:10px;">
+          <div class="check-item"><span class="mark">!</span> Apgar &lt;4 at 5 minutes</div>
+          <div class="check-item"><span class="mark">!</span> IVH &gt; Grade II</div>
+          <div class="check-item"><span class="mark">!</span> Congenital anomalies / birth defects</div>
+          <div class="check-item"><span class="mark">!</span> Hyperbilirubinaemia near exchange levels</div>
+          <div class="check-item"><span class="mark">!</span> Sepsis, meningitis</div>
+          <div class="check-item"><span class="mark">!</span> Intracranial abnormality (e.g. HIE)</div>
+          <div class="check-item"><span class="mark">!</span> Abnormal neuro exam (tone, tremor)</div>
+          <div class="check-item"><span class="mark">!</span> Seizures</div>
+          <div class="check-item"><span class="mark">!</span> Hypoglycaemia requiring intervention</div>
+          <div class="check-item"><span class="mark">!</span> Persistent pulmonary HTN needing NO</div>
+          <div class="check-item"><span class="mark">!</span> Home on apnoea monitor + caffeine</div>
+          <div class="check-item"><span class="mark">!</span> ECMO · or infant of substance-using mother</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-box reveal">
+      <span class="lbl">Recommendation · Inclusion criteria</span>
+      <ul>
+        <li><strong>Prematurity:</strong> ≤32 weeks gestation <em>or</em> birthweight ≤1500 g</li>
+        <li><strong>Infants with special needs</strong> (red-flag checklist above)</li>
+        <li><strong>Infants who have undergone major surgery</strong> — cardiac or non-cardiac (Walker et al, 2012)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     2. TIMING OF INTERVENTION
+     ============================================================ -->
+<section class="section" id="timing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"><span class="tick">2</span> Timing</div>
+      <h2>Timing of intervention</h2>
+      <p class="desc">A 2018 internal survey of six HA hospitals running high-risk infant services found intervention starts as early as 30 weeks PMA when stable, with most units beginning around 32–34 weeks.</p>
+    </div>
+    <div class="pullquote reveal">
+      “Since the late 1970s the NICU environment has been evaluated with regard to the types and amounts of sensory stimulation. The general consensus is that most infants receive neither sensory deprivation nor sensory overstimulation, but an inappropriate pattern of interaction that includes the components of both.”
+      <cite>Barb &amp; Lemons, 1989</cite>
+    </div>
+    <div class="card-grid cols-2 reveal">
+      <div class="rec-box" style="margin-top:0;">
+        <span class="lbl">Recommendation</span>
+        <p>Consider starting intervention once <strong>postmenstrual age exceeds 30 weeks</strong> and the infant is <strong>medically stable</strong>.</p>
+      </div>
+      <div class="rec-box" style="margin-top:0;">
+        <span class="lbl">Recommendation</span>
+        <p><strong>Cluster handling</strong> with general care wherever possible, to protect a diurnal sleep–wake cycle rather than adding isolated handling episodes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3. NICU STRATEGIES
+     ============================================================ -->
+<section class="section alt" id="nicu">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"><span class="tick">3</span> NICU Care</div>
+      <h2>Strategies to support growth &amp; development in the perinatal period</h2>
+      <p class="desc">Six evidence domains — from reading the infant's own stability signals to feeding readiness. Use the tabs to move between them.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="tabbar" role="tablist" id="nicu-tabbar">
+        <button class="tab-btn active" data-tab="t1">Reading the Infant</button>
+        <button class="tab-btn" data-tab="t2">Positioning</button>
+        <button class="tab-btn" data-tab="t3">Massage &amp; Touch</button>
+        <button class="tab-btn" data-tab="t4">ATVV Stimulation</button>
+        <button class="tab-btn" data-tab="t5">Handling &amp; Exercise</button>
+        <button class="tab-btn" data-tab="t6">Aerodigestive</button>
+      </div>
+
+      <!-- TAB 1: Synactive assessment -->
+      <div class="tab-panel active" id="t1">
+        <p>The <strong>Synactive Theory of Infant Development</strong> (Als, 1982) frames the preterm infant's behaviour as five interdependent subsystems. Reading stability versus stress signals in each is the foundation of every handling decision that follows.</p>
+        <div class="synactive" style="margin-top:16px;">
+          <div class="syn-row head"><div>Subsystem</div><div>Signs of stability</div><div>Signs of stress</div></div>
+          <div class="syn-row"><div class="syn-name">Autonomic</div><div class="syn-stable">Smooth, regular respiration · pink, stable colour · quiet viscera</div><div class="syn-stress">Pauses, gasping, tachypnea · mottled/dusky colour · hiccups, gagging</div></div>
+          <div class="syn-row"><div class="syn-name">Motor</div><div class="syn-stable">Consistent tone, controlled activity</div><div class="syn-stress">Fluctuating tone, uncontrolled activity</div></div>
+          <div class="syn-row"><div class="syn-name">State</div><div class="syn-stable">Clear states; calm, focused alertness</div><div class="syn-stress">Diffuse or disorganised state transitions</div></div>
+          <div class="syn-row"><div class="syn-name">Attention / Interaction</div><div class="syn-stable">Clear, prolonged response to social &amp; sensory stimuli</div><div class="syn-stress">Effort to engage triggers stress in other subsystems</div></div>
+          <div class="syn-row"><div class="syn-name">Self-Regulation</div><div class="syn-stable">Uses foot-bracing, hand-to-mouth, tucking, sucking to self-soothe</div><div class="syn-stress">Strategies fail to restore balance; escalating distress</div></div>
+        </div>
+        <div class="rec-box">
+          <span class="lbl">Recommendation</span>
+          <p>Train yourself and caregivers to notice fragility/stress signals versus robustness/stability signals across all five subsystems, then adapt environment and handling accordingly (Blanchard et al, 2015).</p>
+        </div>
+      </div>
+
+      <!-- TAB 2: Positioning -->
+      <div class="tab-panel" id="t2">
+        <div class="card-grid cols-3">
+          <div class="card">
+            <span class="evidence-pill ev-I">Level I</span>
+            <h4 style="margin-top:8px;">Mechanical ventilation</h4>
+            <p class="tiny">Rivas-Fernandez et al (2016): low–moderate quality evidence favours prone for slightly improved oxygenation, but no position shows sustained, clinically relevant benefit.</p>
+          </div>
+          <div class="card">
+            <span class="evidence-pill ev-I">Level I</span> <span class="evidence-pill ev-III">Level III‑1</span>
+            <h4 style="margin-top:8px;">Apnoea / spontaneous breathing</h4>
+            <p class="tiny">Ballout et al (2017): insufficient evidence overall. Gouna et al (2013, n=19): prone / left-lateral with nest support raised SpO₂ and tidal volume vs supine via better thoracoabdominal synchrony.</p>
+          </div>
+          <div class="card">
+            <span class="evidence-pill ev-I">Level I</span>
+            <h4 style="margin-top:8px;">IVH prevention</h4>
+            <p class="tiny">Romantsik et al (2017): only two RCTs identified (midline vs 90° head rotation); no clear effect shown, and no trials compared supine vs prone midline. More research needed.</p>
+          </div>
+          <div class="card">
+            <h4>SIDS risk</h4>
+            <p class="tiny">King &amp; Norton (2017): prone aids neurodevelopment, sleep state and physiological stability <em>in hospital</em> — but parents must be taught safe, supine home-sleep practice before discharge.</p>
+          </div>
+          <div class="card">
+            <span class="evidence-pill ev-III">Level III‑1</span>
+            <h4 style="margin-top:8px;">Gastro-oesophageal reflux</h4>
+            <p class="tiny">Ewer (1999) &amp; van Wijk (2007): prone and left-lateral positions consistently reduced reflux episode number and duration versus supine and right-lateral.</p>
+          </div>
+          <div class="card">
+            <span class="evidence-pill ev-II">Level II</span>
+            <h4 style="margin-top:8px;">Plagiocephaly</h4>
+            <p class="tiny">Aarnivala et al (2015, n=111 RCT): structured positioning/handling education halved deformational plagiocephaly at 3 months (2D 11% vs 31%; 3D 15% vs 33%).</p>
+          </div>
+        </div>
+        <div class="rec-box">
+          <span class="lbl">Recommendation</span>
+          <p>Positioning is a genuinely complex trade-off between cardiorespiratory stability, neuromusculoskeletal development and pathophysiology. Parent education on <em>appropriate versus inappropriate</em> sleep positioning before discharge is essential to prevent SIDS while preserving developmental gains made in hospital.</p>
+        </div>
+      </div>
+
+      <!-- TAB 3: Massage -->
+      <div class="tab-panel" id="t3">
+        <div class="card-grid cols-2">
+          <div class="card"><span class="evidence-pill ev-I">Level I</span><h4 style="margin-top:8px;">Li Wang et al, 2013</h4><p class="tiny">17 studies: massage improved daily weight gain by 5.32 g and shortened length of stay by 4.41 days.</p></div>
+          <div class="card"><span class="evidence-pill ev-I">Level I</span><h4 style="margin-top:8px;">Badr et al, 2015</h4><p class="tiny">34 studies (PRISMA): weight gain +0.53 g/day and mental scores +7.89 points; no significant effect on LOS or caloric intake.</p></div>
+          <div class="card"><span class="evidence-pill ev-I">Level I</span><h4 style="margin-top:8px;">Alvarez et al, 2017</h4><p class="tiny">23 studies: benefits linked to ↑vagal tone, ↑gastric activity, ↑insulin — plus better neurodevelopment, fewer sepsis episodes, shorter stay, reduced stress.</p></div>
+          <div class="card"><span class="evidence-pill ev-II">Level II</span><h4 style="margin-top:8px;">Haley et al, 2012</h4><p class="tiny">RCT: tactile + kinesthetic stimulation increased bone turnover in favour of bone accretion.</p></div>
+        </div>
+        <div class="rec-box">
+          <span class="lbl">Recommendation</span>
+          <p>Massage, tactile and kinesthetic stimulation are low-cost, near-zero-risk modalities with real potential to support weight gain and development.</p>
+        </div>
+      </div>
+
+      <!-- TAB 4: ATVV -->
+      <div class="tab-panel" id="t4">
+        <div class="card-grid cols-3">
+          <div class="card"><span class="evidence-pill ev-II">Level II</span><h4 style="margin-top:8px;">White-Traut et al, 2014 (HOPE)</h4><p class="tiny">Twice-daily ATVV + maternal guidance → more orally-directed behaviours (rooting, sucking) and more time alert after 7 days.</p></div>
+          <div class="card"><span class="evidence-pill ev-II">Level II</span><h4 style="margin-top:8px;">Medoff-Cooper et al, 2015</h4><p class="tiny">n=183: sucks, sucks-per-burst and sucking maturity index all improved significantly faster than control.</p></div>
+          <div class="card"><span class="evidence-pill ev-II">Level II</span><h4 style="margin-top:8px;">White-Traut et al, 2002</h4><p class="tiny">n=37: increased alertness within 5 minutes, faster nippled intake, shorter length of stay.</p></div>
+        </div>
+        <div class="rec-box">
+          <span class="lbl">Recommendation</span>
+          <p>Structured Auditory-Tactile-Visual-Vestibular stimulation has real potential to improve state organisation and oral feeding readiness.</p>
+        </div>
+      </div>
+
+      <!-- TAB 5: Handling & exercise -->
+      <div class="tab-panel" id="t5">
+        <div class="card-grid cols-2">
+          <div class="card"><span class="evidence-pill ev-II">Level II</span><h4 style="margin-top:8px;">Ustad et al, 2016</h4><p class="tiny">Multi-centre RCT: parents taught postural-control activities at 34 weeks PMA, delivered under PT supervision to 37 weeks → greater TIMP score gain than control.</p></div>
+          <div class="card"><span class="evidence-pill ev-I">Level I</span><h4 style="margin-top:8px;">Schulzke et al, 2014</h4><p class="tiny">4-trial meta-analysis: physical activity programmes (with adequate nutrition) show suggestive short-term weight gain and bone mineralisation benefit.</p></div>
+        </div>
+        <div class="rec-box">
+          <span class="lbl">Recommendation</span>
+          <p>Exercise / physical activity programmes have potential benefit for both motor development and bone mineralisation in premature infants.</p>
+        </div>
+      </div>
+
+      <!-- TAB 6: Aerodigestive -->
+      <div class="tab-panel" id="t6">
+        <p>Neonatal feeding difficulty spans neurological, pulmonary and aerodigestive causes, presenting as overt or silent aspiration (Jadcherla, 2017); videofluoroscopic swallowing study (VFSS) clarifies the mechanism.</p>
+        <p>Prematurity predisposes to breathing and oral-development problems: mouth-breathing disorganises sucking (Trabalon &amp; Schaal, 2012), and low-tone rest posture can drive a high, narrow palate (Moeller, 2010). Myofunctional therapy targets lip seal, palatal tongue rest, pharyngeal tone and functional posture.</p>
+        <div class="tag-row">
+          <span class="chip navy">Assess: tongue tie</span>
+          <span class="chip navy">Assess: mouth breathing</span>
+          <span class="chip navy">Assess: high-arch palate</span>
+          <span class="chip navy">Assess: orofacial dysfunction</span>
+        </div>
+        <div class="rec-box">
+          <span class="lbl">Recommendation</span>
+          <p>Central alignment of the body underpins effective oral sensorimotor and feeding activity (Arvedson, 2002). Physiotherapists play an essential role in managing aerodigestive dysfunction.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     4. PARENTAL EDUCATION
+     ============================================================ -->
+<section class="section" id="parent">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"><span class="tick">4</span> Parents</div>
+      <h2>Parental education for transition to home</h2>
+      <p class="desc">Care doesn't end at the incubator — the strongest short-term gains come from equipping parents before discharge.</p>
+    </div>
+    <div class="card-grid cols-3 reveal">
+      <div class="card"><span class="evidence-pill ev-II">Level II</span><h4 style="margin-top:8px;">Ustad et al, 2016</h4><p class="tiny">Parent-administered PT under supervision improved TIMP scores versus control.</p></div>
+      <div class="card"><span class="evidence-pill ev-II">Level II</span><h4 style="margin-top:8px;">White-Traut et al, 2014</h4><p class="tiny">Nurse–community advocate guidance alongside ATVV boosted orally-directed behaviour and alertness.</p></div>
+      <div class="card"><span class="evidence-pill ev-I">Level I</span><h4 style="margin-top:8px;">Vanderveen et al, 2016</h4><p class="tiny">25-study meta-analysis: parent-involved early intervention improved neurodevelopment at 12 months, sustained to 3 years — but no longer detectable at age 5, and gains were stronger for mental than physical scores.</p></div>
+    </div>
+    <div class="rec-box reveal">
+      <span class="lbl">Recommendation</span>
+      <p>Parent education before transition home has real potential to improve short-term developmental outcomes. Parental involvement in delivering care is crucial and highly recommended — but set expectations that the measurable advantage may fade by school age.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     5. SCREENING
+     ============================================================ -->
+<section class="section alt" id="screening">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"><span class="tick">5</span> Screening</div>
+      <h2>Follow-up screening of neuro-sensorimotor development</h2>
+      <p class="desc">HA's internal consensus: screen every <strong>4 months in year one</strong> corrected age, then every <strong>6 months in year two</strong>. When Novak's (2017) more frequent 3–4-month screening protocol was implemented clinically (Byrne et al, 2017), average CP diagnosis age fell from <strong>18 months to 13 months</strong>.</p>
+    </div>
+
+    <div class="card reveal" style="overflow:hidden;">
+      <h4>Recommended tool by corrected age — Table 5</h4>
+      <div class="timeline">
+        <div class="tl-node"><div class="stem"></div><div class="age">0 months</div><div class="tools"><span>GMA</span><span>TIMP</span><span>Infanib</span><span>AIMS</span><span>PDMS‑2</span></div></div>
+        <div class="tl-node"><div class="stem"></div><div class="age">4 months</div><div class="tools"><span>GMA</span><span>TIMP</span><span>Infanib</span><span>HINE</span><span>AIMS</span><span>PDMS‑2</span><span>Bayley‑4</span></div></div>
+        <div class="tl-node"><div class="stem"></div><div class="age">8 months</div><div class="tools"><span>Infanib</span><span>HINE</span><span>AIMS</span><span>PDMS‑2</span><span>Bayley‑4</span></div></div>
+        <div class="tl-node"><div class="stem"></div><div class="age">12 months</div><div class="tools"><span>Infanib</span><span>HINE</span><span>AIMS</span><span>PDMS‑2</span><span>Bayley‑4</span></div></div>
+        <div class="tl-node"><div class="stem"></div><div class="age">18 months</div><div class="tools"><span>Infanib</span><span>HINE</span><span>AIMS</span><span>PDMS‑2</span><span>Bayley‑4</span></div></div>
+        <div class="tl-node"><div class="stem"></div><div class="age">24 months</div><div class="tools"><span>HINE</span><span>PDMS‑2</span><span>Bayley‑4</span></div></div>
+        <div class="tl-node"><div class="stem"></div><div class="age">&gt;24 months</div><div class="tools"><span>PDMS‑2</span><span>Bayley‑4</span></div></div>
+      </div>
+      <p class="tiny">Scroll sideways on small screens. Tool choice always factors in what's being measured, target age range, administration burden, psychometrics, and assessor training/preference.</p>
+    </div>
+
+    <div class="reveal" style="margin-top:24px;">
+      <h3 style="font-size:1.1rem;margin-bottom:14px;">Tool reference cards</h3>
+
+      <details class="tool" open>
+        <summary><span class="sname">GMA <span class="full">— General Movements Assessment</span></span><span class="arrow">▸</span></summary>
+        <div class="tool-body">
+          <p class="tiny">Prechtl's spontaneous General Movements — writhing (in-utero to 46wk PMA) then fidgety (6–20wk post-term) — read for variability of sequence, amplitude, speed and intensity.</p>
+          <div class="tool-meta">
+            <div><div class="m-lbl">Age range</div><div class="m-val">Early preterm → 3–5mo post-term</div></div>
+            <div><div class="m-lbl">Admin time</div><div class="m-val">3–5 min video, scored later</div></div>
+            <div><div class="m-lbl">Training</div><div class="m-val">General Movement Trust certification required</div></div>
+          </div>
+          <div class="psy-stats">
+            <div class="psy-stat"><div class="n">97% / 89%</div><div class="d">Sens / Spec, fidgety period for CP (Kwong 2018)</div></div>
+            <div class="psy-stat"><div class="n">98% / 91%</div><div class="d">Sens / Spec vs cranial US, MRI, neuro exam (Bosanquet 2013)</div></div>
+            <div class="psy-stat"><div class="n">κ ≈ 0.80</div><div class="d">Inter/intra-observer agreement (Hadders-Algra 2004)</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="tool">
+        <summary><span class="sname">TIMP <span class="full">— Test of Infant Motor Performance</span></span><span class="arrow">▸</span></summary>
+        <div class="tool-body">
+          <p class="tiny">42 items (13 observed + 26 elicited) testing postural &amp; selective motor control for functional performance in early infancy.</p>
+          <div class="tool-meta">
+            <div><div class="m-lbl">Age range</div><div class="m-val">32wk GA → 4mo post-term</div></div>
+            <div><div class="m-lbl">Admin time</div><div class="m-val">~25 min (TIMPSI screening version shorter)</div></div>
+            <div><div class="m-lbl">Norms</div><div class="m-val">990 US infants, 11 sites</div></div>
+          </div>
+          <div class="psy-stats">
+            <div class="psy-stat"><div class="n">ICC .95</div><div class="d">Inter-rater reliability (Campbell 1993)</div></div>
+            <div class="psy-stat"><div class="n">r = .82</div><div class="d">Concurrent validity with AIMS at 3mo CA (Nuysink 2013)</div></div>
+            <div class="psy-stat"><div class="n">r = .89</div><div class="d">Test–retest over 3 days (Campbell 1999)</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="tool">
+        <summary><span class="sname">Infanib <span class="full">— Infant Neurological International Battery</span></span><span class="arrow">▸</span></summary>
+        <div class="tool-body">
+          <p class="tiny">20-item, 5-factor screen (Spasticity, Vestibular Function, Head &amp; Trunk, French Angles, Legs) with age-banded cut-offs for abnormal / transient / normal.</p>
+          <div class="tool-meta">
+            <div><div class="m-lbl">Age range</div><div class="m-val">0–18 months corrected</div></div>
+            <div><div class="m-lbl">Admin time</div><div class="m-val">~15 minutes</div></div>
+            <div><div class="m-lbl">Training</div><div class="m-val">None specialised required</div></div>
+          </div>
+          <div class="psy-stats">
+            <div class="psy-stat"><div class="n">90% / 83%</div><div class="d">Sensitivity / specificity (Soleimani 2007)</div></div>
+            <div class="psy-stat"><div class="n">r = .97</div><div class="d">Inter-rater reliability (Castro 1985)</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="tool">
+        <summary><span class="sname">HINE <span class="full">— Hammersmith Infant Neurological Examination</span></span><span class="arrow">▸</span></summary>
+        <div class="tool-body">
+          <p class="tiny">26-item scored neurological exam (5 domains, max 78) plus unscored milestones/behaviour. Sequential use tracks early CP signs and predicts sitting/walking.</p>
+          <div class="tool-meta">
+            <div><div class="m-lbl">Age range</div><div class="m-val">2–24 months</div></div>
+            <div><div class="m-lbl">Admin time</div><div class="m-val">5–10 minutes</div></div>
+            <div><div class="m-lbl">Global cut-offs</div><div class="m-val">&gt;64 → likely walking; &lt;52 → CP risk</div></div>
+          </div>
+          <div class="psy-stats">
+            <div class="psy-stat"><div class="n">96% / 87%</div><div class="d">Sens / Spec, score &lt;57 at 3mo for CP (Romeo 2008)</div></div>
+            <div class="psy-stat"><div class="n">98% / 85%</div><div class="d">Sens / Spec independent walking, score &gt;64, 6–15mo CA</div></div>
+            <div class="psy-stat"><div class="n">ICC .97</div><div class="d">Intra/inter-rater, global score (Tedla 2014)</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="tool">
+        <summary><span class="sname">AIMS <span class="full">— Alberta Infant Motor Scale</span></span><span class="arrow">▸</span></summary>
+        <div class="tool-body">
+          <p class="tiny">58-item observational scale (prone / supine / sitting / standing) scored on antigravity muscular control with minimal handling.</p>
+          <div class="tool-meta">
+            <div><div class="m-lbl">Age range</div><div class="m-val">0–18 months</div></div>
+            <div><div class="m-lbl">Admin time</div><div class="m-val">20–30 minutes</div></div>
+            <div><div class="m-lbl">Norms</div><div class="m-val">2202 Alberta, Canada infants</div></div>
+          </div>
+          <div class="psy-stats">
+            <div class="psy-stat"><div class="n">&lt;-2 SD</div><div class="d">Abnormal cut-off (Piper &amp; Darrah 1994)</div></div>
+            <div class="psy-stat"><div class="n">&gt;0.99</div><div class="d">Inter-rater &amp; test–retest reliability</div></div>
+            <div class="psy-stat"><div class="n">86.4% / 93%</div><div class="d">Sens / Spec, 5th centile at 8mo (Darrah 1998B)</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="tool">
+        <summary><span class="sname">PDMS‑2 <span class="full">— Peabody Developmental Motor Scales</span></span><span class="arrow">▸</span></summary>
+        <div class="tool-body">
+          <p class="tiny">127 gross-motor + 122 fine-motor items across 6 components (Reflex, Stationary, Locomotion, Object Manipulation, Grasping, Visual-Motor Integration).</p>
+          <div class="tool-meta">
+            <div><div class="m-lbl">Age range</div><div class="m-val">0–5 years</div></div>
+            <div><div class="m-lbl">Admin time</div><div class="m-val">30–60 minutes</div></div>
+            <div><div class="m-lbl">Training</div><div class="m-val">Not required</div></div>
+          </div>
+          <div class="psy-stats">
+            <div class="psy-stat"><div class="n">α .96–.97</div><div class="d">Internal consistency (Folio 2000)</div></div>
+            <div class="psy-stat"><div class="n">r = .84–.91</div><div class="d">Concurrent validity with PDMS‑1</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="tool">
+        <summary><span class="sname">Bayley‑4 <span class="full">— Bayley Scales of Infant &amp; Toddler Development</span></span><span class="arrow">▸</span></summary>
+        <div class="tool-body">
+          <p class="tiny">419 items across 5 scales (Cognitive, Language, Motor, Social-Emotional, Adaptive Behavior); Cognitive/Language/Motor administered in person, Social-Emotional/Adaptive Behavior can be remote.</p>
+          <div class="tool-meta">
+            <div><div class="m-lbl">Age range</div><div class="m-val">16 days – 42 months</div></div>
+            <div><div class="m-lbl">Admin time</div><div class="m-val">30–90 min by age</div></div>
+            <div><div class="m-lbl">Qualification</div><div class="m-val">Masters/doctorate + training</div></div>
+          </div>
+          <div class="psy-stats">
+            <div class="psy-stat"><div class="n">r = .81–.84</div><div class="d">Test–retest across subtests</div></div>
+            <div class="psy-stat"><div class="n">r = .93–.95</div><div class="d">Internal consistency</div></div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     6. REFERRAL
+     ============================================================ -->
+<section class="section" id="referral">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"><span class="tick">6</span> Referral</div>
+      <h2>Referral pathways</h2>
+      <p class="desc">Physiotherapy-identified motor abnormality is only the start of the pathway — HA services connect outward to the Department of Health and Social Welfare Department.</p>
+    </div>
+
+    <div class="flow reveal">
+      <div class="flow-card">
+        <div class="stage">Stage 1</div>
+        <h4>Early intervention</h4>
+        <p class="tiny">Physiotherapy (± other disciplines) begins within HA once motor abnormality is identified at screening.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card">
+        <div class="stage">Stage 2a</div>
+        <h4>EETC</h4>
+        <p class="tiny">NGO-run Early Education &amp; Training Centre for birth–2y (incl. Training Subsidy Programme for those waitlisted). Family-centred programme; PT → medical officer → social worker → Central Referral System.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card">
+        <div class="stage">Stage 2b</div>
+        <h4>CAC assessment</h4>
+        <p class="tiny">Child Assessment Centre — part of the territory-wide VLBW Outcome Surveillance Programme since 1993. ELBW (&lt;1.0kg) infants assessed at 8 &amp; 21 months corrected age per protocol.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-card">
+        <div class="stage">Stage 3</div>
+        <h4>SCCC placement</h4>
+        <p class="tiny">Considered when moderate–severe abnormality is likely to persist beyond age 2. Referral flows through CAC assessment, then social worker → Central Referral System for Rehabilitation Services.</p>
+      </div>
+    </div>
+
+    <div class="card reveal" style="margin-top:18px;">
+      <h4>SCCC eligibility (ages 2 to under 6, not yet in primary school)</h4>
+      <div class="tag-row" style="margin-top:10px;">
+        <span class="chip coral">Moderate–severe mental handicap</span>
+        <span class="chip coral">Moderate–severe physical handicap</span>
+        <span class="chip coral">Deaf / severe–profound hearing loss</span>
+        <span class="chip coral">Blind / severe visual impairment</span>
+        <span class="chip coral">Autistic</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     7. EXIT OF FOLLOW-UP
+     ============================================================ -->
+<section class="section alt" id="exit">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"><span class="tick">7</span> Exit</div>
+      <h2>Exit of the follow-up — and beyond</h2>
+      <p class="desc">Milner et al (2015) reviewed VLBW survivor outcomes; follow-up duration in the literature ranged from 6 months to 13 years.</p>
+    </div>
+    <div class="card-grid cols-3 reveal">
+      <div class="card"><h4>21.4%</h4><p class="tiny">Overall neurodevelopmental impairment (95% CI 11.6–30.8)</p></div>
+      <div class="card"><h4>16.3%</h4><p class="tiny">Cognitive impairment (95% CI 6.3–29.6)</p></div>
+      <div class="card"><h4>11.2%</h4><p class="tiny">Cerebral palsy (95% CI 5.9–16.1)</p></div>
+    </div>
+    <div class="card-grid cols-2 reveal" style="margin-top:16px;">
+      <div class="card">
+        <h4>18 → 13 months</h4>
+        <p class="tiny">Earlier, more frequent (3–4 month) screening moved the average age of CP diagnosis from 18 months down to 13 months in the follow-up clinic (Byrne et al, 2017).</p>
+      </div>
+      <div class="card">
+        <h4>DCD at school age</h4>
+        <p class="tiny">Williams et al (2009): 40% mild-moderate and 19% moderate motor-skill impairment (excluding CP) in preterm (&lt;37wk) children — versus a 5–8% DCD prevalence in the general school-age population (Barnhart, 2003). These infants are easy to lose from view once discharged from early follow-up.</p>
+      </div>
+    </div>
+    <div class="pullquote reveal">
+      Follow-up duration is “a compromise … between assessing children at early ages … and assessing children later in life, allowing more detailed assessment but running the risk of loss to follow-up.”
+      <cite>Doyle et al, 2014</cite>
+    </div>
+    <div class="rec-box reveal">
+      <span class="lbl">Practice point</span>
+      <p>Most neurological impairment or motor delay is identifiable by age 2, though some recommend extending follow-up to 3 years for ELBW (&lt;1.0 kg) infants (Lee et al, 2008). Infants with abnormalities identified before age 2 continue receiving HA multidisciplinary care until EETC or SCCC placement is available — this requires close, ongoing collaboration between Hospital Authority, the Department of Health and the Social Welfare Department.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     8. QUIZ
+     ============================================================ -->
+<section class="section" id="quiz">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"><span class="tick">★</span> Knowledge Check</div>
+      <h2>Clinical Knowledge Quiz — ward round case review</h2>
+      <p class="desc">Five short case vignettes drawn from the sections above. Pick the option you'd actually act on — the rationale for every option appears the moment you click.</p>
+    </div>
+
+    <div class="quiz-shell reveal">
+      <div class="quiz-top">
+        <div class="progress-dots" id="progressDots"></div>
+        <div class="score-readout">Score: <span id="scoreNum">0</span>/5</div>
+      </div>
+
+      <div id="quizIntroCopy" class="quiz-intro-copy">Tap an answer below to reveal the clinical rationale immediately. You can only score your first choice per case, but every option's reasoning stays visible so you can review.</div>
+
+      <div class="case-card" id="quizCard">
+        <div class="case-label" id="caseLabel">Case 1 of 5</div>
+        <div class="case-vignette" id="caseVignette"></div>
+        <div class="case-question" id="caseQuestion"></div>
+        <div class="opt-list" id="optList"></div>
+        <div class="verdict-banner" id="verdictBanner"></div>
+      </div>
+
+      <div class="results-card" id="resultsCard">
+        <div class="readout" style="color:#7FD9C4;font-size:.78rem;">Debrief complete</div>
+        <div class="big"><span id="finalScore">0</span>/5</div>
+        <p class="msg" id="finalMsg"></p>
+        <button class="btn-restart" id="restartBtn">Restart quiz</button>
+      </div>
+
+      <div class="quiz-nav">
+        <button class="btn-next" id="nextBtn">Next case →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="wrap fgrid">
+    <div style="max-width:520px;">
+      <strong>Manual of Physiotherapy for High-Risk Infants</strong> — Hospital Authority, Paediatrics Specialty Group. Version 2, issued 24 Mar 2025, review due 24 Mar 2028.
+      <p style="margin-top:10px;">This page is an internal training summary for junior physiotherapist education only. It is not an HA-endorsed document — always confirm current practice against the authoritative electronic version on the HA intranet, and observe copyright / IP guidance and evidence-based governance.</p>
+    </div>
+    <div>
+      <strong>On this page</strong>
+      <p style="margin-top:10px;line-height:2;">
+        <a href="#identify">Identifying the infant</a><br>
+        <a href="#screening">Screening tools</a><br>
+        <a href="#quiz">Knowledge quiz</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   NAV — active link highlighting + smooth scroll offset
+   ============================================================ */
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlinks a'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var id = '#' + entry.target.id;
+      var link = links.find(function(l){ return l.getAttribute('href') === id; });
+      if(!link) return;
+      if(entry.isIntersecting){
+        links.forEach(function(l){ l.classList.remove('active'); });
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+  sections.forEach(function(s){ io.observe(s); });
+})();
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = document.querySelectorAll('.reveal');
+  if(reduced){
+    els.forEach(function(el){ el.classList.add('in-view'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(function(el){ io.observe(el); });
+})();
+
+/* ============================================================
+   TABS
+   ============================================================ */
+(function(){
+  var bar = document.getElementById('nicu-tabbar');
+  if(!bar) return;
+  var btns = bar.querySelectorAll('.tab-btn');
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btns.forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+})();
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+(function(){
+  var quizData = [
+    {
+      vignette: "Baby Chan was born at 26 weeks' gestation and is now 29 weeks post-menstrual age (PMA) in the NICU. She was extubated to NCPAP four days ago and her vital signs have been stable for the past 48 hours. The attending team asks you to commence a structured developmental handling programme today.",
+      question: "What is the most appropriate action, based on the guideline's recommendation on timing of intervention?",
+      options: [
+        { text: "Begin the full developmental handling programme today — she is medically stable.", correct:false,
+          rationale: "Stability alone isn't the trigger. The guideline recommends starting intervention only once postmenstrual age is greater than 30 weeks AND the infant is medically stable. At 29 weeks PMA, Baby Chan hasn't reached that threshold yet." },
+        { text: "Defer all handling until she reaches full term (40 weeks).", correct:false,
+          rationale: "Overly conservative. HA NICUs typically begin intervention around 32–34 weeks PMA once the &gt;30-week-plus-stability threshold is met — waiting for term denies her the benefits of early positioning and handling during a key developmental window." },
+        { text: "Wait until she is ≥30 weeks PMA and remains medically stable, then introduce handling clustered with routine care.", correct:true,
+          rationale: "Correct. This mirrors both core recommendations: consider starting once PMA is greater than 30 weeks and the infant is medically stable, and cluster handling with general care to protect a sleep–wake cycle with diurnal rhythmicity, rather than adding isolated extra handling episodes." },
+        { text: "Perform only a General Movements Assessment now, since it involves no handling.", correct:false,
+          rationale: "GMA is a valuable observational tool, but it doesn't answer when to begin therapeutic handling, and it doesn't apply the clustered-care principle. The PMA &gt;30-week + stability threshold still governs when structured handling should start." }
+      ]
+    },
+    {
+      vignette: "Baby Wong, 33 weeks corrected age, remains on NCPAP and has clinically significant gastro-oesophageal reflux confirmed on pH monitoring, with frequent post-feed desaturations. The bedside nurse asks for your positioning advice while she remains on respiratory support in the NICU.",
+      question: "Which positioning strategy is best supported by the evidence summarised in the guideline?",
+      options: [
+        { text: "Right lateral positioning at all times.", correct:false,
+          rationale: "Not supported. Right lateral was associated with more lower-oesophageal-sphincter relaxation and reflux episodes than left lateral (van Wijk 2010, Corvaglia 2007) — it's the least favourable of the four positions studied." },
+        { text: "Supine positioning, since it is the universally 'safe' position for a monitored infant.", correct:false,
+          rationale: "Supine actually showed more acidic/non-acidic reflux episodes than prone or left lateral in this monitored NICU context (van Wijk 2007). Supine only becomes the priority once the infant is unsupervised at home, for SIDS prevention." },
+        { text: "Prone or left-lateral positioning with nest support while under continuous hospital monitoring, paired with clear parent education that this changes before going home.", correct:true,
+          rationale: "Correct. Ewer (1999), van Wijk (2007) and Gouna (2013) all show prone/left-lateral reduce reflux episodes and improve SpO₂/tidal volume via better thoracoabdominal synchrony. Crucially, the guideline stresses this only applies under hospital monitoring — parents must be taught safe supine sleep before transitioning home, since prone is a SIDS risk factor unsupervised." },
+        { text: "Prone positioning permanently, including after discharge home.", correct:false,
+          rationale: "Prone has clear physiological advantages in the monitored hospital setting, but is an established SIDS risk factor for unsupervised home sleep. The guideline explicitly requires parental education on appropriate versus inappropriate sleep practice before discharge." }
+      ]
+    },
+    {
+      vignette: "You perform a General Movements Assessment on a 4-week-old, ex-27-week-gestation infant (writhing period). The movements you observe are abrupt and tremulous, with large amplitude, high speed, and a jerky quality.",
+      question: "How should you classify this finding, and what is the most appropriate next step?",
+      options: [
+        { text: "This is a 'poor repertoire' GM; discharge the infant from GMA follow-up, as it is a mild finding.", correct:false,
+          rationale: "Poor repertoire GMs are monotonous and lack variability — not abrupt, jerky, or large in amplitude. And no single GM finding, mild or otherwise, is grounds for discharging from follow-up." },
+        { text: "This is a 'chaotic' GM — one of the abnormal writhing-period patterns — so continue monitoring through to the fidgety period (10–20 weeks post-term), which has the strongest predictive accuracy for CP.", correct:true,
+          rationale: "Correct. Abrupt, tremulous, large-amplitude, jerky movements match the description of chaotic GMs. GMA during the fidgety period (10–20 weeks) has the highest predictive accuracy for cerebral palsy — around 97% sensitivity and 89% specificity (Kwong et al, 2018) — so that's where diagnostic confidence will really build." },
+        { text: "This is a normal writhing GM — the large amplitude simply reflects a vigorous, healthy infant.", correct:false,
+          rationale: "Normal writhing GMs are small-to-moderate amplitude, slow-to-moderate speed, and elliptical in form. Large, abrupt, jerky movements are explicitly described as abnormal (chaotic), not a sign of vigour." },
+        { text: "Diagnose cerebral palsy now and refer directly for Special Child Care Centre placement.", correct:false,
+          rationale: "A single abnormal writhing-period GM is not diagnostic. In this framework, CP risk is most strongly flagged by absent fidgety movements at 10–20 weeks post-term — and SCCC referral requires a CAC assessment pathway, not a same-visit PT diagnosis at 4 weeks." }
+      ]
+    },
+    {
+      vignette: "Baby Lee, born at 28 weeks, attends the high-risk follow-up clinic for her scheduled developmental screening visit at 12 months corrected age.",
+      question: "According to the department's recommended screening timetable (Table 5), which assessment tools are appropriate to administer at this visit?",
+      options: [
+        { text: "GMA and TIMP, since these are the gold-standard tools for every high-risk follow-up visit.", correct:false,
+          rationale: "Both tools have aged out by 12 months. GMA is only valid up to about 3–5 months post-term, and TIMP up to about 4 months post-term (17 weeks corrected age) — neither applies at a 12-month visit." },
+        { text: "Infanib, HINE, AIMS, PDMS-2, and Bayley-4.", correct:true,
+          rationale: "Correct. This is exactly the recommended toolset at the 12-month corrected-age checkpoint in Table 5 — the same combination used from 8 through 18 months." },
+        { text: "HINE, PDMS-2, and Bayley-4 only, since Infanib and AIMS are limited to infants under 12 months.", correct:false,
+          rationale: "Not quite. Infanib is validated across 0–18 months and AIMS across 0–18 months, so both remain appropriate and are recommended at the 12-month checkpoint per Table 5, not just HINE/PDMS-2/Bayley-4." },
+        { text: "No formal tool is needed — clinical observation alone is sufficient at this age.", correct:false,
+          rationale: "The manual is built around using validated, standardised instruments across both in-patient and out-patient follow-up phases specifically because they add objectivity and predictive value beyond informal observation." }
+      ]
+    },
+    {
+      vignette: "At the 18-month corrected-age review, Baby Patel (born at 25 weeks) shows moderate spastic diplegia on HINE and AIMS testing, with function persistently below the 5th percentile since the 8-month assessment. The team anticipates this will continue beyond age 2.",
+      question: "What is the most appropriate referral pathway to consider now, per the guideline?",
+      options: [
+        { text: "Refer directly to a Special Child Care Centre (SCCC) without a CAC assessment.", correct:false,
+          rationale: "The pathway to SCCC placement runs through Child Assessment Centre (CAC) assessment first. The physiotherapist liaises with the medical officer, who refers to CAC — only once SCCC is deemed necessary after that assessment does the case move to the Social Welfare Department's Central Referral System." },
+        { text: "Refer to CAC for assessment of SCCC placement, since moderate-to-severe abnormality is likely to persist beyond age 2.", correct:true,
+          rationale: "Correct. This matches the guideline's criterion for CAC-for-SCCC referral exactly: it's considered in high-risk screening when moderate-to-severe abnormalities are likely to persist beyond age two." },
+        { text: "Refer only to EETC, since it is sufficient for children with persistent moderate-severe motor abnormality up to school age.", correct:false,
+          rationale: "EETC (birth–2 years, family-centred early intervention) fits an earlier or milder-to-moderate picture. For abnormality expected to persist beyond age 2, the guideline's pathway is CAC assessment for SCCC placement, which serves children aged 2 to under 6 with moderate-to-severe disability." },
+        { text: "No referral is needed — continue physiotherapy alone indefinitely.", correct:false,
+          rationale: "The guideline is explicit about close collaboration between Hospital Authority, the Department of Health and the Social Welfare Department, referring onward to community services (EETC/CAC/SCCC) to meet the child's ongoing needs — physiotherapy alone is not the intended endpoint." }
+      ]
+    }
+  ];
+
+  var current = 0;
+  var score = 0;
+  var answers = []; // 'correct' | 'wrong' | null
+
+  var progressDotsEl = document.getElementById('progressDots');
+  var scoreNumEl = document.getElementById('scoreNum');
+  var caseLabelEl = document.getElementById('caseLabel');
+  var caseVignetteEl = document.getElementById('caseVignette');
+  var caseQuestionEl = document.getElementById('caseQuestion');
+  var optListEl = document.getElementById('optList');
+  var verdictBannerEl = document.getElementById('verdictBanner');
+  var nextBtn = document.getElementById('nextBtn');
+  var quizCard = document.getElementById('quizCard');
+  var resultsCard = document.getElementById('resultsCard');
+  var finalScoreEl = document.getElementById('finalScore');
+  var finalMsgEl = document.getElementById('finalMsg');
+  var restartBtn = document.getElementById('restartBtn');
+  var introCopy = document.getElementById('quizIntroCopy');
+
+  function buildDots(){
+    progressDotsEl.innerHTML = '';
+    quizData.forEach(function(_, i){
+      var d = document.createElement('div');
+      d.className = 'pd';
+      d.id = 'pd-' + i;
+      progressDotsEl.appendChild(d);
+    });
+  }
+
+  function updateDots(){
+    quizData.forEach(function(_, i){
+      var d = document.getElementById('pd-' + i);
+      d.classList.remove('current','answered-correct','answered-wrong');
+      if(answers[i] === 'correct') d.classList.add('answered-correct');
+      else if(answers[i] === 'wrong') d.classList.add('answered-wrong');
+      if(i === current) d.classList.add('current');
+    });
+  }
+
+  var letters = ['A','B','C','D'];
+
+  function renderQuestion(){
+    quizCard.style.display = 'block';
+    resultsCard.classList.remove('show');
+    nextBtn.classList.remove('show');
+    verdictBannerEl.classList.remove('show','good','bad');
+    verdictBannerEl.innerHTML = '';
+
+    var q = quizData[current];
+    caseLabelEl.textContent = 'Case ' + (current + 1) + ' of ' + quizData.length;
+    caseVignetteEl.textContent = q.vignette;
+    caseQuestionEl.textContent = q.question;
+    optListEl.innerHTML = '';
+
+    q.options.forEach(function(opt, i){
+      var row = document.createElement('button');
+      row.className = 'opt';
+      row.setAttribute('type','button');
+      row.innerHTML = '<span class="opt-letter">' + letters[i] + '</span>' + opt.text +
+        '<div class="opt-rationale">' + opt.rationale + '</div>';
+      row.addEventListener('click', function(){ handleAnswer(i); });
+      optListEl.appendChild(row);
+    });
+
+    updateDots();
+    scoreNumEl.textContent = score;
+  }
+
+  function handleAnswer(selectedIndex){
+    if(answers[current] !== undefined && answers[current] !== null) return; // already answered
+    var q = quizData[current];
+    var optionEls = optListEl.querySelectorAll('.opt');
+    var selectedCorrect = q.options[selectedIndex].correct;
+
+    optionEls.forEach(function(el, i){
+      el.classList.add('locked','answered');
+      if(i === selectedIndex){
+        el.classList.add(selectedCorrect ? 'correct' : 'incorrect');
+      } else if(q.options[i].correct){
+        el.classList.add('correct');
+      } else {
+        el.classList.add('dim');
+      }
+    });
+
+    verdictBannerEl.classList.add('show', selectedCorrect ? 'good' : 'bad');
+    verdictBannerEl.textContent = selectedCorrect
+      ? '✓ Correct — sound clinical reasoning.'
+      : '✕ Not quite — compare your choice with the highlighted correct answer above.';
+
+    answers[current] = selectedCorrect ? 'correct' : 'wrong';
+    if(selectedCorrect) score++;
+
+    scoreNumEl.textContent = score;
+    updateDots();
+
+    nextBtn.textContent = (current === quizData.length - 1) ? 'See results →' : 'Next case →';
+    nextBtn.classList.add('show');
+  }
+
+  function showResults(){
+    quizCard.style.display = 'none';
+    nextBtn.classList.remove('show');
+    resultsCard.classList.add('show');
+    finalScoreEl.textContent = score;
+    var msg;
+    if(score === 5){
+      msg = "Exemplary clinical reasoning — you're reading these cases the way the guideline intends. Ready for independent high-risk infant caseload discussions.";
+    } else if(score >= 3){
+      msg = "Solid grasp of the guideline. Revisit the rationale on any missed case above, then re-read that section before your next ward round.";
+    } else {
+      msg = "Worth another pass through the sections above — especially the ones tied to your missed cases — before applying this on the ward.";
+    }
+    finalMsgEl.textContent = msg;
+  }
+
+  nextBtn.addEventListener('click', function(){
+    if(current < quizData.length - 1){
+      current++;
+      renderQuestion();
+    } else {
+      showResults();
+    }
+  });
+
+  restartBtn.addEventListener('click', function(){
+    current = 0; score = 0; answers = [];
+    renderQuestion();
+  });
+
+  buildDots();
+  renderQuestion();
+})();
+</script>
+</body>
+</html>

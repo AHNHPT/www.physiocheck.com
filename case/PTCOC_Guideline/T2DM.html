@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhysioDM HK • T2DM Physiotherapy Guidelines</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Roboto+Slab:wght@600&amp;display=swap');
+        
+        :root {
+            --ha-red: #e30613;
+        }
+        
+        .tail-container {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .header-font {
+            font-family: 'Roboto Slab', sans-serif;
+        }
+
+        .section-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .section-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #e30613;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .quiz-option {
+            transition: all 0.2s;
+        }
+        
+        .quiz-option:hover {
+            transform: scale(1.02);
+        }
+        
+        .correct {
+            background-color: #d1fae5 !important;
+            border-color: #10b981;
+        }
+        
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444;
+        }
+
+        .progress-bar {
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+    </style>
+</head>
+<body class="tail-container bg-gray-50 text-gray-800">
+    <!-- HEADER -->
+    <header class="bg-white border-b-4 border-red-600 shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="px-6 py-5 flex items-center justify-between">
+                <div class="flex items-center gap-x-4">
+                    <div class="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-inner">♥</div>
+                    <div>
+                        <h1 class="header-font text-3xl font-semibold tracking-tight text-gray-900">PhysioDM HK</h1>
+                        <p class="text-xs text-gray-500 -mt-1">Hospital Authority • Primary Care</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a href="#intro" onclick="navigateTo('intro')" class="nav-link text-gray-600 hover:text-red-600">Intro</a>
+                    <a href="#benefits" onclick="navigateTo('benefits')" class="nav-link text-gray-600 hover:text-red-600">Benefits</a>
+                    <a href="#prescription" onclick="navigateTo('prescription')" class="nav-link text-gray-600 hover:text-red-600">Prescription</a>
+                    <a href="#special" onclick="navigateTo('special')" class="nav-link text-gray-600 hover:text-red-600">Considerations</a>
+                    <a href="#quiz" onclick="navigateTo('quiz')" class="nav-link text-gray-600 hover:text-red-600">Quiz</a>
+                </nav>
+                <div class="flex items-center gap-x-3">
+                    <div class="text-xs bg-amber-100 text-amber-700 px-3 py-1.5 rounded-3xl flex items-center gap-x-1.5">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        Version 2.0 (2026)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <!-- HERO -->
+        <div class="bg-gradient-to-br from-red-600 to-red-700 text-white rounded-3xl p-12 mb-12 shadow-xl relative overflow-hidden">
+            <div class="absolute right-0 bottom-0 opacity-10 text-[280px] leading-none font-black">DM</div>
+            <div class="max-w-2xl relative">
+                <span class="inline-flex items-center gap-x-2 bg-white/20 backdrop-blur-md text-white text-sm font-medium px-5 py-2 rounded-3xl mb-6">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    T2DM PHYSIOTHERAPY GUIDELINES
+                </span>
+                <h1 class="header-font text-6xl font-bold leading-none tracking-tighter mb-4">Physiotherapy Service for Type 2 Diabetes Mellitus in Primary Care</h1>
+                <p class="text-xl text-red-100">Interactive summary for junior physiotherapists • Hospital Authority</p>
+                <div class="flex items-center gap-x-6 mt-10">
+                    <button onclick="navigateTo('quiz')" 
+                            class="bg-white text-red-700 hover:bg-red-50 px-8 py-4 rounded-2xl font-semibold flex items-center gap-x-3 transition-all active:scale-95">
+                        <i class="fa-solid fa-clipboard-question"></i>
+                        Start Knowledge Quiz
+                    </button>
+                    <button onclick="document.getElementById('prescription').scrollIntoView({behavior:'smooth'})" 
+                            class="border border-white/70 hover:bg-white/10 px-8 py-4 rounded-2xl font-medium transition-all">
+                        Explore Guidelines →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK STATS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            <div class="bg-white rounded-3xl p-6 shadow">
+                <div class="text-red-500 text-4xl font-bold">1 in 10</div>
+                <div class="text-sm text-gray-500 mt-1">Hong Kong adults affected</div>
+            </div>
+            <div class="bg-white rounded-3xl p-6 shadow">
+                <div class="text-red-500 text-4xl font-bold">490K+</div>
+                <div class="text-sm text-gray-500 mt-1">T2DM patients under HA care</div>
+            </div>
+            <div class="bg-white rounded-3xl p-6 shadow">
+                <div class="text-red-500 text-4xl font-bold">150 min</div>
+                <div class="text-sm text-gray-500 mt-1">Weekly moderate aerobic</div>
+            </div>
+            <div class="bg-white rounded-3xl p-6 shadow">
+                <div class="text-red-500 text-4xl font-bold">2-3x</div>
+                <div class="text-sm text-gray-500 mt-1">Resistance sessions/week</div>
+            </div>
+        </div>
+
+        <!-- INTRODUCTION -->
+        <div id="intro" class="mb-20">
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <span class="uppercase tracking-widest text-red-600 text-xs font-semibold">Section 1</span>
+                    <h2 class="header-font text-4xl font-semibold">Introduction, Classification &amp; Epidemiology</h2>
+                </div>
+                <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-xs flex items-center gap-x-1 text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-arrow-up"></i> TOP
+                </a>
+            </div>
+            
+            <div class="grid md:grid-cols-12 gap-8">
+                <!-- Classification -->
+                <div class="md:col-span-5 bg-white rounded-3xl p-8 shadow">
+                    <h3 class="font-semibold text-xl mb-6 flex items-center gap-x-3">
+                        <span class="text-red-600">📋</span> Classification of DM
+                    </h3>
+                    <div class="space-y-6 text-sm">
+                        <div>
+                            <div class="font-semibold text-red-700">Type 2 DM (T2DM)</div>
+                            <div class="text-gray-600">90–95% of cases • Insulin resistance + secretory defect</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-red-700">Type 1 DM (T1DM)</div>
+                            <div class="text-gray-600">5–10% of cases • Autoimmune β-cell destruction</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-red-700">Gestational DM</div>
+                            <div class="text-gray-600">Screened at 24–28 weeks in pregnancy</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-7 bg-white rounded-3xl p-8 shadow">
+                    <h3 class="font-semibold text-xl mb-4 flex items-center gap-x-3">
+                        <span class="text-red-600">📍</span> Hong Kong Situation (2023)
+                    </h3>
+                    <div class="prose prose-gray">
+                        <ul class="space-y-3">
+                            <li class="flex gap-x-3"><span class="text-green-500 font-bold">•</span> Prevalence: ~8.5% among adults aged 15-48</li>
+                            <li class="flex gap-x-3"><span class="text-green-500 font-bold">•</span> 54.1% undiagnosed</li>
+                            <li class="flex gap-x-3"><span class="text-green-500 font-bold">•</span> 490,000+ T2DM patients under HA care</li>
+                            <li class="flex gap-x-3"><span class="text-green-500 font-bold">•</span> 11th leading cause of death</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-12 mt-6 bg-gradient-to-br from-red-50 to-amber-50 border border-red-100 rounded-3xl p-8">
+                    <h3 class="font-semibold mb-6">Role of Physiotherapy</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="flex gap-x-4">
+                            <div class="w-8 h-8 bg-white shadow rounded-2xl flex items-center justify-center flex-shrink-0">🏃</div>
+                            <div>
+                                <div class="font-medium">Exercise Specialist</div>
+                                <div class="text-sm text-gray-600">Prescribe tailored programs and promote long-term adherence</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-x-4">
+                            <div class="w-8 h-8 bg-white shadow rounded-2xl flex items-center justify-center flex-shrink-0">📊</div>
+                            <div>
+                                <div class="font-medium">Key Outcomes</div>
+                                <div class="text-sm text-gray-600">Improve HbA1c, BMI, strength, balance &amp; quality of life</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BENEFITS -->
+        <div id="benefits" class="mb-20 scroll-mt-20">
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <span class="uppercase tracking-widest text-red-600 text-xs font-semibold">Section 2</span>
+                    <h2 class="header-font text-4xl font-semibold">Benefits of Exercise</h2>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Aerobic -->
+                <div class="section-card bg-white rounded-3xl p-7 shadow border border-transparent hover:border-red-200">
+                    <div class="h-2 bg-blue-500 w-16 rounded mb-6"></div>
+                    <h3 class="font-semibold text-xl mb-2">Aerobic Exercise</h3>
+                    <ul class="text-sm space-y-2 text-gray-600">
+                        <li>↓ HbA1c</li>
+                        <li>↑ Insulin sensitivity</li>
+                        <li>Improved VO₂ max</li>
+                        <li>Cardiovascular protection</li>
+                    </ul>
+                </div>
+                
+                <!-- Resistance -->
+                <div class="section-card bg-white rounded-3xl p-7 shadow border border-transparent hover:border-red-200">
+                    <div class="h-2 bg-amber-500 w-16 rounded mb-6"></div>
+                    <h3 class="font-semibold text-xl mb-2">Resistance Training</h3>
+                    <ul class="text-sm space-y-2 text-gray-600">
+                        <li>↑ Muscle mass &amp; strength</li>
+                        <li>Enhanced glucose uptake</li>
+                        <li>Better lipid profile</li>
+                        <li>Counter sarcopenia</li>
+                    </ul>
+                </div>
+                
+                <!-- HIIT + Balance -->
+                <div class="section-card bg-white rounded-3xl p-7 shadow border border-transparent hover:border-red-200">
+                    <div class="h-2 bg-purple-500 w-16 rounded mb-6"></div>
+                    <h3 class="font-semibold text-xl mb-2">Additional Benefits</h3>
+                    <ul class="text-sm space-y-2 text-gray-600">
+                        <li>HIIT: Greater cardiometabolic gains</li>
+                        <li>Balance: ↓ Fall risk (esp. elderly)</li>
+                        <li>Overall: ↓ Morbidity &amp; mortality</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXERCISE PRESCRIPTION -->
+        <div id="prescription" class="mb-20 scroll-mt-20">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <span class="uppercase tracking-widest text-red-600 text-xs font-semibold">Section 3</span>
+                    <h2 class="header-font text-4xl font-semibold">Exercise Prescription</h2>
+                </div>
+                <div class="text-xs bg-white px-4 py-2 rounded-3xl shadow flex items-center gap-x-2">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>150 min moderate / week</span>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex border-b mb-8 overflow-x-auto">
+                <button onclick="switchTab(0)" id="tab-0" 
+                        class="tab-button px-8 py-4 font-medium border-b-4 border-red-600 text-red-600 whitespace-nowrap">Aerobic</button>
+                <button onclick="switchTab(1)" id="tab-1" 
+                        class="tab-button px-8 py-4 font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">Resistance</button>
+                <button onclick="switchTab(2)" id="tab-2" 
+                        class="tab-button px-8 py-4 font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">Flex &amp; Balance</button>
+                <button onclick="switchTab(3)" id="tab-3" 
+                        class="tab-button px-8 py-4 font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">HIIT</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-content-0" class="tab-content">
+                <div class="bg-white rounded-3xl p-10 grid md:grid-cols-2 gap-12">
+                    <div>
+                        <h4 class="font-semibold mb-6 text-lg">Aerobic Recommendations</h4>
+                        <div class="space-y-8">
+                            <div>
+                                <div class="uppercase text-xs text-gray-500 mb-1">Type</div>
+                                <div class="font-medium">Walking, cycling, swimming, DM aerobic dance</div>
+                            </div>
+                            <div>
+                                <div class="uppercase text-xs text-gray-500 mb-1">Intensity</div>
+                                <div class="font-medium">Moderate (40-60% HRR) to Vigorous (60-90% HRR)</div>
+                            </div>
+                            <div>
+                                <div class="uppercase text-xs text-gray-500 mb-1">Duration / Frequency</div>
+                                <div class="font-medium">150 min/week moderate • 75 min/week vigorous • ≥5 days/week moderate</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-3xl p-8 text-sm">
+                        <div class="flex gap-x-4 items-start">
+                            <i class="fa-solid fa-person-walking text-4xl text-red-400 mt-1"></i>
+                            <div>
+                                <strong>Key Tip:</strong> No more than 2 consecutive days without aerobic exercise to maintain insulin sensitivity.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-content-1" class="tab-content hidden">
+                <div class="bg-white rounded-3xl p-10">
+                    <h4 class="font-semibold mb-6 text-lg">Resistance Training</h4>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-6xl mb-3">🏋️</div>
+                            <div class="font-medium">2–3 non-consecutive days/week</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-6xl mb-3">🔁</div>
+                            <div class="font-medium">8–10 exercises • 1–3 sets of 10–15 reps</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-6xl mb-3">📈</div>
+                            <div class="font-medium">Progress from moderate to vigorous</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-content-2" class="tab-content hidden">
+                <div class="bg-white rounded-3xl p-10">
+                    <h4 class="font-semibold mb-6 text-lg">Flexibility &amp; Balance</h4>
+                    <ul class="grid md:grid-cols-2 gap-6 text-sm">
+                        <li class="flex items-start gap-x-3"><i class="fa-solid fa-check text-green-500 mt-1"></i>Static/dynamic stretches 2–3 days/week</li>
+                        <li class="flex items-start gap-x-3"><i class="fa-solid fa-check text-green-500 mt-1"></i>Hold 10–30 seconds, 2–4 reps</li>
+                        <li class="flex items-start gap-x-3"><i class="fa-solid fa-check text-green-500 mt-1"></i>Tai Chi or single-leg stands for older adults</li>
+                        <li class="flex items-start gap-x-3"><i class="fa-solid fa-check text-green-500 mt-1"></i>Reduce fall risk</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- NEW HIIT TAB -->
+            <div id="tab-content-3" class="tab-content hidden">
+                <div class="bg-white rounded-3xl p-10">
+                    <div class="flex items-center gap-x-4 mb-8">
+                        <div class="text-5xl">⚡</div>
+                        <div>
+                            <h4 class="font-semibold text-2xl">High-Intensity Interval Training (HIIT)</h4>
+                            <p class="text-gray-600">Promising alternative for cardiometabolic benefits</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <div>
+                            <h5 class="uppercase text-xs tracking-widest text-gray-500 mb-4">Key Evidence</h5>
+                            <ul class="space-y-4">
+                                <li class="flex gap-3">
+                                    <span class="text-emerald-500">•</span>
+                                    <span>Effective for improving HbA1c, peak VO₂ and cardiometabolic risk factors</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-emerald-500">•</span>
+                                    <span>Greater benefits than moderate continuous training in some studies</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-emerald-500">•</span>
+                                    <span>Improves peripheral artery stiffness and carotid distensibility</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-red-50 to-amber-50 p-8 rounded-3xl">
+                            <h5 class="font-medium mb-6">Practical Considerations</h5>
+                            <div class="space-y-6 text-sm">
+                                <div>
+                                    <div class="font-semibold">Protocol</div>
+                                    <div class="text-gray-600">Alternate short bursts of high intensity with recovery periods. Example: 4x4 min intervals</div>
+                                </div>
+                                <div>
+                                    <div class="font-semibold">Suitability</div>
+                                    <div class="text-gray-600">For stable patients. Start with supervision. Not for high-risk or deconditioned individuals initially.</div>
+                                </div>
+                                <div class="pt-4 border-t text-xs text-amber-700">
+                                    Optimum protocol still evolving. Equivalent benefit to moderate training in many patients.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SPECIAL CONSIDERATIONS -->
+        <div id="special" class="mb-20 scroll-mt-20 bg-white rounded-3xl p-10">
+            <h2 class="header-font text-4xl font-semibold mb-8 text-center">Special Considerations &amp; Precautions</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-rose-50 p-6 rounded-3xl">
+                    <h5 class="font-semibold text-rose-700 mb-3">Glycemic Control</h5>
+                    <ul class="text-sm space-y-2">
+                        <li>&lt;3.9 mmol/L: Relative contraindication</li>
+                        <li>&lt;5.6 mmol/L: Consider carb intake</li>
+                        <li>&gt;16.7 mmol/L: Perform Urine Ketone + Ask Symptoms + Hydration</li>
+                        <li>&gt;19.4 mmol/L: Conservative insulin if needed</li>
+                    </ul>
+                </div>
+                <div class="bg-amber-50 p-6 rounded-3xl">
+                    <h5 class="font-semibold text-amber-700 mb-3">Neuropathy &amp; Retinopathy</h5>
+                    <ul class="text-sm space-y-2">
+                        <li>Avoid rapid postural changes</li>
+                        <li>No high BP elevating activities if retinopathy</li>
+                        <li>Foot care &amp; proper footwear</li>
+                    </ul>
+                </div>
+                <div class="bg-sky-50 p-6 rounded-3xl">
+                    <h5 class="font-semibold text-sky-700 mb-3">Screening &amp; Progression</h5>
+                    <ul class="text-sm space-y-2">
+                        <li>Use ACSM pre-participation screening</li>
+                        <li>Gradual progression from light-moderate</li>
+                        <li>Monitor RPE &amp; Talk Test</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ASSESSMENT TOOLS -->
+        <div class="mb-20">
+            <h2 class="header-font text-3xl font-semibold mb-8">Key Assessment Tools</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div onclick="alert('2-Minute Step Test: Measures aerobic endurance. Normative data available for 60+ years.')" 
+                     class="cursor-pointer bg-white p-6 rounded-3xl hover:shadow-xl transition-all border border-transparent hover:border-blue-200">
+                    <div class="text-blue-600 font-medium">2-Minute Step Test</div>
+                    <div class="text-xs text-gray-500 mt-6">Aerobic endurance</div>
+                </div>
+                <div onclick="alert('30-Second Chair Stand &amp; Arm Curl: Lower &amp; upper body strength')" 
+                     class="cursor-pointer bg-white p-6 rounded-3xl hover:shadow-xl transition-all border border-transparent hover:border-blue-200">
+                    <div class="text-blue-600 font-medium">30s Chair Stand / Arm Curl</div>
+                    <div class="text-xs text-gray-500 mt-6">Strength assessment</div>
+                </div>
+                <div onclick="alert('SEE-C, IPAQ, Stages of Change, KAP Questionnaire')" 
+                     class="cursor-pointer bg-white p-6 rounded-3xl hover:shadow-xl transition-all border border-transparent hover:border-blue-200">
+                    <div class="text-blue-600 font-medium">Psychosocial Tools</div>
+                    <div class="text-xs text-gray-500 mt-6">Self-efficacy, readiness, etc.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ SECTION -->
+        <div id="quiz" class="scroll-mt-20">
+            <div class="bg-gradient-to-br from-gray-900 to-black text-white rounded-3xl p-10 md:p-16">
+                <div class="max-w-2xl mx-auto">
+                    <div class="flex justify-between items-center mb-8">
+                        <div>
+                            <span class="px-4 py-1 text-xs font-mono bg-white/10 rounded-3xl">CLINICAL KNOWLEDGE CHECK</span>
+                            <h2 class="header-font text-5xl font-bold mt-3">T2DM Case Quiz</h2>
+                        </div>
+                        <div id="quiz-progress" class="text-right">
+                            <div class="text-xs text-gray-400">QUESTION <span id="current-q" class="text-4xl font-semibold text-white">1</span>/5</div>
+                            <div class="h-2 bg-white/20 rounded-full w-40 mt-3">
+                                <div id="progress-fill" class="h-2 bg-red-500 rounded-full w-1/5 progress-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Container -->
+                    <div id="question-container" class="min-h-[380px]">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Result Summary -->
+                    <div id="quiz-complete" class="hidden text-center py-12">
+                        <div class="text-7xl mb-6">🎉</div>
+                        <h3 class="text-3xl font-semibold mb-2">Well done!</h3>
+                        <div id="score-display" class="text-6xl font-bold text-red-400 mb-8">4/5</div>
+                        <button onclick="restartQuiz()" 
+                                class="bg-white text-black px-10 py-5 rounded-3xl font-semibold text-lg active:scale-95 transition-all">
+                            Restart Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white py-12 text-center text-xs text-gray-400 border-t">
+        <div class="max-w-7xl mx-auto px-6">
+            Internal reference only • AL generated infographic by AHNH PT<br>
+            This education portal is designed as an interactive learning aid based on the HA guidelines. Staff should refer to HA Intranet documents if in doubt.
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching
+        let currentTab = 0;
+        
+        function switchTab(n) {
+            currentTab = n;
+            document.querySelectorAll('.tab-button').forEach((btn, i) => {
+                if (i === n) {
+                    btn.classList.add('border-b-4', 'border-red-600', 'text-red-600');
+                    btn.classList.remove('text-gray-500');
+                } else {
+                    btn.classList.remove('border-b-4', 'border-red-600', 'text-red-600');
+                    btn.classList.add('text-gray-500');
+                }
+            });
+            
+            document.querySelectorAll('.tab-content').forEach((content, i) => {
+                content.classList.toggle('hidden', i !== n);
+            });
+        }
+        
+        // Quiz data
+        const quizData = [
+            {
+                question: "Mrs. Chan, 68 years old with T2DM (HbA1c 7.8%), BMI 29, takes metformin and gliclazide. She wants to start walking. Pre-exercise blood glucose is 4.2 mmol/L. What is the most appropriate action?",
+                options: [
+                    { text: "Proceed with moderate walking immediately", isCorrect: false, rationale: "Pre-exercise glucose &lt;5.6 mmol/L in patients on insulin secretagogues requires carbohydrate intake." },
+                    { text: "Ingest one slice of plain bread before exercise", isCorrect: true, rationale: "Correct. For patients on insulin secretagogues with glucose &lt;5.6 mmol/L, add carbohydrate before exercise." },
+                    { text: "Postpone exercise until glucose &gt;7 mmol/L", isCorrect: false, rationale: "Not necessary. The guideline recommends carb intake at &lt;5.6 mmol/L rather than postponing." },
+                    { text: "Only monitor, no change needed", isCorrect: false, rationale: "Incorrect. Risk of hypoglycemia exists with sulfonylureas." }
+                ]
+            },
+            {
+                question: "Mr. Wong, 55, newly diagnosed T2DM, sedentary lifestyle. He has no known CVD. According to pre-participation screening, what is the recommended starting approach?",
+                options: [
+                    { text: "Refer immediately for medical clearance before any exercise", isCorrect: false, rationale: "Not required for low-risk asymptomatic patients starting moderate exercise." },
+                    { text: "Start with light-moderate aerobic exercise with gradual progression", isCorrect: true, rationale: "Correct per ACSM guidelines for low-risk T2DM patients." },
+                    { text: "Begin with high intensity interval training", isCorrect: false, rationale: "Too aggressive for a previously sedentary patient." },
+                    { text: "Only resistance training is safe initially", isCorrect: false, rationale: "Combination is ideal but aerobic is foundational." }
+                ]
+            },
+            {
+                question: "A 72-year-old female patient with peripheral neuropathy and retinopathy reports dizziness on standing. Which exercise precaution is most important?",
+                options: [
+                    { text: "Avoid rapid postural changes and monitor with RPE", isCorrect: true, rationale: "Autonomic neuropathy may cause postural hypotension. RPE is preferred over HR." },
+                    { text: "High intensity resistance only", isCorrect: false, rationale: "Not appropriate." },
+                    { text: "Head-down yoga positions", isCorrect: false, rationale: "Contraindicated with retinopathy." },
+                    { text: "Barefoot walking for proprioception", isCorrect: false, rationale: "Risk of foot ulcers." }
+                ]
+            },
+            {
+                question: "Which statement best reflects the recommended frequency for aerobic exercise in stable T2DM patients?",
+                options: [
+                    { text: "At least 5 days per week of moderate intensity", isCorrect: true, rationale: "Yes. Guideline recommends moderate intensity aerobic at least 5 days/week." },
+                    { text: "Only 2 days per week is sufficient", isCorrect: false, rationale: "Insufficient volume." },
+                    { text: "Daily vigorous exercise", isCorrect: false, rationale: "May be too much for some patients." },
+                    { text: "Aerobic exercise only on weekends", isCorrect: false, rationale: "Not recommended." }
+                ]
+            },
+            {
+                question: "Mr. Lee completed a 12-week supervised program. His BMI dropped from 28.5 to 26.8. What is the primary physiotherapy outcome measure recommended?",
+                options: [
+                    { text: "HbA1c level", isCorrect: false, rationale: "Important but not the key PHYSIOTHERAPY outcome." },
+                    { text: "Body Mass Index (BMI)", isCorrect: true, rationale: "Correct. BMI is suggested as the Key Physiotherapy Outcome Measurement." },
+                    { text: "30-second chair stand test only", isCorrect: false, rationale: "Useful but not the primary key outcome." },
+                    { text: "Patient satisfaction score", isCorrect: false, rationale: "Secondary." }
+                ]
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        
+        function loadQuestion() {
+            const q = quizData[currentQuestion];
+            const container = document.getElementById('question-container');
+            
+            let html = `
+                <div class="mb-8">
+                    <div class="text-red-400 text-sm font-medium tracking-widest mb-3">CASE ${currentQuestion + 1}</div>
+                    <p class="text-xl leading-relaxed">${q.question}</p>
+                </div>
+                
+                <div class="space-y-4" id="options-container">
+            `;
+            
+            q.options.forEach((option, index) => {
+                html += `
+                    <button onclick="selectAnswer(${index})" 
+                            class="quiz-option w-full text-left p-6 rounded-3xl border border-gray-700 hover:border-red-400 transition-all text-lg">
+                        ${option.text}
+                    </button>
+                `;
+            });
+            
+            html += `</div>`;
+            container.innerHTML = html;
+            document.getElementById('current-q').textContent = currentQuestion + 1;
+            document.getElementById('progress-fill').style.width = `${((currentQuestion)/5) * 100}%`;
+        }
+        
+        function selectAnswer(optionIndex) {
+            const q = quizData[currentQuestion];
+            const selectedOption = q.options[optionIndex];
+            
+            const buttons = document.querySelectorAll('#options-container button');
+            
+            buttons.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === optionIndex) {
+                    if (selectedOption.isCorrect) {
+                        btn.classList.add('correct', 'border-green-500');
+                        score++;
+                    } else {
+                        btn.classList.add('incorrect', 'border-red-500');
+                    }
+                } else if (q.options[i].isCorrect) {
+                    btn.classList.add('correct', 'border-green-500');
+                }
+            });
+            
+            // Show rationale
+            setTimeout(() => {
+                const rationaleHTML = `
+                    <div class="mt-8 p-6 bg-gray-800 rounded-3xl">
+                        <div class="flex items-center gap-x-3 text-emerald-400 mb-3">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span class="uppercase text-xs tracking-widest font-medium">Rationale</span>
+                        </div>
+                        <p class="text-gray-300">${selectedOption.rationale}</p>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="nextQuestion()" 
+                                class="px-10 py-4 bg-red-600 hover:bg-red-700 transition-colors rounded-3xl font-semibold flex items-center gap-x-3">
+                            ${currentQuestion < 4 ? 'Next Question →' : 'See Results'}
+                        </button>
+                    </div>
+                `;
+                
+                const optionsContainer = document.getElementById('options-container');
+                optionsContainer.insertAdjacentHTML('afterend', rationaleHTML);
+            }, 800);
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < 5) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+        
+        function showResults() {
+            document.getElementById('question-container').classList.add('hidden');
+            const completeScreen = document.getElementById('quiz-complete');
+            completeScreen.classList.remove('hidden');
+            document.getElementById('score-display').textContent = `${score}/5`;
+        }
+        
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('question-container').classList.remove('hidden');
+            document.getElementById('quiz-complete').classList.add('hidden');
+            loadQuestion();
+        }
+        
+        function navigateTo(section) {
+            if (section === 'quiz') {
+                document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                const el = document.getElementById(section);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Initialize everything
+        window.onload = function() {
+            // Initialize tabs - now 4 tabs
+            switchTab(0);
+            
+            // Load first quiz question
+            loadQuestion();
+            
+            console.log('%cPhysioDM Interactive Guide with HIIT tab ready.', 'color:#e30613; font-family:monospace');
+        };
+    </script>
+</body>
+</html>
