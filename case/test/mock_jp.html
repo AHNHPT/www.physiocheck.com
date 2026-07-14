@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physiotherapy Clinical Competency Check</title>
+<style>
+  :root{
+    --paper:#EEF1EE;
+    --paper-dim:#E4E9E3;
+    --card:#FFFFFF;
+    --ink:#16232B;
+    --ink-soft:#4B5A61;
+    --ink-faint:#8B9A94;
+    --line:#C9D2CB;
+    --line-soft:#DCE3DB;
+    --accent:#0E6E55;
+    --accent-dark:#0A5342;
+    --accent-tint:#E3F0EA;
+    --gold:#A2731E;
+    --gold-tint:#F5EBD8;
+    --danger:#A93226;
+    --danger-tint:#F7E7E4;
+    --radius:2px;
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px);
+    background-size: 100% 42px;
+    opacity:.35;
+    pointer-events:none;
+    z-index:0;
+  }
+  .wrap{position:relative; z-index:1; max-width:840px; margin:0 auto; padding:0 20px 80px;}
+
+  a{color:inherit;}
+  button{font-family:inherit;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 20px;
+    max-width:840px; margin:0 auto;
+    position:relative; z-index:2;
+  }
+  .brand{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .brand b{color:var(--ink);}
+  .pill{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    padding:5px 10px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    color:var(--ink-soft);
+    background:var(--card);
+  }
+
+  /* ---------- Cover ---------- */
+  .cover-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:44px 40px 40px;
+    margin-top:6px;
+  }
+  .exam-code{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-faint);
+    letter-spacing:.1em;
+    margin-bottom:18px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(28px,4.4vw,40px);
+    line-height:1.15;
+    margin:0 0 10px;
+    letter-spacing:-.01em;
+  }
+  .subtitle{
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:56ch;
+    margin:0 0 28px;
+  }
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-bottom:32px;
+  }
+  .meta-chip{
+    border:1px solid var(--line);
+    padding:10px 14px;
+    flex:1 1 140px;
+    min-width:130px;
+  }
+  .meta-chip .num{
+    font-family:var(--mono);
+    font-size:20px;
+    color:var(--accent-dark);
+    display:block;
+  }
+  .meta-chip .lbl{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink-faint);
+  }
+
+  .instructions{
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink);
+    padding:22px 24px;
+    margin-bottom:28px;
+    background:var(--paper-dim);
+  }
+  .instructions h2{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:17px;
+    margin:0 0 12px;
+  }
+  .instructions ol{
+    margin:0 0 18px; padding-left:20px;
+    font-size:14px; color:var(--ink-soft);
+  }
+  .instructions li{margin-bottom:7px;}
+  .instructions li b{color:var(--ink);}
+
+  .marksheet-demo{
+    display:flex; gap:28px; flex-wrap:wrap;
+    padding-top:14px; border-top:1px dashed var(--line);
+  }
+  .demo-block{font-size:12px; color:var(--ink-soft);}
+  .demo-block .demo-title{
+    font-family:var(--mono); font-size:11px; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--ink-faint); margin-bottom:8px;
+  }
+  .demo-bubbles{display:flex; gap:6px;}
+  .demo-bubble{
+    width:22px; height:22px; border:1.5px solid var(--ink-soft);
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:11px; color:var(--ink-soft);
+  }
+  .demo-bubble.filled{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .demo-bubble.sq{ border-radius:3px; }
+
+  .name-field{margin-bottom:26px;}
+  .name-field label{
+    display:block; font-size:11px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--ink-faint); margin-bottom:6px;
+  }
+  .name-field input{
+    width:100%; max-width:340px;
+    font-family:var(--sans); font-size:15px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    background:#fff; color:var(--ink);
+    border-radius:0;
+  }
+  .name-field input:focus{outline:2px solid var(--accent); outline-offset:1px;}
+
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    font-family:var(--sans); font-weight:600; font-size:14px;
+    letter-spacing:.02em;
+    padding:14px 26px;
+    border-radius:2px;
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .btn:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .btn-primary{
+    background:var(--ink); color:#fff;
+  }
+  .btn-primary:hover{background:var(--accent-dark);}
+  .btn-primary:active{transform:translateY(1px);}
+  .btn-ghost{
+    background:transparent; color:var(--ink); border:1px solid var(--line);
+  }
+  .btn-ghost:hover{border-color:var(--ink);}
+  .btn-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+  .btn[disabled]{opacity:.4; cursor:not-allowed;}
+
+  /* ---------- Quiz ---------- */
+  #quiz-screen{display:none;}
+  .quiz-head{
+    position:sticky; top:0; z-index:5;
+    background:var(--paper);
+    padding-top:10px; padding-bottom:12px;
+    margin-bottom:10px;
+  }
+  .quiz-head::after{
+    content:""; display:block; height:1px; background:var(--line);
+    margin-top:12px;
+  }
+  .progress-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .progress-row .timer{color:var(--ink-faint);}
+  .progress-track{
+    height:4px; background:var(--line-soft); width:100%; overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; background:var(--accent); width:0%;
+    transition:width .25s ease;
+  }
+  .chip-rail{
+    display:flex; gap:6px; overflow-x:auto;
+    padding:12px 2px 4px;
+    scrollbar-width:thin;
+  }
+  .chip{
+    flex:0 0 auto;
+    width:30px; height:30px;
+    border:1px solid var(--line);
+    background:#fff;
+    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .chip:hover{border-color:var(--ink);}
+  .chip.answered{background:var(--accent-tint); border-color:var(--accent); color:var(--accent-dark);}
+  .chip.current{outline:2px solid var(--ink); outline-offset:1px;}
+  .chip:focus-visible{outline:2px solid var(--gold);}
+
+  .q-card{
+    background:var(--card); border:1px solid var(--line);
+    padding:32px 32px 28px;
+  }
+  .q-eyebrow{
+    display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  }
+  .q-index{
+    font-family:var(--mono); font-size:13px; color:var(--ink-faint);
+  }
+  .select-badge{
+    font-family:var(--mono); font-size:11px; letter-spacing:.05em;
+    padding:3px 9px; border:1px solid var(--gold); color:var(--gold);
+    background:var(--gold-tint);
+  }
+  .q-stem{
+    font-family:var(--serif);
+    font-size:19px; line-height:1.5;
+    white-space:pre-line;
+    margin:0 0 26px;
+  }
+  .options{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .option{
+    display:flex; align-items:flex-start; gap:14px;
+    padding:13px 16px;
+    border:1px solid var(--line);
+    cursor:pointer;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .option:hover{border-color:var(--ink-soft);}
+  .option.selected{border-color:var(--accent); background:var(--accent-tint);}
+  .option:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+  .bubble{
+    flex:0 0 auto;
+    width:26px; height:26px;
+    border:1.5px solid var(--ink-soft);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+    background:#fff;
+  }
+  .option.selected .bubble{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .options.multi .bubble{border-radius:4px;}
+  .option-text{font-size:15px; padding-top:3px; color:var(--ink);}
+
+  .nav-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:26px; gap:12px; flex-wrap:wrap;
+  }
+  .nav-row .right-group{display:flex; gap:10px;}
+
+  /* ---------- Results ---------- */
+  #results-screen{display:none;}
+  .result-hero{
+    background:var(--card); border:1px solid var(--line);
+    padding:40px 36px; text-align:center; position:relative; overflow:hidden;
+    margin-top:6px;
+  }
+  .stamp{
+    display:inline-block;
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    padding:10px 26px;
+    border:3px solid var(--accent);
+    color:var(--accent);
+    transform:rotate(-4deg);
+    margin-bottom:18px;
+  }
+  .stamp.fail{border-color:var(--danger); color:var(--danger);}
+  .score-big{
+    font-family:var(--mono);
+    font-size:56px;
+    color:var(--ink);
+    margin:6px 0 2px;
+  }
+  .score-sub{color:var(--ink-soft); font-size:14px; margin-bottom:22px;}
+  .stat-row{
+    display:flex; justify-content:center; gap:26px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+    padding-top:18px; border-top:1px dashed var(--line);
+  }
+  .stat-row .stat b{display:block; color:var(--ink); font-size:16px;}
+
+  .sheet-title{
+    font-family:var(--mono); font-size:11px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--ink-faint);
+    margin:34px 0 10px;
+  }
+  .answer-grid{
+    display:grid; grid-template-columns:repeat(15,1fr); gap:5px;
+  }
+  .grid-cell{
+    aspect-ratio:1; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:10px; color:#fff;
+    cursor:pointer;
+  }
+  .grid-cell.correct{background:var(--accent);}
+  .grid-cell.wrong{background:var(--danger);}
+  .grid-cell:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+
+  .review-list{margin-top:36px;}
+  .review-item{
+    border:1px solid var(--line); border-top:none;
+    padding:0;
+  }
+  .review-item:first-child{border-top:1px solid var(--line);}
+  .review-summary{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 18px; cursor:pointer;
+    background:#fff;
+  }
+  .review-summary:hover{background:var(--paper-dim);}
+  .r-mark{
+    flex:0 0 auto; width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:12px; color:#fff;
+  }
+  .r-mark.correct{background:var(--accent);}
+  .r-mark.wrong{background:var(--danger);}
+  .r-stem-short{
+    font-size:14px; color:var(--ink);
+    flex:1;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .r-num{font-family:var(--mono); font-size:12px; color:var(--ink-faint);}
+  .r-caret{font-family:var(--mono); color:var(--ink-faint); transition:transform .15s ease;}
+  .review-item.open .r-caret{transform:rotate(90deg);}
+  .review-detail{
+    display:none;
+    padding:6px 18px 22px 52px;
+    border-top:1px solid var(--line-soft);
+    background:var(--paper-dim);
+  }
+  .review-item.open .review-detail{display:block;}
+  .review-detail .q-stem-full{
+    font-family:var(--serif); font-size:15px; margin:14px 0 12px; white-space:pre-line;
+  }
+  .review-opts{list-style:none; margin:0 0 14px; padding:0; font-size:13.5px;}
+  .review-opts li{
+    padding:7px 10px; margin-bottom:5px; border:1px solid var(--line-soft);
+    display:flex; gap:8px; align-items:flex-start;
+    background:#fff;
+  }
+  .review-opts li.is-correct{border-color:var(--accent); background:var(--accent-tint);}
+  .review-opts li.is-user-wrong{border-color:var(--danger); background:var(--danger-tint);}
+  .tag{
+    font-family:var(--mono); font-size:10px; padding:1px 6px; border-radius:2px;
+    flex:0 0 auto;
+  }
+  .tag.correct-tag{background:var(--accent); color:#fff;}
+  .tag.wrong-tag{background:var(--danger); color:#fff;}
+  .explain{
+    font-size:13.5px; color:var(--ink-soft);
+    border-left:2px solid var(--ink-soft); padding-left:12px;
+  }
+  .explain b{color:var(--ink);}
+
+  .footer-actions{
+    display:flex; gap:12px; justify-content:center; margin-top:36px; flex-wrap:wrap;
+  }
+  .warn-banner{
+    background:var(--gold-tint); border:1px solid var(--gold); color:var(--ink);
+    padding:10px 14px; font-size:13px; margin-bottom:14px; display:none;
+  }
+
+  footer.pagefoot{
+    text-align:center; font-family:var(--mono); font-size:11px; color:var(--ink-faint);
+    padding:34px 20px 10px;
+  }
+
+  @media (max-width:600px){
+    .cover-card{padding:30px 20px;}
+    .q-card{padding:24px 18px;}
+    .instructions{padding:18px;}
+    .answer-grid{grid-template-columns:repeat(10,1fr);}
+    .result-hero{padding:30px 18px;}
+    .score-big{font-size:44px;}
+    .nav-row{flex-direction:column; align-items:stretch;}
+    .nav-row .btn-row{width:100%; justify-content:space-between;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important; animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">PT&#8209;COMP&#8209;CHECK · <b>Staff Competency Set</b></div>
+  <div class="pill" id="modePill">30Q · Pass 60%</div>
+</div>
+
+<div class="wrap">
+
+  <!-- ===================== COVER ===================== -->
+  <section id="cover-screen">
+    <div class="cover-card">
+      <div class="exam-code">MODEL PAPER · ADAPTED FORMAT · CLINICAL SELF-ASSESSMENT</div>
+      <h1>Physiotherapy Clinical Competency Check</h1>
+      <p class="subtitle">A 30-item written assessment adapted in format from a national physiotherapist
+      registration examination, covering orthopaedics, neurology, paediatrics, cardiopulmonary,
+      geriatrics, anatomy/physiology, professional conduct and psychiatry topics relevant to
+      day-to-day clinical practice.</p>
+
+      <div class="meta-row">
+        <div class="meta-chip"><span class="num">30</span><span class="lbl">Questions</span></div>
+        <div class="meta-chip"><span class="num">~45</span><span class="lbl">Minutes (suggested)</span></div>
+        <div class="meta-chip"><span class="num">60%</span><span class="lbl">Pass mark (18/30)</span></div>
+        <div class="meta-chip"><span class="num">1&ndash;5</span><span class="lbl">Options per item</span></div>
+      </div>
+
+      <div class="instructions">
+        <h2>Before you begin</h2>
+        <ol>
+          <li>Each question has <b>five options (1&ndash;5)</b>. Most questions require you to select
+            <b>one</b> answer; questions marked <b>&ldquo;Select 2&rdquo;</b> require exactly two.</li>
+          <li>Selecting the wrong number of answers on a &ldquo;Select 2&rdquo; item will be marked
+            as incorrect for that item &mdash; the same rule used in the source examination.</li>
+          <li>You may move freely between questions using the number rail or the Previous/Next
+            buttons before submitting.</li>
+          <li>Once you submit, you'll see your score, a marked answer sheet, and a full explanation
+            for every question.</li>
+        </ol>
+        <div class="marksheet-demo">
+          <div class="demo-block">
+            <div class="demo-title">Example &middot; Select 1</div>
+            <div class="demo-bubbles">
+              <div class="demo-bubble filled">1</div>
+              <div class="demo-bubble">2</div>
+              <div class="demo-bubble">3</div>
+            </div>
+          </div>
+          <div class="demo-block">
+            <div class="demo-title">Example &middot; Select 2</div>
+            <div class="demo-bubbles">
+              <div class="demo-bubble sq filled">1</div>
+              <div class="demo-bubble sq">2</div>
+              <div class="demo-bubble sq filled">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="name-field">
+        <label for="staffName">Staff name (optional, shown on your results)</label>
+        <input type="text" id="staffName" placeholder="e.g. Chan Tai Man">
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="startBtn">Begin assessment &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="quiz-screen">
+    <div class="quiz-head">
+      <div class="progress-row">
+        <span id="progressLabel">Question 1 of 30</span>
+        <span class="timer" id="timerLabel">00:00</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="chip-rail" id="chipRail"></div>
+    </div>
+
+    <div class="warn-banner" id="warnBanner"></div>
+
+    <div class="q-card">
+      <div class="q-eyebrow">
+        <span class="q-index" id="qIndex">Q01</span>
+        <span class="select-badge" id="selectBadge">Select 1</span>
+      </div>
+      <p class="q-stem" id="qStem"></p>
+      <ul class="options" id="optionsList"></ul>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" id="prevBtn">&larr; Previous</button>
+      <div class="right-group">
+        <button class="btn btn-ghost" id="nextBtn">Next &rarr;</button>
+        <button class="btn btn-primary" id="submitBtn" style="display:none;">Submit test</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RESULTS ===================== -->
+  <section id="results-screen">
+    <div class="result-hero">
+      <div class="stamp" id="stampEl">Pass</div>
+      <div class="score-big" id="scoreBig">0 / 30</div>
+      <div class="score-sub" id="scoreSub">0% &middot; pass mark is 60%</div>
+      <div class="stat-row">
+        <div class="stat"><b id="statCorrect">0</b>Correct</div>
+        <div class="stat"><b id="statIncorrect">0</b>Incorrect</div>
+        <div class="stat"><b id="statTime">00:00</b>Time taken</div>
+        <div class="stat"><b id="statName">&mdash;</b>Staff</div>
+      </div>
+    </div>
+
+    <div class="sheet-title">Marked answer sheet &middot; click a cell to jump to that question below</div>
+    <div class="answer-grid" id="answerGrid"></div>
+
+    <div class="sheet-title">Question-by-question review</div>
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="footer-actions">
+      <button class="btn btn-ghost" id="retakeBtn">Retake this set</button>
+      <button class="btn btn-primary" id="printBtn">Print / save results</button>
+    </div>
+  </section>
+
+  <footer class="pagefoot">Question set adapted for internal training use only &middot; not an official examination</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var QUESTIONS = [
+    {
+      stem:"A 45-year-old man presents with numbness and shooting pain in the sole of the foot, with pain radiating across the plantar surface, and atrophy of the abductor hallucis muscle.\n\nWhich test is positive below the medial malleolus in this patient?",
+      options:["Silfverskiöld test","Single heel-rise test","Thompson test","Tinel sign","Too-many-toes sign"],
+      correct:[4],
+      explain:"Tapping over the tarsal tunnel below the medial malleolus reproduces tingling/pain (Tinel sign) in tarsal tunnel syndrome — consistent with plantar radiating pain and abductor hallucis atrophy."
+    },
+    {
+      stem:"A 17-year-old female sustained a lateral ankle ligament sprain after a fall while playing soccer and could not walk afterward. She was immobilised for 10 days for rest, then fitted with a short leg orthosis and started physical therapy.\n\nWhich of the following is correct?",
+      options:["Perform stretching of the muscles around the ankle joint.","Begin gait training only after point tenderness has fully resolved.","Instruct the patient to remove the orthosis as soon as possible.","Begin balance training with single-leg standing, eyes open.","Begin strength training with closed kinetic chain (CKC) exercise."],
+      correct:[1],
+      explain:"Once immobilisation ends, early controlled mobility — including gentle stretching of the periarticular muscles — is appropriate. The other options describe practices introduced too late, removed too abruptly, or progressed too aggressively for a healing lateral ligament."
+    },
+    {
+      stem:"A 60-year-old man with parkinsonism has freezing of gait. After metronome-assisted gait training, a 10-m walk test showed a cadence of 120 steps/min and a gait speed of 0.8 m/s.\n\nWhat is his approximate step length?",
+      options:["30 cm","35 cm","40 cm","45 cm","50 cm"],
+      correct:[3],
+      explain:"Gait speed = cadence × step length. 0.8 m/s ÷ (120 ÷ 60 steps/s) = 0.8 ÷ 2 = 0.4 m = 40 cm."
+    },
+    {
+      stem:"A 65-year-old woman presents with right knee pain. She has mild flexion limitation of the right knee and mild atrophy of the right vastus medialis. She shows a varus thrust during gait and marked medial knee pain when using stairs.\n\nWhich orthotic intervention is most appropriate?",
+      options:["Ankle-Foot Orthosis","Thomas heel","Metatarsal bar","Lateral wedge sole","Medial wedge sole"],
+      correct:[4],
+      explain:"A lateral wedge sole shifts the ground-reaction force line laterally, reducing the knee adduction moment and off-loading the medial compartment in varus (medial-type) knee OA."
+    },
+    {
+      stem:"A 58-year-old man noticed bilateral hand muscle atrophy 6 months ago and has recently developed dysarthria. His body weight fell from 70 kg to 60 kg over 6 months. MMT: proximal upper limbs 2/5 bilaterally, distal upper limbs 4/5, both lower limbs 4/5. Deep tendon reflexes are hyperactive in all limbs. Tongue atrophy is present, but there is no clear dysphagia. Pulmonary function testing shows %VC of 95%. Arterial blood gas: PaO2 11.0 kPa, PaCO2 4.8 kPa.\n\nWhat is the most appropriate management at this time?",
+      options:["Introduce a balanced forearm orthosis (BFO)","Perform gastrostomy tube placement","Perform tracheostomy","Introduce a power wheelchair","Start home oxygen therapy"],
+      correct:[1],
+      explain:"With preserved respiratory function, no significant dysphagia, and proximal weakness limiting arm function, a BFO/mobile arm support compensates for now. Gastrostomy, tracheostomy, a power wheelchair, and home oxygen are interventions suited to more advanced disease stages not yet reached here."
+    },
+    {
+      stem:"A 42-year-old man had cold-like symptoms 2 weeks ago. Three days ago he developed bilateral lower-limb numbness and weakness that progressed, leading to hospital admission. Grip strength is under 5 kg bilaterally. MMT: upper limbs 3/5, lower limbs 2/5. Deep tendon reflexes are absent in all limbs with no pathological reflexes. Superficial sensation is severely reduced below both lower legs with dysesthesia. Nerve conduction studies show markedly reduced amplitude of action potentials in both median and peroneal nerves.\n\nWhat is the most likely diagnosis?",
+      options:["Meningitis","Polymyositis","Multiple sclerosis","Amyotrophic lateral sclerosis (ALS)","Guillain-Barré syndrome"],
+      correct:[5],
+      explain:"A post-infectious, rapidly progressive, ascending weakness with generalised areflexia and reduced motor amplitudes on nerve conduction studies is classic for Guillain-Barré syndrome."
+    },
+    {
+      stem:"A 5-year-old girl has spastic diplegia due to cerebral palsy. Her main means of indoor mobility is a wheelchair, and she is practicing walking under supervision using a posture control walker (PCW).\n\nWhich movement instruction is most appropriate for this child?",
+      options:["Maintain W-sitting","Walk without any assistive device","Stand in a standing frame","Move around by bunny hopping","Play catch in a kneeling position"],
+      correct:[5],
+      explain:"Kneeling play encourages active trunk and hip control that supports her current PCW-assisted gait goals. W-sitting is generally discouraged (it can worsen hip internal rotation/flexion posturing), unsupported gait is not yet safe for her, and standing frames or bunny-hopping do not progress dynamic gait control."
+    },
+    {
+      stem:"An 85-year-old man is 2 days post-onset of an acute ischaemic stroke.\n\nIn which of the following situations is it appropriate to actively proceed with mobilisation out of bed? Select 2.",
+      options:["Respiratory rate 40/min","Heart rate 80/min","Worsening neurological symptoms","Mean blood pressure ≥ 65 mmHg","Glasgow Coma Scale (GCS) score of 12"],
+      correct:[2,4],
+      explain:"Mobilisation is appropriate with a stable heart rate and an adequate mean arterial pressure (≥65 mmHg). Tachypnoea (RR 40), worsening neurological signs, and moderate alteration in the level of consciousness (GCS 12) are all reasons to hold off."
+    },
+    {
+      stem:"Which diseases are targeted for routine (scheduled) immunization under the applicable Hong Kong's Childhood Immunisation Programme(HKCIP)? Select 2 items.",
+      options:["Hepatitis A","Hepatitis B","Japanese encephalitis","Measles","Dengue fever"],
+      correct:[2,4],
+      explain:"In Hong Kong, the Hepatitis B vaccine was introduced to the childhood immunization programme in 1988. The combined Measles, Mumps, and Rubella (MMR) vaccine was first introduced in 1990. "
+    },
+    {
+      stem:"Which central nervous system structure plays a key role in forming internal models used in motor control?",
+      options:["Cerebellum","Midbrain","Hypothalamus","Cerebral cortex","Limbic system"],
+      correct:[1],
+      explain:"The cerebellum is central to building and continually updating the internal (forward/inverse) models used for feed-forward motor control and motor adaptation."
+    },
+    {
+      stem:"For a mildly hemiplegic patient transferring from a wheelchair to the floor, which of the following steps is INCORRECT?",
+      options:["Check the wheelchair brakes.","Move the buttocks to the front of the seat.","Move the non-paretic foot well back.","Lean the trunk forward and place the paretic knee on the floor.","Rotate to sit down, placing the buttock on the side of the kneeling leg on the floor."],
+      correct:[4],
+      explain:"For stability, the non-paretic (stronger) knee should be the one lowered to the floor first; leading with the paretic knee risks instability and falling."
+    },
+    {
+      stem:"Which of the following are included in Lawton's IADL scale? Select 2.",
+      options:["Toileting","Stair climbing","Housekeeping","Managing finances","Bladder/bowel continence"],
+      correct:[3,4],
+      explain:"Lawton's IADL scale covers 8 domains: telephone use, shopping, food preparation, housekeeping, laundry, transportation, medication management, and handling finances. Toileting, stair climbing, and continence belong to other assessment tools."
+    },
+    {
+      stem:"Which of the following is classified as an environmental factor in the ICF?",
+      options:["Occupational history","Outdoor mobility","Sex","Religious belief","Available healthcare services"],
+      correct:[5],
+      explain:"Available healthcare services are an environmental (contextual) factor in the ICF. Sex, occupational history, and religion are personal factors, and outdoor mobility belongs to the Activities/Participation domain."
+    },
+    {
+      stem:"Which of the following is an appropriate action for a physical therapist?",
+      options:["Disclosing a patient's condition to a friend without permission.","Giving a patient the home address of the occupational therapist in charge.","Discussing a patient's home layout with a senior colleague to plan home modifications.","Saving a full-body video of a patient on a personal smartphone to analyse gait.","Posting a patient's personal information on a members-only social networking site."],
+      correct:[3],
+      explain:"Sharing relevant clinical information with a senior colleague, within the professional team, to plan appropriate home modifications is legitimate collaborative practice. The other options breach patient confidentiality and privacy."
+    },
+    {
+      stem:"Which of the following is a test of dynamic balance ability?",
+      options:["10-m walk test","6-minute walk test","Trunk Control Test","Functional Reach Test","Single-leg standing balance test"],
+      correct:[4],
+      explain:"The Functional Reach Test challenges the limits of stability during a forward reach, making it a dynamic balance measure. The others assess gait speed, endurance, static trunk control, or static standing balance."
+    },
+    {
+      stem:"In a patient undergoing exercise therapy, which of the following is most likely to lower self-efficacy?",
+      options:["The clinician encourages the patient during exercise therapy.","Explaining that post-exercise fatigue is not a concern.","Sharing successful outcomes of patients who have already been discharged.","Having had past success with similar tasks.","Setting a difficult-to-achieve, high-level exercise goal at the very start."],
+      correct:[5],
+      explain:"Per self-efficacy theory, an unattainable initial goal undermines mastery experience and lowers self-efficacy. Encouragement, vicarious (others') success stories, and prior mastery experiences all tend to support self-efficacy."
+    },
+    {
+      stem:"Which of the following is a correct gait feature seen in medial-type knee osteoarthritis?",
+      options:["Step width becomes narrower.","Double-support time becomes shorter.","Pelvic rotation increases.","Hip extension angle increases.","The anteroposterior ground-reaction-force component becomes smaller."],
+      correct:[5],
+      explain:"Patients typically walk more cautiously, producing smaller anteroposterior (braking/propulsive) ground-reaction forces. Step width tends to widen, double-support time lengthens, and pelvic rotation and hip extension are usually reduced, not increased."
+    },
+    {
+      stem:"Which of the following is a correct criterion for Brunnstrom stage IV of the upper extremity?",
+      options:["90° shoulder abduction possible in sitting","Shoulder flexion to 90° with the elbow extended, and forearm pronation/supination possible","Fingertip-to-thumb opposition (pad-to-pad pinch) possible","Internal/external rotation of the lower leg possible in sitting","Ankle dorsiflexion with the heel kept on the ground possible in sitting"],
+      correct:[5],
+      explain:"Stage IV includes movement out of mass synergy such as hand-to-lumbar-spine touch and, for the lower extremity, active dorsiflexion with the heel kept on the ground while sitting. Full 90° shoulder abduction in sitting and combined 90° flexion with forearm rotation are stage V criteria."
+    },
+    {
+      stem:"In a stroke patient with hemiplegia, the ankle was passively moved from plantarflexion to dorsiflexion, and a slight catch with resistance was felt near the end of range.\n\nWhat is this level of muscle tone on the Modified Ashworth Scale (MAS)?",
+      options:["0","1","1+","2","3"],
+      correct:[2],
+      explain:"A slight catch and release, or minimal resistance felt only near the end of the range of motion, corresponds to MAS grade 1. Grade 1+ involves a catch followed by minimal resistance through the remainder (less than half) of the range."
+    },
+    {
+      stem:"During the stance phase of normal gait, which muscle reaches its peak activity latest?",
+      options:["Gluteus maximus","Quadriceps femoris","Biceps femoris","Tibialis anterior","Triceps surae"],
+      correct:[5],
+      explain:"The triceps surae peaks latest, during terminal stance/pre-swing, to power push-off. The gluteus maximus, quadriceps, and hamstrings peak earlier, around loading response, and tibialis anterior is most active at initial contact and again in swing."
+    },
+    {
+      stem:"Which of the following is correct regarding managing phantom limb pain after limb amputation? Select 2.",
+      options:["Mirror therapy is useful.","Transcutaneous electrical nerve stimulation (TENS) is contraindicated.","Prosthesis-fitting practice worsens phantom limb pain.","Have the patient illustrate where the residual phantom pain is located.","NSAIDs should be prioritised over pregabalin for pain relief."],
+      correct:[1,4],
+      explain:"Mirror therapy has good evidence for reducing phantom limb pain, and having patients map/illustrate their residual phantom sensations helps guide targeted treatment. TENS is not contraindicated, prosthetic training does not worsen phantom pain, and pregabalin (a neuropathic-pain agent) is generally preferred over NSAIDs for this type of pain."
+    },
+    {
+      stem:"What is a contraindication to physical therapy for a patient with multiple sclerosis in remission?",
+      options:["Passive range-of-motion exercise","Moderate-intensity aerobic exercise","Low-intensity strengthening exercise","Electrical stimulation therapy","Thermotherapy (heat therapy)"],
+      correct:[5],
+      explain:"Heat therapy is generally avoided in MS because a rise in core temperature can transiently worsen nerve conduction and symptoms (Uhthoff's phenomenon). Passive ROM, moderate aerobic exercise, low-intensity strengthening, and electrical stimulation are generally safe in remission."
+    },
+    {
+      stem:"Which of the following satisfy the criteria for ICU-acquired weakness (ICU-AW) based on the MRC sum score? Select 2.",
+      options:["Measure the patient in the exact same supine position every time.","Assess at the time of ICU admission.","Bilateral total score below 48 points.","Grip strength below 20 kg.","Average score below 4 points per muscle group."],
+      correct:[3,5],
+      explain:"ICU-AW is diagnosed by an MRC sum score below 48 (out of 60) or, equivalently, an average score below 4 per muscle group tested — assessed once the patient is alert and able to cooperate, not necessarily at admission or in one fixed position."
+    },
+    {
+      stem:"If a patient falls during gait training, what should be prioritised first?",
+      options:["Ensuring the patient's immediate safety","Reporting to the attending physician","Documenting the incident in the medical record","Requesting assistance from other staff","Measuring vital signs"],
+      correct:[1],
+      explain:"The immediate priority after any fall is to ensure the patient's safety, including a quick check for injury, before escalating to reporting, documentation, or further assessment."
+    },
+    {
+      stem:"Which ADL is most likely to be achieved by a spinal cord injury patient with C6 as the lowest intact functional level?",
+      options:["Dressing tasks requiring fine finger dexterity","Long-distance mobility without a powered wheelchair","Grasping objects using a tenodesis grip via wrist extension","Independent outdoor ambulation","Climbing stairs without a cane"],
+      correct:[2],
+      explain:"With a C6 neurological level, the most likely and defining ADLs to achieve independently are self-feeding and light grooming/dressing. This is made possible by the return of wrist extension (which enables a natural grip via the tenodesis effect), while lower body and trunk-dependent tasks still require assistance or adaptive equipment."
+    },
+    {
+      stem:"Which of the following is correct regarding the axillary nerve?",
+      options:["It innervates the deltoid muscle.","It innervates the latissimus dorsi.","It gives off the posterior interosseous nerve.","It supplies sensation to the medial skin of the upper arm.","It branches from the lateral cord of the brachial plexus."],
+      correct:[1],
+      explain:"The axillary nerve, from the posterior cord of the brachial plexus, innervates the deltoid and teres minor and supplies sensation over the lateral shoulder — not the latissimus dorsi (thoracodorsal nerve) and not the posterior interosseous nerve (a radial nerve branch)."
+    },
+    {
+      stem:"Which of the following antagonises the anticoagulant effect of warfarin?",
+      options:["Vitamin A","Vitamin C","Vitamin D","Vitamin E","Vitamin K"],
+      correct:[5],
+      explain:"Warfarin works by inhibiting vitamin K–dependent clotting factor synthesis, so administering vitamin K restores factor production and reverses its anticoagulant effect."
+    },
+    {
+      stem:"Which of the following is most appropriate regarding motor learning?",
+      options:["Introduce dual-task training from the very start of learning.","The higher the difficulty of the learning task, the greater the learning effect.","A therapist's verbal advice is a form of intrinsic feedback.","Trial-and-error learning should be used when a patient has memory impairment.","As a motor skill improves, movement becomes more energy-efficient."],
+      correct:[5],
+      explain:"As motor skills are refined, movement typically becomes more automatic and metabolically efficient. Dual-task and high-difficulty training are usually introduced later rather than at the outset, verbal cues from a therapist are extrinsic feedback, and errorless (not trial-and-error) learning is generally preferred for patients with memory impairment."
+    },
+    {
+      stem:"Which of the following is a characteristic feature of frail older adults?",
+      options:["Muscle mass increases.","Timed Up and Go (TUG) time becomes shorter.","Longer distance in sit-and-reach test.","Borg scale rating during a given exercise load becomes lower.","The Breg's Balance Scale (BBS) score becomes lower."],
+      correct:[5],
+      explain:"Frailty is associated with reduced dynamic balance, reflected in a lower BBS score. It typically involves decreased (not increased) muscle mass, a longer (not shorter) TUG time, reduced flexibility, and a higher (not lower) perceived exertion for a given workload."
+    },
+    {
+      stem:"Which of the following is correct regarding hip osteoarthritis?",
+      options:["Its onset is not influenced by genetics.","Prevalence is higher in men than in women.","The primary type is more common than the secondary type.","The risk of concurrent knee osteoarthritis is low.","Occupations involving heavy load-bearing are a risk factor for onset."],
+      correct:[5],
+      explain:"Heavy manual/load-bearing work is an established risk factor for hip OA. Genetics does contribute to risk, secondary hip OA is relatively common, concurrent knee OA risk is not low, and prevalence is generally higher in women."
+    }
+  ];
+
+  QUESTIONS.forEach(function(q,i){
+    q.id = i;
+    q.numAnswers = q.correct.length;
+  });
+
+  var TOTAL = QUESTIONS.length;
+  var PASS_PCT = 60;
+  var current = 0;
+  var answers = {}; // id -> array of selected option numbers (1-based)
+  var startTime = null;
+  var timerInterval = null;
+  var elapsedSeconds = 0;
+
+  // ---------- element refs ----------
+  var coverScreen = document.getElementById('cover-screen');
+  var quizScreen = document.getElementById('quiz-screen');
+  var resultsScreen = document.getElementById('results-screen');
+  var startBtn = document.getElementById('startBtn');
+  var staffNameInput = document.getElementById('staffName');
+
+  var progressLabel = document.getElementById('progressLabel');
+  var timerLabel = document.getElementById('timerLabel');
+  var progressFill = document.getElementById('progressFill');
+  var chipRail = document.getElementById('chipRail');
+  var qIndex = document.getElementById('qIndex');
+  var selectBadge = document.getElementById('selectBadge');
+  var qStem = document.getElementById('qStem');
+  var optionsList = document.getElementById('optionsList');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var submitBtn = document.getElementById('submitBtn');
+  var warnBanner = document.getElementById('warnBanner');
+
+  function pad(n){ return n<10 ? '0'+n : ''+n; }
+  function fmtTime(sec){
+    var m = Math.floor(sec/60), s = sec%60;
+    return pad(m)+':'+pad(s);
+  }
+
+  // ---------- build chip rail ----------
+  QUESTIONS.forEach(function(q,i){
+    var chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.type = 'button';
+    chip.textContent = (i+1);
+    chip.setAttribute('aria-label','Go to question '+(i+1));
+    chip.addEventListener('click', function(){ goTo(i); });
+    chipRail.appendChild(chip);
+  });
+
+  function refreshChips(){
+    var chips = chipRail.children;
+    for (var i=0;i<chips.length;i++){
+      var c = chips[i];
+      c.classList.toggle('answered', !!(answers[i] && answers[i].length));
+      c.classList.toggle('current', i===current);
+    }
+  }
+
+  function renderQuestion(){
+    var q = QUESTIONS[current];
+    qIndex.textContent = 'Q' + pad(current+1);
+    selectBadge.textContent = q.numAnswers > 1 ? ('Select ' + q.numAnswers) : 'Select 1';
+    qStem.textContent = q.stem;
+    progressLabel.textContent = 'Question ' + (current+1) + ' of ' + TOTAL;
+    progressFill.style.width = (((current)/(TOTAL-1)) * 100) + '%';
+
+    optionsList.innerHTML = '';
+    optionsList.className = 'options' + (q.numAnswers > 1 ? ' multi' : '');
+    var selected = answers[q.id] || [];
+
+    q.options.forEach(function(text, idx){
+      var num = idx+1;
+      var li = document.createElement('li');
+      li.className = 'option' + (selected.indexOf(num) > -1 ? ' selected' : '');
+      li.tabIndex = 0;
+      li.setAttribute('role', q.numAnswers>1 ? 'checkbox' : 'radio');
+      li.setAttribute('aria-checked', selected.indexOf(num) > -1 ? 'true':'false');
+
+      var bubble = document.createElement('span');
+      bubble.className = 'bubble';
+      bubble.textContent = num;
+
+      var span = document.createElement('span');
+      span.className = 'option-text';
+      span.textContent = text;
+
+      li.appendChild(bubble);
+      li.appendChild(span);
+      li.addEventListener('click', function(){ toggleOption(q, num); });
+      li.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleOption(q, num); }
+      });
+      optionsList.appendChild(li);
+    });
+
+    prevBtn.disabled = (current === 0);
+    var isLast = (current === TOTAL-1);
+    nextBtn.style.display = isLast ? 'none' : 'inline-block';
+    submitBtn.style.display = isLast ? 'inline-block' : 'none';
+    warnBanner.style.display = 'none';
+
+    refreshChips();
+  }
+
+  function toggleOption(q, num){
+    var sel = answers[q.id] ? answers[q.id].slice() : [];
+    var pos = sel.indexOf(num);
+    if (q.numAnswers === 1){
+      sel = (pos > -1) ? [] : [num];
+    } else {
+      if (pos > -1){
+        sel.splice(pos,1);
+      } else {
+        sel.push(num);
+        if (sel.length > q.numAnswers){ sel.shift(); }
+      }
+    }
+    answers[q.id] = sel;
+    renderQuestion();
+  }
+
+  function goTo(i){
+    current = Math.max(0, Math.min(TOTAL-1, i));
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current-1); });
+  nextBtn.addEventListener('click', function(){ goTo(current+1); });
+
+  submitBtn.addEventListener('click', function(){
+    var unanswered = [];
+    QUESTIONS.forEach(function(q,i){
+      if (!answers[q.id] || answers[q.id].length === 0) unanswered.push(i+1);
+    });
+    if (unanswered.length){
+      warnBanner.style.display = 'block';
+      warnBanner.textContent = 'You still have ' + unanswered.length + ' unanswered question' +
+        (unanswered.length>1?'s':'') + ' (Q' + unanswered.join(', Q') + '). Submit anyway, or use the number rail to go back.';
+      var again = document.createElement('div');
+      again.style.marginTop = '8px';
+      var b = document.createElement('button');
+      b.className = 'btn btn-ghost';
+      b.style.padding = '8px 16px';
+      b.style.fontSize = '12px';
+      b.textContent = 'Submit anyway';
+      b.addEventListener('click', finishQuiz);
+      warnBanner.appendChild(again);
+      again.appendChild(b);
+      return;
+    }
+    finishQuiz();
+  });
+
+  function startTimer(){
+    startTime = Date.now();
+    timerInterval = setInterval(function(){
+      elapsedSeconds = Math.floor((Date.now()-startTime)/1000);
+      timerLabel.textContent = fmtTime(elapsedSeconds);
+    }, 1000);
+  }
+  function stopTimer(){
+    if (timerInterval) clearInterval(timerInterval);
+  }
+
+  startBtn.addEventListener('click', function(){
+    coverScreen.style.display = 'none';
+    quizScreen.style.display = 'block';
+    current = 0;
+    renderQuestion();
+    startTimer();
+    window.scrollTo({top:0});
+  });
+
+  function arraysEqualAsSets(a,b){
+    if (a.length !== b.length) return false;
+    var sa = a.slice().sort();
+    var sb = b.slice().sort();
+    for (var i=0;i<sa.length;i++){ if (sa[i]!==sb[i]) return false; }
+    return true;
+  }
+
+  function finishQuiz(){
+    stopTimer();
+    quizScreen.style.display = 'none';
+    resultsScreen.style.display = 'block';
+    window.scrollTo({top:0});
+
+    var correctCount = 0;
+    QUESTIONS.forEach(function(q){
+      var sel = answers[q.id] || [];
+      if (arraysEqualAsSets(sel, q.correct)) correctCount++;
+    });
+
+    var pct = Math.round((correctCount/TOTAL)*100);
+    var pass = pct >= PASS_PCT;
+
+    document.getElementById('stampEl').textContent = pass ? 'Pass' : 'Not yet';
+    document.getElementById('stampEl').className = 'stamp' + (pass ? '' : ' fail');
+    document.getElementById('scoreBig').textContent = correctCount + ' / ' + TOTAL;
+    document.getElementById('scoreSub').textContent = pct + '% \u00B7 pass mark is ' + PASS_PCT + '%';
+    document.getElementById('statCorrect').textContent = correctCount;
+    document.getElementById('statIncorrect').textContent = (TOTAL-correctCount);
+    document.getElementById('statTime').textContent = fmtTime(elapsedSeconds);
+    document.getElementById('statName').textContent = staffNameInput.value.trim() || '\u2014';
+
+    buildAnswerGrid();
+    buildReview();
+  }
+
+  function buildAnswerGrid(){
+    var grid = document.getElementById('answerGrid');
+    grid.innerHTML = '';
+    QUESTIONS.forEach(function(q,i){
+      var sel = answers[q.id] || [];
+      var ok = arraysEqualAsSets(sel, q.correct);
+      var cell = document.createElement('div');
+      cell.className = 'grid-cell ' + (ok ? 'correct' : 'wrong');
+      cell.textContent = (i+1);
+      cell.tabIndex = 0;
+      cell.addEventListener('click', function(){
+        var target = document.querySelector('.review-item[data-idx="'+i+'"]');
+        if (target){
+          target.classList.add('open');
+          target.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      });
+      grid.appendChild(cell);
+    });
+  }
+
+  function buildReview(){
+    var list = document.getElementById('reviewList');
+    list.innerHTML = '';
+    QUESTIONS.forEach(function(q,i){
+      var sel = answers[q.id] || [];
+      var ok = arraysEqualAsSets(sel, q.correct);
+
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.setAttribute('data-idx', i);
+
+      var summary = document.createElement('div');
+      summary.className = 'review-summary';
+      summary.innerHTML =
+        '<span class="r-mark ' + (ok?'correct':'wrong') + '">' + (ok?'\u2713':'\u2717') + '</span>' +
+        '<span class="r-num">Q' + pad(i+1) + '</span>' +
+        '<span class="r-stem-short">' + escapeHtml(q.stem.split('\n')[0]) + '</span>' +
+        '<span class="r-caret">&#8250;</span>';
+      summary.addEventListener('click', function(){ item.classList.toggle('open'); });
+
+      var detail = document.createElement('div');
+      detail.className = 'review-detail';
+
+      var stemFull = document.createElement('div');
+      stemFull.className = 'q-stem-full';
+      stemFull.textContent = q.stem;
+      detail.appendChild(stemFull);
+
+      var optsUl = document.createElement('ul');
+      optsUl.className = 'review-opts';
+      q.options.forEach(function(text, idx){
+        var num = idx+1;
+        var isCorrect = q.correct.indexOf(num) > -1;
+        var wasSelected = sel.indexOf(num) > -1;
+        var li = document.createElement('li');
+        var cls = '';
+        if (isCorrect) cls = 'is-correct';
+        else if (wasSelected && !isCorrect) cls = 'is-user-wrong';
+        li.className = cls;
+
+        var tagHtml = '';
+        if (isCorrect) tagHtml = '<span class="tag correct-tag">Correct</span>';
+        else if (wasSelected) tagHtml = '<span class="tag wrong-tag">Your pick</span>';
+
+        li.innerHTML = '<span>' + num + '.</span><span style="flex:1;">' + escapeHtml(text) + '</span>' + tagHtml;
+        optsUl.appendChild(li);
+      });
+      detail.appendChild(optsUl);
+
+      var explain = document.createElement('div');
+      explain.className = 'explain';
+      explain.innerHTML = '<b>Why:</b> ' + escapeHtml(q.explain);
+      detail.appendChild(explain);
+
+      item.appendChild(summary);
+      item.appendChild(detail);
+      list.appendChild(item);
+    });
+  }
+
+  function escapeHtml(s){
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  document.getElementById('retakeBtn').addEventListener('click', function(){
+    answers = {};
+    current = 0;
+    elapsedSeconds = 0;
+    resultsScreen.style.display = 'none';
+    coverScreen.style.display = 'block';
+    window.scrollTo({top:0});
+  });
+
+  document.getElementById('printBtn').addEventListener('click', function(){
+    window.print();
+  });
+
+})();
+</script>
+</body>
+</html>
