@@ -1,143 +1,653 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>A cheerful boy keeps falling down</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
-    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
-    .choice:hover { background-color: #d0d0d0; }
-    .disabled { pointer-events: none; opacity: 0.6; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
-    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .btn:hover { background-color: #0056b3; }
-    label { display: block; margin-bottom: 10px; cursor: pointer; }
-    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f0f0f0; }
-  </style>
+<meta charset="UTF-8" />
+<title>A cheerful boy keeps falling down</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F6F6;
+    --card:#FFFFFF;
+    --ink:#1E2A2E;
+    --muted:#5C6B70;
+    --line:#E1E8E8;
+    --teal:#0E7A72;
+    --teal-dark:#0A5B55;
+    --teal-tint:#E7F3F1;
+    --amber:#C97A2B;
+    --amber-tint:#FBF0E2;
+    --good:#1E8F5F;
+    --good-tint:#E7F5EE;
+    --bad:#C4483C;
+    --bad-tint:#FBEAE8;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    font-family:'Inter',Arial,sans-serif;
+    background:
+      radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+    color:var(--ink);
+    max-width:720px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+    line-height:1.6;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Lexend',Arial,sans-serif;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+
+  /* ---------- Header ---------- */
+  .masthead{
+    text-align:center;
+    margin-bottom:26px;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal-dark);
+    background:var(--teal-tint);
+    padding:5px 12px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  .masthead h1{
+    font-size:26px;
+    color:var(--ink);
+  }
+  .masthead p.role{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:6px;
+  }
+
+  /* ---------- Progress ---------- */
+  .progress{
+    display:flex;
+    gap:6px;
+    margin:20px 0 24px;
+  }
+  .progress .seg{
+    flex:1;
+    height:5px;
+    border-radius:99px;
+    background:var(--line);
+    overflow:hidden;
+  }
+  .progress .seg.done{ background:var(--teal); }
+  .progress .seg.active{
+    background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+  }
+  .progress-labels{
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    color:var(--muted);
+    margin-top:6px;
+    font-weight:500;
+  }
+
+  /* ---------- Cards ---------- */
+  .box{
+    background:var(--card);
+    padding:22px 22px 24px;
+    border-radius:var(--radius);
+    margin-bottom:18px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+
+  .box h3{
+    font-size:17px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:4px;
+  }
+  .box h3 .num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px;height:24px;
+    border-radius:7px;
+    background:var(--teal);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    font-family:'Inter',sans-serif;
+    flex-shrink:0;
+  }
+  .box .subhint{
+    color:var(--muted);
+    font-size:13px;
+    margin:2px 0 16px;
+  }
+
+  /* ---------- Case summary ---------- */
+  .patient-strip{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+    padding-bottom:16px;
+    border-bottom:1px dashed var(--line);
+  }
+  .avatar{
+    width:46px;height:46px;
+    border-radius:50%;
+    background:var(--teal-tint);
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;
+    flex-shrink:0;
+  }
+  .patient-strip .name{
+    font-family:'Lexend',sans-serif;
+    font-weight:600;
+    font-size:16px;
+  }
+  .patient-strip .meta{
+    font-size:13px;
+    color:var(--muted);
+  }
+  .tags{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:14px 0 4px;
+  }
+  .tag{
+    font-size:12.5px;
+    font-weight:600;
+    padding:5px 11px;
+    border-radius:999px;
+  }
+  .tag.diag{ background:var(--amber-tint); color:var(--amber); }
+  .tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+  .field-group{
+    margin:18px 0;
+  }
+  .field-group h4{
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--teal-dark);
+    font-weight:700;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .field-group p{
+    margin:0 0 8px;
+    font-size:14.5px;
+  }
+  .field-group ul{
+    margin:0;
+    padding-left:18px;
+    font-size:14.5px;
+  }
+  .field-group li{ margin-bottom:4px; }
+  .field-group dl{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:6px 14px;
+    font-size:14.5px;
+    margin:0;
+  }
+  .field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+  .field-group dd{ margin:0; }
+
+  .pe-block{
+    background:#FAFCFC;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-top:8px;
+  }
+  .pe-block + .pe-block{ margin-top:10px; }
+  .pe-block .k{
+    font-weight:600;
+    font-size:13.5px;
+    color:var(--ink);
+  }
+  .pe-block .v{
+    font-size:14px;
+    color:var(--ink);
+    margin-top:2px;
+  }
+
+  .gait-img{
+    margin-top:14px;
+    text-align:center;
+  }
+  .gait-img img{
+    max-width:100%;
+    border-radius:10px;
+    border:1px solid var(--line);
+  }
+  .gait-img figcaption{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  .prompt-line{
+    margin-top:18px;
+    padding-top:16px;
+    border-top:1px dashed var(--line);
+    font-size:14.5px;
+    font-style:italic;
+    color:var(--muted);
+  }
+
+  /* ---------- Choices ---------- */
+  .choice{
+    padding:13px 16px;
+    background:#FAFBFB;
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin:9px 0;
+    cursor:pointer;
+    font-size:14.5px;
+    transition:background .15s ease, border-color .15s ease, transform .1s ease;
+  }
+  .choice:hover{
+    background:var(--teal-tint);
+    border-color:var(--teal);
+  }
+  .choice:active{ transform:scale(.995); }
+  .choice.disabled{
+    pointer-events:none;
+    opacity:.55;
+  }
+  .feedback{
+    margin:-4px 0 4px;
+    padding:0 16px;
+    font-size:13.5px;
+    color:var(--teal-dark);
+    min-height:0;
+  }
+  .feedback:not(:empty){
+    padding:10px 14px;
+    background:var(--teal-tint);
+    border-radius:9px;
+    margin:2px 0 12px;
+  }
+
+  /* ---------- Management checkboxes ---------- */
+  label.opt{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:13px 16px;
+    background:#FAFBFB;
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin:9px 0;
+    cursor:pointer;
+    font-size:14.5px;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  label.opt:hover{
+    background:var(--teal-tint);
+    border-color:var(--teal);
+  }
+  label.opt input[type="checkbox"]{
+    margin-top:2px;
+    width:17px;height:17px;
+    accent-color:var(--teal);
+    flex-shrink:0;
+    cursor:pointer;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    margin-top:18px;
+    padding:12px 20px;
+    background:var(--teal);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    letter-spacing:.01em;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .btn:hover{ background:var(--teal-dark); }
+  .btn:active{ transform:scale(.98); }
+  .btn.ghost{
+    background:transparent;
+    color:var(--teal-dark);
+    border:1px solid var(--line);
+  }
+  .btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+  /* ---------- Results ---------- */
+  .score-banner{
+    background:var(--teal-tint);
+    border:1px solid var(--teal);
+    border-radius:12px;
+    padding:16px 18px;
+    text-align:center;
+    margin-bottom:18px;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .score-banner .big{
+    font-family:'Lexend',sans-serif;
+    font-size:28px;
+    font-weight:700;
+    color:var(--teal-dark);
+  }
+  .score-banner .pct{
+    font-family:'Lexend',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    color:var(--teal-dark);
+    opacity:.85;
+    margin-top:2px;
+  }
+  .score-banner .lbl{
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--teal-dark);
+    opacity:.8;
+  }
+  .score-banner.low{
+    background:var(--bad-tint);
+    border-color:var(--bad);
+  }
+  .score-banner.low .big,
+  .score-banner.low .pct,
+  .score-banner.low .lbl{
+    color:var(--bad);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:8px;
+    font-size:13.5px;
+  }
+  th, td{
+    border:1px solid var(--line);
+    padding:9px 8px;
+    text-align:center;
+  }
+  th{
+    background:#F3F6F6;
+    font-family:'Lexend',sans-serif;
+    font-weight:600;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    color:var(--muted);
+  }
+  td:nth-child(2){ text-align:left; }
+  tr:nth-child(even) td{ background:#FBFCFC; }
+
+  .learning{
+    margin-top:26px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-size:14.5px;
+  }
+  .learning h4{
+    font-size:15px;
+    color:var(--teal-dark);
+    margin-bottom:10px;
+  }
+  .learning .key-points{
+    background:var(--teal-tint);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:16px;
+  }
+  .learning .key-points ul{ margin:0; padding-left:18px; }
+  .learning .key-points li{ margin-bottom:4px; }
+  .learning .qa{
+    margin-top:16px;
+    padding:14px 16px;
+    background:#FAFBFB;
+    border:1px solid var(--line);
+    border-radius:10px;
+  }
+  .learning .qa + .qa{ margin-top:10px; }
+  .learning .qa .opt-title{
+    color:var(--teal-dark);
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .learning .qa p{ margin:0 0 8px; }
+  .learning .qa p:last-child{ margin-bottom:0; }
+  .learning .ref{
+    font-size:12.5px;
+    color:var(--muted);
+    font-style:italic;
+  }
+  .creator{
+    text-align:center;
+    color:var(--muted);
+    font-size:12.5px;
+    margin-top:20px;
+  }
+
+  .back-link{
+    display:inline-flex;
+    margin-top:6px;
+    text-decoration:none;
+  }
+</style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">🩺 Paediatric OPD Case</div>
+  <h1>A cheerful boy keeps falling down</h1>
+</div>
+
+<div class="progress" id="progressBar">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+  <div class="seg" id="seg3"></div>
+</div>
+<div class="progress-labels">
+  <span>Assessment</span>
+  <span>Management</span>
+  <span>Result</span>
+</div>
+
 <div class="box">
-  <h2>Case: A cheerful boy keeps falling down</h2>
-  <p>Noah, a 5-year-old boy, was referred by an orthopaedics doctor for out-patent physiotherapy with details of referral as below:
-    <br><br>Diagnosis: genu valgum
-    <br>Reason for referral: easy fall
-    <br>This is the 1st OPD Physio session. Noah is brought by his mother.
-    <br><br>HPI:
-    <br>Noah’s mother expressed worries over his awkward gait which leads to his frequent fall, nearly 1-2 times per week.
-    <br><br>In fact, she and Noah’s father noted that he walked with awkward gait since he started to walk independently around 13 months.
-    <br><br>They thought that it was primitive walking pattern. Until around 2 years old, the awkward gait persisted hence they sought medical advice. They attended Family Medicine Clinic and were referred to Orthopaedics SOPD.
-    <br><br>Orthopaedic diagnosis is genu valgum.
-    <br>Lower limb scannogram is done and results are normal.
-    <br><br>Birth history:
-    <br>G1 P1, gestation 38 weeks NSD born at Union Hospital
-    <br>AN, PN unremarkable
-    <br><br>SHx:<br>first child in the family
-    <br>lives with parents (both working)
-    <br>main carer: maid
-    <br>studying K3 in mainstream kindergarten
-    <br><br>PMH:
-    <br>- vaccination up to date, normal development
-    <br>- genu valgum with normal lower limb scannogram; FU Ortho SOPD
-    <br><br>DHx:
-    <br>- walk unaided independently: ~13 months
-    <br>- jumping ~ 24 months
-    <br><br>P/E:
-    <br>Behaviour: cheerful, follow commands
-    <br>Vision and hearing: no concern from carer, follow commands
-    <br>Speech: speak in full sentences
-    <br><br>Gross motor:
-    <br>Gait: crouch knee and jump knee gait
-    <br>Stairs walking: clumpsy, cautious, wobbling, 1 hand on rail, alternate step when going up, same step when going down
-    <br>Jump forward 12” with both feet landing independently
-    <br>Jump across 2” hurdle with 1 foot leading
-    <br>Single leg stand both feet 3 seconds with trunk wobbling
-  <br><img src='gait.png' alt='gait' style='max-width:100%;boder-radius:5px;'>
-    <br><br>
-You are physiotherapist working in Paed OPD. He is your new case today.</p>
+  <p>Noah, a 5-year-old boy, was referred by an orthopaedics doctor for out-patent physiotherapy with details of referral as below:</p>
+
+  <div class="tags">
+    <span class="tag diag">Diagnosis: genu valgum</span>
+    <span class="tag ref">Reason for referral: easy fall</span>
+  </div>
+  <p>This is the 1st OPD Physio session. Noah is brought by his mother.</p>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>Noah's mother expressed worries over his awkward gait which leads to his frequent fall, nearly 1-2 times per week.</p>
+    <p>In fact, she and Noah's father noted that he walked with awkward gait since he started to walk independently around 13 months.</p>
+    <p>They thought that it was primitive walking pattern. Until around 2 years old, the awkward gait persisted hence they sought medical advice. They attended Family Medicine Clinic and were referred to Orthopaedics SOPD.</p>
+    <p>Orthopaedic diagnosis is genu valgum.<br>Lower limb scannogram is done and results are normal.</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Birth history:</h4>
+    <p>G1 P1, gestation 38 weeks NSD born at Union Hospital<br>AN, PN unremarkable</p>
+  </div>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>first child in the family<br>
+    lives with parents (both working)<br>
+    main carer: maid<br>
+    studying K3 in mainstream kindergarten</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PMH:</h4>
+    <p>- vaccination up to date, normal development<br>
+    - genu valgum with normal lower limb scannogram; FU Ortho SOPD</p>
+  </div>
+
+  <div class="field-group">
+    <h4>DHx:</h4>
+    <p>- walk unaided independently: ~13 months<br>
+    - jumping ~ 24 months</p>
+  </div>
+
+  <div class="field-group">
+    <h4>P/E:</h4>
+    <p>Behaviour: cheerful, follow commands<br>
+    Vision and hearing: no concern from carer, follow commands<br>
+    Speech: speak in full sentences</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Gross motor:</h4>
+    <p>Gait: crouch knee and jump knee gait<br>
+    Stairs walking: clumpsy, cautious, wobbling, 1 hand on rail, alternate step when going up, same step when going down<br>
+    Jump forward 12” with both feet landing independently<br>
+    Jump across 2” hurdle with 1 foot leading<br>
+    Single leg stand both feet 3 seconds with trunk wobbling</p>
+    <figure class="gait-img">
+      <img src="gait.png" alt="gait">
+    </figure>
+  </div>
+
+  <p class="prompt-line">You are physiotherapist working in Paed OPD. He is your new case today.</p>
 </div>
 
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
-  
-  <div class="choice" onclick="selectChoice('investigations', 0)">1. Check Gower sign </div>
+  <h3><span class="num">1</span> What investigation or physical exam would you perform / check?</h3>
+  <p class="subhint">Tap an option to reveal the finding.</p>
+
+  <div class="choice" onclick="selectChoice('investigations', 0)">Check Gower sign</div>
   <div class="feedback" id="inv-result0"></div>
-  <div class="choice" onclick="selectChoice('investigations', 1)">2. Check joint ROM, muscle length and muscle tone of LL</div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">Check joint ROM, muscle length and muscle tone of LL</div>
   <div class="feedback" id="inv-result1"></div>
-  <div class="choice" onclick="selectChoice('investigations', 2)">3. Check reflex </div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">Check reflex</div>
   <div class="feedback" id="inv-result2"></div>
-  <div class="choice" onclick="selectChoice('investigations', 3)">4. Check sit up </div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">Check sit up</div>
   <div class="feedback" id="inv-result3"></div>
-  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+  <button class="btn" onclick="proceedToManagement()">Proceed to management →</button>
 </div>
 
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  
-  <label><input type="checkbox" id="man-check0" /> 1. Escort to AED immediately </label>
-  <label><input type="checkbox" id="man-check1" /> 2. Refer to Paed SOPD </label>
-  <label><input type="checkbox" id="man-check2" /> 3. Lower limb stretching exercises </label>
-  <label><input type="checkbox" id="man-check3" /> 4. Balance exercises </label>
-  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+  <h3><span class="num">2</span> Select all management options you would provide</h3>
+  <p class="subhint">Check every option that applies.</p>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> Escort to AED immediately</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> Refer to Paed SOPD</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> Lower limb stretching exercises</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> Balance exercises</label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and show result</button>
 </div>
 
 <div class="box" id="result" style="display:none;">
-  <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+  <h3>📊 Final Score &amp; Response Chart</h3>
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
+
   <table>
     <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
     <tbody id="result-table-body"></tbody>
   </table>
-  
-  
-  <div style="margin-top:20px;">
-    <strong>Learning point:</strong>
-    <br>- think, assess and manage comprehensively
-    <br>- is it just a local orthopaedics issue, or neurological-related or any
-    <br>neuromuscular diseases?
-    <br>- refer speciality when necessary
-    <br><strong>Question 1:</strong>
-    <br><strong>A - Check Gower sign</strong>
-    <br>Noah’s orthopaedic diagnosis is genu valgum. Yet, his lower limb scannogram is normal. His crouching and jump knee gait is something we need to drill on.
-    <br><br>Here comes Ddx again - is it just a local orthopaedics issue, or neurological-related or any neuromuscular diseases?
-    <br><br>Positive Gower sign indicates weakness in proximal muscles, pointing to possibility of neuromuscular diseases eg: Duchenne muscular dystrophy, Becker muscular dystrophy and spinal muscular atrophy.
-    <br><br>It is also accompanied by calf pseudohypertrophy, toe walking, waddling gait and diﬃculty in stairs climbing. Further investigation is needed - creatine, kinase blood test and genetic testing - to confirm the diagnosis.
-    <br><br><strong>Option B - Check joint ROM, muscle length and muscle tone of LL</strong>
-    <br>Although the referral only documented genu valgum, our physiotherapy assessment not only limits to knee only but comprehensively to whole LL, especially seeing Noah’s crouching and jump knee gait. Is it due to muscle weakness, muscle tightness, muscle spasticity or joint contracture?
-    <br><br><strong>Option C - Check reflex</strong>
-    <br>Here comes Ddx again - is it just a local orthopaedics issue, or neurological-related or any neuromuscular diseases?
-    <br>Abnormal findings of reflex - hyporeflexia, hyperreflexia or clonus warrant further investigation as it could point to neurological-related conditions.
-    <br><br><strong>Option D - Check sit up</strong>
-    <br>Sit up assesses a child’s core muscle strength. It has been proved that core muscles are essential for maintaining postural stability and enhancing body control and hence helps improve balance and reduce falls in children.
-    <br>In Noah’s case, his lower limb tightness and spasitcity are speaking far louder to his frequent falls.
-    <br>Therefore, checking sit up is in lower priority at this moment.
-    <br>(Reference: Mohamed Abdelbaky, F., & Ahmed Ibrahim, A. (2014). Eﬀect of core strength training on power and dynamic balance among child athletes. Journal of Applied Sports Science, 4(2), 93-98.)
-    <br><br><br><strong>Question 2:</strong>
-    <br><strong>Option A - Escort to AED immediately & Option B - Refer to Paed SOPD</strong>
-    <br>From Noah’s crouching and jump knee gait, we found out, after physiotherapy assessment, he has spastic long hip adductor and gastrocnemius bilaterally, tight hamstrings, quadriceps and short hip adductor bilaterally, brisk knee and ankle jerks bilaterally and bilateral upgoing plantar reflex.
-    <br><br>All these suggest possible neurological-related conditions which warrant further investigation. Noah did not present any urgent medical signs which need urgent medical care.
-    <br><br>Hence, escort to AED immediately is not indicated. However, he needs to be referred to paediatrician for further investigation.
-    <br><br><strong>Option C - Lower limb stretching exercises</strong>
-    <br>The paediatrician might order blood test, imaging and/or genetic testing for working up the diagnosis.
-    <br><br>While waiting all these, stretching exercises have been proved to be eﬀective to improve muscle length and prevent joint contracture.
-    <br>Lower limb stretching exercises could be started to help Noah’s bilateral spastic long hip adductor and gastrocnemius, bilateral tight hamstrings, quadriceps and short hip adductor.
-    <br><br>In addition to passive stretching, active stretching (eccentric contraction) is eﬀective in improving walking speed and function.
-    <br>Also, combining stretching exercises with orthosis or botox injection could have beLer outcomes.
-    <br><br>(Reference: Kalkman, B. M., Bar-On, L., O’Brien, T. D., & Maganaris, C. N. (2020). Stretching interventions in children with cerebral palsy: why are they ineﬀective in improving muscle function and how can we beLer their outcome?. Frontiers in physiology, 11, 131.)
-    <br><br><strong>Option D - Balance exercises</strong>
-    <br>There are many reasons to explain that why kids fall frequently - poor balance, weak eye hand and limbs coordination, weak muscle strength, visual and vestibular conditions.
-    <br>In Noah’s case, his lower limb tightness and spasticity are speaking far louder to his frequent falls. Therefore, balance exercises are in lower priority at this moment.
-    <br><br><br><h6>Case Creator: Stephy Lau</h6></div>
-  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+
+  <div class="learning">
+    <h4>💡 Learning point</h4>
+    <div class="key-points">
+      <ul>
+        <li>Think, assess and manage comprehensively.</li>
+        <li>Is it just a local orthopaedics issue, or neurological-related, or any neuromuscular disease?</li>
+        <li>Refer to speciality when necessary.</li>
+      </ul>
+    </div>
+
+    <h4>Question 1</h4>
+
+    <div class="qa">
+      <div class="opt-title">A — Check Gower sign</div>
+      <p>Noah's orthopaedic diagnosis is genu valgum. Yet, his lower limb scannogram is normal. His crouching and jump knee gait is something we need to drill on.</p>
+      <p>Here comes Ddx again — is it just a local orthopaedics issue, or neurological-related or any neuromuscular disease?</p>
+      <p>Positive Gower sign indicates weakness in proximal muscles, pointing to possibility of neuromuscular diseases eg: Duchenne muscular dystrophy, Becker muscular dystrophy and spinal muscular atrophy.</p>
+      <p>It is also accompanied by calf pseudohypertrophy, toe walking, waddling gait and difficulty in stairs climbing. Further investigation is needed — creatine, kinase blood test and genetic testing — to confirm the diagnosis.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">B — Check joint ROM, muscle length and muscle tone of LL</div>
+      <p>Although the referral only documented genu valgum, our physiotherapy assessment is not limited to the knee only but comprehensively covers the whole LL, especially seeing Noah's crouching and jump knee gait. Is it due to muscle weakness, muscle tightness, muscle spasticity or joint contracture?</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">C — Check reflex</div>
+      <p>Here comes Ddx again — is it just a local orthopaedics issue, or neurological-related or any neuromuscular disease?</p>
+      <p>Abnormal findings of reflex — hyporeflexia, hyperreflexia or clonus — warrant further investigation as it could point to neurological-related conditions.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">D — Check sit up</div>
+      <p>Sit up assesses a child's core muscle strength. It has been proved that core muscles are essential for maintaining postural stability and enhancing body control, and hence help improve balance and reduce falls in children.</p>
+      <p>In Noah's case, his lower limb tightness and spasticity are speaking far louder to his frequent falls. Therefore, checking sit up is in lower priority at this moment.</p>
+      <p class="ref">Reference: Mohamed Abdelbaky, F., &amp; Ahmed Ibrahim, A. (2014). Effect of core strength training on power and dynamic balance among child athletes. Journal of Applied Sports Science, 4(2), 93-98.</p>
+    </div>
+
+    <h4 style="margin-top:20px;">Question 2</h4>
+
+    <div class="qa">
+      <div class="opt-title">A — Escort to AED immediately &amp; B — Refer to Paed SOPD</div>
+      <p>From Noah's crouching and jump knee gait, we found out, after physiotherapy assessment, he has spastic long hip adductor and gastrocnemius bilaterally, tight hamstrings, quadriceps and short hip adductor bilaterally, brisk knee and ankle jerks bilaterally and bilateral upgoing plantar reflex.</p>
+      <p>All these suggest possible neurological-related conditions which warrant further investigation. Noah did not present any urgent medical signs which need urgent medical care.</p>
+      <p>Hence, escort to AED immediately is not indicated. However, he needs to be referred to paediatrician for further investigation.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">C — Lower limb stretching exercises</div>
+      <p>The paediatrician might order blood test, imaging and/or genetic testing for working up the diagnosis.</p>
+      <p>While waiting for all these, stretching exercises have been proved to be effective to improve muscle length and prevent joint contracture. Lower limb stretching exercises could be started to help Noah's bilateral spastic long hip adductor and gastrocnemius, bilateral tight hamstrings, quadriceps and short hip adductor.</p>
+      <p>In addition to passive stretching, active stretching (eccentric contraction) is effective in improving walking speed and function. Also, combining stretching exercises with orthosis or botox injection could have better outcomes.</p>
+      <p class="ref">Reference: Kalkman, B. M., Bar-On, L., O'Brien, T. D., &amp; Maganaris, C. N. (2020). Stretching interventions in children with cerebral palsy: why are they ineffective in improving muscle function and how can we better their outcome?. Frontiers in physiology, 11, 131.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">D — Balance exercises</div>
+      <p>There are many reasons to explain why kids fall frequently — poor balance, weak eye-hand and limb coordination, weak muscle strength, visual and vestibular conditions.</p>
+      <p>In Noah's case, his lower limb tightness and spasticity are speaking far louder to his frequent falls. Therefore, balance exercises are in lower priority at this moment.</p>
+    </div>
+
+    <p class="creator">Case Creator: Stephy Lau</p>
+  </div>
+
+  <button class="btn ghost" onclick="location.reload()">🔁 Restart case</button>
 </div>
 
-<!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+<a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
 
 <script>
   const investigations = [{"opt":"Check Gower sign ","res":"Negative","cor":true},
@@ -160,27 +670,47 @@ You are physiotherapist working in Paed OPD. He is your new case today.</p>
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg2").classList.add("active");
+    document.getElementById("question2").scrollIntoView({behavior:"smooth", block:"start"});
   }
 
   function showFinalResult() {
     const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
     let score = 0;
-    
+
     investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
     management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
 
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
-    
+    document.getElementById("final-score").innerHTML = score + " / 8";
+
+    const pct = Math.ceil((score / 8) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
+    document.getElementById("seg3").classList.add("active");
+
     const tbody = document.getElementById("result-table-body");
     tbody.innerHTML = "";
-    
+
     investigations.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
     });
     management.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
     });
+
+    document.getElementById("result").scrollIntoView({behavior:"smooth", block:"start"});
   }
 </script>
 </body>
