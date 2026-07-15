@@ -1,959 +1,1146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HA Physiotherapy Pulmonary Rehabilitation Education Portal</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .ha-gradient {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        }
-        .accent-border {
-            border-image: linear-gradient(to right, #ef4444, #3b82f6) 1;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulmonary Rehabilitation — Physiotherapy Guideline Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================= DESIGN TOKENS ============================= */
+:root{
+  --ink:#0f2027;
+  --ink-soft:#16323b;
+  --ink-line:rgba(255,255,255,.14);
+  --paper:#f4f7f6;
+  --card:#ffffff;
+  --line:#dfe6e4;
+  --text:#16262b;
+  --text-mute:#54666b;
+
+  --teal:#1c7a83;
+  --teal-deep:#0f5b62;
+  --teal-pale:#e2f0ef;
+
+  --o2:#2f7ea8;
+  --o2-deep:#215d7c;
+  --o2-pale:#e5f0f6;
+
+  --amber:#b9791f;
+  --amber-pale:#f7ecda;
+
+  --coral:#d1502f;
+  --coral-deep:#a83c21;
+  --coral-pale:#fbe7e1;
+
+  --mint:#1f8f5f;
+  --mint-deep:#166f49;
+  --mint-pale:#e3f5ec;
+
+  --grey:#7c8a8d;
+  --grey-pale:#eceeee;
+
+  --display:'Space Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --body:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --radius:14px;
+  --radius-sm:8px;
+  --shadow:0 6px 24px rgba(15,32,39,.08);
+  --shadow-lg:0 18px 46px rgba(15,32,39,.16);
+  --maxw:1180px;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block;max-width:100%;}
+a{color:var(--teal-deep);}
+h1,h2,h3,h4{font-family:var(--display);margin:0;line-height:1.12;letter-spacing:-.01em;}
+p{margin:0;}
+ul{margin:0;padding:0;list-style:none;}
+button{font-family:inherit;cursor:pointer;}
+:focus-visible{outline:3px solid var(--o2);outline-offset:3px;border-radius:4px;}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+@media(max-width:600px){.wrap{padding:0 18px;}}
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--teal-deep);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:600;
+}
+.eyebrow::before{
+  content:"";
+  width:7px;height:7px;border-radius:50%;
+  background:var(--mint);
+  box-shadow:0 0 0 3px var(--mint-pale);
+}
+.section-title{
+  font-size:clamp(1.5rem,3.4vw,2.15rem);
+  margin-top:10px;
+  max-width:32ch;
+}
+.section-lede{
+  font-size:1.02rem;
+  color:var(--text-mute);
+  max-width:62ch;
+  margin-top:14px;
+}
+.section-head{margin-bottom:38px;}
+
+section{padding:76px 0;position:relative;}
+section.alt{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+@media(max-width:720px){section{padding:56px 0;}}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* ============================= WAVEFORM PROGRESS BAR ============================= */
+.progressbar{
+  position:fixed;top:0;left:0;width:100%;height:5px;z-index:80;
+  background:var(--ink);overflow:hidden;
+}
+.progressbar .fill{
+  height:100%;width:0%;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--teal-light,#52c4bd) 0 2px, transparent 2px 4px),
+    linear-gradient(90deg,var(--mint),var(--teal),var(--o2));
+  background-size:auto 100%, 100% 100%;
+  transition:width .08s linear;
+}
+
+/* ============================= NAV ============================= */
+header.nav{
+  position:fixed;top:5px;left:0;width:100%;z-index:70;
+  background:rgba(15,32,39,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--ink-line);
+}
+.nav-row{
+  max-width:var(--maxw);margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;gap:22px;height:56px;
+}
+.brand{
+  display:flex;align-items:center;gap:9px;
+  color:#fff;font-family:var(--display);font-weight:700;font-size:.98rem;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.brand .dot{
+  width:9px;height:9px;border-radius:50%;background:var(--mint);
+  box-shadow:0 0 0 4px rgba(31,143,95,.28);
+  animation:pulseDot 2.4s ease-in-out infinite;
+}
+@keyframes pulseDot{0%,100%{transform:scale(1);}50%{transform:scale(1.35);}}
+.navlinks{
+  display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.navlinks::-webkit-scrollbar{display:none;}
+.navlinks a{
+  font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;
+  color:rgba(255,255,255,.62);text-decoration:none;white-space:nowrap;
+  padding:8px 11px;border-radius:20px;transition:.2s;
+  border:1px solid transparent;
+}
+.navlinks a:hover{color:#fff;background:rgba(255,255,255,.08);}
+.navlinks a.active{color:#fff;background:rgba(82,196,189,.16);border-color:rgba(82,196,189,.45);}
+
+/* ============================= HERO ============================= */
+.hero{
+  position:relative;
+  background:radial-gradient(ellipse at 20% -10%, #163a44 0%, var(--ink) 55%) ,var(--ink);
+  color:#fff;
+  padding:150px 0 90px;
+  overflow:hidden;
+  border-bottom:1px solid var(--ink-line);
+}
+.hero-wave{
+  position:absolute;inset:auto 0 0 0;height:150px;opacity:.5;
+  -webkit-mask-image:linear-gradient(to top, black 0%, transparent 95%);
+  mask-image:linear-gradient(to top, black 0%, transparent 95%);
+}
+.hero-wave svg{width:200%;height:100%;animation:waveScroll 16s linear infinite;}
+@keyframes waveScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.hero-inner{position:relative;z-index:2;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:#bfe6e2;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.16);
+  padding:7px 14px;border-radius:30px;
+}
+.hero h1{
+  font-size:clamp(2.4rem,6.2vw,4.4rem);
+  margin-top:22px;
+  max-width:14ch;
+}
+.hero h1 em{
+  font-style:normal;color:#7fd9cf;
+}
+.hero-sub{
+  margin-top:20px;font-size:clamp(1.02rem,2vw,1.22rem);
+  color:rgba(255,255,255,.72);max-width:52ch;
+}
+.vitals{
+  margin-top:40px;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
+  gap:1px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--radius);overflow:hidden;
+  max-width:900px;
+}
+.vital-tile{
+  background:rgba(255,255,255,.04);padding:16px 18px;
+}
+.vital-tile .k{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;
+  color:#8fd6cf;
+}
+.vital-tile .v{
+  font-family:var(--mono);font-size:1.22rem;font-weight:600;color:#fff;margin-top:4px;
+}
+.hero-ctas{margin-top:38px;display:flex;flex-wrap:wrap;gap:14px;}
+.btn{
+  font-family:var(--body);font-weight:600;font-size:.92rem;
+  padding:13px 22px;border-radius:30px;border:1px solid transparent;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn-primary{background:var(--mint);color:#06251a;box-shadow:0 10px 26px rgba(31,143,95,.35);}
+.btn-primary:hover{box-shadow:0 14px 32px rgba(31,143,95,.45);}
+.btn-ghost{background:transparent;border-color:rgba(255,255,255,.32);color:#fff;}
+.btn-ghost:hover{background:rgba(255,255,255,.08);}
+
+/* ============================= LEAD-LABEL CHIP (signature micro-motif) ============================= */
+.lead{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:700;font-size:.7rem;letter-spacing:.02em;
+  width:auto;min-width:40px;height:26px;padding:0 8px;
+  border-radius:6px;flex-shrink:0;
+}
+.lead.teal{background:var(--teal-pale);color:var(--teal-deep);}
+.lead.o2{background:var(--o2-pale);color:var(--o2-deep);}
+.lead.coral{background:var(--coral-pale);color:var(--coral-deep);}
+.lead.mint{background:var(--mint-pale);color:var(--mint-deep);}
+.lead.amber{background:var(--amber-pale);color:var(--amber);}
+.lead.grey{background:var(--grey-pale);color:var(--grey);}
+
+/* ============================= CHAPTER TAG ============================= */
+.chtag{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--teal-deep);background:var(--teal-pale);
+  display:inline-block;padding:5px 11px;border-radius:20px;font-weight:600;
+}
+
+/* ============================= EVIDENCE LADDER ============================= */
+.ladder{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+.ladder .rung{
+  flex:1 1 200px;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:14px 16px;
+}
+.ladder .rung .g{font-family:var(--mono);font-weight:700;font-size:1.1rem;}
+.ladder .rung.A{border-left:5px solid var(--teal);}
+.ladder .rung.B{border-left:5px solid var(--o2);}
+.ladder .rung.C{border-left:5px solid var(--amber);}
+.ladder .rung.D{border-left:5px solid var(--grey);}
+.ladder .rung p{font-size:.86rem;color:var(--text-mute);margin-top:5px;}
+
+/* ============================= CARD GRIDS ============================= */
+.grid{display:grid;gap:16px;margin-top:26px;}
+.grid.cols-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));}
+.grid.cols-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+.grid.cols-4{grid-template-columns:repeat(auto-fit,minmax(210px,1fr));}
+
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px;box-shadow:var(--shadow);
+}
+.card h4{font-size:1.02rem;margin-top:2px;}
+.card p{font-size:.9rem;color:var(--text-mute);margin-top:8px;}
+.card .top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+
+.benefit-card{display:flex;gap:14px;align-items:flex-start;}
+.benefit-card p{font-size:.92rem;color:var(--text);margin-top:0;}
+.benefit-card .lead{margin-top:2px;}
+
+/* ============================= TIMELINE (referral timing) ============================= */
+.timeline{margin-top:28px;display:flex;flex-direction:column;gap:10px;}
+.tl-row{
+  display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;
+}
+@media(max-width:600px){.tl-row{grid-template-columns:1fr;gap:6px;}}
+.tl-src{font-family:var(--mono);font-size:.78rem;color:var(--text-mute);font-weight:600;}
+.tl-bar-wrap{background:var(--grey-pale);border-radius:20px;height:34px;position:relative;overflow:hidden;}
+.tl-bar{
+  position:absolute;top:0;left:0;height:100%;border-radius:20px;
+  display:flex;align-items:center;padding:0 12px;
+  font-family:var(--mono);font-size:.72rem;color:#fff;font-weight:600;white-space:nowrap;
+}
+
+/* ============================= NUMBERED PRIORITY LIST (real ranked order) ============================= */
+.rank-list{margin-top:24px;display:flex;flex-direction:column;gap:10px;}
+.rank-item{
+  display:flex;gap:16px;align-items:flex-start;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:14px 18px;
+}
+.rank-num{
+  font-family:var(--mono);font-weight:700;font-size:1.05rem;color:var(--teal-deep);
+  background:var(--teal-pale);width:34px;height:34px;flex-shrink:0;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.rank-item p{font-size:.92rem;}
+
+/* ============================= FLOW PATHWAY ============================= */
+.flow{margin-top:30px;display:flex;flex-wrap:wrap;align-items:center;gap:0;}
+.flow-step{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:12px 16px;font-size:.84rem;font-weight:600;box-shadow:var(--shadow);
+  max-width:170px;
+}
+.flow-arrow{color:var(--teal);font-size:1.3rem;margin:0 6px;flex-shrink:0;}
+@media(max-width:720px){
+  .flow{flex-direction:column;align-items:stretch;}
+  .flow-step{max-width:none;}
+  .flow-arrow{transform:rotate(90deg);margin:2px auto;}
+}
+
+/* ============================= TABS for management sub-areas ============================= */
+.tabbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
+.tabbtn{
+  font-family:var(--mono);font-size:.76rem;letter-spacing:.03em;font-weight:600;
+  padding:9px 16px;border-radius:22px;border:1px solid var(--line);
+  background:var(--card);color:var(--text-mute);text-transform:uppercase;
+}
+.tabbtn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+.tabpanel{display:none;margin-top:24px;}
+.tabpanel.active{display:block;}
+
+.tech-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);
+}
+.tech-card h4{font-size:.96rem;}
+.tech-card p{font-size:.86rem;color:var(--text-mute);margin-top:6px;}
+.tech-card .warn{
+  margin-top:8px;font-size:.78rem;color:var(--coral-deep);background:var(--coral-pale);
+  padding:6px 10px;border-radius:6px;display:inline-block;font-weight:600;
+}
+
+/* FITT table */
+.fitt-table{margin-top:26px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow);}
+.fitt-row{display:grid;grid-template-columns:1.1fr .8fr 2.4fr;border-top:1px solid var(--line);}
+.fitt-row:first-child{border-top:none;background:var(--ink);color:#fff;}
+.fitt-row:first-child .fitt-cell{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:#bfe6e2;font-weight:700;}
+.fitt-cell{padding:14px 16px;font-size:.86rem;}
+.fitt-row:not(:first-child) .fitt-cell:first-child{font-weight:700;font-family:var(--display);}
+@media(max-width:680px){
+  .fitt-row{grid-template-columns:1fr;}
+  .fitt-row:not(:first-child) .fitt-cell:first-child{background:var(--teal-pale);color:var(--teal-deep);}
+  .fitt-row:first-child{display:none;}
+}
+
+/* ============================= OUTCOME TABLE ============================= */
+.otable{margin-top:26px;width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+.otable th,.otable td{padding:13px 16px;text-align:left;font-size:.88rem;border-bottom:1px solid var(--line);}
+.otable th{
+  background:var(--ink);color:#bfe6e2;font-family:var(--mono);font-size:.7rem;
+  text-transform:uppercase;letter-spacing:.08em;
+}
+.otable tr:last-child td{border-bottom:none;}
+.otable td.mcid{font-family:var(--mono);font-weight:700;color:var(--teal-deep);}
+.otable-scroll{overflow-x:auto;}
+
+/* ============================= POPULATION CARDS ============================= */
+.pop-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow);
+}
+.pop-head{
+  padding:16px 18px;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;background:var(--paper);
+}
+.pop-head h4{font-size:.98rem;}
+.pop-head .chev{transition:transform .25s ease;color:var(--teal-deep);font-size:1.1rem;}
+.pop-card.open .pop-head .chev{transform:rotate(45deg);}
+.pop-body{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.pop-card.open .pop-body{max-height:400px;}
+.pop-body-inner{padding:0 18px 18px;}
+.pop-body-inner li{
+  font-size:.86rem;color:var(--text-mute);padding-left:16px;position:relative;margin-top:8px;
+}
+.pop-body-inner li::before{
+  content:"";position:absolute;left:0;top:.5em;width:6px;height:6px;border-radius:50%;background:var(--teal);
+}
+
+/* ============================= INFECTION CONTROL STEPS ============================= */
+.steps{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);position:relative;}
+.step .num{font-family:var(--mono);font-size:.72rem;color:var(--teal-deep);font-weight:700;letter-spacing:.08em;}
+.step h4{margin-top:8px;font-size:1rem;}
+.step ul{margin-top:10px;}
+.step li{font-size:.84rem;color:var(--text-mute);margin-top:6px;padding-left:14px;position:relative;}
+.step li::before{content:"–";position:absolute;left:0;color:var(--teal);}
+
+/* ============================= QUIZ ============================= */
+.quiz-section{background:linear-gradient(180deg,var(--ink) 0%, #123039 100%);color:#fff;}
+.quiz-section .section-lede{color:rgba(255,255,255,.68);}
+.quiz-section .eyebrow{color:#8fd6cf;}
+.quiz-section .eyebrow::before{background:#7fd9cf;box-shadow:0 0 0 3px rgba(127,217,207,.25);}
+.quiz-progress{margin-top:30px;display:flex;gap:8px;}
+.qp-dot{
+  flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.14);overflow:hidden;
+}
+.qp-dot .f{height:100%;width:0%;background:var(--mint);transition:width .3s ease;}
+.score-line{
+  margin-top:14px;font-family:var(--mono);font-size:.82rem;color:rgba(255,255,255,.7);
+  display:flex;gap:18px;flex-wrap:wrap;
+}
+.score-line b{color:#fff;font-size:1rem;}
+
+.qcard{
+  margin-top:24px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--radius);padding:26px;backdrop-filter:blur(6px);
+}
+.qcard .qmeta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.qcard .qnum{font-family:var(--mono);font-size:.76rem;color:#8fd6cf;font-weight:700;letter-spacing:.06em;}
+.qcard .chtag.dark{background:rgba(191,230,226,.14);color:#bfe6e2;}
+.vignette{
+  font-size:.94rem;line-height:1.6;color:rgba(255,255,255,.86);
+  padding:14px 16px;border-left:3px solid var(--teal);background:rgba(255,255,255,.04);
+  border-radius:0 8px 8px 0;
+}
+.qstem{margin-top:16px;font-size:1.05rem;font-weight:600;font-family:var(--display);}
+.qoptions{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
+.qopt{
+  display:flex;gap:12px;align-items:flex-start;text-align:left;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.16);
+  border-radius:10px;padding:13px 16px;color:#fff;transition:.15s;width:100%;
+}
+.qopt:hover:not(.locked){background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.32);}
+.qopt .letter{
+  font-family:var(--mono);font-weight:700;font-size:.8rem;
+  width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.qopt .otext{font-size:.9rem;line-height:1.5;flex:1;}
+.qopt .mark{font-size:1rem;flex-shrink:0;display:none;}
+.qopt.correct{background:rgba(31,143,95,.22);border-color:var(--mint);}
+.qopt.correct .letter{background:var(--mint);color:#06251a;}
+.qopt.correct .mark.yes{display:inline;}
+.qopt.wrong{background:rgba(209,80,47,.2);border-color:var(--coral);}
+.qopt.wrong .letter{background:var(--coral);color:#2b0d05;}
+.qopt.wrong .mark.no{display:inline;}
+.qopt.locked{cursor:default;}
+.qopt.dim{opacity:.55;}
+
+.rationale{
+  margin-top:8px;padding:12px 14px;border-radius:8px;font-size:.85rem;line-height:1.55;
+  display:none;
+}
+.rationale.show{display:block;animation:fadeIn .35s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+.rationale.r-correct{background:rgba(31,143,95,.14);color:#c7ecdb;border:1px solid rgba(31,143,95,.4);}
+.rationale.r-wrong{background:rgba(209,80,47,.14);color:#f6d3c4;border:1px solid rgba(209,80,47,.4);}
+
+.quiz-summary{
+  margin-top:30px;text-align:center;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:40px 24px;
+  display:none;
+}
+.quiz-summary.show{display:block;}
+.quiz-summary .big{font-family:var(--display);font-size:2.6rem;font-weight:700;}
+.quiz-summary p{margin-top:10px;color:rgba(255,255,255,.75);max-width:48ch;margin-left:auto;margin-right:auto;}
+.quiz-summary .btn{margin-top:22px;}
+
+/* ============================= SIDE DOT NAV ============================= */
+.sidenav{
+  position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:60;
+  display:flex;flex-direction:column;gap:12px;
+}
+.sidenav a{
+  width:9px;height:9px;border-radius:50%;background:rgba(15,32,39,.2);
+  border:1px solid rgba(15,32,39,.3);
+  position:relative;
+}
+.sidenav a.active{background:var(--teal);border-color:var(--teal);transform:scale(1.4);}
+.sidenav a::after{
+  content:attr(data-label);position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.68rem;background:var(--ink);color:#fff;
+  padding:4px 9px;border-radius:5px;white-space:nowrap;opacity:0;pointer-events:none;transition:.15s;
+}
+.sidenav a:hover::after{opacity:1;}
+@media(max-width:980px){.sidenav{display:none;}}
+
+/* ============================= FOOTER ============================= */
+footer{background:var(--ink);color:rgba(255,255,255,.6);padding:50px 0 40px;}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;}
+footer .fbrand{color:#fff;font-family:var(--display);font-weight:700;}
+footer p{font-size:.82rem;line-height:1.6;max-width:60ch;margin-top:10px;}
+footer .doc{font-family:var(--mono);font-size:.74rem;color:#8fd6cf;}
+
+/* back to top */
+.totop{
+  position:fixed;bottom:22px;right:22px;z-index:60;
+  width:46px;height:46px;border-radius:50%;background:var(--ink);color:#fff;
+  border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:opacity .25s ease, transform .2s ease;
+  font-size:1.1rem;
+}
+.totop.show{opacity:1;pointer-events:auto;}
+.totop:hover{transform:translateY(-3px);}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  html{scroll-behavior:auto;}
+}
+</style>
 </head>
-<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
+<body>
 
-    <!-- Header Section -->
-    <header class="ha-gradient text-white shadow-xl sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center space-x-4">
-                    <!-- HA Heart Logo Styled SVG -->
-                    <div class="bg-red-600 p-2.5 rounded-xl shadow-md flex items-center justify-center">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs font-bold tracking-widest bg-red-500/20 text-red-400 px-2 py-0.5 rounded">HOSPITAL AUTHORITY</span>
-                            <span class="text-xs font-mono text-slate-400">Physiotherapy Practice Guidelines on Pulmonary Rehabilitation v3.0 (2026-2029)</span>
-                        </div>
-                        <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-100">Physiotherapy Pulmonary Rehabilitation Portal</h1>
-                    </div>
-                </div>
-                <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
-                    <a href="#navigator" class="hover:text-white transition">Clinical Navigator</a>
-                    <a href="#calculators" class="hover:text-white transition">Clinical Calculators</a>
-                    <a href="#e-doc" class="hover:text-white transition">E-Documentation</a>
-                    <a href="#quiz" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition shadow-md shadow-blue-500/10">Clinical Quiz</a>
-                </div>
-            </div>
+<div class="progressbar"><div class="fill" id="scrollFill"></div></div>
+
+<header class="nav">
+  <div class="nav-row">
+    <div class="brand"><span class="dot"></span> PR&nbsp;Guide</div>
+    <nav class="navlinks" id="navlinks">
+      <a href="#evidence">01 Evidence</a>
+      <a href="#referral">02 Referral</a>
+      <a href="#delivery">03–04 Delivery</a>
+      <a href="#management">05 PT Management</a>
+      <a href="#outcomes">06 Outcomes</a>
+      <a href="#populations">07 Populations</a>
+      <a href="#infection">08 Infection Control</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="sidenav" id="sidenav">
+  <a href="#evidence" data-label="Evidence"></a>
+  <a href="#referral" data-label="Referral"></a>
+  <a href="#delivery" data-label="Delivery"></a>
+  <a href="#management" data-label="PT Management"></a>
+  <a href="#outcomes" data-label="Outcomes"></a>
+  <a href="#populations" data-label="Populations"></a>
+  <a href="#infection" data-label="Infection Control"></a>
+  <a href="#quiz" data-label="Quiz"></a>
+</nav>
+
+<!-- ============================= HERO ============================= -->
+<section class="hero">
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1200 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,90 C 40,90 55,40 90,40 C 115,40 120,110 150,110 C 175,110 185,60 220,60 L 240,60 C 260,60 270,20 300,20 C 330,20 335,120 365,120 C 390,120 400,70 430,70
+        L 1200,70 L 1200,150 L 0,150 Z
+        M600,90 C 640,90 655,40 690,40 C 715,40 720,110 750,110 C 775,110 785,60 820,60 L 840,60 C 860,60 870,20 900,20 C 930,20 935,120 965,120 C 990,120 1000,70 1030,70"
+        fill="none" stroke="#2f7ea8" stroke-width="2.5" opacity="0.55"/>
+      <path d="M0,100 C 30,100 45,70 70,70 C 95,70 100,120 130,120 C 155,120 165,90 195,90 L 1200,90
+        M600,100 C 630,100 645,70 670,70 C 695,70 700,120 730,120 C 755,120 765,90 795,90"
+        fill="none" stroke="#1c7a83" stroke-width="1.5" opacity="0.35"/>
+    </svg>
+  </div>
+  <div class="wrap hero-inner">
+    <span class="hero-badge">HAHO-COC-GL-PHY-008-v03 · Hospital Authority</span>
+    <h1>Pulmonary<br><em>Rehabilitation</em></h1>
+    <p class="hero-sub">A bedside monitor-style summary of the HA Physiotherapy Practice Guidelines on Pulmonary Rehabilitation — built for junior physiotherapists learning the evidence, the pathway, and the hands-on programme.</p>
+    <div class="vitals">
+      <div class="vital-tile"><div class="k">Version</div><div class="v">3.0</div></div>
+      <div class="vital-tile"><div class="k">Issued</div><div class="v">22 Jan 26</div></div>
+      <div class="vital-tile"><div class="k">Review due</div><div class="v">22 Jan 29</div></div>
+      <div class="vital-tile"><div class="k">Min duration</div><div class="v">6 wks</div></div>
+      <div class="vital-tile"><div class="k">Min frequency</div><div class="v">2×/wk</div></div>
+    </div>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#evidence">Start reading ↓</a>
+      <a class="btn btn-ghost" href="#quiz">Jump to quiz →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 01 EVIDENCE ============================= -->
+<section id="evidence">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Chapter 01</span>
+      <h2 class="section-title">Why pulmonary rehab, and how sure are we?</h2>
+      <p class="section-lede">PR is defined as a comprehensive, patient-tailored intervention — exercise training, education and behaviour change — aimed at improving physical and psychological status and supporting long-term healthy behaviour in people with chronic respiratory disease (ATS, 2023).</p>
+    </div>
+
+    <div class="grid cols-3 reveal">
+      <div class="card benefit-card"><span class="lead teal">A</span><div><h4>Dyspnoea, health status, exercise tolerance</h4><p>Consistently improved in clinically stable patients.</p></div></div>
+      <div class="card benefit-card"><span class="lead o2">B</span><div><h4>Fewer hospitalisations</h4><p>Reduced re-admission when started ≤4 weeks after an exacerbation.</p></div></div>
+      <div class="card benefit-card"><span class="lead teal">A</span><div><h4>Less anxiety &amp; depression</h4><p>Meaningful reduction in psychological symptom burden.</p></div></div>
+      <div class="card benefit-card"><span class="lead o2">B</span><div><h4>Self-management + clinician contact</h4><p>Lowers hospitalisations and ED visits.</p></div></div>
+      <div class="card benefit-card"><span class="lead teal">A</span><div><h4>Broad indication</h4><p>Indicated for anyone with relevant symptoms or high exacerbation risk — not COPD only.</p></div></div>
+      <div class="card benefit-card"><span class="lead teal">A</span><div><h4>Activity = survival signal</h4><p>Physical activity level is a strong predictor of mortality.</p></div></div>
+    </div>
+
+    <h3 style="margin-top:46px;font-size:1.1rem;" class="reveal">Reading the evidence grades used throughout this guideline</h3>
+    <div class="ladder reveal">
+      <div class="rung A"><span class="g">A</span><p>Rich, consistent RCT evidence — ≥2 quality trials or one large unbiased RCT.</p></div>
+      <div class="rung B"><span class="g">B</span><p>RCTs with real limitations, or a limited body of evidence overall.</p></div>
+      <div class="rung C"><span class="g">C</span><p>Non-randomised trials or observational studies only.</p></div>
+      <div class="rung D"><span class="g">D</span><p>Panel consensus — useful guidance, but literature is insufficient.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 02 REFERRAL ============================= -->
+<section id="referral" class="alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Chapter 02</span>
+      <h2 class="section-title">Who gets referred, and when</h2>
+      <p class="section-lede">Referral criteria and timing are ultimately set by local policy and physician judgement — the points below are the guideline's reference framework.</p>
+    </div>
+
+    <h3 style="font-size:1.02rem;" class="reveal">Inclusion — in descending priority</h3>
+    <div class="rank-list reveal">
+      <div class="rank-item"><span class="rank-num">1</span><p>COPD with a <b>single AECOPD hospitalisation</b> within the past year.</p></div>
+      <div class="rank-item"><span class="rank-num">2</span><p>COPD with <b>≥2 AECOPD hospitalisations</b> within the past year.</p></div>
+      <div class="rank-item"><span class="rank-num">3</span><p>Symptomatic chronic chest patients (incl. COPD), <b>mMRC ≥2</b>.</p></div>
+      <div class="rank-item"><span class="rank-num">4</span><p>Milder disease — refer with a prevention / adherence-focused programme.</p></div>
+    </div>
+    <p class="section-lede" style="margin-top:14px;">Comorbidities alone should never auto-exclude a referral — review individually with the multidisciplinary PR team. Key referral moments: at diagnosis, at discharge after an exacerbation, or when symptoms are visibly worsening. PR teams should also be equipped to support pre-habilitation before lung cancer or transplant surgery.</p>
+
+    <div class="grid cols-4 reveal" style="margin-top:34px;">
+      <div class="card"><span class="lead coral">✕</span><h4 style="margin-top:10px;">Cardiac / non-resp disease</h4><p>e.g. dementia, severe arthritis or back pain preventing participation.</p></div>
+      <div class="card"><span class="lead coral">✕</span><h4 style="margin-top:10px;">Poor rehab potential</h4><p>End-stage disease, e.g. bedbound patients.</p></div>
+      <div class="card"><span class="lead coral">✕</span><h4 style="margin-top:10px;">Poor motivation</h4><p>Engagement is essential to benefit from PRP.</p></div>
+      <div class="card"><span class="lead coral">✕</span><h4 style="margin-top:10px;">Completed PRP &lt;1 yr ago</h4><p>Consider a refresher programme instead.</p></div>
+    </div>
+    <p class="section-lede" style="margin-top:14px;">If a patient refuses PRP, has mMRC ≤2 and is not on LTOT → refer to HA community support / NAHC for self-management and exercise education instead.</p>
+
+    <h3 style="margin-top:44px;font-size:1.02rem;" class="reveal">Timing after an acute exacerbation — how the bodies compare</h3>
+    <div class="timeline reveal" id="timeline">
+      <div class="tl-row"><span class="tl-src">Stable phase (BTS)</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:100%;background:var(--grey);">≤ 3 months of referral</div></div></div>
+      <div class="tl-row"><span class="tl-src">GOLD 2025</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:33%;background:var(--teal);">≤ 4 weeks post-discharge</div></div></div>
+      <div class="tl-row"><span class="tl-src">BTS 2023</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:33%;background:var(--o2);">Within 1 month</div></div></div>
+      <div class="tl-row"><span class="tl-src">ERS/ATS</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:25%;background:var(--mint);">Within 3 weeks (conditional, low-quality evidence)</div></div></div>
+      <div class="tl-row"><span class="tl-src">Early PR trial</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:17%;background:var(--amber);">≤ 2 weeks — faster recovery, no survival gain</div></div></div>
+    </div>
+    <p class="section-lede" style="margin-top:14px;">In-hospital PR <em>during</em> an acute exacerbation is also supported as safe and effective — it improves function and strength without prolonging length of stay, and prioritising endurance training pre-discharge shows the most favourable readmission/exercise-capacity outcomes.</p>
+  </div>
+</section>
+
+<!-- ============================= 03-04 DELIVERY ============================= -->
+<section id="delivery">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Chapters 03–04</span>
+      <h2 class="section-title">Setting, dosage &amp; the service pathway</h2>
+      <p class="section-lede">Programmes flex to the patient and the setting — but the floor is fixed.</p>
+    </div>
+
+    <div class="grid cols-4 reveal">
+      <div class="card"><h4>Inpatient</h4><p>For patients still admitted, incl. post-exacerbation.</p></div>
+      <div class="card"><h4>Day-patient</h4><p>Centre-based, ambulatory attendance.</p></div>
+      <div class="card"><h4>Home-based</h4><p>Delivered where access to centre-based care is limited.</p></div>
+      <div class="card"><h4>Tele-rehabilitation</h4><p>Alternative for those declining centre-based PR — watch for internet access, digital literacy and acceptance barriers.</p></div>
+    </div>
+
+    <div class="grid cols-3 reveal" style="margin-top:8px;">
+      <div class="card"><span class="lead teal">≥6</span><h4 style="margin-top:10px;">Weeks minimum</h4><p>Duration and session count can be adjusted to the patient's condition.</p></div>
+      <div class="card"><span class="lead teal">2×</span><h4 style="margin-top:10px;">Supervised sessions / week</h4><p>Minimum, excluding assessment visits.</p></div>
+      <div class="card"><span class="lead teal">3</span><h4 style="margin-top:10px;">Programme variants</h4><p><b>Partial</b> (frail / low motivation) · <b>Refresher</b> (declined after prior PRP within 1 yr) · <b>Brief NAHC-led</b> (mild disease, refusing comprehensive PRP).</p></div>
+    </div>
+
+    <h3 style="margin-top:44px;font-size:1.02rem;" class="reveal">Simplified service delivery pathway</h3>
+    <div class="flow reveal">
+      <div class="flow-step">Referral (inpatient / outpatient / NAHC)</div><span class="flow-arrow">→</span>
+      <div class="flow-step">PR team screens eligibility</div><span class="flow-arrow">→</span>
+      <div class="flow-step">PR conference</div><span class="flow-arrow">→</span>
+      <div class="flow-step">Enrol + pre-PR outcome assessment</div><span class="flow-arrow">→</span>
+      <div class="flow-step">Programme delivery (review in conference if needed)</div><span class="flow-arrow">→</span>
+      <div class="flow-step">Post-PR outcome assessment</div><span class="flow-arrow">→</span>
+      <div class="flow-step">Discharge with home exercise plan</div><span class="flow-arrow">→</span>
+      <div class="flow-step">Follow-up</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 05 PT MANAGEMENT ============================= -->
+<section id="management" class="alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Chapter 05</span>
+      <h2 class="section-title">Physiotherapy management — the engine room</h2>
+      <p class="section-lede">Assessment feeds a tailored blend of dyspnoea management, airway clearance, exercise training, and — for patients who can't tolerate conventional training — a set of enhancement strategies.</p>
+    </div>
+
+    <div class="tabbar reveal" id="tabbar" role="tablist">
+      <button class="tabbtn active" data-tab="t-assess">Assessment</button>
+      <button class="tabbtn" data-tab="t-dyspnoea">Dyspnoea mgmt</button>
+      <button class="tabbtn" data-tab="t-airway">Airway clearance</button>
+      <button class="tabbtn" data-tab="t-exercise">Exercise training</button>
+      <button class="tabbtn" data-tab="t-adjunct">Hard-to-train adjuncts</button>
+      <button class="tabbtn" data-tab="t-o2">O₂ &amp; flight</button>
+      <button class="tabbtn" data-tab="t-whole">Whole-person care</button>
+    </div>
+
+    <!-- Assessment -->
+    <div class="tabpanel active" id="t-assess">
+      <div class="grid cols-2">
+        <div class="card">
+          <h4>History to take</h4>
+          <p>Present illness &amp; meds/labs · past respiratory disease, comorbidities, IMV/NIV/HFOT history · hospitalisation history · socioeconomic status, smoking, carer support · home environment &amp; accessibility · premorbid mobility &amp; exercise habit · home LTOT/NIV device use.</p>
         </div>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-        
-        <!-- Welcome Banner & Summary -->
-        <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-            <div class="space-y-4 max-w-3xl">
-                <div class="inline-flex items-center space-x-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>Quick Reference for Physiotherapist </span>
-                </div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">HA-COC Physiotherapy Practice Guidelines</h2>
-                <p class="text-slate-600 leading-relaxed">
-                    This portal summarizes the latest clinical standards for <strong>Pulmonary Rehabilitation Programmes (PRP)</strong> within HA hospitals. Use this resource to streamline referrals, calculate diagnostic indices, prepare standard electronic notes, and test your clinical reasoning with case studies.
-                </p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="block text-xs font-semibold text-slate-500">Document No.</span>
-                        <span class="text-sm font-bold text-slate-800">HAHO-COC-GL-PHY-008</span>
-                    </div>
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="block text-xs font-semibold text-slate-500">Effective Date</span>
-                        <span class="text-sm font-bold text-slate-800 text-red-600">22/01/2026</span>
-                    </div>
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="block text-xs font-semibold text-slate-500">Review Date</span>
-                        <span class="text-sm font-bold text-slate-800">22/01/2029</span>
-                    </div>
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="block text-xs font-semibold text-slate-500">Custodian</span>
-                        <span class="text-sm font-bold text-slate-800">Allied Health (PT)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-4 justify-center shrink-0">
-                <div class="bg-red-50 p-6 rounded-2xl border border-red-100 space-y-2 text-center sm:text-left">
-                    <span class="text-xs font-bold text-red-700 tracking-wider uppercase block">Core Priority</span>
-                    <span class="text-2xl font-black text-slate-950 block">≤ 4 Weeks</span>
-                    <span class="text-xs text-slate-600 block">Initiate post-discharge PR to reduce mortality & readmissions (Evidence B)</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interactive Guideline Navigator Section -->
-        <section id="navigator" class="space-y-6">
-            <div class="border-b border-slate-200 pb-4">
-                <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Clinical Protocol Navigator</h3>
-                <p class="text-slate-500 text-sm">Explore interactive visual summaries of the guidelines across key components.</p>
-            </div>
-
-            <!-- Tab Buttons -->
-            <div class="flex flex-wrap gap-2 p-1.5 bg-slate-100 rounded-xl max-w-4xl">
-                <button onclick="switchTab('referral-tab')" id="referral-tab-btn" class="nav-tab-btn px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-slate-800 shadow-sm transition">
-                    Referral & Eligibility
-                </button>
-                <button onclick="switchTab('dyspnoea-tab')" id="dyspnoea-tab-btn" class="nav-tab-btn px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-800 transition">
-                    Dyspnoea & Clearance
-                </button>
-                <button onclick="switchTab('exercise-tab')" id="exercise-tab-btn" class="nav-tab-btn px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-800 transition">
-                    Exercise Prescription
-                </button>
-                <button onclick="switchTab('special-tab')" id="exercise-special-tab-btn" class="nav-tab-btn px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-800 transition">
-                    Non-COPD & Adjuncts
-                </button>
-            </div>
-
-            <!-- TAB 1: Referral & Eligibility -->
-            <div id="referral-tab" class="tab-content grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Inclusion Criteria Card -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-emerald-700">
-                        <div class="p-2 bg-emerald-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Inclusion Criteria</h4>
-                    </div>
-                    <p class="text-xs text-slate-500 uppercase tracking-widest font-semibold">Priority Order (Central Committee 2024)</p>
-                    <ul class="space-y-3 text-sm text-slate-600">
-                        <li class="flex items-start gap-2.5">
-                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center shrink-0">1</span>
-                            <span>COPD patients with <strong>1 hospitalization</strong> due to AECOPD within the past year.</span>
-                        </li>
-                        <li class="flex items-start gap-2.5">
-                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center shrink-0">2</span>
-                            <span>COPD patients with <strong>&ge; 2 hospitalizations</strong> due to AECOPD within the past year.</span>
-                        </li>
-                        <li class="flex items-start gap-2.5">
-                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center shrink-0">3</span>
-                            <span>Symptomatic chronic chest patients with <strong>mMRC dyspnoea score > 2</strong>.</span>
-                        </li>
-                    </ul>
-                    <div class="mt-4 p-3 bg-blue-50/50 rounded-xl border border-blue-100 text-xs text-slate-600 leading-relaxed">
-                        <strong class="text-blue-800 block mb-1">Milder Disease Protocol (mMRC &le; 2):</strong>
-                        Patients refusing comprehensive PRP with mMRC &le; 2 (and not on LTOT) should be referred to HA community support at primary care level.
-                    </div>
-                </div>
-
-                <!-- Exclusion Criteria Card -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-red-700">
-                        <div class="p-2 bg-red-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Exclusion Criteria</h4>
-                    </div>
-                    <p class="text-xs text-slate-500 uppercase tracking-widest font-semibold">Strict Contraindications</p>
-                    <ul class="space-y-3 text-sm text-slate-600">
-                        <li class="flex items-start gap-2">
-                            <svg class="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            <span><strong> cardiac or non-respiratory disease</strong> (e.g. dementia, severe arthritis, severe back pain) that prevents exercise or attendance.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <svg class="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            <span><strong>End-stage respiratory disease</strong> with extremely poor rehabilitative potential (e.g., bedbound).</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <svg class="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            <span><strong>Poor motivation</strong> or patient non-compliance.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <svg class="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            <span><strong>Completed comprehensive PRP</strong> within the previous one year.</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Timing & Duration Card -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-blue-700">
-                        <div class="p-2 bg-blue-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Timing & Modality Settings</h4>
-                    </div>
-                    <div class="space-y-3 text-sm text-slate-600">
-                        <div>
-                            <span class="block font-bold text-slate-800">Hospital Discharge Timing:</span>
-                            <span class="text-xs bg-amber-50 text-amber-800 px-2 py-0.5 rounded font-medium border border-amber-100 mt-1 inline-block">Within 4 weeks (GOLD 2025/BTS 2023)</span>
-                        </div>
-                        <div>
-                            <span class="block font-bold text-slate-800">Clinically Stable Referrals:</span>
-                            <span>Initiate within <strong>3 months</strong> of receiving referral.</span>
-                        </div>
-                        <div>
-                            <span class="block font-bold text-slate-800">Standard Program Duration:</span>
-                            <span>At least <strong>6 weeks</strong>, including a minimum of <strong>twice weekly</strong> supervised sessions.</span>
-                        </div>
-                        <div>
-                            <span class="block font-bold text-slate-800">Alternative Options:</span>
-                            <span class="text-xs text-slate-500 block"><strong>Tele-rehabilitation</strong> is a valid alternative for patients declining supervised centre-based programs, provided visual/fall risk is low.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 2: Dyspnoea & Airways -->
-            <div id="dyspnoea-tab" class="tab-content hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Dyspnoea Management -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-cyan-800">
-                        <div class="p-2 bg-cyan-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Dyspnoea Control Strategies</h4>
-                    </div>
-                    <div class="space-y-3 text-sm text-slate-600">
-                        <div class="border-l-2 border-slate-200 pl-3">
-                            <strong class="text-slate-800">Pursed-Lip Breathing (PLB):</strong> 
-                            Reduces intrinsic PEEP and dynamic hyperinflation, alters muscle recruitment pattern, and decreases respiratory rate (Breslin, 1992).
-                        </div>
-                        <div class="border-l-2 border-slate-200 pl-3">
-                            <strong class="text-slate-800">Diaphragmatic Breathing (DB):</strong> 
-                            Reduces sympathetic activity (Zare et al., 2025). *Precaution:* Contraindicated in patients with severe COPD and marked hyperinflation without adequate diaphragmatic excursion.
-                        </div>
-                        <div class="border-l-2 border-slate-200 pl-3">
-                            <strong class="text-slate-800">Rollator Fixation:</strong> 
-                            Fixing arms on a rollator in a forward lean position stabilizes the upper limb and shoulder girdle, optimizing the accessory muscles' pressure-generating capacity.
-                        </div>
-                        <div class="border-l-2 border-slate-200 pl-3">
-                            <strong class="text-slate-800">Acupressure & Acu-TENS:</strong> 
-                            Key targets for breathlessness: EX-B1 (Ding Chuan), BL-13, BL-23, ST-36, LU-1, LU-7 (Wei et al., 2022).
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Airway Clearance & Bronchial Hygiene -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-amber-800">
-                        <div class="p-2 bg-amber-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Airway Clearance / Bronchial Hygiene</h4>
-                    </div>
-                    <div class="space-y-3 text-sm text-slate-600">
-                        <p class="font-semibold text-slate-700">Active vs. Passive Techniques:</p>
-                        <ul class="list-disc pl-5 space-y-1.5">
-                            <li>Teach Active Cycle of Breathing (ACBT), autogenic drainage, and selectively direct huffing. Active techniques are highly preferred over passive.</li>
-                            <li><span class="text-red-700 font-bold">Crucial Hazard Warning:</span> <strong>Manual chest and abdominal compression</strong> increases peak cough flow in muscular weakness, but <strong class="text-red-700">decreases peak cough flow in COPD patients</strong> due to airway collapse! (Sivasothy et al, 2001).</li>
-                            <li><strong>Physical Exercise Effect:<strong> Resistance training (weights/elastic tubing) significantly improves mucociliary clearance (Silva et al., 2019). <strong>Aerobic training alone has no significant effect</strong> on clearance.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 3: Exercise Prescription -->
-            <div id="exercise-tab" class="tab-content hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Aerobic Prescription -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-indigo-700">
-                        <div class="p-2 bg-indigo-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Aerobic Training</h4>
-                    </div>
-                    <ul class="space-y-3 text-sm text-slate-600">
-                        <li><strong>Frequency:</strong> 3-5 days per week (minimum 2 supervised sessions).</li>
-                        <li><strong>Duration:</strong> 20-60 minutes per session.</li>
-                        <li><strong>Intensity:</strong>
-                            <ul class="list-disc pl-5 space-y-1 mt-1 text-xs">
-                                <li>60-80% of peak work rate on cycle stress test.</li>
-                                <li>For walking, use 60-80% speed calculated from 6MWT.</li>
-                                <li>Symptom-limited: Target Borg RPD of <strong>4 to 6</strong> ("somewhat severe" to "severe").</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Resistance Training -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-rose-700">
-                        <div class="p-2 bg-rose-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Resistance Training</h4>
-                    </div>
-                    <ul class="space-y-3 text-sm text-slate-600">
-                        <li><strong>Frequency:</strong> 2-3 days per week.</li>
-                        <li><strong>Intensity:</strong> 50-85% of 1 Repetition Maximum (1RM).</li>
-                        <li><strong>Sets & Reps:</strong> 2-4 sets of 8-12 repetitions per muscle group.</li>
-                        <li><strong>Execution Speed:</strong> Moderate control: 1-2s concentric, 1-2s eccentric phases.</li>
-                        <li><strong>Muscle Groups:</strong> Major upper & lower limbs (quadriceps, biceps, pectoralis, traps).</li>
-                    </ul>
-                </div>
-
-                <!-- Inspiratory Muscle Training (IMT) -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-violet-700">
-                        <div class="p-2 bg-violet-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4H15"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Inspiratory Muscle (IMT)</h4>
-                    </div>
-                    <ul class="space-y-3 text-sm text-slate-600">
-                        <li><strong>Role:</strong> Adjunct intervention only. Does not replace routine whole-body PRP exercises.</li>
-                        <li><strong>Frequency:</strong> 5-7 days per week.</li>
-                        <li><strong>Intensity:</strong> Start at <strong>> 30% of MIP</strong>; progress incrementally (5-10% weekly) to <strong>45-60% of MIP</strong>.</li>
-                        <li><strong>Pacing:</strong> ~8 breaths/min (Inspiration: ~2s; Expiration: ~6s). Borg rating of 4-6.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- TAB 4: Non-COPD Special & Advanced Adjuncts -->
-            <div id="special-tab" class="tab-content hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Advanced Adjuncts -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-amber-700">
-                        <div class="p-2 bg-amber-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Advanced Rehab Adjuncts</h4>
-                    </div>
-                    <div class="space-y-3 text-sm text-slate-600">
-                        <div class="p-3 bg-slate-50 rounded-lg">
-                            <strong class="text-slate-800 block">Neuromuscular Electrical Stimulation (NMES):</strong>
-                            Excellent for frail/severely dyspnoeic patients in acute phases. Bypasses breathlessness and central cardiac loads. Frequency: 50-120Hz; Duty cycle: 2-10s on, 4-50s off; 20-60 mins/day.
-                        </div>
-                        <div class="p-3 bg-slate-50 rounded-lg">
-                            <strong class="text-slate-800 block">Whole Body Vibration (WBV):</strong>
-                            Squats with WBV (Side-alternating: >20Hz; Vertical: <35Hz; displacement >4mm) improve 6MWD & stand speed while minimizing systemic fatigue.
-                        </div>
-                        <div class="p-3 bg-slate-50 rounded-lg">
-                            <strong class="text-slate-800 block">Eccentric Training & Downhill Walking:</strong>
-                            Generates up to 4x higher muscle force with lower cardiopulmonary / ventilatory demands compared to standard cycle/treadmill protocols.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Special Conditions (Non-COPD) -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-3 text-purple-700">
-                        <div class="p-2 bg-purple-50 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-900">Special Non-COPD Conditions</h4>
-                    </div>
-                    <div class="space-y-2 text-sm text-slate-600">
-                        <div class="p-2 border-l-4 border-purple-500 bg-purple-50/30">
-                            <strong>Interstitial Lung Disease (ILD):</strong> Focus on pacing/energy conservation. High-flow oxygen is common. Monitor gas exchange closely.
-                        </div>
-                        <div class="p-2 border-l-4 border-red-500 bg-red-50/30">
-                            <strong>Pulmonary Hypertension (PH):</strong> Keep SpO2 > 88%. <span class="text-red-700 font-bold">Strictly avoid Valsalva-like maneuvers. Remotely supervised exercise is NOT recommended</span> due to syncope/arrhythmia risks.
-                        </div>
-                        <div class="p-2 border-l-4 border-emerald-500 bg-emerald-50/30">
-                            <strong>Cystic Fibrosis (CF):</strong> <span class="text-emerald-800 font-bold">Separate patients based on respiratory pathogens</span> in gym sessions. Monitor blood sugar (CF-related diabetes) and fluids.
-                        </div>
-                        <div class="p-2 border-l-4 border-blue-500 bg-blue-50/30">
-                            <strong>Lung Transplantation:</strong> Monitor Sat carefully. SAT should be >90% during exercise; if <strong class="text-red-700">SpO2 drops below 88%</strong>, rule out acute rejection/allograft dysfunction immediately.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Calculators and Decision Trees Section -->
-        <section id="calculators" class="grid grid-cols-1 lg:grid-cols-2 gap-8 border-t border-slate-200 pt-10">
-            <!-- BODE Calculator -->
-            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
-                <div>
-                    <h3 class="text-lg font-bold text-slate-900">BODE Index & 4-Year Survival Calculator</h3>
-                    <p class="text-xs text-slate-500 mt-1">Multi-dimensional assessment score (0 to 10 points) representing severity of COPD.</p>
-                </div>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase">FEV1 % Predicted</label>
-                        <select id="calc-fev1" onchange="calculateBode()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:outline-none focus:border-blue-500">
-                            <option value="0">&gt;65% FEV1 (0 pts)</option>
-                            <option value="1">50 - 64% FEV1 (1 pt)</option>
-                            <option value="2">36 - 49% FEV1 (2 pts)</option>
-                            <option value="3">&lt;35% FEV1 (3 pts)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase">6-Minute Walk Distance</label>
-                        <select id="calc-6mwd" onchange="calculateBode()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:outline-none focus:border-blue-500">
-                            <option value="0">&gt;350 m (0 pts)</option>
-                            <option value="1">250 - 349 m (1 pt)</option>
-                            <option value="2">150 - 249 m (2 pts)</option>
-                            <option value="3">&lt;149 m (3 pts)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase">mMRC Dyspnoea Score</label>
-                        <select id="calc-mmrc" onchange="calculateBode()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:outline-none focus:border-blue-500">
-                            <option value="0">Grade 0 - 1 (0 pts)</option>
-                            <option value="1">Grade 2 (1 pt)</option>
-                            <option value="2">Grade 3 (2 pts)</option>
-                            <option value="3">Grade 4 (3 pts)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase">Body Mass Index (BMI)</label>
-                        <select id="calc-bmi" onchange="calculateBode()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:outline-none focus:border-blue-500">
-                            <option value="0">&gt;21 kg/m² (0 pts)</option>
-                            <option value="1">&le;21 kg/m² (1 pt)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Display Result -->
-                <div class="p-4 bg-slate-50 rounded-xl flex items-center justify-between border border-slate-100">
-                    <div>
-                        <span class="text-xs text-slate-500 block">Calculated Score</span>
-                        <span id="bode-score" class="text-3xl font-black text-slate-900">0 / 10</span>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-xs text-slate-500 block">Approx. 4-Year Survival</span>
-                        <span id="bode-survival" class="text-lg font-bold text-emerald-600">80%</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Interactive Oxygen Eligibility Simulator -->
-            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
-                <div>
-                    <h3 class="text-lg font-bold text-slate-900">LTOT / AOT Qualification Checker</h3>
-                    <p class="text-xs text-slate-500 mt-1">Check eligibility criteria for Long Term and Ambulatory Oxygen Therapy.</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500">Resting PaO₂ (mmHg)</label>
-                            <input type="number" id="pao2-val" value="60" oninput="checkOxygenEligibility()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500">Resting SpO₂ (%)</label>
-                            <input type="number" id="spo2-val" value="91" oninput="checkOxygenEligibility()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:outline-none focus:border-blue-500">
-                        </div>
-                    </div>
-
-                    <!-- Clinical Checkboxes -->
-                    <div class="bg-slate-50 p-4 rounded-xl space-y-2 border border-slate-100">
-                        <p class="text-xs font-bold text-slate-700 uppercase">Comorbidities / Co-factors</p>
-                        <div class="space-y-1.5 text-xs text-slate-600">
-                            <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="co-edema" onchange="checkOxygenEligibility()" class="rounded border-slate-300 text-blue-600">
-                                <span>Peripheral Oedema / Congestive Heart Failure</span>
-                            </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="co-poly" onchange="checkOxygenEligibility()" class="rounded border-slate-300 text-blue-600">
-                                <span>Polycythaemia (Haematocrit &gt; 55%)</span>
-                            </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="co-ph" onchange="checkOxygenEligibility()" class="rounded border-slate-300 text-blue-600">
-                                <span>Pulmonary Hypertension</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Output Results -->
-                    <div id="oxygen-result" class="p-3 bg-amber-50 text-amber-900 border border-amber-100 rounded-xl text-xs space-y-1">
-                        Please adjust clinical details to evaluate eligibility.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Dynamic Electronic Note Template Generator (Copy Paste Facility) -->
-        <section id="e-doc" class="border-t border-slate-200 pt-10 space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">E-Documentation Assessment Template</h3>
-                    <p class="text-slate-500 text-sm">Directly generate a formatted clinician intake or discharge summary standard for CMS/HA electronic recording.</p>
-                </div>
-                <button onclick="copyToClipboard()" class="self-start bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                    <span>Copy to CMS / HA Go</span>
-                </button>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Interactive Input Fields -->
-                <div class="lg:col-span-5 bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4 max-h-[500px] overflow-y-auto">
-                    <h4 class="font-bold text-slate-900 text-sm border-b border-slate-100 pb-2">Clinical Form Inputs</h4>
-                    
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase">Diagnosis / Hospitalization</label>
-                            <input type="text" id="doc-dx" value="COPD post AECOPD discharge" oninput="updateDocTemplate()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-500 uppercase">mMRC Score</label>
-                                <select id="doc-mmrc" onchange="updateDocTemplate()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:border-blue-500">
-                                    <option value="Grade 2">Grade 2</option>
-                                    <option value="Grade 3">Grade 3</option>
-                                    <option value="Grade 4">Grade 4</option>
-                                    <option value="Grade 1">Grade 1</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-500 uppercase">6MWT Distance (m)</label>
-                                <input type="number" id="doc-6mwt" value="280" oninput="updateDocTemplate()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:border-blue-500">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-500 uppercase">Lowest SpO2 %</label>
-                                <input type="number" id="doc-spo2" value="89" oninput="updateDocTemplate()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-500 uppercase">BODE Index</label>
-                                <input type="number" id="doc-bode" value="4" oninput="updateDocTemplate()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:border-blue-500">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase">Primary Sputum Technique</label>
-                            <input type="text" id="doc-sputum" value="ACBT & huff cough selective training" oninput="updateDocTemplate()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase">Exercise / Aid Prescription</label>
-                            <input type="text" id="doc-rx" value="Supported cycle ergometer, IMT, Rollator frame walking" oninput="updateDocTemplate()" class="mt-1 w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Template Preview Container -->
-                <div class="lg:col-span-7 bg-slate-900 rounded-2xl p-6 shadow-inner relative flex flex-col justify-between">
-                    <div class="absolute top-4 right-4 bg-slate-800 text-slate-400 text-[10px] font-mono px-2 py-1 rounded">
-                        PREVIEW FOR CMS / HA GO
-                    </div>
-                    <textarea id="template-area" readonly class="w-full bg-transparent text-slate-300 font-mono text-xs sm:text-sm h-96 resize-none focus:outline-none leading-relaxed select-all">
-                    </textarea>
-                    <div id="copy-confirmation" class="text-xs text-center text-emerald-400 font-semibold opacity-0 transition-opacity mt-2">
-                        Text copied successfully to clipboard! Ready to paste in CMS.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- QUIZ: Case-Study Knowledge Quiz (5 Clinical Reasoning MCQs) -->
-        <section id="quiz" class="border-t border-slate-200 pt-10 space-y-8 pb-16">
-            <div class="text-center space-y-2">
-                <span class="text-xs font-black tracking-widest text-red-600 uppercase">Clinical Knowledge Verification</span>
-                <h3 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950">Clinical Knowledge Quiz</h3>
-                <p class="text-slate-500 text-sm max-w-2xl mx-auto">
-                    Challenge your clinical reasoning using realistic HA clinical case studies designed to solidify the latest v3.0 guidelines.
-                </p>
-            </div>
-
-            <div class="max-w-4xl mx-auto space-y-6">
-                <!-- Scoreboard -->
-                <div class="bg-white rounded-2xl p-4 border border-slate-200 flex items-center justify-between shadow-sm">
-                    <span class="text-sm font-semibold text-slate-600">Dynamic Scoreboard</span>
-                    <span id="quiz-score" class="text-lg font-black text-blue-600">0 / 5 Corrected</span>
-                </div>
-
-                <!-- Question 1 -->
-                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Case Scenario 1: Timing & Entry Pathway</span>
-                    <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-                        A 68-year-old male with a history of severe COPD is discharged from your hospital's respiratory ward on 09-Apr-2025 following a single hospitalization due to a severe AECOPD. Based on the 2026 HA guidelines, what is the best timing and protocol strategy for his rehabilitation?
-                    </h4>
-                    <div class="space-y-3 pt-2">
-                        <button onclick="selectOption(1, 'A')" class="option-btn q1-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>A.</strong> Refer to primary care community support because he has only experienced a single hospitalization inside the year.
-                        </button>
-                        <button onclick="selectOption(1, 'B')" class="option-btn q1-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>B.</strong> Initiate comprehensive Pulmonary Rehab inside 4 weeks (or 1 month) post-discharge to effectively reduce mortality and future readmissions (Evidence B).
-                        </button>
-                        <button onclick="selectOption(1, 'C')" class="option-btn q1-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>C.</strong> Wait 3 months post-discharge to start physical therapy so his respiratory tract and diaphragm are in a perfectly clinically stable baseline.
-                        </button>
-                    </div>
-                    <!-- Rationale Box -->
-                    <div id="rationale-q1" class="hidden p-4 rounded-xl text-xs sm:text-sm space-y-2 mt-4 transition">
-                    </div>
-                </div>
-
-                <!-- Question 2 -->
-                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Case Scenario 2: Bronchial Hygiene Hazards</span>
-                    <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-                        A 72-year-old female with moderate-to-severe COPD and significant muscle wasting is referred for secretion expectoration clearance. Which of the following active or manual choices represents a therapeutic hazard or ineffective application according to the HA guidelines?
-                    </h4>
-                    <div class="space-y-3 pt-2">
-                        <button onclick="selectOption(2, 'A')" class="option-btn q2-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>A.</strong> Administering manual chest and abdominal compression during coughing, expecting to improve expiratory flow velocity and clearance.
-                        </button>
-                        <button onclick="selectOption(2, 'B')" class="option-btn q2-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>C.</strong> Prescribing lower and upper limb progressive resistance training with weights or elastic tubing to optimize mucociliary clearance.
-                        </button>
-                        <button onclick="selectOption(2, 'C')" class="option-btn q2-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>B.</strong> Implementing selective Huffing and Active Cycle of Breathing Techniques (ACBT) to clear excessive airways secretions.
-                        </button>
-                    </div>
-                    <!-- Rationale Box -->
-                    <div id="rationale-q2" class="hidden p-4 rounded-xl text-xs sm:text-sm space-y-2 mt-4 transition">
-                    </div>
-                </div>
-
-                <!-- Question 3 -->
-                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Case Scenario 3: Long-Term Oxygen Eligibility</span>
-                    <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-                        A patient presents with a resting stable SpO₂ of 89% and a PaO₂ of 57 mmHg on room air. They demonstrate bilateral peripheral ankle oedema. According to Appendix V guidelines, do they qualify for Long Term Oxygen Therapy (LTOT), and how should it be structured?
-                    </h4>
-                    <div class="space-y-3 pt-2">
-                        <button onclick="selectOption(3, 'A')" class="option-btn q3-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>A.</strong> No; because their PaO₂ is &gt;55 mmHg, they are ineligible for home oxygen prescription.
-                        </button>
-                        <button onclick="selectOption(3, 'B')" class="option-btn q3-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>B.</strong> Yes; they meet the criteria of PaO₂ 56-59 mmHg plus signs of peripheral oedema, and oxygen should be utilized for a minimum of 15 hours/day.
-                        </button>
-                        <button onclick="selectOption(3, 'C')" class="option-btn q3-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>C.</strong> Yes; but they only require oxygen during sleep and should be restricted to a maximum of 4 hours/day to prevent CO₂ retention.
-                        </button>
-                    </div>
-                    <!-- Rationale Box -->
-                    <div id="rationale-q3" class="hidden p-4 rounded-xl text-xs sm:text-sm space-y-2 mt-4 transition">
-                    </div>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Case Scenario 4: Advanced Training Modalities</span>
-                    <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-                        A 79-year-old female patient with a history of multiple severe COPD flare-ups is referred to your Day Patient rehabilitation department. She is too frail and severely dyspnoeic to tolerate traditional treadmill or bicycle training workloads. What strategy is best supported by the new 2026 HA Guidelines?
-                    </h4>
-                    <div class="space-y-3 pt-2">
-                        <button onclick="selectOption(4, 'A')" class="option-btn q4-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>A.</strong> Postpone all forms of systemic or lower limb muscle exercises until she is motivated to handle intense continuous treadmill walking.
-                        </button>
-                        <button onclick="selectOption(4, 'B')" class="option-btn q4-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>B.</strong> Use Neuromuscular Electrical Stimulation (NMES) to her quadriceps (50-120Hz) or add squats on a Whole Body Vibration (WBV) platform to build strength with minimal central cardiac / dyspnoea demands.
-                        </button>
-                        <button onclick="selectOption(4, 'C')" class="option-btn q4-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>C.</strong> Introduce mandatory high-intensity continuous arm cycle training at &gt;80% work rate to force central physiological adaptation.
-                        </button>
-                    </div>
-                    <!-- Rationale Box -->
-                    <div id="rationale-q4" class="hidden p-4 rounded-xl text-xs sm:text-sm space-y-2 mt-4 transition">
-                    </div>
-                </div>
-
-                <!-- Question 5 -->
-                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Case Scenario 5: Special Cardiorespiratory Conditions</span>
-                    <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-                        During a multidisciplinary cardiorespiratory clinical conference at your hospital, you review three newly referred patients with non-COPD chronic respiratory conditions. According to Chapter 7 of the guidelines, which of the following is correct?
-                    </h4>
-                    <div class="space-y-3 pt-2">
-                        <button onclick="selectOption(5, 'A')" class="option-btn q5-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>A.</strong> A patient with severe idiopathic Pulmonary Hypertension (PH) should be set up with remotely supervised tele-rehab to ensure safety at home.
-                        </button>
-                        <button onclick="selectOption(5, 'B')" class="option-btn q5-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>B.</strong> In the gym, a patient with Cystic Fibrosis (CF) who carries Pseudomonas aeruginosa can safely share exercise equipment with another CF patient with MRSA as long as they maintain a 1-foot distance.
-                        </button>
-                        <button onclick="selectOption(5, 'C')" class="option-btn q5-option w-full text-left p-3.5 rounded-xl border border-slate-200 text-sm hover:bg-slate-50 transition block">
-                            <strong>C.</strong> For a patient with Pulmonary Hypertension, avoid Valsalva-like maneuvers, discontinue exercise if light-headedness or syncope occurs, and do not prescribe remotely supervised training.
-                        </button>
-                    </div>
-                    <!-- Rationale Box -->
-                    <div id="rationale-q5" class="hidden p-4 rounded-xl text-xs sm:text-sm space-y-2 mt-4 transition">
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="ha-gradient text-slate-400 py-8 border-t border-slate-800 text-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="text-center sm:text-left space-y-1">
-                <p>This is AI generated clinical infographic by AHNH PTD.</p>
-                <p>This is AI generated clinical infographic summary of clinical practice guideline. Staff should refer to HA Intranet documents if in doubt.</p>
-            </div>
-            <div class="flex items-center space-x-2">
-                <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                <span class="text-slate-300 font-medium">Compliance Checker Valid</span>
-            </div>
+        <div class="card">
+          <h4>What gets measured</h4>
+          <p>Vitals, symptoms, breathing pattern &amp; respiratory status · limb ROM/oedema · mMRC · BODE · CAT · SGRQ/CRQ · pre/post-bronchodilator spirometry · 6MWT / ISWT / ESWT · FTSTS, handgrip, 1RM · MIP · functional activities &amp; use of aids · LTOT/AOT need.</p>
         </div>
-    </footer>
+      </div>
+    </div>
 
-    <!-- Interactive Portal Logic (JavaScript) -->
-    <script>
-        // Global variables for clinical indices
-        let bodeScore = 0;
-        let scoreState = { 1: false, 2: false, 3: false, 4: false, 5: false };
+    <!-- Dyspnoea -->
+    <div class="tabpanel" id="t-dyspnoea">
+      <div class="grid cols-3">
+        <div class="tech-card"><span class="lead teal">PLB</span><div><h4>Pursed-lip breathing</h4><p>↓ dynamic hyperinflation and respiratory rate; strongest evidence of all breathing exercises. Best for activity-triggered breathlessness and low peak expiratory flow.</p></div></div>
+        <div class="tech-card"><span class="lead teal">DB</span><div><h4>Diaphragmatic breathing</h4><p>↑ parasympathetic tone, can sustain HRQoL gains for 9 months.<span class="warn">Stop if paradoxical abdominal motion or worsening fatigue appears.</span></p></div></div>
+        <div class="tech-card"><span class="lead teal">CO</span><div><h4>Coordinated breathing + movement</h4><p>Exhale on exertion/compression, inhale on rest/expansion — including breath-per-step pacing during gait.</p></div></div>
+        <div class="tech-card"><span class="lead o2">PO</span><div><h4>Forward-lean positioning ± rollator</h4><p>↓ work of breathing and air trapping; reverses paradoxical abdominal wall motion.</p></div></div>
+        <div class="tech-card"><span class="lead o2">FAN</span><div><h4>Fan therapy</h4><p>Cool airflow to the face stimulates trigeminal afferents; may ↓ breathlessness and ↑ exercise time.</p></div></div>
+        <div class="tech-card"><span class="lead amber">TENS</span><div><h4>Acupuncture / Acu-TENS / acupressure</h4><p>Adjunctive; heterogeneous evidence but a recognised option for breathlessness.</p></div></div>
+        <div class="tech-card"><span class="lead mint">MBR</span><div><h4>Mind-body &amp; relaxation</h4><p>Tai Chi, Yoga, progressive muscle relaxation — targets the anxiety/distress component of dyspnoea.</p></div></div>
+        <div class="tech-card"><span class="lead grey">REC</span><div><h4>Recovery breathing sequence</h4><p>Stop → recovery position → fan → prolonged exhale → relax shoulders → resume, then rest a further minute.</p></div></div>
+      </div>
+    </div>
 
-        window.onload = function() {
-            // Initial calculations and UI loads
-            calculateBode();
-            checkOxygenEligibility();
-            updateDocTemplate();
-        };
+    <!-- Airway clearance -->
+    <div class="tabpanel" id="t-airway">
+      <div class="grid cols-3">
+        <div class="tech-card"><span class="lead teal">FET</span><div><h4>Forced expiratory technique</h4><p>Huff / cough / autogenic drainage / ACBT — first-line; active techniques preferred over passive.</p></div></div>
+        <div class="tech-card"><span class="lead coral">C&amp;A</span><div><h4>Chest &amp; abdominal compression</h4><p><span class="warn">Only for expiratory muscle weakness — can reduce peak cough flow in COPD.</span></p></div></div>
+        <div class="tech-card"><span class="lead o2">PD</span><div><h4>Postural drainage</h4><p>Adjunct when FET alone is insufficient, or for localised secretion retention.</p></div></div>
+        <div class="tech-card"><span class="lead teal">PEP</span><div><h4>PEP devices / acapella</h4><p>Prevents airway collapse, aids patients with excessive mucus production.</p></div></div>
+        <div class="tech-card"><span class="lead grey">P&amp;V</span><div><h4>Percussion &amp; vibration</h4><p>Manual technique largely ineffective; HFCWO (15–25 Hz) may help but is limited by infection-control and resource constraints.</p></div></div>
+        <div class="tech-card"><span class="lead mint">EX</span><div><h4>Physical exercise</h4><p>Resistance training measurably improves mucus clearance; aerobic exercise alone does not.</p></div></div>
+      </div>
+    </div>
 
-        // Navigation Tab Switcher
-        function switchTab(tabId) {
-            // Hide all contents
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            // Remove active style from all tab buttons
-            document.querySelectorAll('.nav-tab-btn').forEach(btn => {
-                btn.classList.remove('bg-white', 'text-slate-800', 'shadow-sm');
-                btn.classList.add('text-slate-600', 'hover:text-slate-800');
-            });
+    <!-- Exercise training -->
+    <div class="tabpanel" id="t-exercise">
+      <div class="fitt-table">
+        <div class="fitt-row"><div class="fitt-cell">Mode</div><div class="fitt-cell">Frequency</div><div class="fitt-cell">Key parameters</div></div>
+        <div class="fitt-row"><div class="fitt-cell">Aerobic</div><div class="fitt-cell">3–5 d/wk (≥2 supervised)</div><div class="fitt-cell">20–60 min/session · continuous or interval · 60–80% peak work rate, or RPD 4–6, or 60–80% of 6MWT speed</div></div>
+        <div class="fitt-row"><div class="fitt-cell">HIIT</div><div class="fitt-cell">2–3 d/wk</div><div class="fitt-cell">≥80% max intensity · 5-min warm-up, 5–10-min cool-down · good alternative for symptom-limited patients</div></div>
+        <div class="fitt-row"><div class="fitt-cell">Resistance</div><div class="fitt-cell">2–3 d/wk</div><div class="fitt-cell">50–85% of 1RM · 2–4 sets × 8–12 reps · moderate tempo</div></div>
+        <div class="fitt-row"><div class="fitt-cell">Inspiratory muscle training</div><div class="fitt-cell">5–7 d/wk</div><div class="fitt-cell">≥30% MIP progressing to 45–60% MIP · adjunct only, not a stand-alone therapy</div></div>
+        <div class="fitt-row"><div class="fitt-cell">Stretching</div><div class="fitt-cell">Before training</div><div class="fitt-cell">Accessory muscles &amp; thoracic mobility (SCM, pec major, intercostals, upper trapezius)</div></div>
+        <div class="fitt-row"><div class="fitt-cell">Functional training</div><div class="fitt-cell">Throughout programme</div><div class="fitt-cell">Correct breath-holding / uncoordinated breathing during stairs, slopes, lifting</div></div>
+      </div>
+    </div>
 
-            // Show current active tab content
-            document.getElementById(tabId).classList.remove('hidden');
+    <!-- Adjuncts -->
+    <div class="tabpanel" id="t-adjunct">
+      <p class="section-lede" style="margin-top:0;">For patients too dyspnoeic / frail for conventional training, or showing poor response to it.</p>
+      <div class="grid cols-3">
+        <div class="tech-card"><span class="lead o2">NIV</span><div><h4>Non-invasive ventilation</h4><p>Rests/unloads respiratory muscles so a higher workload can be tolerated — most benefit in severe COPD / CHRF.</p></div></div>
+        <div class="tech-card"><span class="lead o2">O₂</span><div><h4>Supplemental oxygen during exercise</h4><p>Mandatory for severe exercise-induced hypoxaemia; may aid high-intensity training even without hypoxaemia.</p></div></div>
+        <div class="tech-card"><span class="lead o2">HFOT</span><div><h4>High-flow oxygen therapy</h4><p>↓ respiratory rate &amp; work of breathing; may ↑ 6MWT time — evidence still emerging.</p></div></div>
+        <div class="tech-card"><span class="lead mint">NMES</span><div><h4>Neuromuscular electrical stimulation</h4><p>For patients unable to do volitional training (acute exacerbation, profound dyspnoea, low BMI + quadriceps weakness). No dyspnoea, minimal cardio-circulatory demand.</p></div></div>
+        <div class="tech-card"><span class="lead amber">WBV</span><div><h4>Whole body vibration</h4><p>Adjunct to resistance/squat work — improves 6MWT and FTSTS beyond resistance training alone.</p></div></div>
+        <div class="tech-card"><span class="lead teal">ECC</span><div><h4>Eccentric exercise / downhill walking</h4><p>Greater strength gains for lower ventilatory demand — useful when dyspnoea is the limiting factor.</p></div></div>
+        <div class="tech-card"><span class="lead o2">HYD</span><div><h4>Hydrotherapy</h4><p>Hydrostatic pressure eases expiration &amp; air trapping; buoyancy protects arthritic joints.</p></div></div>
+      </div>
+    </div>
 
-            // Style active button
-            let activeBtnId = '';
-            if (tabId === 'referral-tab') activeBtnId = 'referral-tab-btn';
-            else if (tabId === 'dyspnoea-tab') activeBtnId = 'dyspnoea-tab-btn';
-            else if (tabId === 'exercise-tab') activeBtnId = 'exercise-tab-btn';
-            else if (tabId === 'special-tab') activeBtnId = 'exercise-special-tab-btn';
+    <!-- O2 & flight -->
+    <div class="tabpanel" id="t-o2">
+      <div class="grid cols-3">
+        <div class="card"><span class="lead coral">LTOT</span><h4 style="margin-top:10px;">Long-term oxygen therapy</h4><p>PaO₂ ≤55 mmHg / SpO₂ ≤88% (persistent), <b>or</b> PaO₂ 56–59 mmHg / SpO₂ 89% plus a sign of cor pulmonale (oedema, polycythaemia, pulmonary hypertension). Prescribe ≥15 h/day.</p></div>
+        <div class="card"><span class="lead teal">AOT</span><h4 style="margin-top:10px;">Ambulatory oxygen therapy</h4><p>Offered when exercise desaturation is demonstrated and ≥2 of 3 benefit markers are met on a walk-test trial: SpO₂ ≥90% throughout · ≥10% increase in walk distance · ≥1-point Borg improvement.</p></div>
+        <div class="card"><span class="lead o2">Flight</span><h4 style="margin-top:10px;">In-flight oxygen</h4><p>6MWT + MRC dyspnoea score screen who needs further assessment; the hypoxia challenge test (HCT) remains the clinical gold standard when indicated.</p></div>
+      </div>
+    </div>
 
-            const activeBtn = document.getElementById(activeBtnId);
-            if (activeBtn) {
-                activeBtn.classList.remove('text-slate-600', 'hover:text-slate-800');
-                activeBtn.classList.add('bg-white', 'text-slate-800', 'shadow-sm');
+    <!-- Whole person -->
+    <div class="tabpanel" id="t-whole">
+      <div class="grid cols-4">
+        <div class="card"><h4>Smoking cessation</h4><p>Reinforce at every session; refer to the Smoking Counselling &amp; Cessation Centre.</p></div>
+        <div class="card"><h4>Comorbidity management</h4><p>Modify the exercise regimen for cardiac disease, diabetes, hypertension, arrhythmia etc.</p></div>
+        <div class="card"><h4>Psychosocial support</h4><p>Reinforce relaxation &amp; dyspnoea coping skills; refer to Clinical Psychology / MSW as indicated.</p></div>
+        <div class="card"><h4>Nutrition</h4><p>Collaborate with dietitians on weight management to support training capacity.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 06 OUTCOMES ============================= -->
+<section id="outcomes">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Chapter 06</span>
+      <h2 class="section-title">Outcome measures &amp; the MCID that matters</h2>
+      <p class="section-lede">Minimum outcome set = at least one test from each of these five domains, so a change can be interpreted as clinically meaningful (MCID), not just statistically different.</p>
+    </div>
+    <div class="otable-scroll reveal">
+      <table class="otable">
+        <thead><tr><th>Domain</th><th>Measure</th><th>MCID</th></tr></thead>
+        <tbody id="outcomeBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= 07 SPECIAL POPULATIONS ============================= -->
+<section id="populations" class="alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Chapter 07</span>
+      <h2 class="section-title">Special considerations beyond COPD</h2>
+      <p class="section-lede">Most PRP patients have COPD, but other chronic respiratory conditions share the symptom burden — each needs its own safety lens. Tap a card to expand.</p>
+    </div>
+    <div class="grid cols-3 reveal" id="popGrid"></div>
+  </div>
+</section>
+
+<!-- ============================= 08 INFECTION CONTROL ============================= -->
+<section id="infection">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Chapter 08</span>
+      <h2 class="section-title">Infection control for face-to-face PRP</h2>
+      <p class="section-lede">Adapted from ATS (2021) guidance for re-opening pulmonary rehabilitation programmes — layer on local HA infection-control policy on top.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><span class="num">Step 1</span><h4>Pre-screening</h4><ul><li>COVID-19 screening questions</li><li>Provide written instructions</li><li>Ask patient to bring pen &amp; water bottle</li></ul></div>
+      <div class="step"><span class="num">Step 2</span><h4>Site preparation</h4><ul><li>Consult local directives</li><li>Adequate space for distancing</li><li>Hand sanitiser &amp; disinfectant wipes</li><li>Masks &amp; optimal ventilation</li></ul></div>
+      <div class="step"><span class="num">Step 3</span><h4>During the session</h4><ul><li>Hand hygiene before / between / after</li><li>Physical distancing whenever possible</li><li>One pulse oximeter per patient per session</li><li>Sanitise equipment after each use</li></ul></div>
+      <div class="step"><span class="num">Step 4</span><h4>After the session</h4><ul><li>Sanitise all surfaces &amp; equipment</li><li>Repeat at end of day</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= QUIZ ============================= -->
+<section id="quiz" class="quiz-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Clinical knowledge check</span>
+      <h2 class="section-title" style="color:#fff;">Five case studies. Reason it through.</h2>
+      <p class="section-lede">Each vignette tests clinical reasoning against the guideline you've just read, not memorisation. Pick an answer to see the rationale immediately.</p>
+    </div>
+
+    <div class="quiz-progress reveal" id="quizProgress"></div>
+    <div class="score-line reveal"><span>Answered: <b id="answeredCount">0</b>/5</span><span>Score: <b id="scoreCount">0</b>/5</span></div>
+
+    <div id="quizContainer"></div>
+
+    <div class="quiz-summary" id="quizSummary">
+      <div class="eyebrow" style="color:#7fd9cf;">Session complete</div>
+      <div class="big" id="finalScore">0/5</div>
+      <p id="finalMsg"></p>
+      <button class="btn btn-primary" id="retakeBtn">Retake quiz</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="fbrand">PR Guide</div>
+      <p>Educational summary for junior physiotherapist onboarding only. Always refer to the complete HA guideline and local departmental policy for full clinical detail before making patient-care decisions.</p>
+    </div>
+    <div>
+      <div class="doc">HAHO-COC-GL-PHY-008-v03</div>
+      <p>Author: Specialty Group on Cardiopulmonary Service · Approved by COC-Grade in Physiotherapy · 22 Jan 2026</p>
+    </div>
+  </div>
+</footer>
+
+<a href="#top" class="totop" id="totop" aria-label="Back to top">↑</a>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- scroll progress + nav highlight + reveal + totop ---------- */
+  var fill = document.getElementById('scrollFill');
+  var totop = document.getElementById('totop');
+  function onScroll(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    var pct = height > 0 ? (scrollTop/height)*100 : 0;
+    fill.style.width = pct + '%';
+    totop.classList.toggle('show', scrollTop > 700);
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  var revealEls = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  },{threshold:.12});
+  revealEls.forEach(function(el){ io.observe(el); });
+
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = document.querySelectorAll('.navlinks a');
+  var sideLinks = document.querySelectorAll('.sidenav a');
+  var navObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        var id = en.target.id;
+        navLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#'+id); });
+        sideLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#'+id); });
+      }
+    });
+  },{rootMargin:'-40% 0px -55% 0px'});
+  sections.forEach(function(s){ navObs.observe(s); });
+
+  /* ---------- management tabs ---------- */
+  var tabbar = document.getElementById('tabbar');
+  tabbar.addEventListener('click', function(e){
+    var btn = e.target.closest('.tabbtn');
+    if(!btn) return;
+    tabbar.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.remove('active'); });
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+
+  /* ---------- outcome measures table ---------- */
+  var outcomes = [
+    ["Exercise capacity","6-Minute Walk Test (6MWT)","30–35 m"],
+    ["Exercise capacity","Incremental Shuttle Walk Test","47.5 m"],
+    ["Exercise capacity","Endurance Shuttle Walk Test","174–279 s"],
+    ["Dyspnoea","Modified MRC (mMRC) scale","1 grade"],
+    ["Health status","St George's Respiratory Questionnaire (SGRQ)","4 pts"],
+    ["Health status","COPD Assessment Test (CAT)","2 pts"],
+    ["Health status","Clinical COPD Questionnaire (CCQ)","0.4"],
+    ["Functional strength","Five-Time-Sit-To-Stand (FTSTS)","1.7 s"],
+    ["Others","MIP (if IMT provided) · BODE · physical activity · PRAISE","context-dependent"]
+  ];
+  var ob = document.getElementById('outcomeBody');
+  outcomes.forEach(function(row){
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>'+row[0]+'</td><td>'+row[1]+'</td><td class="mcid">'+row[2]+'</td>';
+    ob.appendChild(tr);
+  });
+
+  /* ---------- special population cards ---------- */
+  var populations = [
+    {name:"Interstitial lung disease", pts:["Exercise-induced desaturation and pulmonary hypertension are common — monitor SpO₂ closely.","Strong focus on pacing and energy conservation; high-flow O₂ may be needed.","Educate: cough is not infectious, but uncontrolled cough can severely limit exercise performance."]},
+    {name:"Bronchiectasis", pts:["Optimising airway clearance technique is the priority.","Follow local infection-control policy closely."]},
+    {name:"Cystic fibrosis", pts:["Maintain ≥3 ft distance between patients; separate by respiratory pathogen during sessions.","Monitor sodium/fluid balance in heat, and blood glucose in CF-related diabetes.","Walking exercise itself decreases sputum mechanical impedance."]},
+    {name:"Asthma", pts:["Pre-exercise bronchodilator + gradual warm-up minimizes exercise-induced bronchospasm.","Patients with moderate–severe asthma should carry reliever medication during sessions.","A face mask during exercise can warm inspired air and help avoid EIB."]},
+    {name:"Pulmonary hypertension", pts:["Maintain SpO₂ >88%; monitor BP/pulse closely, telemetry if arrhythmia history.","Avoid Valsalva-type manoeuvres and concurrent arm/leg exercise.","Stop exercise for light-headedness, chest pain, palpitation or syncope. Remote unsupervised exercise is not recommended."]},
+    {name:"Lung cancer", pts:["Never delay potential curative surgery for rehab.","Not contraindicated even in advanced disease — but watch for bone metastasis during handling.","Early post-operative mobilisation is encouraged."]},
+    {name:"Lung volume reduction surgery", pts:["Prehabilitation matters most when lung function/exercise capacity is borderline.","Watch for prolonged air leaks or extended tube thoracostomy post-op — modify accordingly."]},
+    {name:"Lung transplantation", pts:["Consider lower intensity / interval training; monitor haemodynamics and oxygenation.","SpO₂ usually stays >90% during exercise — below 88% may signal allograft dysfunction, rejection or infection; escalate to the team.","Time sessions around immunosuppressant / antimicrobial effects on performance."]},
+    {name:"COVID-19", pts:["Start rehab early for mild/moderate disease; life-saving measures take priority in severe/critical cases.","Watch for cardiac/neurological involvement, unexplained chest pain, and post-exertional symptom flares.","Full PPE for droplet/contact/aerosol routes; consider tele-communication in place of face-to-face contact."]}
+  ];
+  var popGrid = document.getElementById('popGrid');
+  populations.forEach(function(p){
+    var card = document.createElement('div');
+    card.className = 'pop-card';
+    card.innerHTML =
+      '<div class="pop-head"><h4>'+p.name+'</h4><span class="chev">+</span></div>'+
+      '<div class="pop-body"><div class="pop-body-inner"><ul>'+p.pts.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul></div></div>';
+    card.querySelector('.pop-head').addEventListener('click', function(){
+      card.classList.toggle('open');
+    });
+    popGrid.appendChild(card);
+  });
+
+  /* ---------- quiz ---------- */
+  var questions = [
+    {
+      chapter:"Ch.02 · Referral",
+      vignette:"Mr Wong, 68, was hospitalised for an acute exacerbation of COPD (AECOPD). He is now clinically stable, mMRC 3, keen to start pulmonary rehabilitation, and has no comorbidities limiting exercise participation.",
+      stem:"Based on the guideline's synthesis of GOLD/BTS timing recommendations, when should his pulmonary rehabilitation ideally commence relative to hospital discharge?",
+      options:[
+        {text:"Only after 3 months, once fully stabilised", correct:false, rationale:"Waiting 3 months applies to referral in the clinically stable phase, not to post-exacerbation discharge. Delaying this long forfeits the mortality and readmission benefit linked to earlier initiation."},
+        {text:"Within about 1 month (≤4 weeks) of discharge", correct:true, rationale:"This matches GOLD (≤4 weeks) and BTS (within one month) recommendations, the window in which a systematic review reported reduced mortality and readmissions."},
+        {text:"Only during the inpatient stay — no need to continue after discharge", correct:false, rationale:"In-hospital PR during an acute exacerbation is safe and effective, but it's a separate strategy — the guideline still recommends continuing rehabilitation after discharge, ideally within a month."},
+        {text:"There is no evidence-based timing recommendation", correct:false, rationale:"Several bodies (GOLD, BTS, ERS/ATS) give specific windows (3 weeks–1 month) for post-exacerbation initiation, all converging on 'as soon as reasonably possible after discharge'."}
+      ]
+    },
+    {
+      chapter:"Ch.02 · Referral",
+      vignette:"During a ward round, four patients are being considered for the comprehensive Pulmonary Rehabilitation Programme (PRP).",
+      stem:"Which patient is the guideline's exclusion criteria most likely to exclude from the comprehensive PRP?",
+      options:[
+        {text:"A patient with 2 AECOPD hospitalisations in the past year", correct:false, rationale:"This is actually the highest-priority inclusion group in the guideline's ranked inclusion criteria — not an exclusion."},
+        {text:"A patient with end-stage respiratory disease who is bedbound with poor rehabilitative potential", correct:true, rationale:"This matches the exclusion criteria directly: end-stage disease with poor rehabilitative potential (e.g. bedbound) is excluded from the comprehensive PRP, though alternative supportive care should still be arranged."},
+        {text:"A patient with well-controlled diabetes and hypertension", correct:false, rationale:"Other comorbidities should not automatically exclude a patient — they should be reviewed individually by the multidisciplinary PR team, with the exercise regimen modified as needed."},
+        {text:"A patient with an mMRC dyspnoea score of 3", correct:false, rationale:"A symptomatic mMRC ≥2 is actually part of the inclusion criteria, not exclusion."}
+      ]
+    },
+    {
+      chapter:"Ch.07 · Special populations",
+      vignette:"Ms Lee has pulmonary arterial hypertension (PAH) and has been referred for pulmonary rehabilitation. Midway through a supervised 6-minute walk test, she reports light-headedness and looks pale.",
+      stem:"What is the most appropriate immediate action, per the guideline's special considerations for pulmonary hypertension?",
+      options:[
+        {text:"Encourage her to push through — breathlessness is expected in PR", correct:false, rationale:"Light-headedness, chest pain, palpitation or syncope are specific red flags in PAH/CTEPH — exercise should be stopped, not pushed through."},
+        {text:"Stop the test and monitor closely; this is a recognised red flag for PH patients", correct:true, rationale:"The guideline specifically states to discontinue exercise if a PH patient develops light-headedness, chest pain, palpitation, or syncope, with close monitoring for those with a history of arrhythmia or (pre)syncope."},
+        {text:"Switch her to a Valsalva-type resistance exercise instead", correct:false, rationale:"Valsalva-like manoeuvres and concurrent arm/leg exercises are specifically not recommended in pulmonary hypertension."},
+        {text:"Continue, but move her to a remotely supervised home programme", correct:false, rationale:"Remotely supervised exercise is not recommended for PAH/CTEPH — these patients need close, in-person monitoring given arrhythmia and syncope risk."}
+      ]
+    },
+    {
+      chapter:"Ch.05 · Exercise adjuncts",
+      vignette:"Mr Ip has severe COPD, a low BMI, and confirmed quadriceps weakness on assessment. During conventional cycle ergometer training he develops intolerable dyspnoea and desaturation within minutes — well before any meaningful training stimulus is reached.",
+      stem:"Which adjunct strategy is most specifically supported by the guideline for a patient like this?",
+      options:[
+        {text:"High-Intensity Interval Training at ≥80% of maximal intensity", correct:false, rationale:"HIIT is a useful alternative to continuous training for symptom-limited patients, but it still requires volitional cardiopulmonary effort — not the best fit when dyspnoea/desaturation appears almost immediately."},
+        {text:"Neuromuscular Electrical Stimulation (NMES)", correct:true, rationale:"NMES is recommended for patients not capable of regular volitional exercise — it induces muscle contraction without triggering dyspnoea, poses minimal cardio-circulatory demand, and the guideline specifically flags low BMI with quadriceps weakness as a suitable indication."},
+        {text:"Continuous ergometer training at 60–80% of peak work rate", correct:false, rationale:"This standard intensity range assumes the patient can sustain volitional aerobic effort — which this patient cannot yet tolerate."},
+        {text:"Unsupported upper-limb weight lifting to shoulder level", correct:false, rationale:"This targets upper-limb endurance, not the lower-limb quadriceps weakness and exercise-limiting dyspnoea/desaturation described in this case."}
+      ]
+    },
+    {
+      chapter:"Ch.05 · Oxygen assessment",
+      vignette:"During a walk test off supplemental oxygen, Mdm Tsang's SpO₂ falls from 96% to 86% (an 11% drop) and she stops early due to breathlessness (Borg 6/10). Repeating the test on 2 L/min oxygen, her SpO₂ stays ≥90% throughout, her walking distance increases by 15%, and her end-of-test Borg score improves to 4/10.",
+      stem:"Does this trial support prescribing Ambulatory Oxygen Therapy (AOT), and why?",
+      options:[
+        {text:"No — AOT is only for patients already on LTOT", correct:false, rationale:"AOT can also be offered to patients not yet eligible for LTOT, provided a formal exercise-test assessment demonstrates a benefit — exactly the situation described here."},
+        {text:"No — only the SpO₂ improvement counts; distance and Borg are irrelevant", correct:false, rationale:"The guideline uses 3 markers (SpO₂ ≥90% throughout, ≥10% increase in walking distance, ≥1-point Borg improvement) and calls the trial positive if at least 2 of 3 are met — all three happen to be met here."},
+        {text:"Yes — all three benefit markers (SpO₂ ≥90%, ≥10% distance gain, ≥1-point Borg improvement) are met", correct:true, rationale:"This is exactly the guideline's indication: a drop in SpO₂ of ≥4% to below 90% on air, corrected on oxygen, with 2 of 3 positive markers on the walk test (here, all 3) — AOT is indicated."},
+        {text:"Yes — but only because her resting SpO₂ was below 88%", correct:false, rationale:"Her desaturation is exercise-induced, not resting room-air hypoxaemia — that distinction is what separates an AOT indication from an LTOT indication."}
+      ]
+    }
+  ];
+
+  var container = document.getElementById('quizContainer');
+  var progressWrap = document.getElementById('quizProgress');
+  var answeredCountEl = document.getElementById('answeredCount');
+  var scoreCountEl = document.getElementById('scoreCount');
+  var summaryEl = document.getElementById('quizSummary');
+  var finalScoreEl = document.getElementById('finalScore');
+  var finalMsgEl = document.getElementById('finalMsg');
+
+  var state = { answered:0, score:0, locked:[] };
+
+  function buildQuiz(){
+    container.innerHTML = '';
+    progressWrap.innerHTML = '';
+    state = { answered:0, score:0, locked:questions.map(function(){return false;}) };
+    answeredCountEl.textContent = '0';
+    scoreCountEl.textContent = '0';
+    summaryEl.classList.remove('show');
+
+    questions.forEach(function(){
+      var dot = document.createElement('div');
+      dot.className = 'qp-dot';
+      dot.innerHTML = '<div class="f"></div>';
+      progressWrap.appendChild(dot);
+    });
+
+    questions.forEach(function(q, qi){
+      var card = document.createElement('div');
+      card.className = 'qcard reveal in';
+      var letters = ['A','B','C','D'];
+
+      var optsHtml = q.options.map(function(o,oi){
+        return '<button class="qopt" data-qi="'+qi+'" data-oi="'+oi+'" type="button">'+
+          '<span class="letter">'+letters[oi]+'</span>'+
+          '<span class="otext">'+o.text+'</span>'+
+          '<span class="mark yes">✓</span><span class="mark no">✕</span>'+
+          '</button>'+
+          '<div class="rationale" id="rat-'+qi+'-'+oi+'"></div>';
+      }).join('');
+
+      card.innerHTML =
+        '<div class="qmeta"><span class="qnum">Question '+(qi+1)+' of '+questions.length+'</span><span class="chtag dark">'+q.chapter+'</span></div>'+
+        '<div class="vignette">'+q.vignette+'</div>'+
+        '<div class="qstem">'+q.stem+'</div>'+
+        '<div class="qoptions">'+optsHtml+'</div>';
+
+      container.appendChild(card);
+    });
+
+    container.querySelectorAll('.qopt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var qi = parseInt(btn.dataset.qi,10);
+        var oi = parseInt(btn.dataset.oi,10);
+        if(state.locked[qi]) return;
+        state.locked[qi] = true;
+
+        var q = questions[qi];
+        var chosen = q.options[oi];
+        var groupBtns = container.querySelectorAll('.qopt[data-qi="'+qi+'"]');
+
+        groupBtns.forEach(function(b){
+          var boi = parseInt(b.dataset.oi,10);
+          var opt = q.options[boi];
+          b.classList.add('locked');
+          if(boi === oi){
+            b.classList.add(opt.correct ? 'correct' : 'wrong');
+          } else if(opt.correct){
+            b.classList.add('correct');
+          } else {
+            b.classList.add('dim');
+          }
+          var rat = document.getElementById('rat-'+qi+'-'+boi);
+          if(boi === oi){
+            rat.textContent = opt.rationale;
+            rat.className = 'rationale show ' + (opt.correct ? 'r-correct' : 'r-wrong');
+          }
+        });
+
+        // also reveal correct option's rationale if the user was wrong, for learning
+        if(!chosen.correct){
+          q.options.forEach(function(opt,boi){
+            if(opt.correct){
+              var rat2 = document.getElementById('rat-'+qi+'-'+boi);
+              rat2.textContent = opt.rationale;
+              rat2.className = 'rationale show r-correct';
             }
+          });
         }
 
-        // BODE Index Calculation
-        function calculateBode() {
-            const fev1 = parseInt(document.getElementById('calc-fev1').value);
-            const mwd = parseInt(document.getElementById('calc-6mwd').value);
-            const mmrc = parseInt(document.getElementById('calc-mmrc').value);
-            const bmi = parseInt(document.getElementById('calc-bmi').value);
+        state.answered++;
+        if(chosen.correct) state.score++;
+        answeredCountEl.textContent = state.answered;
+        scoreCountEl.textContent = state.score;
+        var dotFill = progressWrap.children[qi].querySelector('.f');
+        dotFill.style.width = '100%';
 
-            bodeScore = fev1 + mwd + mmrc + bmi;
-            document.getElementById('bode-score').innerText = bodeScore + " / 10";
-
-            let survival = "80%";
-            let textClass = "text-emerald-600";
-
-            if (bodeScore >= 0 && bodeScore <= 2) {
-                survival = "80% Approximate 4-Year Survival";
-                textClass = "text-emerald-600";
-            } else if (bodeScore >= 3 && bodeScore <= 4) {
-                survival = "67% Approximate 4-Year Survival";
-                textClass = "text-yellow-600";
-            } else if (bodeScore >= 5 && bodeScore <= 6) {
-                survival = "57% Approximate 4-Year Survival";
-                textClass = "text-amber-600";
-            } else {
-                survival = "18% Approximate 4-Year Survival";
-                textClass = "text-red-600";
-            }
-
-            const survivalEl = document.getElementById('bode-survival');
-            survivalEl.innerText = survival;
-            survivalEl.className = `text-sm sm:text-base font-bold ${textClass}`;
+        if(state.answered === questions.length){
+          finalScoreEl.textContent = state.score + '/' + questions.length;
+          var msg;
+          if(state.score === questions.length){ msg = "Excellent clinical reasoning — you're applying the guideline, not just recalling it."; }
+          else if(state.score >= 3){ msg = "Good work. Revisit the flagged rationale above, then re-read the related chapter before you next apply it on the ward."; }
+          else { msg = "Worth a second pass — scroll back through the sections above, especially the ones behind the questions you missed, before applying this on the ward."; }
+          finalMsgEl.textContent = msg;
+          setTimeout(function(){ summaryEl.classList.add('show'); }, 300);
         }
+      });
+    });
+  }
 
-        // Oxygen Eligibility Checker
-        function checkOxygenEligibility() {
-            const pao2 = parseFloat(document.getElementById('pao2-val').value);
-            const spo2 = parseFloat(document.getElementById('spo2-val').value);
-            const edema = document.getElementById('co-edema').checked;
-            const polycythemia = document.getElementById('co-poly').checked;
-            const ph = document.getElementById('co-ph').checked;
+  document.getElementById('retakeBtn').addEventListener('click', buildQuiz);
+  buildQuiz();
 
-            const hasComorbidities = edema || polycythemia || ph;
-            let qualifies = false;
-            let message = "";
-            let cssClass = "";
-
-            // Condition 1: Severe Chronic Hypoxaemia
-            if (pao2 <= 55 || spo2 <= 88) {
-                qualifies = true;
-                message = "<strong>ELIGIBLE FOR LTOT:</strong> Resting PaO₂ &le; 55 mmHg (7.3 kPa) or SpO₂ &le; 88% confirmed twice over a 3-week period. Program should prescribe a minimum of 15 hours/day (Evidence A). Initiate flow at 1L/min and titrate.";
-                cssClass = "p-3 bg-emerald-50 text-emerald-900 border border-emerald-100 rounded-xl text-xs space-y-1";
-            } 
-            // Condition 2: Mild-Moderate hypoxaemia with co-factor
-            else if ((pao2 >= 56 && pao2 <= 59) || spo2 === 89) {
-                if (hasComorbidities) {
-                    qualifies = true;
-                    message = "<strong>ELIGIBLE FOR LTOT:</strong> PaO₂ of 56-59 mmHg (or SpO₂ = 89%) accompanied by qualifying signs (peripheral edema, pulmonary HTN, or polycythemia). Prescribe a minimum of 15 hours/day.";
-                    cssClass = "p-3 bg-emerald-50 text-emerald-900 border border-emerald-100 rounded-xl text-xs space-y-1";
-                } else {
-                    message = "<strong>INELIGIBLE:</strong> SpO₂ 89% / PaO₂ 56-59 mmHg requires at least one clinical sign (Oedema, Polycythemia, or PH) to qualify for LTOT. Review for Ambulatory Oxygen Therapy (AOT) to support exercise training.";
-                    cssClass = "p-3 bg-amber-50 text-amber-900 border border-amber-100 rounded-xl text-xs space-y-1";
-                }
-            } 
-            // Ineligible
-            else {
-                message = "<strong>INELIGIBLE FOR LTOT:</strong> Resting parameters do not meet severe chronic resting hypoxaemia criteria. Ensure oximetry is tested during exercise walking tests to evaluate if Ambulatory Oxygen (AOT) is indicated.";
-                cssClass = "p-3 bg-red-50 text-red-900 border border-red-100 rounded-xl text-xs space-y-1";
-            }
-
-            const resultBox = document.getElementById('oxygen-result');
-            resultBox.innerHTML = message;
-            resultBox.className = cssClass;
-        }
-
-        // Electronic Note Output
-        function updateDocTemplate() {
-            const dx = document.getElementById('doc-dx').value;
-            const mmrc = document.getElementById('doc-mmrc').value;
-            const mwt = document.getElementById('doc-6mwt').value;
-            const spo2 = document.getElementById('doc-spo2').value;
-            const bode = document.getElementById('doc-bode').value;
-            const sputum = document.getElementById('doc-sputum').value;
-            const rx = document.getElementById('doc-rx').value;
-
-            const text = `==================================================
-HA PULMONARY REHABILITATION ASSESSMENT TEMPLATE
-==================================================
-DOCUMENT NO: HAHO-COC-GL-PHY-008-v03
-ASSESSMENT STATUS: PRE-PRP INTERVENTION INTAKE
---------------------------------------------------
-HISTORY OF PRESENT ILLNESS:
-- Diagnosis/Condition: ${dx}
-- Medical Category: Chronic Respiratory Pathway
-- Baseline Functional Severity: mMRC ${mmrc}
-- BODE Index Score: ${bode}/10
-
-CARDIO-PULMONARY CAPACITY:
-- 6-Minute-Walk-Test (6MWT): ${mwt} meters
-- Exertional Saturation Nadir: ${spo2}% SpO2
-- Ambulatory Oxygen Requirement: Titrate to maintain >90%
-
-BRONCHIAL HYGIENE & AIRWAY CLEANANCE:
-- Active Sputum Techniques: ${sputum}
-- Secretion clearance status: Taught selective active clearance
-- Contraindications checked: No chest compression in COPD
-
-PRESCRIBED INTERVENTIONS:
-- Exercise Regimen: ${rx}
-- Minimum Duration: 6 Weeks, Supervised 2x per week
-- Home Exercise support: Video standard via HA Go App
---------------------------------------------------
-ASSESSED BY: Chartered Physical Therapist, HA Grade
-==================================================`;
-
-            document.getElementById('template-area').value = text;
-        }
-
-        // Copy Clipboard Tool (CMS Compliant)
-        function copyToClipboard() {
-            const textEl = document.getElementById('template-area');
-            textEl.select();
-            document.execCommand('copy');
-            
-            const conf = document.getElementById('copy-confirmation');
-            conf.classList.remove('opacity-0');
-            conf.classList.add('opacity-100');
-            
-            setTimeout(() => {
-                conf.classList.remove('opacity-100');
-                conf.classList.add('opacity-0');
-            }, 3000);
-        }
-
-        // 5-Question MCQs Clinical Reasoning Logic
-        const quizData = {
-            1: {
-                correct: 'B',
-                rationales: {
-                    A: "Incorrect. The 2024 HA framework specifically prioritizes patients with a single AECOPD hospitalization inside 1 year as high-priority candidates for comprehensive PRP, not just primary care support.",
-                    B: "Correct! The latest GOLD 2025 and BTS 2023 recommendations state that initiating PRP within 4 weeks (or 1 month) of discharge significantly reduces both readmission rates and mortality.",
-                    C: "Incorrect. While 3 months is acceptable for stable elective chronic referrals, delaying an acute post-AECOPD patient for 3 months misses the vital window of high readmission risk."
-                }
-            },
-            2: {
-                correct: 'A',
-                rationales: {
-                    A: "Correct Choice! The HA Guidelines explicitly warn (Sivasothy et al, 2001) that while manual compression increases cough flow in muscle weakness, it decreases peak cough flow in COPD due to premature airway dynamic collapse. Hence, it is contraindicated/hazardous for COPD.",
-                    B: "Incorrect. This is a recommended active technique. Directing huffs and ACBT selectively teaches self-management and reduces exacerbation frequency safely.",
-                    C: "Incorrect. Progressive resistance exercises to limbs have a demonstrated acute beneficial effect on mucociliary clearance."
-                }
-            },
-            3: {
-                correct: 'B',
-                rationales: {
-                    A: "Incorrect. While patients with a resting PaO₂ &le; 55 mmHg are automatically eligible, those with a PaO₂ of 56-59 mmHg qualify if they present with specific secondary signs, including peripheral edema.",
-                    B: "Correct! Resting PaO₂ 56-59 mmHg (or SpO₂ of 89%) accompanied by congestive cardiac signs like peripheral oedema meets the clinical indications for LTOT. It should be ordered for at least 15 hours per day (ATS, 2020).",
-                    C: "Incorrect. Restricting to 4 hours is ineffective and medically incorrect. LTOT must be used for at least 15 hours daily to improve long-term survival."
-                }
-            },
-            4: {
-                correct: 'B',
-                rationales: {
-                    A: "Incorrect. Postponing exercise in severe deconditioning leads to further muscle wasting. Alternative training strategies must be adapted immediately.",
-                    B: "Correct! The guidelines identify Neuromuscular Electrical Stimulation (NMES) and Whole Body Vibration (WBV) as highly effective, less strenuous add-on exercise modalities. They improve peripheral muscle power and 6MWD with minimal breathlessness or central cardiac demands.",
-                    C: "Incorrect. Unsupported upper-limb cycles at &gt;80% work rates in a profoundly frail, dyspnoeic patient are completely intolerable and violate pacing protocols."
-                }
-            },
-            5: {
-                correct: 'C',
-                rationales: {
-                    A: "Incorrect. The guideline explicitly states that remotely supervised home programs are NOT recommended for severe Pulmonary Hypertension (PAH/CTEPH) due to syncope/arrhythmia risks.",
-                    B: "Incorrect. For Cystic Fibrosis (CF), strict infection control mandates separating patients with different respiratory pathogens (such as Pseudomonas vs. MRSA) to avoid lethal cross-infection.",
-                    C: "Correct! Chapter 7 dictates that for PH, you must maintain SpO₂ &gt; 88%, closely monitor BP/pulse, avoid Valsalva-like maneuvers (which increase thoracic pressure and drop cardiac output), and avoid remotely supervised exercises."
-                }
-            }
-        };
-
-        function selectOption(qNum, selectedLetter) {
-            const data = quizData[qNum];
-            const rationalesDiv = document.getElementById(`rationale-q${qNum}`);
-            const buttons = document.querySelectorAll(`.q${qNum}-option`);
-            
-            // Lock inputs for this question once answered
-            buttons.forEach(btn => {
-                btn.disabled = true;
-                btn.classList.add('opacity-60');
-            });
-
-            // Highlight buttons based on correctness
-            buttons.forEach(btn => {
-                const text = btn.innerText.trim();
-                const optionLetter = text.substring(0, 1);
-                
-                if (optionLetter === data.correct) {
-                    btn.classList.remove('border-slate-200');
-                    btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900', 'font-semibold', 'opacity-100');
-                } else if (optionLetter === selectedLetter && selectedLetter !== data.correct) {
-                    btn.classList.remove('border-slate-200');
-                    btn.classList.add('bg-red-50', 'border-red-500', 'text-red-900', 'opacity-100');
-                }
-            });
-
-            // Update Dynamic Scoreboard
-            if (selectedLetter === data.correct) {
-                scoreState[qNum] = true;
-            }
-            
-            let totalCorrect = 0;
-            for (let k in scoreState) {
-                if (scoreState[k] === true) totalCorrect++;
-            }
-            document.getElementById('quiz-score').innerText = `${totalCorrect} / 5 Corrected`;
-
-            // Display Rationale
-            rationalesDiv.classList.remove('hidden');
-            if (selectedLetter === data.correct) {
-                rationalesDiv.className = "p-4 rounded-xl text-xs sm:text-sm mt-4 bg-emerald-50 text-emerald-900 border border-emerald-200";
-                rationalesDiv.innerHTML = `<strong>Correct Option Chosen!</strong><br>${data.rationales[selectedLetter]}`;
-            } else {
-                rationalesDiv.className = "p-4 rounded-xl text-xs sm:text-sm mt-4 bg-red-50 text-red-900 border border-red-200";
-                rationalesDiv.innerHTML = `<strong>Incorrect.</strong><br>${data.rationales[selectedLetter]}<br><span class="block mt-1 font-semibold text-slate-700">Correct Answer: Option ${data.correct}</span>`;
-            }
-        }
-    </script>
+})();
+</script>
 </body>
 </html>

@@ -458,7 +458,7 @@ tr:nth-child(even) td{ background:#FBFCFC; }
     <img src="Patient1.png" alt="Patient Image">
   </div>
 
-  <div class="tags"><span class="tag ref">------------------Admission Note--------------------</span></div>
+  <div class="tags"><span class="tag ref">----------------Admission Note----------------</span></div>
 
   <div class="field-group">
     <h4>SHx:</h4>
@@ -516,9 +516,9 @@ tr:nth-child(even) td{ background:#FBFCFC; }
   <div class="feedback" id="inv-result0"></div>
   <div class="choice" onclick="selectChoice('investigations', 1)">2. Check CXR</div>
   <div class="feedback" id="inv-result1"></div>
-  <div class="choice" onclick="selectChoice('investigations', 2)">3. Assess Mobility level </div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. Assess mobility level </div>
   <div class="feedback" id="inv-result2"></div>
-  <div class="choice" onclick="selectChoice('investigations', 3)">4. Neurological exam </div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Perform neurological exam </div>
   <div class="feedback" id="inv-result3"></div>
   <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
 </div>
@@ -563,12 +563,12 @@ tr:nth-child(even) td{ background:#FBFCFC; }
     </div>
 
     <div class="qa">
-      <div class="opt-title">Q1-Option 3: Mobility level</div>
+      <div class="opt-title">Q1-Option 3: mobility level</div>
       <p>As mentioned previously, <strong>BP should be maintained at &lt; 180/105 mmHg</strong> for at least the first 24 hours after IVT treatment. As Mr. Lau's BP was 190/90 mmHg, out-of-bed assessment should be refrained to avoid any further rise in BP.</p>
     </div>
 
     <div class="qa">
-      <div class="opt-title">Q1-Option 4: Neurological exam</div>
+      <div class="opt-title">Q1-Option 4: Perform neurological exam</div>
       <p>Although mobility assessment could not be performed due to highish BP, stroke assessment on bed should still be performed to assess neurological function and severity of disability in Mr. Lau. This is because of the following reasons.</p>
       <p>First, we have to know Mr. Lau’s impairment and disability level in order to better formulate his rehabilitation plan. For example, for Mr. Lau whose hemiplegic limb power scored only grade 3, equipment that provides stable upper limb and truncal support e.g. cardiac support walker could be considered during weight-bearing exercises. On the other hand, for a stroke patient with hemiplegic limb power scoring grade 4+, less supportive equipment e.g. frame or stick may be considered.</p>
       <p>Second, monitoring Mr. Lau’s neurological function is important as Lauges of signs and increased severity of neurological deficits may indicate stroke progression / recurrent stroke which requires medical attention.</p>
@@ -608,8 +608,8 @@ tr:nth-child(even) td{ background:#FBFCFC; }
 <script>
   const investigations = [{"opt":"Vital signs stat","res":"Afebrile <br>BP: 190/90 mmHg <br>HR: 85 bpm <br>SpO2: 98% on 1L O2 via n.c. ","cor":true},
   {"opt":"Check CXR","res":"<img src='cxr1.jpeg' alt='CXR' style='width:100%; max-width:600px; margin-top:10px; border-radius:5px;'>","cor":true},
-  {"opt":"Assess Mobility level ","res":"Transfer with assistance <br>Able to sit unsupported stably <br>Able to stand with cardiac support walker <br><br><strong>MFAC 2/7</strong> ","cor":false},
-  {"opt":"Neurological exam ","res":"GCS: E4V4M6 <br><br>No gaze deviation  <br>No facial weakness  <br>No obvious slurred speech  <br><br>Sensation of limbs grossly intact  <br>MMT <br>4 | 5  <br>   3 | 5 <br>calves soft  <br><br>Neglect -ve <br>Ataxia -ve ","cor":true}];
+  {"opt":"Assess mobility level ","res":"Transfer with assistance <br>Able to sit unsupported stably <br>Able to stand with cardiac support walker <br><br><strong>MFAC 2/7</strong> ","cor":false},
+  {"opt":"Perform neurological exam ","res":"GCS: E4V4M6 <br><br>No gaze deviation  <br>No facial weakness  <br>No obvious slurred speech  <br><br>Sensation of limbs grossly intact  <br>MMT <br>4 | 5  <br>   3 | 5 <br>calves soft  <br><br>Neglect -ve <br>Ataxia -ve ","cor":true}];
   const management = [{"opt":"Keep bed rest & inform case nurse","exp":"","cor":true},
   {"opt":"Prescribe TED stockings ","exp":"","cor":false},
   {"opt":"Bedside sitting / walking +/- sit out of bed ","exp":"","cor":false},

@@ -1,1422 +1,1375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HA Physiotherapy Guidelines for Bone Metastases</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercise Prescription &amp; Ambulation in Bone Metastases — Clinical Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --bg:#0B141C;
+  --bg-alt:#0F1B25;
+  --panel:#12212C;
+  --panel-border:#24394A;
+  --film:#E9EFF3;
+  --film-alt:#DCE6EC;
+  --film-text:#101A22;
+  --ink:#EAF1F6;
+  --ink-dim:#9FB4C4;
+  --ink-faint:#6C8496;
+  --green:#3F9270;
+  --green-soft:#1B3327;
+  --amber:#CC9330;
+  --amber-soft:#3A2D14;
+  --red:#C1543A;
+  --red-soft:#3A1E17;
+  --blue:#63A0C7;
+  --blue-soft:#152836;
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --body: 'IBM Plex Sans', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --radius: 10px;
+  --maxw: 1180px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--body);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,h4{
+  font-family:var(--display);
+  font-weight:600;
+  letter-spacing:-0.01em;
+  margin:0 0 .5em 0;
+  color:var(--ink);
+}
+
+p{margin:0 0 1em 0;}
+a{color:var(--blue);}
+img{max-width:100%;}
+
+.mono{font-family:var(--mono);}
+
+::selection{ background:var(--blue); color:#04121B; }
+
+:focus-visible{
+  outline:2px solid var(--blue);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.wrap{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:0 24px;
+}
+
+/* scroll progress bar */
+#progress{
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:linear-gradient(90deg,var(--green),var(--amber),var(--red));
+  z-index:999; transition:width .1s linear;
+}
+
+/* ============================================================
+   SIDE NAV (desktop) / TOP NAV (mobile)
+   ============================================================ */
+#sitenav{
+  position:fixed;
+  z-index:500;
+  font-family:var(--display);
+}
+@media (min-width:980px){
+  #sitenav{
+    top:0; left:0; height:100vh; width:220px;
+    padding:28px 0 28px 28px;
+    display:flex; flex-direction:column; justify-content:center;
+    gap:2px;
+  }
+  #sitenav a{
+    display:flex; align-items:center; gap:10px;
+    padding:7px 10px 7px 0;
+    color:var(--ink-faint);
+    text-decoration:none;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:.02em;
+    border-left:2px solid transparent;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  #sitenav a .dot{
+    width:5px;height:5px;border-radius:50%;
+    background:var(--ink-faint); flex:none;
+    transition:background .2s ease, transform .2s ease;
+  }
+  #sitenav a.active{ color:var(--ink); border-left-color:var(--blue); padding-left:12px;}
+  #sitenav a.active .dot{ background:var(--blue); transform:scale(1.6);}
+  #sitenav a:hover{ color:var(--ink);}
+  main, header.hero, footer{ margin-left:220px; }
+}
+@media (max-width:979px){
+  #sitenav{
+    top:0; left:0; right:0; height:auto;
+    background:rgba(11,20,28,.95);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--panel-border);
+    display:flex; overflow-x:auto;
+    padding:10px 14px;
+    gap:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  #sitenav a{
+    flex:none;
+    padding:6px 12px;
+    border-radius:999px;
+    color:var(--ink-faint);
+    text-decoration:none;
+    font-size:12px;
+    font-weight:500;
+    white-space:nowrap;
+    border:1px solid var(--panel-border);
+  }
+  #sitenav a .dot{display:none;}
+  #sitenav a.active{ color:var(--bg); background:var(--blue); border-color:var(--blue);}
+  main, header.hero, footer{ margin-top:52px; }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+header.hero{
+  position:relative;
+  padding:96px 0 64px;
+  overflow:hidden;
+  border-bottom:1px solid var(--panel-border);
+}
+header.hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 85% 10%, rgba(99,160,199,.14), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(204,147,48,.10), transparent 40%);
+  pointer-events:none;
+}
+.hero-inner{ position:relative; display:grid; grid-template-columns:1fr; gap:28px;}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--blue); background:var(--blue-soft); border:1px solid #1f3d4f;
+  padding:6px 12px; border-radius:999px; width:fit-content;
+}
+.eyebrow .pulse{ width:6px;height:6px;border-radius:50%; background:var(--blue); box-shadow:0 0 0 0 rgba(99,160,199,.6); animation:pulse 2s infinite;}
+@keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(99,160,199,.55);} 70%{box-shadow:0 0 0 8px rgba(99,160,199,0);} 100%{box-shadow:0 0 0 0 rgba(99,160,199,0);} }
+
+h1.title{
+  font-size:clamp(32px, 5.4vw, 58px);
+  line-height:1.04;
+  max-width:16ch;
+}
+h1.title em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--green),var(--amber) 55%,var(--red));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero-sub{
+  font-size:16.5px; color:var(--ink-dim); max-width:56ch;
+}
+.hero-meta{
+  display:flex; flex-wrap:wrap; gap:10px 24px;
+  font-family:var(--mono); font-size:12px; color:var(--ink-faint);
+  border-top:1px dashed var(--panel-border); padding-top:16px; margin-top:6px;
+}
+.hero-meta b{ color:var(--ink-dim); font-weight:500;}
+
+.hero-gauge-row{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:8px;
+}
+.hero-chip{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius);
+  padding:14px 16px;
+}
+.hero-chip .n{ font-family:var(--display); font-size:22px; font-weight:700; color:var(--ink);}
+.hero-chip .l{ font-size:11.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em;}
+
+/* ============================================================
+   SECTION GENERICS
+   ============================================================ */
+main{ display:block; }
+section{
+  padding:64px 0;
+  border-bottom:1px solid var(--panel-border);
+}
+section:last-of-type{ border-bottom:none; }
+
+.section-head{
+  display:flex; flex-direction:column; gap:8px; margin-bottom:32px; max-width:70ch;
+}
+.section-kicker{
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint);
+}
+.section-head h2{ font-size:clamp(24px,3.2vw,34px); }
+.section-head p{ color:var(--ink-dim); font-size:15px; margin:0;}
+
+.reveal{ opacity:0; transform:translateY(16px); transition:opacity .55s ease, transform .55s ease; }
+.reveal.in{ opacity:1; transform:translateY(0); }
+
+/* card grid */
+.grid{ display:grid; gap:16px; }
+.grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+.grid.cols-2{ grid-template-columns:repeat(2,1fr); }
+@media (max-width:900px){ .grid.cols-3, .grid.cols-2{ grid-template-columns:1fr; } }
+
+.card{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius);
+  padding:22px;
+}
+.card h3{ font-size:17px; margin-bottom:8px;}
+.card p{ color:var(--ink-dim); font-size:14.5px; margin-bottom:0;}
+.card .num{
+  font-family:var(--mono); font-size:12px; color:var(--blue); margin-bottom:10px; display:block;
+}
+
+/* ============================================================
+   BACKGROUND / TENSION SECTION
+   ============================================================ */
+.tension{
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:stretch; gap:0;
+  border:1px solid var(--panel-border); border-radius:var(--radius); overflow:hidden;
+}
+.tension .side{ padding:26px; }
+.tension .side.risk{ background:var(--green-soft); }
+.tension .side.harm{ background:var(--red-soft); }
+.tension .vs{
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--display); font-weight:700; font-size:13px; letter-spacing:.1em;
+  color:var(--ink-faint); background:var(--bg-alt); padding:0 18px;
+}
+.tension h4{ font-size:14px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;}
+.tension .side.risk h4{ color:var(--green); }
+.tension .side.harm h4{ color:var(--red); }
+.tension p{ font-size:14.5px; color:var(--ink-dim); margin:0;}
+@media (max-width:700px){
+  .tension{ grid-template-columns:1fr; }
+  .tension .vs{ padding:10px; }
+}
+
+/* ============================================================
+   FILM PANEL (light "x-ray lightbox" card used for reference tables)
+   ============================================================ */
+.film{
+  background:var(--film); color:var(--film-text); border-radius:var(--radius);
+  padding:24px; border:1px solid #c7d3da;
+}
+.film h3, .film h4{ color:var(--film-text); }
+.film table{ color:var(--film-text); }
+
+table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+table caption{ text-align:left; font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); margin-bottom:8px; }
+th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid #c7d3da; vertical-align:top;}
+.film th{ font-family:var(--display); font-weight:600; font-size:12.5px; text-transform:uppercase; letter-spacing:.03em; color:#3a4a56; border-bottom:1px solid #a9bac4;}
+.dark-table th{ font-family:var(--display); font-weight:600; font-size:12.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-dim); border-bottom:1px solid var(--panel-border);}
+.dark-table td{ border-bottom:1px solid var(--panel-border); color:var(--ink); }
+.dark-table{ color:var(--ink); }
+
+.tag{
+  display:inline-block; padding:2px 9px; border-radius:999px; font-family:var(--mono); font-size:11px; font-weight:600;
+}
+.tag.g{ background:var(--green-soft); color:var(--green); }
+.tag.a{ background:var(--amber-soft); color:var(--amber); }
+.tag.r{ background:var(--red-soft); color:var(--red); }
+
+/* ============================================================
+   RISK METER (signature component)
+   ============================================================ */
+.calc-block{
+  display:grid; grid-template-columns:1.05fr .95fr; gap:24px; align-items:start;
+}
+@media (max-width:900px){ .calc-block{ grid-template-columns:1fr; } }
+
+.calc-form{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius); padding:22px;
+  display:grid; gap:14px;
+}
+.field{ display:grid; gap:6px; }
+.field label{ font-size:12.5px; color:var(--ink-dim); font-weight:500; }
+.field select{
+  width:100%; background:var(--bg-alt); color:var(--ink); border:1px solid var(--panel-border);
+  border-radius:8px; padding:10px 12px; font-family:var(--body); font-size:14px;
+  appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239FB4C4' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat:no-repeat; background-position:right 12px center;
+}
+.field select:focus{ border-color:var(--blue); }
+
+.meter-panel{
+  position:sticky; top:24px;
+  background:var(--bg-alt); border:1px solid var(--panel-border); border-radius:var(--radius); padding:22px;
+}
+@media (max-width:900px){ .meter-panel{ position:static; } }
+.meter-title{ font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint); margin-bottom:14px;}
+
+.meter-score{
+  font-family:var(--display); font-size:52px; font-weight:700; line-height:1; margin-bottom:2px;
+}
+.meter-score .of{ font-size:18px; color:var(--ink-faint); font-weight:500; }
+.meter-band-label{ font-size:13px; margin-bottom:16px; font-weight:600; }
+
+.meter-track{
+  position:relative; height:14px; border-radius:999px; overflow:visible; margin:10px 0 8px;
+  background:linear-gradient(90deg, var(--green) 0%, var(--green) var(--g-end,33%), var(--amber) var(--g-end,33%), var(--amber) var(--a-end,66%), var(--red) var(--a-end,66%), var(--red) 100%);
+}
+.meter-needle{
+  position:absolute; top:-5px; width:3px; height:24px; background:var(--ink);
+  border-radius:2px; left:0%; transform:translateX(-50%);
+  transition:left .35s cubic-bezier(.2,.8,.3,1);
+  box-shadow:0 0 0 3px var(--bg-alt);
+}
+.meter-ticks{ display:flex; justify-content:space-between; font-family:var(--mono); font-size:10.5px; color:var(--ink-faint); margin-bottom:18px;}
+.meter-ticks.abs{ position:relative; height:14px; display:block; }
+.meter-ticks.abs span{ position:absolute; top:0; transform:translateX(-50%); }
+.meter-ticks.abs span:first-child{ transform:translateX(0); }
+.meter-ticks.abs span:last-child{ transform:translateX(-100%); }
+
+.meter-readout{ border-top:1px dashed var(--panel-border); padding-top:14px; }
+.meter-readout .row{ display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:5px 0; color:var(--ink-dim);}
+.meter-readout .row b{ color:var(--ink); font-weight:600; text-align:right; }
+.meter-action{
+  margin-top:14px; padding:12px 14px; border-radius:8px; font-size:13.5px; line-height:1.5;
+  border:1px solid transparent;
+}
+.meter-action.g{ background:var(--green-soft); color:#bfe6d3; border-color:#245a41;}
+.meter-action.a{ background:var(--amber-soft); color:#f0d9a6; border-color:#6b511d;}
+.meter-action.r{ background:var(--red-soft); color:#f2c3b4; border-color:#7a3524;}
+
+/* ============================================================
+   FACTOR CARDS (spinal instability)
+   ============================================================ */
+.factor{
+  display:flex; gap:14px; background:var(--panel); border:1px solid var(--panel-border);
+  border-radius:var(--radius); padding:18px;
+}
+.factor .fnum{
+  font-family:var(--display); font-weight:700; font-size:20px; color:var(--blue);
+  flex:none; width:34px;
+}
+.factor h4{ font-size:15px; margin-bottom:4px; }
+.factor p{ font-size:14px; color:var(--ink-dim); margin:0; }
+
+/* ============================================================
+   ACCORDION (other tools)
+   ============================================================ */
+details.acc{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius);
+  margin-bottom:10px; overflow:hidden;
+}
+details.acc summary{
+  cursor:pointer; list-style:none; padding:16px 20px; display:flex; align-items:center; justify-content:space-between;
+  font-family:var(--display); font-weight:600; font-size:15px; gap:12px;
+}
+details.acc summary::-webkit-details-marker{ display:none; }
+details.acc summary .plus{
+  font-family:var(--mono); color:var(--blue); font-size:18px; transition:transform .25s ease; flex:none;
+}
+details.acc[open] summary .plus{ transform:rotate(45deg); }
+details.acc .acc-body{ padding:0 20px 20px; color:var(--ink-dim); font-size:14px; }
+details.acc .acc-body p{ margin-bottom:10px; }
+
+/* ============================================================
+   TIMELINE (general guidelines before/during/after)
+   ============================================================ */
+.timeline{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative; }
+@media (max-width:860px){ .timeline{ grid-template-columns:1fr; } }
+.tl-col{ position:relative; padding:0 18px 0 0; }
+.tl-col:not(:last-child){ border-right:1px dashed var(--panel-border); }
+@media (max-width:860px){ .tl-col:not(:last-child){ border-right:none; border-bottom:1px dashed var(--panel-border); padding:0 0 24px 0; margin-bottom:24px;} }
+.tl-head{ display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.tl-badge{
+  font-family:var(--mono); font-size:11px; padding:4px 10px; border-radius:999px; font-weight:600;
+}
+.tl-badge.before{ background:var(--blue-soft); color:var(--blue); }
+.tl-badge.during{ background:var(--amber-soft); color:var(--amber); }
+.tl-badge.after{ background:var(--red-soft); color:var(--red); }
+.tl-col h4{ font-size:17px; margin:0; }
+.tl-list{ list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+.tl-list li{
+  font-size:14px; color:var(--ink-dim); padding-left:18px; position:relative;
+}
+.tl-list li::before{
+  content:""; position:absolute; left:0; top:7px; width:6px; height:6px; border-radius:50%; background:var(--ink-faint);
+}
+.tl-col.during .tl-list li.avoid{ color:#f2c3b4; }
+.tl-col.during .tl-list li.avoid::before{ background:var(--red); }
+
+/* ============================================================
+   CHECKLIST / PATHWAY CARDS
+   ============================================================ */
+.path-card{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius); overflow:hidden;
+}
+.path-head{ padding:16px 20px; display:flex; align-items:center; gap:12px; }
+.path-head .code{ font-family:var(--mono); font-weight:700; font-size:15px; }
+.path-head .name{ font-family:var(--display); font-weight:600; font-size:15.5px; }
+.path-card.spine .path-head{ background:var(--green-soft); }
+.path-card.spine .code, .path-card.spine .name{ color:var(--green); }
+.path-card.wb .path-head{ background:var(--blue-soft); }
+.path-card.wb .code, .path-card.wb .name{ color:var(--blue); }
+.path-card.old .path-head{ background:var(--amber-soft); }
+.path-card.old .code, .path-card.old .name{ color:var(--amber); }
+.path-body{ padding:16px 20px 20px; }
+.path-body .step{ font-size:13.5px; color:var(--ink-dim); margin-bottom:10px; display:flex; gap:8px; }
+.path-body .step b{ color:var(--ink); font-weight:600; flex:none; }
+.path-body .plan-list{ margin:10px 0 0; padding-left:18px; color:var(--ink-dim); font-size:13.5px; }
+.path-body .plan-list li{ margin-bottom:4px; }
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+#quiz-score-bar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  background:rgba(15,27,37,.92); backdrop-filter:blur(8px);
+  border:1px solid var(--panel-border); border-radius:999px;
+  padding:10px 20px; margin-bottom:28px;
+  font-family:var(--mono); font-size:13px;
+}
+@media (min-width:980px){ #quiz-score-bar{ top:0; } }
+#quiz-score-bar .qs-progress{ color:var(--ink-dim); }
+#quiz-score-bar .qs-score{ color:var(--ink); font-weight:600; }
+#quiz-score-bar .qs-score b{ color:var(--green); }
+
+.qcard{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius);
+  padding:24px; margin-bottom:20px;
+}
+.qcard .qmeta{ display:flex; gap:10px; align-items:center; margin-bottom:12px; }
+.qcard .qnum{
+  font-family:var(--display); font-weight:700; font-size:13px; color:var(--bg);
+  background:var(--blue); width:26px; height:26px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; flex:none;
+}
+.qcard .qtag{ font-family:var(--mono); font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em;}
+.qcard .scenario{ font-size:15px; color:var(--ink); margin-bottom:16px; line-height:1.6; }
+.qcard .options{ display:grid; gap:10px; }
+.opt-btn{
+  text-align:left; width:100%; background:var(--bg-alt); border:1px solid var(--panel-border);
+  color:var(--ink); border-radius:8px; padding:12px 14px; font-family:var(--body); font-size:14px;
+  cursor:pointer; display:flex; gap:10px; transition:border-color .15s ease, background .15s ease;
+}
+.opt-btn .opt-letter{
+  font-family:var(--mono); font-weight:700; color:var(--ink-faint); flex:none;
+}
+.opt-btn:hover:not(:disabled){ border-color:var(--blue); }
+.opt-btn:disabled{ cursor:default; }
+.opt-btn.correct{ background:var(--green-soft); border-color:var(--green); }
+.opt-btn.correct .opt-letter{ color:var(--green); }
+.opt-btn.incorrect{ background:var(--red-soft); border-color:var(--red); }
+.opt-btn.incorrect .opt-letter{ color:var(--red); }
+.opt-btn.dim{ opacity:.55; }
+
+.rationale{
+  margin-top:14px; padding:14px 16px; border-radius:8px; font-size:13.5px; line-height:1.6;
+  display:none; border:1px solid var(--panel-border); background:var(--bg-alt); color:var(--ink-dim);
+}
+.rationale.show{ display:block; }
+.rationale .verdict{ font-family:var(--display); font-weight:700; font-size:13px; margin-bottom:6px; display:block; }
+.rationale.correct .verdict{ color:var(--green); }
+.rationale.incorrect .verdict{ color:var(--red); }
+
+#quiz-results{
+  display:none; text-align:center; padding:40px 24px; background:var(--panel);
+  border:1px solid var(--panel-border); border-radius:var(--radius); margin-top:8px;
+}
+#quiz-results.show{ display:block; }
+#quiz-results .rscore{ font-family:var(--display); font-size:48px; font-weight:700; }
+#quiz-results .rmsg{ color:var(--ink-dim); max-width:52ch; margin:10px auto 20px; font-size:14.5px; }
+#retake{
+  font-family:var(--display); font-weight:600; font-size:14px; color:var(--bg);
+  background:var(--blue); border:none; border-radius:999px; padding:11px 22px; cursor:pointer;
+}
+#retake:hover{ opacity:.9; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{ padding:48px 0 80px; }
+footer .refwrap{ background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius); padding:22px 24px; }
+footer .refwrap ol{ columns:2; column-gap:32px; padding-left:18px; font-size:12px; color:var(--ink-faint); }
+@media (max-width:700px){ footer .refwrap ol{ columns:1; } }
+footer .refwrap li{ margin-bottom:8px; break-inside:avoid; }
+footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); margin-top:18px; text-align:center; }
+
+/* small utility */
+.center{ text-align:center; }
+.small{ font-size:12.5px; color:var(--ink-faint); }
+</style>
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+<body>
 
-  <header class="bg-gradient-to-r from-teal-800 to-teal-700 text-white shadow-md border-b-4 border-emerald-500">
-    <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-      <div>
-        <div class="flex items-center gap-2 mb-1 flex-wrap">
-          <span class="bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded tracking-wide uppercase border border-emerald-400">HA COC-Grade (Physiotherapy)</span>
-          <span class="text-teal-200 text-xs font-mono">HAHO-COC-GL-PHY-014-v01</span>
-        </div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
-          Physiotherapy Guidelines for Bone Metastases
-        </h1>
-        <p class="text-teal-100 text-sm mt-1 max-w-2xl font-light">
-          Interactive Clinical Education &amp; Risk Stratification Assistant for Exercise Prescription and Ambulation Training
-        </p>
+<div id="progress"></div>
+
+<nav id="sitenav" aria-label="Section navigation">
+  <a href="#hero" class="dot"><span class="dot"></span>Overview</a>
+  <a href="#objectives"><span class="dot"></span>Objectives</a>
+  <a href="#background"><span class="dot"></span>Background</a>
+  <a href="#mirels"><span class="dot"></span>Mirels' Score</a>
+  <a href="#spinal-instability"><span class="dot"></span>Spinal Stability</a>
+  <a href="#sins"><span class="dot"></span>SINS Score</a>
+  <a href="#other-tools"><span class="dot"></span>More Tools</a>
+  <a href="#guidelines"><span class="dot"></span>Guidelines</a>
+  <a href="#checklist"><span class="dot"></span>Checklist</a>
+  <a href="#quiz"><span class="dot"></span>Quiz</a>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="wrap hero-inner">
+    <span class="eyebrow"><span class="pulse"></span>HAHO-COC-GL-PHY-014-v01 · For HA Physiotherapists</span>
+    <h1 class="title">Moving patients with <em>bone metastases</em>, safely.</h1>
+    <p class="hero-sub">A working reference for exercise prescription and ambulation training in patients with bone metastases — built around risk stratification, not blanket bed rest. Use it to calculate risk, check a pathway, and test your clinical reasoning.</p>
+    <div class="hero-meta">
+      <span><b>Issue date</b> 10 Dec 2025</span>
+      <span><b>Review date</b> 10 Dec 2028</span>
+      <span><b>Custodian</b> HO Allied Health Grade Department</span>
+      <span><b>Endorsed by</b> COC-Grade (Physiotherapy)</span>
+    </div>
+    <div class="hero-gauge-row">
+      <div class="hero-chip"><div class="n">2</div><div class="l">Core risk tools — Mirels' &amp; SINS</div></div>
+      <div class="hero-chip"><div class="n">3</div><div class="l">Checkpoints — before / during / after</div></div>
+      <div class="hero-chip"><div class="n">5</div><div class="l">Case questions in the closing quiz</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================ OBJECTIVES ============================================================ -->
+<section id="objectives">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-kicker">01 — Why this guideline exists</span>
+      <h2>Objectives</h2>
+      <p>Three plain aims sit behind every table and checklist that follows.</p>
+    </div>
+    <div class="grid cols-3 reveal">
+      <div class="card">
+        <span class="num">01</span>
+        <h3>Facilitate safe practice</h3>
+        <p>Give physiotherapists a safety-first framework for providing exercise training to patients with bone metastasis.</p>
       </div>
-      <div class="bg-teal-900/40 backdrop-blur-sm p-3 rounded-lg border border-teal-600 text-xs space-y-1">
-        <div><strong class="text-teal-300">Effective Date:</strong> 10/12/2025</div>
-        <div><strong className="text-teal-300">Review Date:</strong> 10/12/2028</div>
-        <div><strong class="text-teal-300">Target Audience:</strong> HA Physiotherapy Staff</div>
+      <div class="card">
+        <span class="num">02</span>
+        <h3>Support clinical design</h3>
+        <p>Provide the information needed to design and deliver a relatively safe, individualised exercise programme.</p>
+      </div>
+      <div class="card">
+        <span class="num">03</span>
+        <h3>Minimise risk with evidence</h3>
+        <p>Take necessary precautions, grounded in available evidence, to minimise the risk of skeletal-related incidents.</p>
       </div>
     </div>
-  </header>
+  </div>
+</section>
 
-  <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm overflow-x-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex space-x-1 sm:space-x-4 py-2 min-w-max">
-        <button onclick="switchTab('overview')" id="nav-overview" class="tab-btn flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 bg-teal-600 text-white shadow-sm">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-          Overview &amp; Guidelines
-        </button>
-        <button onclick="switchTab('mirels')" id="nav-mirels" class="tab-btn flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2" stroke-width="2"></rect><line x1="8" y1="6" x2="16" y2="6" stroke-width="2"></line><line x1="16" y1="14" x2="16" y2="18" stroke-width="2"></line></svg>
-          Mirels' Score (Long Bones)
-        </button>
-        <button onclick="switchTab('sins')" id="nav-sins" class="tab-btn flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-          SINS Score (Spine)
-        </button>
-        <button onclick="switchTab('wizard')" id="nav-wizard" class="tab-btn flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          Checklist Flow Wizard
-        </button>
-        <button onclick="switchTab('scales')" id="nav-scales" class="tab-btn flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-          Reference Classifications
-        </button>
-        <button onclick="switchTab('quiz')" id="nav-quiz" class="tab-btn flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-          Knowledge Quiz
-        </button>
+<!-- ============================================================ BACKGROUND ============================================================ -->
+<section id="background">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-kicker">02 — The clinical tension</span>
+      <h2>Background</h2>
+      <p>Prescribing exercise for a patient with bone metastasis means holding two true things at once.</p>
+    </div>
+    <div class="tension reveal">
+      <div class="side risk">
+        <h4>Cost of bed rest</h4>
+        <p>Strong evidence supports exercise therapy in counteracting the effects of prolonged bed rest — including pressure injury, reduced muscle strength, fatigue, and impaired physical function.</p>
+      </div>
+      <div class="vs">VS</div>
+      <div class="side harm">
+        <h4>Fear of fracture</h4>
+        <p>Exercise is often perceived as contraindicated in bone metastases, out of concern for aggravating skeletal-related incidents such as pathological fracture and pain.</p>
       </div>
     </div>
-  </nav>
+    <p class="small reveal" style="margin-top:16px;">The resolution isn't "exercise" vs. "bed rest" — it's <b style="color:var(--ink-dim);">risk stratification</b>: score the bone, score the spine, then prescribe accordingly. That's what the next three sections walk through.</p>
+  </div>
+</section>
 
-  <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-1 w-full">
+<!-- ============================================================ MIRELS ============================================================ -->
+<section id="mirels">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-kicker">03 — Long-bone fracture risk</span>
+      <h2>Mirels' Classification Scoring System</h2>
+      <p>The most widely used pathological fracture risk tool for known long-bone metastases. Sensitivity 91%, specificity 35% — it's built to catch risk, not to rule it out on its own. Try the calculator with a real case.</p>
+    </div>
 
-    <!-- TAB 1: OVERVIEW -->
-    <div id="tab-overview" class="tab-content space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
-          <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-          Guideline Objectives &amp; Background
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-600 leading-relaxed">
-          <div>
-            <h3 class="text-lg font-bold text-teal-800 mb-2">Objectives</h3>
-            <ul class="list-disc pl-5 space-y-2">
-              <li>Facilitate safe clinical practices when providing physical exercise training to patients with bone metastases.</li>
-              <li>Assist physiotherapists in designing individualized, evidence-based, structured rehabilitation plans.</li>
-              <li>Proactively minimize potential risks of skeletal-related incidents, pathological fracture, or neurological deterioration.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold text-teal-800 mb-2">The Clinical Challenge</h3>
-            <p class="mb-3">
-              Prescribing exercise therapy or delivering ambulation training to patients with bone metastases is highly challenging.
-            </p>
-            <p>
-              While clinical evidence demonstrates that physiotherapy has a considerable role in counteracting the adverse effects of prolonged bed rest (atrophy, functional decline, fatigue), concerns regarding pathological fracture or spinal cord compression often lead to over-restrictive practice. Secure clinical practice relies on modern risk stratification models.
-            </p>
-          </div>
+    <div class="calc-block reveal">
+      <div class="calc-form">
+        <h3 style="font-size:15px; margin-bottom:2px;">Risk calculator</h3>
+        <p class="small" style="margin-bottom:6px;">Select the four Mirels' components to see the total score and recommendation update live.</p>
+        <div class="field">
+          <label for="m-site">Site</label>
+          <select id="m-site">
+            <option value="1">Upper limb — 1 point</option>
+            <option value="2">Lower limb — 2 points</option>
+            <option value="3">Trochanteric — 3 points</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="m-pain">Pain</label>
+          <select id="m-pain">
+            <option value="1">Mild — 1 point</option>
+            <option value="2">Moderate — 2 points</option>
+            <option value="3">Functional — 3 points</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="m-rad">Radiographic appearance</label>
+          <select id="m-rad">
+            <option value="1">Blastic — 1 point</option>
+            <option value="2">Mixed — 2 points</option>
+            <option value="3">Lytic — 3 points</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="m-size">Size of lesion</label>
+          <select id="m-size">
+            <option value="1">&lt; 1/3 cortex — 1 point</option>
+            <option value="2">1/3 – 2/3 cortex — 2 points</option>
+            <option value="3">&gt; 2/3 cortex — 3 points</option>
+          </select>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- Phase 1 Card -->
-        <div class="bg-white rounded-xl shadow-sm border-t-4 border-t-amber-500 border border-slate-200 p-6">
-          <div class="flex items-center gap-2 mb-4">
-            <span class="p-2 bg-amber-50 rounded-lg text-amber-600 font-bold text-sm">Phase 1</span>
-            <h3 class="font-extrabold text-slate-900 text-lg">Before Exercise</h3>
-          </div>
-          <ul class="space-y-3 text-sm text-slate-600">
-            <li class="flex gap-2">
-              <span class="text-amber-500 font-bold">✓</span>
-              <span>Review medical history, imaging findings, and diagnostic stability status.</span>
-            </li>
-            <li class="flex gap-2">
-              <span class="text-amber-500 font-bold">✓</span>
-              <span>Use the official <strong>Checklist for Mobilization</strong> to screen for mechanical risk.</span>
-            </li>
-            <li class="flex gap-2">
-              <span class="text-amber-500 font-bold">✓</span>
-              <span>Ensure patient/caregivers understand risks and benefits of active rehabilitation vs. absolute bed rest.</span>
-            </li>
-            <li class="flex gap-2">
-              <span class="text-amber-500 font-bold">✓</span>
-              <span>Prepare orthoses, walking aids, and mechanical handling tools (hoist/draw sheets).</span>
-            </li>
-            <li class="flex gap-2">
-              <span class="text-amber-500 font-bold">✓</span>
-              <span>Secure adequate clinical manpower for transfers and gait phases.</span>
-            </li>
+      <div class="meter-panel">
+        <div class="meter-title">Risk meter</div>
+        <div class="meter-score"><span id="m-total">4</span><span class="of">&nbsp;/ 12</span></div>
+        <div class="meter-band-label" id="m-band-label">Low risk</div>
+        <div class="meter-track" style="--g-end:43.75%; --a-end:68.75%;">
+          <div class="meter-needle" id="m-needle"></div>
+        </div>
+        <div class="meter-ticks abs">
+          <span style="left:0%">4</span><span style="left:37.5%">7</span><span style="left:50%">8</span><span style="left:62.5%">9</span><span style="left:100%">12</span>
+        </div>
+        <div class="meter-readout">
+          <div class="row"><span>Fracture risk</span><b id="m-fxrisk">&lt; 4%</b></div>
+          <div class="row"><span>Treatment recommendation</span><b id="m-tx">Observation / radiation therapy</b></div>
+        </div>
+        <div class="meter-action g" id="m-action">Score ≤ 7 → patient should be prescribed an individualised exercise plan.</div>
+      </div>
+    </div>
+
+    <div class="film reveal" style="margin-top:24px;">
+      <h3>Table 2 — Score, fracture risk, and exercise recommendation</h3>
+      <table>
+        <thead><tr><th>Mirels' score</th><th>Fracture risk</th><th>Treatment recommendation</th><th>Exercise recommendation</th></tr></thead>
+        <tbody>
+          <tr><td>&gt; 9</td><td>33 – 100%</td><td>Prophylactic fixation recommended</td><td>Further medical assessment necessary before exercise prescription</td></tr>
+          <tr><td>8</td><td>15%</td><td>Clinical judgment should be used</td><td>Prescribe an individualised exercise plan</td></tr>
+          <tr><td>&le; 7</td><td>&lt; 4%</td><td>Observation and radiation therapy can be used</td><td>Prescribe an individualised exercise plan</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SPINAL INSTABILITY FACTORS ============================================================ -->
+<section id="spinal-instability">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-kicker">04 — Before you go near the spine</span>
+      <h2>What drives spinal instability?</h2>
+      <p>Four factors determine whether a metastatic spine is likely to remain stable under load.</p>
+    </div>
+    <div class="grid cols-2 reveal">
+      <div class="factor">
+        <div class="fnum">01</div>
+        <div><h4>Site of disease</h4><p>Cervical, thoracic or lumbar. The ribs and chest wall support the thoracic spine — support the cervical spine lacks — so equivalent disease is more destabilising higher up.</p></div>
+      </div>
+      <div class="factor">
+        <div class="fnum">02</div>
+        <div><h4>Extent of tumour infiltration</h4><p>Greater vertebral involvement means stability is more likely to be compromised; a collapsed vertebra is less likely to be stable.</p></div>
+      </div>
+      <div class="factor">
+        <div class="fnum">03</div>
+        <div><h4>Co-morbidity</h4><p>Pre-existing osteoporosis (age-related or steroid-induced) weakens bone that, once infiltrated by tumour, is even less likely to hold.</p></div>
+      </div>
+      <div class="factor">
+        <div class="fnum">04</div>
+        <div><h4>Surgery or disease progression</h4><p>Decompressive surgery alone can alter fixation stability, and non-surgically managed patients can lose stability as disease progresses.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SINS ============================================================ -->
+<section id="sins">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-kicker">05 — Spinal instability, quantified</span>
+      <h2>Spinal Instability Neoplastic Score (SINS)</h2>
+      <p>Identifies patients who may benefit from surgical consultation, and doubles as a prognostic tool for surgical decision-making. Reliability is near-perfect (inter-observer 0.990, intra-observer 0.907). Total score ranges 0–18.</p>
+    </div>
+
+    <div class="calc-block reveal">
+      <div class="calc-form">
+        <h3 style="font-size:15px; margin-bottom:2px;">SINS calculator</h3>
+        <p class="small" style="margin-bottom:6px;">Select each component to see the stability category update.</p>
+        <div class="field">
+          <label for="s-loc">Location</label>
+          <select id="s-loc">
+            <option value="3">Junctional (O–C2, C7–T2, T11–L1, L5–S1) — 3</option>
+            <option value="2" selected>Mobile spine (C3–6, L2–4) — 2</option>
+            <option value="1">Semirigid (T3–10) — 1</option>
+            <option value="0">Rigid (S2–S5) — 0</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="s-pain">Mechanical pain</label>
+          <select id="s-pain">
+            <option value="3">Yes — 3</option>
+            <option value="2">No — 2</option>
+            <option value="1">Pain-free lesion — 1</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="s-lesion">Bone lesion</label>
+          <select id="s-lesion">
+            <option value="2">Lytic — 2</option>
+            <option value="1">Mixed (lytic/blastic) — 1</option>
+            <option value="0">Blastic — 0</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="s-align">Radiographic spinal alignment</label>
+          <select id="s-align">
+            <option value="4">Subluxation / translation present — 4</option>
+            <option value="2">Deformity (kyphosis/scoliosis) — 2</option>
+            <option value="0" selected>Normal — 0</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="s-collapse">Vertebral body collapse</label>
+          <select id="s-collapse">
+            <option value="3">&gt; 50% collapse — 3</option>
+            <option value="2">&lt; 50% collapse — 2</option>
+            <option value="1">No collapse, &gt; 50% body involved — 1</option>
+            <option value="0">None of the above — 0</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="s-postero">Posterolateral involvement</label>
+          <select id="s-postero">
+            <option value="3">Bilateral — 3</option>
+            <option value="1">Unilateral — 1</option>
+            <option value="0">None of the above — 0</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="meter-panel">
+        <div class="meter-title">Stability meter</div>
+        <div class="meter-score"><span id="s-total">2</span><span class="of">&nbsp;/ 18</span></div>
+        <div class="meter-band-label" id="s-band-label">Stable</div>
+        <div class="meter-track" style="--g-end:36.1%; --a-end:69.4%;">
+          <div class="meter-needle" id="s-needle"></div>
+        </div>
+        <div class="meter-ticks"><span>0</span><span>6</span><span>12</span><span>18</span></div>
+        <div class="meter-readout">
+          <div class="row"><span>Clinical category</span><b id="s-cat">Stable</b></div>
+          <div class="row"><span>Binary scale</span><b id="s-binary">Stable</b></div>
+        </div>
+        <div class="meter-action g" id="s-action">1–6 → stable. Proceed with mobilisation per the physio plan.</div>
+      </div>
+    </div>
+
+    <div class="film reveal" style="margin-top:24px;">
+      <h3>Table 4 — Determination of stability</h3>
+      <table>
+        <thead><tr><th>Score range</th><th>Clinical category</th><th>Binary scale</th></tr></thead>
+        <tbody>
+          <tr><td>1 – 6</td><td>Stable</td><td>Stable</td></tr>
+          <tr><td>7 – 12</td><td>Potentially unstable</td><td rowspan="2">Current or potentially unstable = possible surgical intervention</td></tr>
+          <tr><td>13 – 18</td><td>Unstable</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ OTHER TOOLS (accordion) ============================================================ -->
+<section id="other-tools">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-kicker">06 — Reference library</span>
+      <h2>Other classification tools you'll see in the chart</h2>
+      <p>Less central to day-to-day exercise decisions, but you'll meet these in oncology and spine surgery notes. Expand any card for the reference values.</p>
+    </div>
+
+    <div class="reveal">
+      <details class="acc">
+        <summary>Tomita Anatomical Classification <span class="plus">+</span></summary>
+        <div class="acc-body">
+          <p>Describes where a spinal metastasis sits relative to vertebral compartments.</p>
+          <table class="dark-table">
+            <thead><tr><th>Intra-compartmental</th><th>Extra-compartmental</th><th>Multiple</th></tr></thead>
+            <tbody>
+              <tr><td>Type 1 — Vertebral body</td><td>Type 4 — Epidural extension</td><td>Type 7 — &gt; 3 vertebrae</td></tr>
+              <tr><td>Type 2 — Pedicle extension</td><td>Type 5 — Paravertebral extension</td><td></td></tr>
+              <tr><td>Type 3 — Body-lamina extension</td><td>Type 6 — 2–3 vertebrae</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Harrington Classification <span class="plus">+</span></summary>
+        <div class="acc-body">
+          <p>Grades the impact of metastatic disease on the vertebra and spinal cord, from no involvement to combined collapse and neurological impairment.</p>
+          <table class="dark-table">
+            <tbody>
+              <tr><td style="width:30px;">1</td><td>No neurological involvement</td></tr>
+              <tr><td>2</td><td>Bone involvement without collapse or instability</td></tr>
+              <tr><td>3</td><td>Significant neurological impairment without bone involvement</td></tr>
+              <tr><td>4</td><td>Vertebral collapse with pain or instability, but no neurological impairment</td></tr>
+              <tr><td>5</td><td>Vertebral collapse with pain or instability and neurological impairment</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Frankel Classification <span class="plus">+</span></summary>
+        <div class="acc-body">
+          <p>An early standard for grading sensory and motor function below the level of a spinal cord compression.</p>
+          <table class="dark-table">
+            <thead><tr><th>Grade</th><th>Status</th><th>Sensory function</th><th>Motor function</th></tr></thead>
+            <tbody>
+              <tr><td>A</td><td>Paraplegia</td><td>No sensation</td><td>Complete paralysis</td></tr>
+              <tr><td>B</td><td>Sensory function only</td><td>Some sensation</td><td>Complete paralysis</td></tr>
+              <tr><td>C</td><td>Non-ambulatory</td><td>—</td><td>Some motor function, no practical use</td></tr>
+              <tr><td>D</td><td>Ambulatory</td><td>—</td><td>Some motor function, some use</td></tr>
+              <tr><td>E</td><td>No neurologic signs</td><td>Normal</td><td>Normal</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>ASIA Impairment Scale <span class="plus">+</span></summary>
+        <div class="acc-body">
+          <p>The current standard method for classifying the neurological status of a spinal cord injury.</p>
+          <table class="dark-table">
+            <tbody>
+              <tr><td style="width:30px;">A</td><td><b>Complete</b> — no motor or sensory function preserved in sacral segments S4–S5.</td></tr>
+              <tr><td>B</td><td><b>Incomplete</b> — sensory but not motor function preserved below the neurologic level, including S4–S5.</td></tr>
+              <tr><td>C</td><td><b>Incomplete</b> — motor function preserved below the neurologic level; more than half of key muscles below that level are grade &lt; 3.</td></tr>
+              <tr><td>D</td><td><b>Incomplete</b> — motor function preserved below the neurologic level; at least half of key muscles below that level are grade &ge; 3.</td></tr>
+              <tr><td>E</td><td><b>Normal</b> — motor and sensory function normal.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Revised Tokuhashi Prognostic Score <span class="plus">+</span></summary>
+        <div class="acc-body">
+          <p>A weighted prognostic score (Karnofsky performance, extraspinal bone metastases, vertebral metastases, visceral metastases, primary site, and Frankel palsy grade) used mainly by the spine surgery team to guide the aggressiveness of treatment.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ GENERAL GUIDELINES ============================================================ -->
+<section id="guidelines">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-kicker">07 — In the session</span>
+      <h2>General guidelines for working with these patients</h2>
+      <p>Three checkpoints: what to do before you start, what to hold to during exercise, and what to do the moment something changes.</p>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="tl-col before">
+        <div class="tl-head"><span class="tl-badge before">Before</span><h4>Set up the session</h4></div>
+        <ul class="tl-list">
+          <li>Know the baseline information and precautions before exercise</li>
+          <li>Use the Mobilization Checklist for screening</li>
+          <li>Communicate with the patient and caregivers so they understand the risks and benefits of mobilisation vs. bed rest</li>
+          <li>Ensure proper exposure of the body part</li>
+          <li>Prepare walking aids and manual-handling tools (hoist, draw sheets)</li>
+          <li>Prepare adequate manpower for manual handling</li>
+        </ul>
+      </div>
+      <div class="tl-col during">
+        <div class="tl-head"><span class="tl-badge during">During</span><h4>Hold the line</h4></div>
+        <ul class="tl-list">
+          <li>Deliver comfortable care; prescribe exercise within pain-free active range of motion</li>
+          <li>Closely monitor the patient's condition before and after movement; detect any new fracture promptly</li>
+          <li class="avoid">Avoid manual muscle testing on the involved body part</li>
+          <li class="avoid">Avoid weight bearing, resistance training, stretching or twisting of the involved body part</li>
+          <li>Stop immediately if pain increases drastically</li>
+          <li>Avoid over-fatigue</li>
+        </ul>
+      </div>
+      <div class="tl-col after">
+        <div class="tl-head"><span class="tl-badge after">After</span><h4>Close the loop</h4></div>
+        <ul class="tl-list">
+          <li>Inform ward staff (nurse or doctor) immediately of any drastic change in sensibility</li>
+          <li>Escalate radiating pain or new neurological deficiency without delay</li>
+          <li>Escalate any cord compression, nerve root, or cauda equina compression sign</li>
+          <li>Document your findings and plan in the progress note</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ CHECKLIST / PATHWAYS ============================================================ -->
+<section id="checklist">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-kicker">08 — Initial assessment logic</span>
+      <h2>Checklist for mobilisation of patients with bone metastases</h2>
+      <p>Every patient splits first by <b style="color:var(--ink-dim);">new vs. old diagnosis</b>, then by site (spine/MSCC, non-weight-bearing bone, or weight-bearing bone). Five pathways, five different starting actions.</p>
+    </div>
+
+    <div class="grid cols-2 reveal" style="grid-template-columns:1fr; gap:14px;">
+
+      <div class="path-card spine">
+        <div class="path-head"><span class="code">1.1</span><span class="name">Spine / MSCC — new diagnosis</span></div>
+        <div class="path-body">
+          <div class="step"><b>Assess →</b> Bed rest until workup is completed. Record neurological signs and pain (mild / moderate / mechanical).</div>
+          <div class="step"><b>Decide →</b> Is the spine unstable?</div>
+          <div class="step"><b>If yes →</b> Check the medical plan — RT, surgery, brace, or continued bed rest.</div>
+          <div class="step"><b>If no →</b> Proceed to physio plan:</div>
+          <ul class="plan-list">
+            <li>Bed rest / in-bed cycling</li>
+            <li>Start mobilisation: sit at bedside → stand with support → walk (with distance recorded)</li>
+            <li>Educate patient on spine precautions and warning signs</li>
+            <li>Promote bronchial hygiene</li>
           </ul>
         </div>
+      </div>
 
-        <!-- Phase 2 Card -->
-        <div class="bg-white rounded-xl shadow-sm border-t-4 border-t-teal-600 border border-slate-200 p-6">
-          <div class="flex items-center gap-2 mb-4">
-            <span class="p-2 bg-teal-50 rounded-lg text-teal-600 font-bold text-sm">Phase 2</span>
-            <h3 class="font-extrabold text-slate-900 text-lg">During Exercise</h3>
-          </div>
-          <ul class="space-y-3 text-sm text-slate-600">
-            <li class="flex gap-2">
-              <span class="text-teal-600 font-bold">✓</span>
-              <span>Provide comfortable care and prescribe exercises strictly in <strong>pain-free active range of motion</strong>.</span>
-            </li>
-            <li class="flex gap-2">
-              <span class="text-teal-600 font-bold">✓</span>
-              <span>Closely monitor condition before, during, and after movements to detect signs of fresh fracture or pain.</span>
-            </li>
-            <li class="flex gap-2 text-red-700 font-semibold bg-red-50 p-2.5 rounded border border-red-100">
-              <span class="text-red-600 font-bold">⚠️</span>
-              <span><strong>AVOID:</strong> Manual muscle testing (MMT), structural weight bearing, resistance training, stretching, or twisting of involved bone segments.</span>
-            </li>
-            <li class="flex gap-2">
-              <span class="text-teal-600 font-bold">✓</span>
-              <span>Stop immediately if the patient reports any sudden, drastic increase in physical pain.</span>
-            </li>
-            <li class="flex gap-2">
-              <span class="text-teal-600 font-bold">✓</span>
-              <span>Pace tasks carefully to prevent over-fatigue.</span>
-            </li>
+      <div class="path-card wb">
+        <div class="path-head"><span class="code">1.2</span><span class="name">Non-weight-bearing bone — new diagnosis</span></div>
+        <div class="path-body">
+          <div class="step"><b>Assess →</b> Bed rest until workup on the involved bone is completed.</div>
+          <div class="step"><b>Next →</b> Check the orthopaedic management plan and advice — surgery, brace, bed rest, or a defined NWB/PWB/FWB status.</div>
+          <div class="step"><b>Then →</b> Build the physio plan around the confirmed weight-bearing status once advice is available.</div>
+        </div>
+      </div>
+
+      <div class="path-card wb">
+        <div class="path-head"><span class="code">1.3</span><span class="name">Weight-bearing bone — new diagnosis</span></div>
+        <div class="path-body">
+          <div class="step"><b>Assess →</b> Bed rest until workup is completed.</div>
+          <div class="step"><b>Decide →</b> Is there an impending or actual pathological fracture risk?</div>
+          <div class="step"><b>If yes →</b> Check the orthopaedic plan — surgery, brace, bed rest, or NWB/PWB/FWB status.</div>
+          <div class="step"><b>If no →</b> Proceed to physio plan:</div>
+          <ul class="plan-list">
+            <li>Start mobilisation as FWB / PWB / touch-down / NWB per advice</li>
+            <li>Select an appropriate walking aid</li>
+            <li>Monitor and record any pain</li>
           </ul>
         </div>
-
-        <!-- Phase 3 Card -->
-        <div class="bg-white rounded-xl shadow-sm border-t-4 border-t-rose-600 border border-slate-200 p-6">
-          <div class="flex items-center gap-2 mb-4">
-            <span class="p-2 bg-rose-50 rounded-lg text-rose-600 font-bold text-sm">Phase 3</span>
-            <h3 class="font-extrabold text-slate-900 text-lg">After Exercise</h3>
-          </div>
-          <ul class="space-y-3 text-sm text-slate-600">
-            <li class="flex gap-2">
-              <span class="text-rose-600 font-bold">✓</span>
-              <span>Monitor for delayed-onset neurological signs or spinal column changes.</span>
-            </li>
-            <li class="flex gap-2 text-rose-800 bg-rose-50 p-2.5 rounded border border-rose-100 font-semibold">
-              <span class="text-rose-600 font-bold">🚨</span>
-              <span><strong>Red Flag Actions:</strong> Immediately notify ward medical officers and nurse in-charge if there is:</span>
-            </li>
-            <li class="pl-6 text-xs text-rose-800 space-y-1 list-disc font-medium">
-              <div>Sudden drop in local sensory integrity</div>
-              <div>New lancinating / radiating pain</div>
-              <div>Sudden-onset weakness (Myotomal)</div>
-              <div>Signs of spinal cord, nerve root, or cauda equina compression</div>
-            </li>
-            <li class="flex gap-2">
-              <span class="text-rose-600 font-bold">✓</span>
-              <span>Document all specific tolerances, assistive setups, and mobility milestones thoroughly in the physiotherapy progress notes.</span>
-            </li>
-          </ul>
-        </div>
-
       </div>
-    </div>
 
-    <!-- TAB 2: MIRELS -->
-    <div id="tab-mirels" class="tab-content hidden space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-          <div>
-            <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2" stroke-width="2"></rect><line x1="8" y1="6" x2="16" y2="6" stroke-width="2"></line></svg>
-              Mirels' Classification Score Calculator
-            </h2>
-            <p class="text-slate-500 text-sm mt-1">
-              Evaluates pathologic fracture risk in long bones infiltrated by metastatic lesions (Sensitivity: 91%, Specificity: 35%).
-            </p>
-          </div>
-          <span class="bg-teal-50 text-teal-800 border border-teal-200 text-xs px-3 py-1 rounded-full font-medium">
-            Long Bone Metastases
-          </span>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <!-- Selection buttons -->
-          <div class="lg:col-span-7 space-y-6">
-            
-            <!-- Site of disease -->
-            <div>
-              <label class="block text-sm font-bold text-slate-700 mb-2">1. Site of Bone Metastasis</label>
-              <div class="grid grid-cols-3 gap-3">
-                <button onclick="setMirels('site', 1)" id="mirels-site-1" class="mirels-btn-site p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <span class="text-xs text-slate-400">Score: 1</span>
-                  <span class="font-bold text-sm block mt-1">Upper Limb</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Humerus, Radius, Ulna</span>
-                </button>
-                <button onclick="setMirels('site', 2)" id="mirels-site-2" class="mirels-btn-site p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <span class="text-xs text-slate-400">Score: 2</span>
-                  <span class="font-bold text-sm block mt-1">Lower Limb</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Femur, Tibia shaft</span>
-                </button>
-                <button onclick="setMirels('site', 3)" id="mirels-site-3" class="mirels-btn-site p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <span class="text-xs text-slate-400">Score: 3</span>
-                  <span class="font-bold text-sm block mt-1">Trochanteric</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">High mechanical strain area</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Severity of pain -->
-            <div>
-              <label class="block text-sm font-bold text-slate-700 mb-2">2. Severity / Nature of Pain</label>
-              <div class="grid grid-cols-3 gap-3">
-                <button onclick="setMirels('pain', 1)" id="mirels-pain-1" class="mirels-btn-pain p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <span class="text-xs text-slate-400">Score: 1</span>
-                  <span class="font-bold text-sm block mt-1">Mild Pain</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Well controlled at baseline</span>
-                </button>
-                <button onclick="setMirels('pain', 2)" id="mirels-pain-2" class="mirels-btn-pain p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <span class="text-xs text-slate-400">Score: 2</span>
-                  <span class="font-bold text-sm block mt-1">Moderate Pain</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Constant but manageable</span>
-                </button>
-                <button onclick="setMirels('pain', 3)" id="mirels-pain-3" class="mirels-btn-pain p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <span class="text-xs text-slate-400">Score: 3</span>
-                  <span class="font-bold text-sm block mt-1">Functional Pain</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Aggravated by limb loading</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Radiographic appearance -->
-            <div>
-              <label class="block text-sm font-bold text-slate-700 mb-2">3. Radiographic Appearance</label>
-              <div class="grid grid-cols-3 gap-3">
-                <button onclick="setMirels('radiographic', 1)" id="mirels-radiographic-1" class="mirels-btn-radiographic p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <span class="text-xs text-slate-400">Score: 1</span>
-                  <span class="font-bold text-sm block mt-1">Blastic</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Osteoblastic / dense matrix</span>
-                </button>
-                <button onclick="setMirels('radiographic', 2)" id="mirels-radiographic-2" class="mirels-btn-radiographic p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <span class="text-xs text-slate-400">Score: 2</span>
-                  <span class="font-bold text-sm block mt-1">Mixed</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Combined blastic &amp; lytic</span>
-                </button>
-                <button onclick="setMirels('radiographic', 3)" id="mirels-radiographic-3" class="mirels-btn-radiographic p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <span class="text-xs text-slate-400">Score: 3</span>
-                  <span class="font-bold text-sm block mt-1">Lytic</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Destructive bone erosion</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Size of lesion -->
-            <div>
-              <label class="block text-sm font-bold text-slate-700 mb-2">4. Size of Metastatic Lesion</label>
-              <div class="grid grid-cols-3 gap-3">
-                <button onclick="setMirels('size', 1)" id="mirels-size-1" class="mirels-btn-size p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <span class="text-xs text-slate-400">Score: 1</span>
-                  <span class="font-bold text-sm block mt-1">&lt; 1/3 Cortex</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Mild cortical thinning</span>
-                </button>
-                <button onclick="setMirels('size', 2)" id="mirels-size-2" class="mirels-btn-size p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <span class="text-xs text-slate-400">Score: 2</span>
-                  <span class="font-bold text-sm block mt-1">1/3 - 2/3 Cortex</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Moderate cortical loss</span>
-                </button>
-                <button onclick="setMirels('size', 3)" id="mirels-size-3" class="mirels-btn-size p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <span class="text-xs text-slate-400">Score: 3</span>
-                  <span class="font-bold text-sm block mt-1">&gt; 2/3 Cortex</span>
-                  <span class="text-[10px] text-slate-500 mt-1 leading-snug">Severe cortical involvement</span>
-                </button>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Score Display Panel -->
-          <div class="lg:col-span-5 flex flex-col justify-between">
-            <div id="mirels-alert-box" class="p-6 rounded-xl border-2 space-y-6 transition-colors border-emerald-500 bg-emerald-50 text-emerald-900">
-              <div>
-                <span class="text-xs uppercase font-extrabold tracking-wider opacity-75">Calculated Mirels' Score</span>
-                <div class="flex items-baseline gap-2 mt-1">
-                  <span id="mirels-score-display" class="text-5xl font-extrabold tracking-tight">4</span>
-                  <span class="text-xl font-semibold opacity-75">/ 12</span>
-                </div>
-              </div>
-
-              <div class="border-t border-slate-200/40 pt-4 space-y-4">
-                <div>
-                  <span class="text-xs uppercase font-bold tracking-wider opacity-75 block">Skeletal Fracture Risk</span>
-                  <span id="mirels-risk-display" class="text-2xl font-black">&lt; 4%</span>
-                </div>
-
-                <div>
-                  <span class="text-xs uppercase font-bold tracking-wider opacity-75 block">Treatment Recommendation</span>
-                  <p id="mirels-treatment-display" class="text-sm font-semibold mt-1">Observation and radiation therapy can be used.</p>
-                </div>
-
-                <div class="bg-white/80 p-4 rounded-lg border border-slate-200/50">
-                  <span class="text-xs uppercase font-extrabold tracking-wider text-slate-500 block">PT Exercise Prescription Guideline</span>
-                  <p id="mirels-exercise-display" class="text-sm font-bold text-slate-900 mt-1.5 leading-relaxed">
-                    ✅ SAFE. Patient should be prescribed an individualized exercise plan tailored to pain tolerance.
-                  </p>
-                </div>
-              </div>
-
-              <div id="mirels-warning-badge" class="bg-red-100 border border-red-300 p-3 rounded-lg flex items-start gap-2 text-red-900 text-xs font-medium hidden">
-                <svg class="w-4 h-4 text-red-700 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                <div>
-                  <strong>WARNING:</strong> Standard active exercises are restricted. Refer to Orthopedics immediately for potential surgical prophylactic pinning.
-                </div>
-              </div>
-            </div>
-
-            <!-- Table matrix -->
-            <div class="bg-slate-100 rounded-xl p-5 border border-slate-200 mt-4 text-xs space-y-3">
-              <h4 class="font-bold text-slate-800 uppercase tracking-wide">Mirels' Reference Matrix</h4>
-              <div class="grid grid-cols-4 gap-1 border-b border-slate-200 pb-1 font-bold text-slate-600">
-                <span>Score Range</span>
-                <span>Fracture Risk</span>
-                <span>HA Medical Plan</span>
-                <span>PT Clinical Guideline</span>
-              </div>
-              <div class="grid grid-cols-4 gap-1 text-slate-500">
-                <span class="font-bold text-red-600">&gt; 9</span>
-                <span>33% - 100%</span>
-                <span>Prophylactic Fix</span>
-                <span>Consultation Mandatory</span>
-              </div>
-              <div class="grid grid-cols-4 gap-1 text-slate-500">
-                <span class="font-bold text-amber-600">8</span>
-                <span>15%</span>
-                <span>Clinical Judgment</span>
-                <span>Custom Plan / Caution</span>
-              </div>
-              <div class="grid grid-cols-4 gap-1 text-slate-500">
-                <span class="font-bold text-emerald-600">&le; 7</span>
-                <span>&lt; 4%</span>
-                <span>Obs / RT</span>
-                <span>Individual Plan / Safe</span>
-              </div>
-            </div>
-          </div>
-
+      <div class="path-card old">
+        <div class="path-head"><span class="code">2.1</span><span class="name">Non-weight-bearing bone — old diagnosis</span></div>
+        <div class="path-body">
+          <div class="step"><b>Check →</b> Past medical history for the previous weight-bearing status (FWB / PWB / touch-down / NWB) and continue accordingly.</div>
         </div>
       </div>
-    </div>
 
-    <!-- TAB 3: SINS -->
-    <div id="tab-sins" class="tab-content hidden space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-          <div>
-            <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-              Spinal Instability Neoplastic Score (SINS)
-            </h2>
-            <p class="text-slate-500 text-sm mt-1">
-              Evaluates structural and mechanical stability of the spinal column under metastatic tumor load.
-            </p>
-          </div>
-          <span class="bg-red-50 text-red-800 border border-red-200 text-xs px-3 py-1 rounded-full font-medium">
-            Spine Metastases / MSCC
-          </span>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <!-- SINS Input Panels -->
-          <div class="lg:col-span-8 space-y-4">
-            
-            <!-- Location -->
-            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200/70">
-              <label class="block text-sm font-bold text-slate-800 mb-2">1. Neoplastic Location</label>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button onclick="setSins('location', 3)" id="sins-location-3" class="sins-btn-location p-2 rounded border text-left transition-all border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 3</div>
-                  <div class="text-xs sm:text-sm font-bold">Junctional</div>
-                  <div class="text-[9px] text-slate-500 mt-1 truncate">O-C2, C7-T2, T11-L1, L5-S1</div>
-                </button>
-                <button onclick="setSins('location', 2)" id="sins-location-2" class="sins-btn-location p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 2</div>
-                  <div class="text-xs sm:text-sm font-bold">Mobile Spine</div>
-                  <div class="text-[9px] text-slate-500 mt-1 truncate">C3-C6, L2-L4</div>
-                </button>
-                <button onclick="setSins('location', 1)" id="sins-location-1" class="sins-btn-location p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 1</div>
-                  <div class="text-xs sm:text-sm font-bold">Semirigid</div>
-                  <div class="text-[9px] text-slate-500 mt-1 truncate">T3-T10</div>
-                </button>
-                <button onclick="setSins('location', 0)" id="sins-location-0" class="sins-btn-location p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 0</div>
-                  <div class="text-xs sm:text-sm font-bold">Rigid</div>
-                  <div class="text-[9px] text-slate-500 mt-1 truncate">S2-S5</div>
-                </button>
-              </div>
-            </div>
-
-            <!-- Mechanical Pain -->
-            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200/70">
-              <label class="block text-sm font-bold text-slate-800 mb-2">2. Spinal / Mechanical Pain</label>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                <button onclick="setSins('pain', 3)" id="sins-pain-3" class="sins-btn-pain p-2 rounded border text-left transition-all border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 3</div>
-                  <div class="text-xs sm:text-sm font-bold">Mechanical Pain</div>
-                  <div class="text-[9px] text-slate-500 mt-0.5 leading-tight">Pain aggravated by posture/upright loading</div>
-                </button>
-                <button onclick="setSins('pain', 2)" id="sins-pain-2" class="sins-btn-pain p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 2</div>
-                  <div class="text-xs sm:text-sm font-bold">Non-Mechanical Pain</div>
-                  <div class="text-[9px] text-slate-500 mt-0.5 leading-tight">Constant pain unaffected by postural changes</div>
-                </button>
-                <button onclick="setSins('pain', 1)" id="sins-pain-1" class="sins-btn-pain p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 1</div>
-                  <div class="text-xs sm:text-sm font-bold">Pain Free Lesion</div>
-                  <div class="text-[9px] text-slate-500 mt-0.5 leading-tight">No active symptomatic pain reported</div>
-                </button>
-              </div>
-            </div>
-
-            <!-- Bone Lesion -->
-            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200/70">
-              <label class="block text-sm font-bold text-slate-800 mb-2">3. Bone Lesion Radiography</label>
-              <div class="grid grid-cols-3 gap-2">
-                <button onclick="setSins('lesion', 2)" id="sins-lesion-2" class="sins-btn-lesion p-2 rounded border text-left transition-all border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 2</div>
-                  <div class="text-xs sm:text-sm font-bold">Lytic (Destructive)</div>
-                </button>
-                <button onclick="setSins('lesion', 1)" id="sins-lesion-1" class="sins-btn-lesion p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 1</div>
-                  <div class="text-xs sm:text-sm font-bold">Mixed (Lytic/Blastic)</div>
-                </button>
-                <button onclick="setSins('lesion', 0)" id="sins-lesion-0" class="sins-btn-lesion p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 0</div>
-                  <div class="text-xs sm:text-sm font-bold">Blastic</div>
-                </button>
-              </div>
-            </div>
-
-            <!-- Radiographic Alignment -->
-            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200/70">
-              <label class="block text-sm font-bold text-slate-800 mb-2">4. Spinal Alignment (Radiography)</label>
-              <div class="grid grid-cols-3 gap-2">
-                <button onclick="setSins('alignment', 4)" id="sins-alignment-4" class="sins-btn-alignment p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 4</div>
-                  <div class="text-xs sm:text-sm font-bold">Subluxation Present</div>
-                </button>
-                <button onclick="setSins('alignment', 2)" id="sins-alignment-2" class="sins-btn-alignment p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 2</div>
-                  <div class="text-xs sm:text-sm font-bold">Deformity Present</div>
-                </button>
-                <button onclick="setSins('alignment', 0)" id="sins-alignment-0" class="sins-btn-alignment p-2 rounded border text-left transition-all border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 0</div>
-                  <div class="text-xs sm:text-sm font-bold">Normal Alignment</div>
-                </button>
-              </div>
-            </div>
-
-            <!-- Vertebral collapse -->
-            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200/70">
-              <label class="block text-sm font-bold text-slate-800 mb-2">5. Vertebral Body Collapse</label>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button onclick="setSins('collapse', 3)" id="sins-collapse-3" class="sins-btn-collapse p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 3</div>
-                  <div class="text-xs font-bold leading-tight">&gt;50% Collapse</div>
-                </button>
-                <button onclick="setSins('collapse', 2)" id="sins-collapse-2" class="sins-btn-collapse p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 2</div>
-                  <div class="text-xs font-bold leading-tight">&lt;50% Collapse</div>
-                </button>
-                <button onclick="setSins('collapse', 1)" id="sins-collapse-1" class="sins-btn-collapse p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 1</div>
-                  <div class="text-xs font-bold leading-tight">No collapse with &gt;50% body involved</div>
-                </button>
-                <button onclick="setSins('collapse', 0)" id="sins-collapse-0" class="sins-btn-collapse p-2 rounded border text-left transition-all border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 0</div>
-                  <div class="text-xs font-bold leading-tight">None of the above</div>
-                </button>
-              </div>
-            </div>
-
-            <!-- Posterolateral involvement -->
-            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200/70">
-              <label class="block text-sm font-bold text-slate-800 mb-2">6. Posterolateral Involvement (Facet/Pedicle)</label>
-              <div class="grid grid-cols-3 gap-2">
-                <button onclick="setSins('posterolateral', 3)" id="sins-posterolateral-3" class="sins-btn-posterolateral p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 3</div>
-                  <div class="text-xs sm:text-sm font-bold">Bilateral</div>
-                </button>
-                <button onclick="setSins('posterolateral', 1)" id="sins-posterolateral-1" class="sins-btn-posterolateral p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 1</div>
-                  <div class="text-xs sm:text-sm font-bold">Unilateral</div>
-                </button>
-                <button onclick="setSins('posterolateral', 0)" id="sins-posterolateral-0" class="sins-btn-posterolateral p-2 rounded border text-left transition-all border-teal-600 bg-teal-50 text-teal-950 font-semibold">
-                  <div class="text-[10px] text-slate-400 font-mono">Score: 0</div>
-                  <div class="text-xs sm:text-sm font-bold">None of the above</div>
-                </button>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- SINS Score Output -->
-          <div class="lg:col-span-4 space-y-6">
-            <div id="sins-alert-box" class="p-6 rounded-xl border-2 space-y-6 shadow-sm border-amber-500 bg-amber-50 text-amber-950">
-              <div>
-                <span class="text-xs uppercase font-extrabold tracking-wider opacity-75">SINS Calculated Score</span>
-                <div class="flex items-baseline gap-1 mt-1">
-                  <span id="sins-score-display" class="text-5xl font-extrabold tracking-tight">8</span>
-                  <span class="text-xl font-semibold opacity-75">/ 18</span>
-                </div>
-              </div>
-
-              <div class="border-t border-slate-200/40 pt-4 space-y-4">
-                <div>
-                  <span class="text-xs uppercase font-bold tracking-wider opacity-75 block">Spinal Stability Class</span>
-                  <span id="sins-category-display" class="inline-block text-sm px-3 py-1 mt-1 rounded-full font-bold bg-amber-500 text-gray-900">
-                    Potentially Unstable
-                  </span>
-                </div>
-
-                <div class="bg-white/70 p-4 rounded-lg border border-slate-200/50">
-                  <span class="text-xs uppercase font-extrabold tracking-wider text-slate-500 block">PT Clinical Action</span>
-                  <p id="sins-action-display" class="text-sm font-bold text-slate-900 mt-2 leading-relaxed">
-                    ⚠️ EXTREME CAUTION. Check Orthopedic/Neurosurgical plan. Rigid bracing, limited range of motion, and close monitoring required.
-                  </p>
-                </div>
-              </div>
-
-              <!-- Interpretations -->
-              <div class="border-t border-slate-200/30 pt-4 text-xs text-slate-700 space-y-2">
-                <span class="font-extrabold uppercase tracking-wider block">Scale Interpretation:</span>
-                <div class="flex justify-between border-b border-slate-200 pb-1">
-                  <span>Score 1 - 6</span>
-                  <span class="text-emerald-700 font-bold">Stable Spine</span>
-                </div>
-                <div class="flex justify-between border-b border-slate-200 pb-1">
-                  <span>Score 7 - 12</span>
-                  <span class="text-amber-700 font-bold">Potentially Unstable</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Score 13 - 18</span>
-                  <span class="text-red-700 font-bold">Unstable Spine</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 text-xs text-blue-900 leading-relaxed">
-              <h4 class="font-bold text-sm text-blue-950 mb-2 flex items-center gap-1">
-                <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Instability Risk Factors Info
-              </h4>
-              <p class="mb-2"><strong>1. Anatomical Site:</strong> Cervical and lumbar columns lack structural reinforcement and carry larger instability risks than thoracic vertebrae protected by the chest wall/ribcage.</p>
-              <p class="mb-2"><strong>2. Tumor Extent:</strong> Collapse or progressive infiltration of vertebral body structures weakens structural capacity.</p>
-              <p><strong>3. Co-morbidities:</strong> Age-related osteoporosis or long-term systemic steroid therapy exacerbates bone failure risk.</p>
-            </div>
-          </div>
-
+      <div class="path-card old">
+        <div class="path-head"><span class="code">2.2</span><span class="name">Weight-bearing bone or spine — old diagnosis</span></div>
+        <div class="path-body">
+          <div class="step"><b>Ask →</b> Has pain increased in the area of known metastasis, or elsewhere?</div>
+          <div class="step"><b>If yes →</b> Treat as bed rest until a fresh work-up is completed — the same caution as a new diagnosis.</div>
+          <div class="step"><b>If no →</b> Check past medical history for previous weight-bearing status and treat as new diagnosis pathway 1.1 / 1.2 / 1.3 to confirm the current plan.</div>
         </div>
       </div>
+
     </div>
 
-    <!-- TAB 4: WIZARD -->
-    <div id="tab-wizard" class="tab-content hidden space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
-        <div class="border-b border-slate-100 pb-4 mb-6">
-          <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            Interactive Mobilization Checklist Wizard
-          </h2>
-          <p class="text-slate-500 text-sm mt-1">
-            Guided simulator based on the formal <em>Initial Assessment Checklist for Mobilization of Patients with Bone Metastases</em>.
-          </p>
-        </div>
+    <div class="film reveal" style="margin-top:20px;">
+      <h4 style="margin-bottom:10px;">Ongoing: Mobilization Plan Review</h4>
+      <p style="font-size:14px; margin:0;">Every subsequent session, re-check: change of condition (pain, general condition, operation done, pain control), any new investigation results, fresh advice from the doctor, and the patient's or relative's concerns — before updating the physio plan and discharge plan.</p>
+    </div>
+  </div>
+</section>
 
-        <!-- Progress Steps -->
-        <div class="flex items-center justify-between max-w-xl mx-auto mb-8">
-          <div class="flex flex-col items-center text-teal-600" id="step-node-1">
-            <span class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-teal-600 text-white" id="step-badge-1">1</span>
-            <span class="text-[11px] font-bold mt-1">Diagnosis</span>
-          </div>
-          <div class="flex-1 h-1 mx-2 rounded bg-slate-200" id="step-line-1"></div>
-          <div class="flex flex-col items-center text-slate-300" id="step-node-2">
-            <span class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-200 text-slate-500" id="step-badge-2">2</span>
-            <span class="text-[11px] font-bold mt-1">Location</span>
-          </div>
-          <div class="flex-1 h-1 mx-2 rounded bg-slate-200" id="step-line-2"></div>
-          <div class="flex flex-col items-center text-slate-300" id="step-node-3">
-            <span class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-200 text-slate-500" id="step-badge-3">3</span>
-            <span class="text-[11px] font-bold mt-1">Risks</span>
-          </div>
-          <div class="flex-1 h-1 mx-2 rounded bg-slate-200" id="step-line-3"></div>
-          <div class="flex flex-col items-center text-slate-300" id="step-node-4">
-            <span class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-200 text-slate-500" id="step-badge-4">4</span>
-            <span class="text-[11px] font-bold mt-1">PT Plan</span>
-          </div>
-        </div>
-
-        <!-- Wizard Step contents -->
-        <div class="max-w-xl mx-auto">
-          
-          <!-- STEP 1: DIAGNOSIS TYPE -->
-          <div id="wizard-step-1" class="wizard-pane space-y-6 text-center">
-            <h3 class="text-lg font-bold text-slate-800">Is this a New Diagnosis or an Old Diagnosis of Bone Metastasis?</h3>
-            <div class="grid grid-cols-2 gap-4">
-              <button onclick="setWizardProfile('diagnosisType', 'new')" class="p-6 border-2 rounded-xl text-left transition-all border-slate-200 hover:border-teal-500 hover:bg-teal-50/20">
-                <h4 class="font-extrabold text-slate-900 text-lg">New Diagnosis</h4>
-                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-                  Newly identified metastatic spinal or long bone lesion requiring first-time diagnostic stability assessment.
-                </p>
-              </button>
-              <button onclick="setWizardProfile('diagnosisType', 'old')" class="p-6 border-2 rounded-xl text-left transition-all border-slate-200 hover:border-teal-500 hover:bg-teal-50/20">
-                <h4 class="font-extrabold text-slate-900 text-lg">Old Diagnosis</h4>
-                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-                  Known diagnosis of metastatic bone lesions. Focused on recent changes in pain or progressive signs.
-                </p>
-              </button>
-            </div>
-          </div>
-
-          <!-- STEP 2: LOCATION -->
-          <div id="wizard-step-2" class="wizard-pane hidden space-y-6">
-            <h3 class="text-lg font-bold text-slate-800 text-center">Where is the bone metastasis located?</h3>
-            <div class="space-y-3">
-              <button onclick="setWizardProfile('lesionLocation', 'spine')" class="w-full p-4 border-2 rounded-lg text-left border-slate-200 hover:border-teal-500 hover:bg-teal-50/20">
-                <h4 class="font-bold text-slate-950 text-base">Spine / Metastatic Spinal Cord Compression (MSCC)</h4>
-                <p class="text-xs text-slate-500 mt-1">Affects cervical, thoracic, lumbar, or sacral levels.</p>
-              </button>
-              <button onclick="setWizardProfile('lesionLocation', 'nwb_bone')" class="w-full p-4 border-2 rounded-lg text-left border-slate-200 hover:border-teal-500 hover:bg-teal-50/20">
-                <h4 class="font-bold text-slate-950 text-base">Non-Weight-Bearing (NWB) Bone</h4>
-                <p class="text-xs text-slate-500 mt-1">Metastases in clavicle, ribs, shoulder girdle, or upper limb shafts.</p>
-              </button>
-              <button onclick="setWizardProfile('lesionLocation', 'wb_bone')" class="w-full p-4 border-2 rounded-lg text-left border-slate-200 hover:border-teal-500 hover:bg-teal-50/20">
-                <h4 class="font-bold text-slate-950 text-base">Weight-Bearing (WB) Bone</h4>
-                <p class="text-xs text-slate-500 mt-1">Metastases in pelvis, trochanteric region, femur, tibia, etc.</p>
-              </button>
-            </div>
-            <div class="flex justify-between pt-4 border-t border-slate-100">
-              <button onclick="wizardGoBack(1)" class="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded">Back</button>
-            </div>
-          </div>
-
-          <!-- STEP 3: MECHANICAL RISKS -->
-          <div id="wizard-step-3" class="wizard-pane hidden space-y-6">
-            <h3 class="text-lg font-bold text-slate-800 text-center">Stability &amp; Symptom Checklist</h3>
-            
-            <!-- Conditional content Spine -->
-            <div id="step-3-spine" class="hidden space-y-4">
-              <p class="text-sm text-slate-500 text-center">Spine lesions require evaluating instability thresholds or cord compression triggers.</p>
-              <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
-                <span class="font-bold block text-sm text-slate-800">Is the spinal segment unstable or are neurological signs present?</span>
-                <span class="text-xs text-slate-500 block leading-normal">(SINS Score &ge; 7, sensory/motor deficits, mechanical posture-pain, or impending collapse)</span>
-                <div class="flex gap-4 mt-3">
-                  <button onclick="setWizardProfile('spineUnstable', true)" id="btn-spine-unstable-yes" class="flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-red-400">Yes, Unstable</button>
-                  <button onclick="setWizardProfile('spineUnstable', false)" id="btn-spine-unstable-no" class="flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-emerald-400">No, Stable</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Conditional content Weight Bearing -->
-            <div id="step-3-wbbone" class="hidden space-y-4">
-              <p class="text-sm text-slate-500 text-center">Weight-bearing long bones require screening for pathologic fracture risk.</p>
-              <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
-                <span class="font-bold block text-sm text-slate-800">Is there an impending or pathological fracture?</span>
-                <span class="text-xs text-slate-500 block leading-normal">(Mirels' Score &ge; 8, severe loading pain, cortical loss &gt; 1/3)</span>
-                <div class="flex gap-4 mt-3">
-                  <button onclick="setWizardProfile('isImpendingFx', true)" id="btn-impending-yes" class="flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-red-400">Yes, Impending Fx</button>
-                  <button onclick="setWizardProfile('isImpendingFx', false)" id="btn-impending-no" class="flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-emerald-400">No, Stable</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pain increase check for Old Diagnoses -->
-            <div id="step-3-old-pain-check" class="hidden p-4 border rounded-lg bg-slate-50 space-y-3">
-              <span class="font-bold block text-sm text-slate-800">Has the patient experienced a recent increase in pain over the metastatic site?</span>
-              <div class="flex gap-4">
-                <button onclick="setWizardProfile('increasedPain', true)" id="btn-oldpain-yes" class="flex-1 py-2 rounded font-bold text-xs border-2 bg-white border-slate-200 hover:border-red-400">Yes, Pain is Aggravated</button>
-                <button onclick="setWizardProfile('increasedPain', false)" id="btn-oldpain-no" class="flex-1 py-2 rounded font-bold text-xs border-2 bg-white border-slate-200 hover:border-emerald-400">No, Pain is Stable</button>
-              </div>
-            </div>
-
-            <div class="flex justify-between pt-4 border-t border-slate-100">
-              <button onclick="wizardGoBack(2)" class="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded">Back</button>
-              <button onclick="generatePlan()" id="btn-generate-plan" class="bg-slate-200 text-slate-400 font-bold px-6 py-2 rounded text-sm cursor-not-allowed" disabled>
-                Generate PT Plan
-              </button>
-            </div>
-          </div>
-
-          <!-- STEP 4: PT MOBILIZATION PLAN -->
-          <div id="wizard-step-4" class="wizard-pane hidden space-y-6">
-            <div class="p-6 rounded-xl border border-slate-200 bg-slate-50 space-y-4">
-              <h3 class="text-xl font-bold text-slate-900 border-b border-slate-200 pb-2">
-                Generated Mobilization &amp; Exercise Plan
-              </h3>
-
-              <!-- Patient Profile Metadata -->
-              <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-white p-3 rounded border">
-                <div><strong>Diagnosis:</strong> <span id="summary-dx">New Diagnosis</span></div>
-                <div><strong>Location:</strong> <span id="summary-loc">Spine</span></div>
-                <div id="summary-stable-row" class="hidden"><strong>Stability:</strong> <span id="summary-stable">N/A</span></div>
-              </div>
-
-              <!-- Pathway Render Box -->
-              <div id="wizard-pathway-result">
-                <!-- Will be dynamically populated by JS -->
-              </div>
-            </div>
-
-            <div class="flex justify-start">
-              <button onclick="resetWizard()" class="px-6 py-2 border-2 border-slate-300 hover:border-slate-400 font-bold text-sm rounded transition-all">
-                Reset &amp; Start Over
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
+<!-- ============================================================ QUIZ ============================================================ -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-kicker">09 — Test your reasoning</span>
+      <h2>Clinical knowledge quiz</h2>
+      <p>Five case-style questions drawn from the guideline above. Pick an answer to reveal the rationale immediately — you can only lock in one answer per question.</p>
     </div>
 
-    <!-- TAB 5: SCALES -->
-    <div id="tab-scales" class="tab-content hidden space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-          <div>
-            <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-              Quick-Reference Diagnostic Classifications
-            </h2>
-            <p class="text-slate-500 text-sm mt-1">
-              Look up clinical neurological and prognostic systems referenced inside official guidelines.
-            </p>
-          </div>
-          <div class="relative w-full sm:w-64">
-            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </span>
-            <input type="text" id="scale-search-input" onkeyup="filterScales()" placeholder="Search classifications..." class="pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 w-full bg-slate-50">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="scales-container">
-          
-          <!-- Card 1 -->
-          <div class="scale-card border border-slate-200 rounded-xl p-5 hover:shadow-md transition-shadow bg-white" data-title="revised tokuhashi prognostic score">
-            <h3 class="font-extrabold text-slate-900 text-base mb-3 border-b pb-1.5 text-teal-800">
-              Revised Tokuhashi Prognostic Score
-            </h3>
-            <p class="text-slate-500 text-xs mb-3">Preoperative criteria predicting postoperative survival spans for spinal metastasis patients.</p>
-            <div class="space-y-2 text-xs">
-              <div class="flex justify-between border-b py-1">
-                <span class="font-bold text-slate-700">Karnofsky Performance</span>
-                <span>10-40% (0) | 50-70% (1) | 80-100% (2)</span>
-              </div>
-              <div class="flex justify-between border-b py-1">
-                <span class="font-bold text-slate-700">Extraspinal Metastases</span>
-                <span>&ge;3 (0) | 1-2 (1) | 0 (2)</span>
-              </div>
-              <div class="flex justify-between border-b py-1">
-                <span class="font-bold text-slate-700">Vertebral Metastases</span>
-                <span>&ge;3 (0) | 2 (1) | 1 (2)</span>
-              </div>
-              <div class="flex justify-between border-b py-1">
-                <span class="font-bold text-slate-700">Visceral Metastases</span>
-                <span>Unremovable (0) | Removable (1) | None (2)</span>
-              </div>
-              <div class="flex justify-between py-1">
-                <span class="font-bold text-slate-700">Primary Cancer Type</span>
-                <span>Lung (0) | Kidney (3) | Breast (5)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2 -->
-          <div class="scale-card border border-slate-200 rounded-xl p-5 hover:shadow-md transition-shadow bg-white" data-title="frankel classifications grade neurologic palsy">
-            <h3 class="font-extrabold text-slate-900 text-base mb-3 border-b pb-1.5 text-teal-800">
-              Frankel Neurological Classification
-            </h3>
-            <p class="text-slate-500 text-xs mb-3">Grades neurological injury severity and sensory/motor sparing levels below spine lesions.</p>
-            <div class="space-y-2 text-xs">
-              <div class="bg-red-50 p-2 rounded border border-red-200">
-                <strong>Grade A (Paraplegia):</strong> No sensation, complete motor paralysis.
-              </div>
-              <div class="bg-amber-50 p-2 rounded border border-amber-200">
-                <strong>Grade B (Sensory Only):</strong> Some sensation remains; complete motor paralysis.
-              </div>
-              <div class="bg-blue-50 p-2 rounded border border-blue-200">
-                <strong>Grade C (Non-Ambulatory):</strong> Non-functional, unserviceable motor sparing.
-              </div>
-              <div class="bg-indigo-50 p-2 rounded border border-indigo-200">
-                <strong>Grade D (Ambulatory):</strong> Sparing of serviceable motor function; patients can walk.
-              </div>
-              <div class="bg-emerald-50 p-2 rounded border border-emerald-200">
-                <strong>Grade E (Normal):</strong> Full motor and sensory preservation with zero deficits.
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 3 -->
-          <div class="scale-card border border-slate-200 rounded-xl p-5 hover:shadow-md transition-shadow bg-white" data-title="harrington pathologic fracture classification">
-            <h3 class="font-extrabold text-slate-900 text-base mb-3 border-b pb-1.5 text-teal-800">
-              Harrington Pathological Classifications
-            </h3>
-            <p class="text-slate-500 text-xs mb-3">Focuses on spinal structural collapse and corresponding sensory-motor impairment.</p>
-            <div class="space-y-1.5 text-xs">
-              <div class="border-b pb-1"><strong>Class 1:</strong> No neurological signs.</div>
-              <div class="border-b pb-1"><strong>Class 2:</strong> Bone involvement without collapse or instability.</div>
-              <div class="border-b pb-1"><strong>Class 3:</strong> Significant neurological impairment without spinal bone collapse.</div>
-              <div class="border-b pb-1"><strong>Class 4:</strong> Vertebral collapse with pain / instability but zero neurological impairment.</div>
-              <div><strong>Class 5:</strong> Vertebral collapse with pain / instability paired with neurological loss.</div>
-            </div>
-          </div>
-
-          <!-- Card 4 -->
-          <div class="scale-card border border-slate-200 rounded-xl p-5 hover:shadow-md transition-shadow bg-white" data-title="american spinal injury association asia impairment scale">
-            <h3 class="font-extrabold text-slate-900 text-base mb-3 border-b pb-1.5 text-teal-800">
-              ASIA Impairment Scale (Impairment)
-            </h3>
-            <p class="text-slate-500 text-xs mb-3">Neurological assessment standard grading complete/incomplete spinal cord injury statuses.</p>
-            <div class="space-y-1.5 text-xs">
-              <div><strong>A (Complete):</strong> No motor/sensory function preserved in sacral segments S4-S5.</div>
-              <div><strong>B (Incomplete):</strong> Sensory, but not motor function is preserved below neurologic level (includes S4-S5).</div>
-              <div><strong>C (Incomplete):</strong> Motor preserved below neurological level, &gt;50% of key muscles have grade &lt; 3.</div>
-              <div><strong>D (Incomplete):</strong> Motor preserved below neurological level, &ge;50% of key muscles have grade &ge; 3.</div>
-              <div><strong>E (Normal):</strong> Normal motor and sensory statuses throughout.</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
+    <div id="quiz-score-bar">
+      <span class="qs-progress" id="qs-progress">0 / 5 answered</span>
+      <span class="qs-score">Score: <b id="qs-score">0</b> / 5</span>
     </div>
 
-    <!-- TAB 6: QUIZ -->
-    <div id="tab-quiz" class="tab-content hidden space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-100 pb-4 mb-6 gap-3">
-          <div>
-            <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-              Clinical Reasoning Case Quiz (Instant Feedback)
-            </h2>
-            <p class="text-slate-500 text-sm mt-1">
-              Test your clinical reasoning with authentic case studies directly referenced from <strong class="text-teal-700 font-bold">"Physiotherapy Guidelines for Exercise Prescription and Ambulation Training in Patients with Bone Metastases"</strong>.
-            </p>
-          </div>
-          <div class="bg-slate-100 px-4 py-2 rounded-lg border flex flex-col items-end">
-            <span class="text-xs text-slate-500 uppercase tracking-wider font-bold">Status</span>
-            <span class="text-sm font-black text-slate-800" id="quiz-progress-text">0 / 5 Answered</span>
-          </div>
-        </div>
+    <div id="quiz-container"></div>
 
-        <!-- Cases Loop inside div container -->
-        <div class="space-y-8" id="quiz-questions-wrapper">
-          <!-- Populated dynamically via JS -->
-        </div>
-
-        <!-- Dynamic Final score dashboard -->
-        <div id="quiz-scoreboard" class="mt-8 p-6 rounded-xl border border-emerald-500 bg-emerald-50/50 flex flex-col md:flex-row items-center justify-between gap-4 hidden">
-          <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-800 font-black text-2xl" id="quiz-score-badge">
-              0/5
-            </div>
-            <div>
-              <h4 class="text-lg font-extrabold text-slate-900">Cases Completed!</h4>
-              <p class="text-sm text-slate-600" id="quiz-congratulations-p">
-                Review your rationales above to reinforce safe clinical practice guidelines.
-              </p>
-            </div>
-          </div>
-          <button onclick="resetQuiz()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-8 py-3 rounded-lg text-sm transition-all shadow">
-            Reset &amp; Retake Quiz
-          </button>
-        </div>
-
-      </div>
+    <div id="quiz-results">
+      <div class="rscore"><span id="r-final">0</span> / 5</div>
+      <p class="rmsg" id="r-msg"></p>
+      <button id="retake">Retake the quiz</button>
     </div>
+  </div>
+</section>
 
-  </main>
+</main>
 
-  <!-- Corporate Clinical Footer -->
-  <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
-      <p class="font-semibold text-slate-300">
-        This is AI generated clinical infographic by AHNH PTD
-      </p>
-      <p class="max-w-3xl mx-auto leading-relaxed text-[11px] text-slate-500">
-        Disclaimer: This educational application summarizes official document <strong>HAHO-COC-GL-PHY-014-v01</strong> (verbatim referenced as <strong>"Physiotherapy Guidelines for Exercise Prescription and Ambulation Training in Patients with Bone Metastases"</strong>). This is AI generated clinical infographic summary of clinical practice guideline. Staff should refer to HA Intranet documents if in doubt.
-      </p>
+<footer>
+  <div class="wrap">
+    <div class="refwrap reveal">
+      <h4 style="font-size:14px; margin-bottom:14px;">Key references</h4>
+      <ol>
+        <li>Mirels H. Metastatic disease in long bones: a proposed scoring system for diagnosing impending pathologic fractures. <i>Clin Orthop Relat Res.</i> 1989;(249):256–264.</li>
+        <li>Fisher CG, et al. A novel classification system for spinal instability in neoplastic disease. <i>Spine.</i> 2010;35(22):E1221–E1229.</li>
+        <li>Tomita K, et al. Surgical strategy for spinal metastases. <i>Spine.</i> 2001;26(3):298–306.</li>
+        <li>Harrington KD. Impending pathologic fractures from metastatic malignancy. <i>Instr Course Lect.</i> 1986;35:357–381.</li>
+        <li>Frankel HL, et al. The value of postural reduction in the initial management of closed injuries of the spine. <i>Paraplegia.</i> 1969;7(3):179–192.</li>
+        <li>American Spinal Injury Association. International standards for neurological classification of spinal cord injury (Revised 2019).</li>
+        <li>Tokuhashi Y, et al. A revised scoring system for preoperative evaluation of metastatic spine tumor prognosis. <i>Spine.</i> 2005;30(19):2186–2191.</li>
+        <li>Sheill G, et al. Considerations for exercise prescription in patients with bone metastases: a comprehensive narrative review. <i>PM&amp;R.</i> 2018;10:843–864.</li>
+        <li>National Institute for Health and Care Excellence. Spinal metastases and metastatic spinal cord compression. NICE Guideline NG234, 2023.</li>
+        <li>PMH Physiotherapy Department. Guideline for mobilization of patients with bone metastases. Hong Kong, Jul 2013.</li>
+      </ol>
     </div>
-  </footer>
+    <p class="doc-id">HAHO-COC-GL-PHY-014-v01 · Approved by COC-Grade (Physiotherapy), 10 Dec 2025 · Educational summary for internal HA physiotherapy training — always confirm against the current electronic version.</p>
+  </div>
+</footer>
 
-  <script>
-    document.getElementById('current-year').textContent = new Date().getFullYear();
+<script>
+/* ============================================================
+   SCROLL PROGRESS + REVEAL ON SCROLL + ACTIVE NAV
+   ============================================================ */
+(function(){
+  const progress = document.getElementById('progress');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    progress.style.width = (max>0 ? (scrolled/max*100) : 0) + '%';
+  }
+  document.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
 
-    // --- TAB ROUTING ENGINE ---
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.add('hidden');
-      });
-      document.getElementById('tab-' + tabId).classList.remove('hidden');
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  reveals.forEach(el=>io.observe(el));
 
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.className = "tab-btn flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 text-slate-600 hover:bg-slate-100 hover:text-slate-900";
-      });
-      document.getElementById('nav-' + tabId).className = "tab-btn flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 bg-teal-600 text-white shadow-sm";
-    }
-
-    // --- MIRELS' SCORES STATE & CALC ENGINE ---
-    let mirelsState = { site: 1, pain: 1, radiographic: 1, size: 1 };
-
-    function setMirels(category, value) {
-      mirelsState[category] = value;
-      
-      // Update UI button state colors
-      document.querySelectorAll('.mirels-btn-' + category).forEach(btn => {
-        btn.className = `mirels-btn-${category} p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-slate-200 bg-white text-slate-700 hover:border-slate-300`;
-      });
-      document.getElementById(`mirels-${category}-${value}`).className = `mirels-btn-${category} p-3 rounded-lg border-2 text-left transition-all flex flex-col justify-between border-teal-600 bg-teal-50 text-teal-950 font-semibold`;
-      
-      calculateMirels();
-    }
-
-    function calculateMirels() {
-      const total = Number(mirelsState.site) + Number(mirelsState.pain) + Number(mirelsState.radiographic) + Number(mirelsState.size);
-      document.getElementById('mirels-score-display').textContent = total;
-
-      const alertBox = document.getElementById('mirels-alert-box');
-      const warningBadge = document.getElementById('mirels-warning-badge');
-      const riskDisp = document.getElementById('mirels-risk-display');
-      const txDisp = document.getElementById('mirels-treatment-display');
-      const exeDisp = document.getElementById('mirels-exercise-display');
-
-      if (total >= 9) {
-        alertBox.className = "p-6 rounded-xl border-2 space-y-6 transition-colors border-red-500 bg-red-50 text-red-900";
-        warningBadge.classList.remove('hidden');
-        riskDisp.textContent = "33% - 100%";
-        txDisp.textContent = "Prophylactic fixation is recommended.";
-        exeDisp.textContent = "❌ HIGH RISK. Further medical and orthopedic assessment is mandatory before any exercise prescription.";
-      } else if (total === 8) {
-        alertBox.className = "p-6 rounded-xl border-2 space-y-6 transition-colors border-amber-500 bg-amber-50 text-amber-900";
-        warningBadge.classList.add('hidden');
-        riskDisp.textContent = "15%";
-        txDisp.textContent = "Clinical judgment should be used.";
-        exeDisp.textContent = "⚠️ CAUTION. Prescribe a highly customized, clinical-judgment-driven individualized exercise plan.";
-      } else {
-        alertBox.className = "p-6 rounded-xl border-2 space-y-6 transition-colors border-emerald-500 bg-emerald-50 text-emerald-900";
-        warningBadge.classList.add('hidden');
-        riskDisp.textContent = "< 4%";
-        txDisp.textContent = "Observation and radiation therapy can be used.";
-        exeDisp.textContent = "✅ SAFE. Patient should be prescribed an individualized exercise plan tailored to pain tolerance.";
+  const navLinks = Array.from(document.querySelectorAll('#sitenav a'));
+  const sections = navLinks.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const navIO = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      const id = '#'+entry.target.id;
+      const link = navLinks.find(a=>a.getAttribute('href')===id);
+      if(!link) return;
+      if(entry.isIntersecting){
+        navLinks.forEach(a=>a.classList.remove('active'));
+        link.classList.add('active');
       }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px', threshold:0});
+  sections.forEach(s=>navIO.observe(s));
+})();
+
+/* ============================================================
+   MIRELS' CALCULATOR
+   ============================================================ */
+(function(){
+  const site = document.getElementById('m-site');
+  const pain = document.getElementById('m-pain');
+  const rad = document.getElementById('m-rad');
+  const size = document.getElementById('m-size');
+  const total = document.getElementById('m-total');
+  const needle = document.getElementById('m-needle');
+  const bandLabel = document.getElementById('m-band-label');
+  const fxrisk = document.getElementById('m-fxrisk');
+  const tx = document.getElementById('m-tx');
+  const action = document.getElementById('m-action');
+
+  function calc(){
+    const s = parseInt(site.value) + parseInt(pain.value) + parseInt(rad.value) + parseInt(size.value);
+    total.textContent = s;
+    const pct = ((s-4)/(12-4))*100;
+    needle.style.left = Math.max(2,Math.min(98,pct)) + '%';
+
+    action.classList.remove('g','a','r');
+    if(s > 9){
+      bandLabel.textContent = 'High risk';
+      bandLabel.style.color = 'var(--red)';
+      fxrisk.textContent = '33 – 100%';
+      tx.textContent = 'Prophylactic fixation recommended';
+      action.classList.add('r');
+      action.textContent = 'Score > 9 → further medical assessment is necessary before exercise prescription.';
+    } else if(s === 8){
+      bandLabel.textContent = 'Borderline — clinical judgment';
+      bandLabel.style.color = 'var(--amber)';
+      fxrisk.textContent = '15%';
+      tx.textContent = 'Clinical judgment should be used';
+      action.classList.add('a');
+      action.textContent = 'Score = 8 → clinical judgment applies; patient should be prescribed an individualised exercise plan.';
+    } else {
+      bandLabel.textContent = 'Low risk';
+      bandLabel.style.color = 'var(--green)';
+      fxrisk.textContent = '< 4%';
+      tx.textContent = 'Observation and radiation therapy can be used';
+      action.classList.add('g');
+      action.textContent = 'Score ≤ 7 → patient should be prescribed an individualised exercise plan.';
     }
+  }
+  [site,pain,rad,size].forEach(el=>el.addEventListener('change', calc));
+  calc();
+})();
 
-    // --- SINS CALCULATOR ENGINE ---
-    let sinsState = { location: 3, pain: 3, lesion: 2, alignment: 0, collapse: 0, posterolateral: 0 };
+/* ============================================================
+   SINS CALCULATOR
+   ============================================================ */
+(function(){
+  const loc = document.getElementById('s-loc');
+  const pain = document.getElementById('s-pain');
+  const lesion = document.getElementById('s-lesion');
+  const align = document.getElementById('s-align');
+  const collapse = document.getElementById('s-collapse');
+  const postero = document.getElementById('s-postero');
+  const total = document.getElementById('s-total');
+  const needle = document.getElementById('s-needle');
+  const bandLabel = document.getElementById('s-band-label');
+  const cat = document.getElementById('s-cat');
+  const binary = document.getElementById('s-binary');
+  const action = document.getElementById('s-action');
 
-    function setSins(category, value) {
-      sinsState[category] = value;
-      
-      document.querySelectorAll('.sins-btn-' + category).forEach(btn => {
-        btn.className = `sins-btn-${category} p-2 rounded border text-left transition-all border-slate-200 bg-white text-slate-700 hover:border-slate-300`;
-      });
-      document.getElementById(`sins-${category}-${value}`).className = `sins-btn-${category} p-2 rounded border text-left transition-all border-teal-600 bg-teal-50 text-teal-950 font-semibold`;
-      
-      calculateSins();
+  function calc(){
+    const s = parseInt(loc.value)+parseInt(pain.value)+parseInt(lesion.value)+parseInt(align.value)+parseInt(collapse.value)+parseInt(postero.value);
+    total.textContent = s;
+    const pct = (s/18)*100;
+    needle.style.left = Math.max(2,Math.min(98,pct)) + '%';
+
+    action.classList.remove('g','a','r');
+    if(s >= 13){
+      bandLabel.textContent = 'Unstable';
+      bandLabel.style.color = 'var(--red)';
+      cat.textContent = 'Unstable';
+      binary.textContent = 'Current / potentially unstable';
+      action.classList.add('r');
+      action.textContent = '13–18 → unstable. Possible surgical intervention — hold mobilisation pending spine team review.';
+    } else if(s >= 7){
+      bandLabel.textContent = 'Potentially unstable';
+      bandLabel.style.color = 'var(--amber)';
+      cat.textContent = 'Potentially unstable';
+      binary.textContent = 'Current / potentially unstable';
+      action.classList.add('a');
+      action.textContent = '7–12 → potentially unstable. Possible surgical intervention — seek spine/ortho input before progressing mobilisation.';
+    } else {
+      bandLabel.textContent = 'Stable';
+      bandLabel.style.color = 'var(--green)';
+      cat.textContent = 'Stable';
+      binary.textContent = 'Stable';
+      action.classList.add('g');
+      action.textContent = '1–6 → stable. Proceed with mobilisation per the physio plan.';
     }
+  }
+  [loc,pain,lesion,align,collapse,postero].forEach(el=>el.addEventListener('change', calc));
+  calc();
+})();
 
-    function calculateSins() {
-      const total = Number(sinsState.location) + Number(sinsState.pain) + Number(sinsState.lesion) + Number(sinsState.alignment) + Number(sinsState.collapse) + Number(sinsState.posterolateral);
-      document.getElementById('sins-score-display').textContent = total;
-
-      const sinsAlert = document.getElementById('sins-alert-box');
-      const sinsCat = document.getElementById('sins-category-display');
-      const sinsAct = document.getElementById('sins-action-display');
-
-      if (total >= 13) {
-        sinsAlert.className = "p-6 rounded-xl border-2 space-y-6 shadow-sm border-red-600 bg-red-50 text-red-900";
-        sinsCat.className = "inline-block text-sm px-3 py-1 mt-1 rounded-full font-bold bg-red-700 text-white";
-        sinsCat.textContent = "Unstable";
-        sinsAct.textContent = "❌ STRICT CONTRAINDICATION FOR MOBILIZATION. Immediate orthopedic / neurological spinal consultation mandatory.";
-      } else if (total >= 7) {
-        sinsAlert.className = "p-6 rounded-xl border-2 space-y-6 shadow-sm border-amber-500 bg-amber-50 text-amber-950";
-        sinsCat.className = "inline-block text-sm px-3 py-1 mt-1 rounded-full font-bold bg-amber-500 text-gray-900";
-        sinsCat.textContent = "Potentially Unstable";
-        sinsAct.textContent = "⚠️ EXTREME CAUTION. Stop mobilizations, consult the clinical spine management pathway (RT completed, rigid bracing limits, neuro checks).";
-      } else {
-        sinsAlert.className = "p-6 rounded-xl border-2 space-y-6 shadow-sm border-emerald-600 bg-emerald-50 text-emerald-900";
-        sinsCat.className = "inline-block text-sm px-3 py-1 mt-1 rounded-full font-bold bg-emerald-600 text-white";
-        sinsCat.textContent = "Stable";
-        sinsAct.textContent = "✅ MOBILIZATION SAFE. Proceed with gradual standard spinal precautions. Avoid forced axial rotations and torsional forces.";
-      }
+/* ============================================================
+   QUIZ
+   ============================================================ */
+(function(){
+  const questions = [
+    {
+      tag: 'Case 1 · Mirels\u2019 Classification',
+      scenario: "A 62-year-old man with metastatic prostate cancer is referred for exercise prescription. Imaging shows a lesion in the femoral shaft (lower limb) with moderate pain on weight-bearing, a mixed lytic-blastic appearance, and lesion size spanning 1/3\u20132/3 of the cortex. What is his Mirels\u2019 score, and what is the correct next step?",
+      options: [
+        { text: "Score = 6; proceed with unrestricted resistance training on the involved limb.", correct:false },
+        { text: "Score = 8; clinical judgment applies and an individualised exercise plan can be prescribed.", correct:true },
+        { text: "Score = 10; prophylactic fixation is mandatory before any exercise is considered.", correct:false },
+        { text: "Score = 8; bed rest is mandatory with no further exercise prescription.", correct:false }
+      ],
+      rationale: "Lower limb (2) + moderate pain (2) + mixed appearance (2) + 1/3\u20132/3 cortex (2) = <b>8</b>. Per Table 2, a score of 8 carries a 15% fracture risk and calls for clinical judgment \u2014 the patient should still be prescribed an individualised exercise plan, not withheld from exercise or automatically fixed. A score \u2265 10 or 6 would both be miscalculations here, and resistance training on the involved limb is avoided regardless of score."
+    },
+    {
+      tag: 'Case 2 · SINS',
+      scenario: "A 55-year-old woman with breast cancer metastasis to L3 reports mechanical back pain that worsens with standing. Imaging shows a lytic lesion at L3 (mobile spine), no subluxation or deformity, greater than 50% vertebral body collapse, and unilateral posterolateral involvement. What is her SINS score, and what should happen before mobilisation proceeds?",
+      options: [
+        { text: "SINS = 11 (potentially unstable) \u2014 seek spine/ortho input before progressing mobilisation.", correct:true },
+        { text: "SINS = 11 \u2014 this is stable, so full weight-bearing exercise can start immediately.", correct:false },
+        { text: "SINS = 7 \u2014 stable, proceed as tolerated with no further checks.", correct:false },
+        { text: "SINS = 15 \u2014 unstable, and the patient must remain on indefinite complete bed rest.", correct:false }
+      ],
+      rationale: "Mobile spine (2) + mechanical pain (3) + lytic (2) + normal alignment (0) + &gt;50% collapse (3) + unilateral posterolateral involvement (1) = <b>11</b>. That falls in the 7\u201312 band \u2014 <i>potentially unstable</i> \u2014 which on the binary scale means possible surgical intervention. The correct action is to loop in the spine/ortho team before progressing beyond the current physio plan, not to treat it as stable, and not to assume indefinite bed rest \u2014 that decision sits with the medical/surgical team, not the physiotherapist alone."
+    },
+    {
+      tag: 'Case 3 · During-exercise principles',
+      scenario: "You are treating a 70-year-old man with a lytic lesion in the proximal humerus (Mirels\u2019 score 6, individualised exercise plan already approved). Partway through the session, what should you avoid doing to the involved limb?",
+      options: [
+        { text: "Active, pain-free range-of-motion exercise within tolerance.", correct:false },
+        { text: "Manual muscle testing, resisted strengthening, or stretching/twisting movements.", correct:true },
+        { text: "Closely monitoring for new or worsening pain during the session.", correct:false },
+        { text: "Educating the patient on warning signs to report to ward staff.", correct:false }
+      ],
+      rationale: "The guideline is explicit: avoid manual muscle testing, weight bearing, resistance training, and stretching or twisting exercise on the involved body part. Pain-free active range of motion, close monitoring, and patient education are all things you should be doing \u2014 not avoiding \u2014 throughout the session."
+    },
+    {
+      tag: 'Case 4 · Mobilisation checklist',
+      scenario: "A patient is newly diagnosed with spinal bone metastasis at T6 and reports new bilateral leg weakness, raising concern for metastatic spinal cord compression (MSCC). Per the mobilisation checklist, what is the correct first physiotherapy action?",
+      options: [
+        { text: "Begin standing and gait training immediately to prevent deconditioning.", correct:false },
+        { text: "Place the patient on bed rest until diagnostic work-up is completed, then reassess neurological signs and spinal stability before planning mobilisation.", correct:true },
+        { text: "Proceed with in-bed cycling only, skipping medical review since it is low-impact.", correct:false },
+        { text: "Hand the mobilisation decision to nursing staff without a physiotherapy assessment.", correct:false }
+      ],
+      rationale: "Pathway 1.1 (Spine/MSCC, new diagnosis) starts with bed rest until work-up is completed, with neurological signs and pain recorded. Only once spinal stability has been checked \u2014 stable vs. unstable \u2014 does the physio plan (bed rest, in-bed cycling, sit-to-stand progression, walking, education) begin. Starting gait training or in-bed cycling before that review, or deferring entirely to nursing, both skip the safety check this pathway exists for."
+    },
+    {
+      tag: 'Case 5 · Red-flag escalation',
+      scenario: "While mobilising a patient with known lumbar spine metastases, she suddenly develops new radiating pain down one leg with associated numbness. What is the correct response?",
+      options: [
+        { text: "Continue the session but reduce the exercise intensity.", correct:false },
+        { text: "Stop the activity, inform the ward nurse or doctor of the new neurological symptoms immediately, and document the findings in the progress note.", correct:true },
+        { text: "Reassure the patient this is normal post-exercise soreness and continue as planned.", correct:false },
+        { text: "Note it in the progress note at the end of the day without immediate escalation.", correct:false }
+      ],
+      rationale: "New radiating pain and numbness are potential nerve root or cord compression signs. The guideline requires informing the corresponding ward staff (nurse or doctor) immediately for any drastic change in sensibility, radiating pain, neurological deficiency, or cord compression/cauda equina signs \u2014 then documenting in the progress note. Continuing the session, downplaying the symptoms, or delaying escalation until later all risk missing a developing cord compression."
     }
+  ];
 
-    // --- WIZARD FLOW STATE ENGINE ---
-    let wizardProfile = {
-      diagnosisType: '',
-      lesionLocation: '',
-      spineUnstable: null,
-      isImpendingFx: null,
-      increasedPain: null
-    };
+  const container = document.getElementById('quiz-container');
+  const qsProgress = document.getElementById('qs-progress');
+  const qsScore = document.getElementById('qs-score');
+  const resultsBox = document.getElementById('quiz-results');
+  const rFinal = document.getElementById('r-final');
+  const rMsg = document.getElementById('r-msg');
+  const letters = ['A','B','C','D'];
 
-    function setWizardProfile(field, value) {
-      wizardProfile[field] = value;
+  let answered = 0;
+  let score = 0;
 
-      if (field === 'diagnosisType') {
-        goToStep(2);
-      } else if (field === 'lesionLocation') {
-        // Setup conditional panels for Step 3
-        document.getElementById('step-3-spine').classList.add('hidden');
-        document.getElementById('step-3-wbbone').classList.add('hidden');
-        document.getElementById('step-3-old-pain-check').classList.add('hidden');
+  function render(){
+    container.innerHTML = '';
+    answered = 0; score = 0;
+    resultsBox.classList.remove('show');
 
-        if (value === 'spine') {
-          document.getElementById('step-3-spine').classList.remove('hidden');
-        } else if (value === 'wb_bone') {
-          document.getElementById('step-3-wbbone').classList.remove('hidden');
-        }
+    questions.forEach((q, qi)=>{
+      const card = document.createElement('div');
+      card.className = 'qcard';
 
-        if (wizardProfile.diagnosisType === 'old' && (value === 'spine' || value === 'wb_bone')) {
-          document.getElementById('step-3-old-pain-check').classList.remove('hidden');
-        }
+      const meta = document.createElement('div');
+      meta.className = 'qmeta';
+      meta.innerHTML = '<span class="qnum">'+(qi+1)+'</span><span class="qtag">'+q.tag+'</span>';
+      card.appendChild(meta);
 
-        if (value === 'nwb_bone') {
-          // NWB bypasses checklist step directly
-          wizardProfile.spineUnstable = false;
-          wizardProfile.isImpendingFx = false;
-          wizardProfile.increasedPain = false;
-          goToStep(4);
-          generatePlan();
-        } else {
-          goToStep(3);
-          validateStep3();
-        }
-      } else {
-        // Step 3 button color updates
-        if (field === 'spineUnstable') {
-          document.getElementById('btn-spine-unstable-yes').className = value ? "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-red-50 text-red-900 border-red-500" : "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-red-400";
-          document.getElementById('btn-spine-unstable-no').className = !value ? "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-emerald-50 text-emerald-900 border-emerald-500" : "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-emerald-400";
-        }
-        if (field === 'isImpendingFx') {
-          document.getElementById('btn-impending-yes').className = value ? "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-red-50 text-red-900 border-red-500" : "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-red-400";
-          document.getElementById('btn-impending-no').className = !value ? "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-emerald-50 text-emerald-900 border-emerald-500" : "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-emerald-400";
-        }
-        if (field === 'increasedPain') {
-          document.getElementById('btn-oldpain-yes').className = value ? "flex-1 py-2 rounded font-bold text-xs border-2 bg-red-50 text-red-900 border-red-500" : "flex-1 py-2 rounded font-bold text-xs border-2 bg-white border-slate-200 hover:border-red-400";
-          document.getElementById('btn-oldpain-no').className = !value ? "flex-1 py-2 rounded font-bold text-xs border-2 bg-emerald-50 text-emerald-900 border-emerald-500" : "flex-1 py-2 rounded font-bold text-xs border-2 bg-white border-slate-200 hover:border-emerald-400";
-        }
-        validateStep3();
-      }
-    }
+      const scenario = document.createElement('div');
+      scenario.className = 'scenario';
+      scenario.textContent = q.scenario;
+      card.appendChild(scenario);
 
-    function validateStep3() {
-      const loc = wizardProfile.lesionLocation;
-      const isOld = wizardProfile.diagnosisType === 'old';
-      let valid = false;
+      const opts = document.createElement('div');
+      opts.className = 'options';
 
-      if (loc === 'spine') {
-        const spineAns = wizardProfile.spineUnstable !== null;
-        const painAns = isOld ? wizardProfile.increasedPain !== null : true;
-        valid = spineAns && painAns;
-      } else if (loc === 'wb_bone') {
-        const fxAns = wizardProfile.isImpendingFx !== null;
-        const painAns = isOld ? wizardProfile.increasedPain !== null : true;
-        valid = fxAns && painAns;
-      }
+      const rationale = document.createElement('div');
+      rationale.className = 'rationale';
 
-      const btn = document.getElementById('btn-generate-plan');
-      if (valid) {
-        btn.disabled = false;
-        btn.className = "bg-teal-600 text-white font-bold px-6 py-2 rounded text-sm hover:bg-teal-700 transition-all shadow cursor-pointer";
-      } else {
-        btn.disabled = true;
-        btn.className = "bg-slate-200 text-slate-400 font-bold px-6 py-2 rounded text-sm cursor-not-allowed";
-      }
-    }
+      q.options.forEach((opt, oi)=>{
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-btn';
+        btn.innerHTML = '<span class="opt-letter">'+letters[oi]+'</span><span>'+opt.text+'</span>';
+        btn.addEventListener('click', function(){
+          if(card.dataset.answered) return;
+          card.dataset.answered = 'true';
+          answered++;
 
-    function goToStep(stepNum) {
-      document.querySelectorAll('.wizard-pane').forEach(pane => pane.classList.add('hidden'));
-      document.getElementById('wizard-step-' + stepNum).classList.remove('hidden');
+          const allBtns = opts.querySelectorAll('.opt-btn');
+          allBtns.forEach((b,bi)=>{
+            b.disabled = true;
+            if(q.options[bi].correct){ b.classList.add('correct'); }
+            else if(bi===oi){ b.classList.add('incorrect'); }
+            else { b.classList.add('dim'); }
+          });
 
-      // Update progress badges
-      for (let i = 1; i <= 4; i++) {
-        const node = document.getElementById('step-node-' + i);
-        const badge = document.getElementById('step-badge-' + i);
-        const line = document.getElementById('step-line-' + (i - 1));
+          rationale.classList.add('show');
+          if(opt.correct){
+            score++;
+            rationale.classList.add('correct');
+            rationale.innerHTML = '<span class="verdict">Correct</span>' + q.rationale;
+          } else {
+            rationale.classList.add('incorrect');
+            rationale.innerHTML = '<span class="verdict">Not quite</span>' + q.rationale;
+          }
 
-        if (i <= stepNum) {
-          node.className = "flex flex-col items-center text-teal-600";
-          badge.className = "w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-teal-600 text-white";
-          if (line) line.className = "flex-1 h-1 mx-2 rounded bg-teal-600";
-        } else {
-          node.className = "flex flex-col items-center text-slate-300";
-          badge.className = "w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-200 text-slate-500";
-          if (line) line.className = "flex-1 h-1 mx-2 rounded bg-slate-200";
-        }
-      }
-    }
-
-    function wizardGoBack(prevStep) {
-      goToStep(prevStep);
-    }
-
-    function generatePlan() {
-      goToStep(4);
-
-      document.getElementById('summary-dx').textContent = wizardProfile.diagnosisType === 'new' ? 'New Diagnosis' : 'Old Diagnosis';
-      document.getElementById('summary-loc').textContent = wizardProfile.lesionLocation.toUpperCase();
-
-      const stableRow = document.getElementById('summary-stable-row');
-      const stableText = document.getElementById('summary-stable');
-      stableRow.classList.remove('hidden');
-
-      if (wizardProfile.lesionLocation === 'spine') {
-        stableText.textContent = wizardProfile.spineUnstable ? 'Unstable' : 'Stable';
-      } else if (wizardProfile.lesionLocation === 'wb_bone') {
-        stableText.textContent = wizardProfile.isImpendingFx ? 'Impending Fx Risk' : 'Stable';
-      } else {
-        stableRow.classList.add('hidden');
-      }
-
-      // Check unstable conditions
-      const isRedPathway = wizardProfile.spineUnstable === true || wizardProfile.isImpendingFx === true || wizardProfile.increasedPain === true;
-      const targetDiv = document.getElementById('wizard-pathway-result');
-
-      if (isRedPathway) {
-        targetDiv.innerHTML = `
-          <div class="space-y-4">
-            <div class="bg-red-50 text-red-900 p-4 rounded-lg border border-red-300 flex items-start gap-2.5">
-              <svg class="w-5 h-5 text-red-700 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-              <div>
-                <strong class="text-base font-black">❌ Bed Rest Recommended Until Workup Completed!</strong>
-                <p class="text-sm mt-1">
-                  Standard active mobilization is strictly suspended. Re-route the patient immediately back to a clinical baseline stability workup.
-                </p>
-              </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-lg border text-sm text-slate-600">
-              <span class="font-bold text-slate-800 block mb-2">Physiotherapy Action Plan:</span>
-              <ul class="list-disc pl-5 space-y-2">
-                <li><strong>Suspension:</strong> Maintain flat bed rest until orthopedic clearance or surgical fixation reviews are completed.</li>
-                <li><strong>Consensus Check:</strong> Review the ward's clinical management file (noting radiotherapy complete dates, orthosis orders, or spinal brace limits).</li>
-                <li><strong>Hypostatic Mitigation:</strong> Promote proactive deep breathing and basic bronchial hygiene therapies.</li>
-                <li><strong>Education:</strong> Educate patient/caregivers on transfers safety restrictions and spinal movement hazard warnings.</li>
-              </ul>
-            </div>
-          </div>
-        `;
-      } else {
-        targetDiv.innerHTML = `
-          <div class="space-y-4">
-            <div class="bg-emerald-50 text-emerald-900 p-4 rounded-lg border border-emerald-300 flex items-start gap-2.5">
-              <svg class="w-5 h-5 text-emerald-700 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-              <div>
-                <strong class="text-base font-black">✅ Proceed with Individualized Mobilization Plan</strong>
-                <p class="text-sm mt-1">
-                  Skeletally stable presentation verified. Standard mobilization is safe to commence using systematic progressions.
-                </p>
-              </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-lg border text-sm text-slate-600">
-              <span class="font-bold text-slate-800 block mb-2">Physiotherapy Action Plan:</span>
-              <ul class="list-disc pl-5 space-y-2">
-                <li><strong>Stepwise Mobilization:</strong> Begin at bedside sitting &rarr; progress with stand-support frames &rarr; transition to safe independent gait.</li>
-                <li><strong>Orthoses &amp; Walking Aids:</strong> Utilize standard quadripods, walking frames, or rigid spinal bracing structures based on clinical indicators.</li>
-                <li><strong>Painless Parameters:</strong> Restrict exercise movements strictly to pain-free active range of motion. Do not perform manual muscle testing.</li>
-                <li><strong>Symptom Checks:</strong> Monitor and record exact walking metrics (e.g., walk test lengths in meters) and localized pain boundaries.</li>
-              </ul>
-            </div>
-          </div>
-        `;
-      }
-    }
-
-    function resetWizard() {
-      wizardProfile = {
-        diagnosisType: '',
-        lesionLocation: '',
-        spineUnstable: null,
-        isImpendingFx: null,
-        increasedPain: null
-      };
-
-      // Reset Step 3 buttons
-      document.getElementById('btn-spine-unstable-yes').className = "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-red-400";
-      document.getElementById('btn-spine-unstable-no').className = "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-emerald-400";
-      document.getElementById('btn-impending-yes').className = "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-red-400";
-      document.getElementById('btn-impending-no').className = "flex-1 py-2.5 rounded font-bold text-sm border-2 bg-white border-slate-200 hover:border-emerald-400";
-      document.getElementById('btn-oldpain-yes').className = "flex-1 py-2 rounded font-bold text-xs border-2 bg-white border-slate-200 hover:border-red-400";
-      document.getElementById('btn-oldpain-no').className = "flex-1 py-2 rounded font-bold text-xs border-2 bg-white border-slate-200 hover:border-emerald-400";
-
-      goToStep(1);
-    }
-
-    // --- SEARCH / FILTER CLASSIFICATIONS SCALES ---
-    function filterScales() {
-      const q = document.getElementById('scale-search-input').value.toLowerCase();
-      document.querySelectorAll('.scale-card').forEach(card => {
-        const title = card.getAttribute('data-title') || '';
-        if (title.includes(q)) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-    }
-
-    // --- CASE STUDY MCQ QUIZ SYSTEM ---
-    const quizQuestions = [
-      {
-        id: 1,
-        q: "A 64-year-old female with metastatic breast cancer presents with a newly diagnosed lesion in the trochanteric region of the left femur. She has functional pain when trying to stand. Plain film radiography shows a destructive, purely lytic lesion involving 1/2 of the femoral cortex. Based on the Mirels' Classification, what is your initial clinical recommendation?",
-        options: [
-          "Initiate immediate bedside gentle active range-of-motion.",
-          "Prescribe progressive partial weight-bearing ambulation.",
-          "Suspend active exercise pending orthopedic assessment.",
-          "Administer local manual therapy for symptomatic relief."
-        ],
-        correct: 2,
-        rationale: "The patient's Mirels' Score is calculated as 11 (Site: trochanteric = 3; Pain: functional = 3; Radiographic appearance: lytic = 3; Size: 1/3 - 2/3 cortex = 2). A score of 11 represents a 33-100% fracture risk where prophylactic surgical fixation is recommended, and further medical/orthopedic assessment is mandatory before exercise is prescribed (Table 2)."
-      },
-      {
-        id: 2,
-        q: "A 58-year-old male with renal cell carcinoma is referred for rehabilitation. He has a mixed (lytic/blastic) metastatic bone lesion at the junctional T11 spinal level. He reports constant back pain that does not change with spinal loading or physical posture. Radiographs show normal alignment, zero vertebral collapse, and unilateral posterolateral facet involvement. Based on SINS, how should you proceed?",
-        options: [
-          "Hold mobilization to consult the spinal management plan.",
-          "Proceed with standard spinal flexibility and rotational training.",
-          "Authorize independent unassisted toilet transfers on the ward.",
-          "Apply high-velocity therapeutic low back mobilizations."
-        ],
-        correct: 0,
-        rationale: "The patient's SINS score is calculated as 7 (Location: Junctional = 3; Pain: constant/non-mechanical = 2; Bone lesion: mixed = 1; Alignment: normal = 0; Collapse: none = 0; Posterolateral involvement: unilateral = 1). A SINS score of 7 falls into the 'potentially unstable' clinical category (scores 7-12, Table 4). For potentially unstable spines, the physiotherapist must stop active mobilization, restrict to safe baseline, and check the medical/surgical plan (RT, surgery, or customized bracing) before proceeding."
-      },
-      {
-        id: 3,
-        q: "A junior physiotherapist is planning an assessment for a 52-year-old patient who has a known metastatic lytic lesion in the mid-shaft of the right humerus. The patient currently exhibits mild, well-controlled pain (Mirels' score 7). Which evaluation method is safe to perform?",
-        options: [
-          "Perform manual muscle testing of the right shoulder.",
-          "Execute passive terminal stretching of the right shoulder girdle.",
-          "Apply moderate handgrip dynamometer resistance testing.",
-          "Assess active pain-free range of motion of the limb."
-        ],
-        correct: 3,
-        rationale: "According to Section 4.2 of the guidelines, clinicians must strictly avoid manual muscle testing (MMT), structural weight bearing, resistance training, stretching, or twisting type of exercises to the involved bone segments to prevent a pathological fracture. Prescribing exercise and measuring movement within comfortable, pain-free active range of motion is safe and recommended."
-      },
-      {
-        id: 4,
-        q: "During an active bedside mobilization session for a patient with a known stable metastatic spinal tumor (SINS score 5), the patient suddenly complains of a new 'sharp, band-like' pain radiating around their chest. They also mention that their legs suddenly feel 'very heavy and numb.' What is your immediate clinical course of action?",
-        options: [
-          "Apply a lumbar support corset and continue with standing.",
-          "Assist the patient to bed and notify ward clinicians.",
-          "Perform a comprehensive sensory-motor dermatomal map.",
-          "Guide the patient through deep diaphragmatic breathing."
-        ],
-        correct: 1,
-        rationale: "Section 4.3 mandates that in the event of any drastic changes in sensory integrity, new lancinating/radiating pain, or signs of spinal cord, nerve root, or cauda equina compression (signs of impending Metastatic Spinal Cord Compression - MSCC), the physiotherapist must stop treatment, return the patient safely to bed, and immediately notify the ward nurse in-charge and medical colleagues, followed by immediate progress note documentation."
-      },
-      {
-        id: 5,
-        q: "A 70-year-old patient with an established diagnosis of pelvic and femoral bone metastases is referred for re-conditioning. During intake, the patient reports that over the past 48 hours, they have experienced a significant, progressive increase in pain over the right groin when performing transfer movements. Based on the HA Initial Assessment Checklist, what is your next step?",
-        options: [
-          "Resume previous weight-bearing activities using a rolling frame.",
-          "Downgrade weight-bearing status to touch-down weight-bearing.",
-          "Restrict patient to bed rest pending medical diagnostic work-up.",
-          "Apply local heat therapy and monitor symptoms for one week."
-        ],
-        correct: 2,
-        rationale: "According to the Checklist for Mobilization (Page 9), if a patient with an 'Old Diagnosis' presents with an increase in pain in the area of bone metastasis, the physiotherapist must immediately route them to 'Bed rest until workup completed. Treat as a new diagnosis' and refer them back to step 1.1/1.2/1.3 for diagnostic stability re-evaluation."
-      }
-    ];
-
-    let userAnswers = Array(5).fill(null);
-
-    function initQuiz() {
-      const container = document.getElementById('quiz-questions-wrapper');
-      container.innerHTML = '';
-      
-      quizQuestions.forEach((q, qIdx) => {
-        let optionsHtml = '';
-        q.options.forEach((opt, optIdx) => {
-          optionsHtml += `
-            <button onclick="answerQuestion(${qIdx}, ${optIdx})" id="q-${qIdx}-opt-${optIdx}" class="quiz-option-btn w-full p-3 rounded-lg border-2 text-left text-xs sm:text-sm transition-all flex items-start gap-2 border-slate-200 bg-white hover:border-slate-300">
-              <span id="badge-${qIdx}-${optIdx}" class="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center border border-slate-300 font-bold text-xs">
-                ${String.fromCharCode(65 + optIdx)}
-              </span>
-              <span class="flex-1">${opt}</span>
-            </button>
-          `;
+          updateScoreBar();
+          if(answered === questions.length){
+            showResults();
+          }
         });
-
-        container.innerHTML += `
-          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-4" id="quiz-question-card-${qIdx}">
-            <div class="flex gap-2">
-              <span class="font-black text-teal-700">Case ${q.id}.</span>
-              <p class="font-extrabold text-slate-900 text-sm sm:text-base leading-relaxed">${q.q}</p>
-            </div>
-            <div class="grid grid-cols-1 gap-2.5 pl-0 sm:pl-6" id="q-options-container-${qIdx}">
-              ${optionsHtml}
-            </div>
-            <div id="rationale-box-${qIdx}" class="bg-blue-50 border border-blue-200 text-blue-950 p-4 rounded-lg text-xs leading-relaxed pl-4 sm:pl-12 transition-all duration-300 hidden">
-              <div class="flex items-center gap-2 mb-2">
-                <span id="correct-label-${qIdx}" class="text-[10px] font-extrabold px-2 py-0.5 rounded border uppercase">Label</span>
-                <span class="text-[10px] text-slate-500 font-mono">Ref ver: "Physiotherapy Guidelines for Exercise Prescription and Ambulation Training in Patients with Bone Metastases"</span>
-              </div>
-              <strong class="text-blue-950 block mb-1">Clinical Reasoning &amp; Guideline Correlation:</strong>
-              <span>${q.rationale}</span>
-            </div>
-          </div>
-        `;
-      });
-      updateQuizProgress();
-    }
-
-    function answerQuestion(questionIdx, selectedIdx) {
-      if (userAnswers[questionIdx] !== null) return; // Prevent double clicking
-
-      userAnswers[questionIdx] = selectedIdx;
-      const question = quizQuestions[questionIdx];
-      const isCorrect = selectedIdx === question.correct;
-
-      // Reveal Rationale immediately
-      const rationaleBox = document.getElementById('rationale-box-' + questionIdx);
-      const label = document.getElementById('correct-label-' + questionIdx);
-      rationaleBox.classList.remove('hidden');
-
-      if (isCorrect) {
-        label.textContent = "Correct Answer";
-        label.className = "bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded border border-emerald-300 uppercase";
-      } else {
-        label.textContent = "Incorrect Answer";
-        label.className = "bg-red-100 text-red-800 text-[10px] font-extrabold px-2 py-0.5 rounded border border-red-300 uppercase";
-      }
-
-      // Highlight options
-      question.options.forEach((opt, optIdx) => {
-        const btn = document.getElementById(`q-${questionIdx}-opt-${optIdx}`);
-        const badge = document.getElementById(`badge-${questionIdx}-${optIdx}`);
-        btn.disabled = true; // Lock all selections
-
-        if (optIdx === question.correct) {
-          btn.className = "quiz-option-btn w-full p-3 rounded-lg border-2 text-left text-xs sm:text-sm transition-all flex items-start gap-2 border-emerald-500 bg-emerald-50 text-emerald-950 font-semibold";
-          badge.className = "w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center border font-bold text-xs bg-emerald-600 text-white border-emerald-600";
-        } else if (optIdx === selectedIdx) {
-          btn.className = "quiz-option-btn w-full p-3 rounded-lg border-2 text-left text-xs sm:text-sm transition-all flex items-start gap-2 border-red-500 bg-red-50 text-red-950";
-          badge.className = "w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center border font-bold text-xs bg-red-600 text-white border-red-600";
-        } else {
-          btn.className = "quiz-option-btn w-full p-3 rounded-lg border-2 text-left text-xs sm:text-sm transition-all flex items-start gap-2 border-slate-100 bg-white opacity-60";
-        }
+        opts.appendChild(btn);
       });
 
-      updateQuizProgress();
+      card.appendChild(opts);
+      card.appendChild(rationale);
+      container.appendChild(card);
+    });
+
+    updateScoreBar();
+  }
+
+  function updateScoreBar(){
+    qsProgress.textContent = answered + ' / ' + questions.length + ' answered';
+    qsScore.textContent = score;
+  }
+
+  function showResults(){
+    rFinal.textContent = score;
+    let msg = '';
+    if(score === questions.length){
+      msg = "Full marks. You're applying Mirels' and SINS correctly and escalating red flags without hesitation \u2014 the reasoning this guideline is built around.";
+    } else if(score >= 3){
+      msg = "Solid grasp of the framework. Revisit the questions you missed \u2014 the rationale above ties each one back to the exact table or checklist section.";
+    } else {
+      msg = "Worth another pass through the Mirels', SINS, and checklist sections above before applying this independently \u2014 the scoring mechanics take a couple of run-throughs to stick.";
     }
+    rMsg.textContent = msg;
+    resultsBox.classList.add('show');
+  }
 
-    function updateQuizProgress() {
-      const answeredCount = userAnswers.filter(ans => ans !== null).length;
-      document.getElementById('quiz-progress-text').textContent = `${answeredCount} / 5 Answered`;
+  document.getElementById('retake').addEventListener('click', render);
 
-      if (answeredCount === 5) {
-        let score = 0;
-        userAnswers.forEach((ans, idx) => {
-          if (ans === quizQuestions[idx].correct) score++;
-        });
+  render();
+})();
+</script>
 
-        const scoreboard = document.getElementById('quiz-scoreboard');
-        const badge = document.getElementById('quiz-score-badge');
-        const congrats = document.getElementById('quiz-congratulations-p');
-
-        scoreboard.classList.remove('hidden');
-        badge.textContent = `${score} / 5`;
-
-        if (score === 5) {
-          congrats.textContent = "Clinical Mastery Achieved! You scored 100% on the core bone metastases safety guidelines.";
-        } else {
-          congrats.textContent = `You scored ${score} out of 5. Read the highlighted correlation rationales above to prevent adverse clinical incidents.`;
-        }
-      }
-    }
-
-    function resetQuiz() {
-      userAnswers = Array(5).fill(null);
-      document.getElementById('quiz-scoreboard').classList.add('hidden');
-      initQuiz();
-    }
-
-    // Initialize variables on window load
-    window.onload = function() {
-      calculateMirels();
-      calculateSins();
-      initQuiz();
-    };
-  </script>
 </body>
 </html>

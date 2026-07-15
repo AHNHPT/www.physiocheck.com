@@ -1,40 +1,470 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Calf pain</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
-    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
-    .choice:hover { background-color: #d0d0d0; }
-    .disabled { pointer-events: none; opacity: 0.6; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
-    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .btn:hover { background-color: #0056b3; }
-    label { display: block; margin-bottom: 10px; cursor: pointer; }
-    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f0f0f0; }
-  </style>
+<meta charset="UTF-8" />
+<title>Calf pain</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
+</style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">🩺 Physiotherapy case</div>
+  <h1>Calf pain</h1>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Investigations</span>
+  <span>Management</span>
+</div>
+
 <div class="box">
-  <h2>Case: Calf pain</h2>
-  <p>Ms. Josephine Lui’s Case Discharge Summary:
-    <br><br>
-    SHx: <br>
-    82-year-old woman<br>
-    live alone in lift-landing flat<br><br>
-    PMHx<br>
-    1. HT on Lisinopril <br>
-    2. Type 2 DM on Metformin <br>
-    3. Atrial fibrillation on Apixaban<br><br>
-    HPI:<br>
-    Adm AHNH ORT x R hip pain after tripped and fall<br>
+  <p>Ms. Josephine Lui&rsquo;s Case Discharge Summary:</p>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>82-year-old woman<br>
+    live alone in lift-landing flat</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PMHx</h4>
+    <p>1. HT on Lisinopril<br>
+    2. Type 2 DM on Metformin<br>
+    3. Atrial fibrillation on Apixaban</p>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>Adm AHNH ORT x R hip pain after tripped and fall<br>
     CTB: no ICH/SOL/MLS<br>
     XR L hip: # R NOF, Garden III<br><br>
     Underwent right total hip replacement (posterolateral approach)<br>
@@ -43,28 +473,39 @@
     Prn Panadol, Tramadol and usual meds prescribed<br>
     Upon D/C: MFAC Cat 6 frame<br><br>
     D/C home<br>
-    Refer COST PT x post-op rehabilitation<br><br>
-    ================================<br>
-    As a physiotherapist serving in outreach team, you provided home visit for this patient.<br>
-    Ms. Lui walks with frame in antalgic gait to open the door for you.<br><br>
-    She complains of increasing pain and swelling in right calf over the last 48 hours, attributed to “overdoing it” with walking exercises as she walked for 30 minutes non-stop yesterday. <br>
-    Denies falls or trauma since discharge.<br><br>
-    Vitals today: <br>
-    BP 138/82<br>
+    Refer COST PT x post-op rehabilitation</p>
+  </div>
+
+  <p>================================</p>
+
+  <p>As a physiotherapist serving in outreach team, you provided home visit for this patient.<br>
+  Ms. Lui walks with frame in antalgic gait to open the door for you.</p>
+
+  <p>She complains of increasing pain and swelling in right calf over the last 48 hours, attributed to &ldquo;overdoing it&rdquo; with walking exercises as she walked for 30 minutes non-stop yesterday.<br>
+  Denies falls or trauma since discharge.</p>
+
+  <div class="field-group">
+    <h4>Vitals today:</h4>
+    <p>BP 138/82<br>
     HR 88<br>
     SpO2 96% in RA<br>
-    Temp: 37.2°C.<br><br>
-    On initial observation:<br>
-    Right lower leg appeared slightly erythematous with thin veins sprouting superficially and warmer to touch compared to left, mild pitting edema around ankle and calf.<br><br>
-    Patient reported pain intensity over right calf was NPRS 6/10 at rest, and NPRS 8/10 on weight-bearing.</p>
+    Temp: 37.2&deg;C.</p>
+  </div>
+
+  <div class="field-group">
+    <h4>On initial observation:</h4>
+    <p>Right lower leg appeared slightly erythematous with thin veins sprouting superficially and warmer to touch compared to left, mild pitting edema around ankle and calf.</p>
+  </div>
+
+  <p class="prompt-line">Patient reported pain intensity over right calf was NPRS 6/10 at rest, and NPRS 8/10 on weight-bearing.</p>
 </div>
 
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
-  
+  <h3><span class="num">1</span> 🩺 What investigation or physical exam would you check/perform?</h3>
+
   <div class="choice" onclick="selectChoice('investigations', 0)">1.  Apply the Wells criteria for DVT</div>
   <div class="feedback" id="inv-result0"></div>
-  <div class="choice" onclick="selectChoice('investigations', 1)">2. Assess for Homan’s sign with passive dorsiflexion</div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Assess for Homan&rsquo;s sign with passive dorsiflexion</div>
   <div class="feedback" id="inv-result1"></div>
   <div class="choice" onclick="selectChoice('investigations', 2)">3. Inspect the hip surgical wound for signs of infection.</div>
   <div class="feedback" id="inv-result2"></div>
@@ -74,66 +515,104 @@
 </div>
 
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  
-  <label><input type="checkbox" id="man-check0" /> 1. Withhold weight-bearing on the affected leg and refer AED. </label>
-  <label><input type="checkbox" id="man-check1" /> 2. Add ankle pump exercises and compression stocking to the calf.</label>
-  <label><input type="checkbox" id="man-check2" /> 3. Apply TENS to the calf, and teach hip muscle strengthening exercises.</label>
-  <label><input type="checkbox" id="man-check3" /> 4. Reassess swelling and pain during the next home visit in 3-5 days. </label>
+  <h3><span class="num">2</span> 💊 Select all management options you would provide:</h3>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. Withhold weight-bearing on the affected leg and refer AED. </label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. Add ankle pump exercises and compression stocking to the calf.</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Apply TENS to the calf, and teach hip muscle strengthening exercises.</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Reassess swelling and pain during the next home visit in 3-5 days. </label>
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
 
 <div class="box" id="result" style="display:none;">
-  <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+  <h3>📊 Final Score &amp; Response Chart</h3>
+
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
+
   <table>
     <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
     <tbody id="result-table-body"></tbody>
   </table>
-  
-  <div style="margin-top:20px;">
-    <strong>----------Explanations----------<br></strong>
-    <strong>--Investigations--<br></strong>
-    <strong>1. Applying the Wells criteria for DVT is necessary as the next step.<br></strong>
-    In community/outreach settings, the Wells score is a validated clinical decision rule to estimate pre-test probability of DVT, stratifying patients into low (score ≤0), moderate (1-2), or high (≥3) categories based on risk factors (e.g. recent major surgery within 12 weeks, alternative diagnosis less likely than DVT) and signs (e.g. calf swelling >3 cm compared to contralateral leg, pitting edema confined to symptomatic leg, localized tenderness along deep venous system).<br><br>
-    A high score (≥3) indicates high pretest probability, warranting urgent referral for compression ultrasound without D-dimer, as per evidenced-based clinical algorithms that recommend direct imaging for moderate-to-high risk patients to guide safe escalation in high-risk post-operative cases (Wells et al., 1997; American College of Emergency Physicians Clinical Policies Committee, 2003; Reshi et al., 2015).<br>
-    <img src='well_chart.jpg' alt='chart' style='max-width:100%;boder-radius:5px;'><br>Table1: Wells criteria for DVT<br>
-    <img src='well_decision.gif' alt='decision' style='max-width:100%;boder-radius:5px;'><br>Figure 1. Deep Venous Thrombosis (DVT) Clinical Algorithm Suggested by the American College of Emergency Physicians (ACEP)<br><br><br>
-    <strong>2. Assessing Homan’s sign is not the optimal first step.</strong><br>
-    Homan’s sign (pain on passive dorsiflexion) has low sensitivity/specificity (~50% or less) and poor diagnostic utility; it risks clot dislodgement and is no longer recommended as a primary maneuver.<br><br><br>
-    Moreover, Homan’s sign is often positive in various other conditions causing calf pain and is not helpful for differential diagnosis in Ms. Lui’s case, as other conditions that Ms. Lui could possibly be suffering from (e.g. calf strain, intramuscular haematoma), might lead to a positive Homan’s sign as well (Ambesh et al., 2017; Hillegass et al., 2022).<br><br><br>
-    <strong>3. Inspecting the hip surgical wound is not necessary as the next priority.<br></strong>
-    While wound infection or hematoma must be considered post-THR, the unilateral calf swelling, erythema, warmth, and pain in a high-risk post-op period point more to DVT than local surgical complication alone. Prioritizing VTE screening avoids delay in addressing a potentially life-threatening condition (Hillegass et al., 2022).<br><br><br>
-   <strong>4. Perform tip toeing test is not necessary as the next step.<br></strong>
-    The tip toeing test (or single-leg heel raise test, assessing ability to rise onto toes) evaluates calf muscle strength, plantarflexion power, and integrity of the gastrocnemius-soleus complex/Achilles mechanism.<br><br>
-    It may provoke or exacerbate calf pain in conditions like gastrocnemius strain, tear, or Achilles pathology, but it has limited diagnostic specificity for differentiating DVT from musculoskeletal causes.<br><br>
-    In suspected DVT post-hip replacement, performing this test risks aggravating symptoms, provoking clot dislodgement and embolization risk during forceful plantarflexion, or delaying priority VTE screening via Wells criteria.<br><br>
-    Pain/weakness on tip toeing is nonspecific (occurs in calf strain, tear, or DVT-related discomfort) and does not reliably rule in/out DVT; guidelines prioritize clinical probability scoring and urgent imaging over provocative functional tests in high-risk post-operative settings (Hillegass et al., 2022).<br><br>
-    <Strong>--Treatment-- <br></Strong>
-    <Strong>1. Withholding weight-bearing and referring to AED is optimal.<br></Strong>
-    Suspected acute DVT post-hip replacement is a potential emergency due to PE risk. In outreach PT, cease aggravating activities, elevate leg to reduce venous pressure, avoid massage/compression until excluded (risk of embolization), and activate urgent referral for diagnostics (doppler US ± D-dimer) and possible anticoagulation.<br>
-    This minimizes propagation or embolization in elderly, multimorbid patients (Hillegass et al., 2022; Konstantinides et al., 2019).<br><br><br>
-    <Strong>2. Adding ankle pumps and compression stocking is not optimal. <br></Strong>
-    Mobilization and mechanical compression (stockings/IPC) are contraindicated until DVT is ruled out, as they may dislodge clot or worsen embolization risk.<br>
-    Ankle pumps alone are insufficient for suspected acute DVT; guidelines advise against routine compression in acute phase without confirmation (ACCP/CHEST guidelines; Hillegass et al., 2022).<br><br><br>
-    <Strong>3. Providing TENS, and strengthening is not optimal.</Strong> <br> 
-    These interventions ignore VTE red flags and could promote activity/mobilization in unstable state, increasing risk of PE. TENS is not indicated for suspected DVT and may be harmful (Hillegass et al., 2022).<br><br><br>
-    <Strong>4. Reassessing in 3-5 days while progressing exercises is not optimal.</Strong><br> 
-    Delaying evaluation for suspected DVT risks progression to PE or death, especially in elderly post-THR patients (peak risk 2-10 days post-op). Urgent same-day escalation is required, not watchful waiting (Hillegass et al., 2022).<br><br><br>
-    <h6>References:<br>
-    Ambesh, P., Obiagwu, C., & Shetty, V. (2017). Homan’s sign for deep vein thrombosis: A grain of salt? Indian Heart Journal, 69(3), 418–419. https://doi.org/10.1016/j.ihj.2017.01.016<br>
-    American College of Emergency Physicians (ACEP) Clinical Policies Committee, & ACEP Clinical Policies Subcommittee on Suspected Lower-Extremity Deep Venous Thrombosis (2003). Clinical policy: critical issues in the evaluation and management of adult patients presenting with suspected lower-extremity deep venous thrombosis. Annals of emergency medicine, 42(1), 124–135. https://doi.org/10.1067/mem.2003.181<br>
-    Hillegass, E., Lukaszewicz, K., Puthoff, M. L., Bourgeois, M. S., Wesley, L., Andrade, R., Butcher, J., Harris, L., Hopp, J., & Jackson, L. (2022). Role of Physical Therapists in the Management of Individuals at Risk for or Diagnosed With Venous Thromboembolism: Evidence-Based Clinical Practice Guideline 2022. Physical Therapy, 102(8), pzac082. https://doi.org/10.1093/ptj/pzac082<br>
-    Konstantinides, S. V., Meyer, G., Becattini, C., Bueno, H., Geersing, G. J., Harjola, V. P., ... & Zamorano, J. L. (2019). 2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism developed in collaboration with the European Respiratory Society (ERS). European Heart Journal, 41(4), 543–603. https://doi.org/10.1093/eurheartj/ehz405<br>
-    Reshi, R. A., Pulivarthi, S., Zelensky, A., Singh, T., Pawar, G., & Gurram, M. K. (2015). Evaluation of use of wells criteria and D-dimer for screening of venous thromboembolism in a community hospital. General Internal Medicine and Clinical Innovations, 1(1), 12-15.<br>
-    Wells, P. S., Anderson, D. R., Bormanis, J., Guy, F., Mitchell, M., Gray, L., ... & Hirsh, J. (1997). Value of assessment of pretest probability of deep-vein thrombosis in clinical management. The Lancet, 350(9094), 1795–1798. https://doi.org/10.1016/S0140-6736(97)08140-3<br>
-    Wells, P. S., Anderson, D. R., Rodger, M., Forgie, M., Kearon, C., Dreyer, J., Kovacs, G., Mitchell, M., Lewandowski, B., & Kovacs, M. J. (2003). Evaluation of D-dimer in the diagnosis of suspected deep-vein thrombosis. The New England journal of medicine, 349(13), 1227–1235. https://doi.org/10.1056/NEJMoa023153<br><br>
-    Case creator: Ms Gigi Cheung, Mr Thomas Mak<br></h6></div>
+
+  <div class="learning">
+    <h4>----------Explanations----------</h4>
+
+    <h4>--Investigations--</h4>
+
+    <div class="qa">
+      <div class="opt-title">1. Applying the Wells criteria for DVT is necessary as the next step.</div>
+      <p>In community/outreach settings, the Wells score is a validated clinical decision rule to estimate pre-test probability of DVT, stratifying patients into low (score &le;0), moderate (1-2), or high (&ge;3) categories based on risk factors (e.g. recent major surgery within 12 weeks, alternative diagnosis less likely than DVT) and signs (e.g. calf swelling &gt;3 cm compared to contralateral leg, pitting edema confined to symptomatic leg, localized tenderness along deep venous system).</p>
+      <p>A high score (&ge;3) indicates high pretest probability, warranting urgent referral for compression ultrasound without D-dimer, as per evidenced-based clinical algorithms that recommend direct imaging for moderate-to-high risk patients to guide safe escalation in high-risk post-operative cases (Wells et al., 1997; American College of Emergency Physicians Clinical Policies Committee, 2003; Reshi et al., 2015).</p>
+      <p><img src='well_chart.jpg' alt='chart' style='max-width:100%;boder-radius:5px;'><br>Table1: Wells criteria for DVT</p>
+      <p><img src='well_decision.gif' alt='decision' style='max-width:100%;boder-radius:5px;'><br>Figure 1. Deep Venous Thrombosis (DVT) Clinical Algorithm Suggested by the American College of Emergency Physicians (ACEP)</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">2. Assessing Homan&rsquo;s sign is not the optimal first step.</div>
+      <p>Homan&rsquo;s sign (pain on passive dorsiflexion) has low sensitivity/specificity (~50% or less) and poor diagnostic utility; it risks clot dislodgement and is no longer recommended as a primary maneuver.</p>
+      <p>Moreover, Homan&rsquo;s sign is often positive in various other conditions causing calf pain and is not helpful for differential diagnosis in Ms. Lui&rsquo;s case, as other conditions that Ms. Lui could possibly be suffering from (e.g. calf strain, intramuscular haematoma), might lead to a positive Homan&rsquo;s sign as well (Ambesh et al., 2017; Hillegass et al., 2022).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">3. Inspecting the hip surgical wound is not necessary as the next priority.</div>
+      <p>While wound infection or hematoma must be considered post-THR, the unilateral calf swelling, erythema, warmth, and pain in a high-risk post-op period point more to DVT than local surgical complication alone. Prioritizing VTE screening avoids delay in addressing a potentially life-threatening condition (Hillegass et al., 2022).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">4. Perform tip toeing test is not necessary as the next step.</div>
+      <p>The tip toeing test (or single-leg heel raise test, assessing ability to rise onto toes) evaluates calf muscle strength, plantarflexion power, and integrity of the gastrocnemius-soleus complex/Achilles mechanism.</p>
+      <p>It may provoke or exacerbate calf pain in conditions like gastrocnemius strain, tear, or Achilles pathology, but it has limited diagnostic specificity for differentiating DVT from musculoskeletal causes.</p>
+      <p>In suspected DVT post-hip replacement, performing this test risks aggravating symptoms, provoking clot dislodgement and embolization risk during forceful plantarflexion, or delaying priority VTE screening via Wells criteria.</p>
+      <p>Pain/weakness on tip toeing is nonspecific (occurs in calf strain, tear, or DVT-related discomfort) and does not reliably rule in/out DVT; guidelines prioritize clinical probability scoring and urgent imaging over provocative functional tests in high-risk post-operative settings (Hillegass et al., 2022).</p>
+    </div>
+
+    <h4>--Treatment--</h4>
+
+    <div class="qa">
+      <div class="opt-title">1. Withholding weight-bearing and referring to AED is optimal.</div>
+      <p>Suspected acute DVT post-hip replacement is a potential emergency due to PE risk. In outreach PT, cease aggravating activities, elevate leg to reduce venous pressure, avoid massage/compression until excluded (risk of embolization), and activate urgent referral for diagnostics (doppler US &plusmn; D-dimer) and possible anticoagulation.</p>
+      <p>This minimizes propagation or embolization in elderly, multimorbid patients (Hillegass et al., 2022; Konstantinides et al., 2019).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">2. Adding ankle pumps and compression stocking is not optimal.</div>
+      <p>Mobilization and mechanical compression (stockings/IPC) are contraindicated until DVT is ruled out, as they may dislodge clot or worsen embolization risk.</p>
+      <p>Ankle pumps alone are insufficient for suspected acute DVT; guidelines advise against routine compression in acute phase without confirmation (ACCP/CHEST guidelines; Hillegass et al., 2022).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">3. Providing TENS, and strengthening is not optimal.</div>
+      <p>These interventions ignore VTE red flags and could promote activity/mobilization in unstable state, increasing risk of PE. TENS is not indicated for suspected DVT and may be harmful (Hillegass et al., 2022).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">4. Reassessing in 3-5 days while progressing exercises is not optimal.</div>
+      <p>Delaying evaluation for suspected DVT risks progression to PE or death, especially in elderly post-THR patients (peak risk 2-10 days post-op). Urgent same-day escalation is required, not watchful waiting (Hillegass et al., 2022).</p>
+    </div>
+
+    <p class="ref">
+      References:<br>
+      Ambesh, P., Obiagwu, C., &amp; Shetty, V. (2017). Homan&rsquo;s sign for deep vein thrombosis: A grain of salt? Indian Heart Journal, 69(3), 418&ndash;419. https://doi.org/10.1016/j.ihj.2017.01.016<br>
+      American College of Emergency Physicians (ACEP) Clinical Policies Committee, &amp; ACEP Clinical Policies Subcommittee on Suspected Lower-Extremity Deep Venous Thrombosis (2003). Clinical policy: critical issues in the evaluation and management of adult patients presenting with suspected lower-extremity deep venous thrombosis. Annals of emergency medicine, 42(1), 124&ndash;135. https://doi.org/10.1067/mem.2003.181<br>
+      Hillegass, E., Lukaszewicz, K., Puthoff, M. L., Bourgeois, M. S., Wesley, L., Andrade, R., Butcher, J., Harris, L., Hopp, J., &amp; Jackson, L. (2022). Role of Physical Therapists in the Management of Individuals at Risk for or Diagnosed With Venous Thromboembolism: Evidence-Based Clinical Practice Guideline 2022. Physical Therapy, 102(8), pzac082. https://doi.org/10.1093/ptj/pzac082<br>
+      Konstantinides, S. V., Meyer, G., Becattini, C., Bueno, H., Geersing, G. J., Harjola, V. P., ... &amp; Zamorano, J. L. (2019). 2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism developed in collaboration with the European Respiratory Society (ERS). European Heart Journal, 41(4), 543&ndash;603. https://doi.org/10.1093/eurheartj/ehz405<br>
+      Reshi, R. A., Pulivarthi, S., Zelensky, A., Singh, T., Pawar, G., &amp; Gurram, M. K. (2015). Evaluation of use of wells criteria and D-dimer for screening of venous thromboembolism in a community hospital. General Internal Medicine and Clinical Innovations, 1(1), 12-15.<br>
+      Wells, P. S., Anderson, D. R., Bormanis, J., Guy, F., Mitchell, M., Gray, L., ... &amp; Hirsh, J. (1997). Value of assessment of pretest probability of deep-vein thrombosis in clinical management. The Lancet, 350(9094), 1795&ndash;1798. https://doi.org/10.1016/S0140-6736(97)08140-3<br>
+      Wells, P. S., Anderson, D. R., Rodger, M., Forgie, M., Kearon, C., Dreyer, J., Kovacs, G., Mitchell, M., Lewandowski, B., &amp; Kovacs, M. J. (2003). Evaluation of D-dimer in the diagnosis of suspected deep-vein thrombosis. The New England journal of medicine, 349(13), 1227&ndash;1235. https://doi.org/10.1056/NEJMoa023153
+    </p>
+
+    <p class="creator">Case creator: Ms Gigi Cheung, Mr Thomas Mak</p>
+  </div>
+
   <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
 </div>
 
 <!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+<a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
 
 <script>
   const investigations = [{"opt":" Apply the Wells criteria for DVT","res":" <img src='well_result.png' alt='result' style='max-width:100%;boder-radius:5px;'> ","cor":true},
@@ -156,21 +635,36 @@
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg2").classList.add("active");
   }
 
   function showFinalResult() {
     const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
     let score = 0;
-    
+
     investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
     management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
 
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
-    
+
+    const maxScore = investigations.length + management.length;
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
     const tbody = document.getElementById("result-table-body");
     tbody.innerHTML = "";
-    
+
     investigations.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
     });
