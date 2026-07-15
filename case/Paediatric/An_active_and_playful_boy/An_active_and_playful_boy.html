@@ -4,135 +4,616 @@
   <meta charset="UTF-8" />
   <title>An active and playful boy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
-    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
-    .choice:hover { background-color: #d0d0d0; }
-    .disabled { pointer-events: none; opacity: 0.6; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
-    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .btn:hover { background-color: #0056b3; }
-    label { display: block; margin-bottom: 10px; cursor: pointer; }
-    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f0f0f0; }
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
   </style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">Physiotherapy · OPD Case</div>
+  <h1>An active and playful boy</h1>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Investigation</span>
+  <span>Management</span>
+</div>
+
 <div class="box">
-  <h2>Case: An active and playful boy</h2>
   <p>Johnny, a 3-year-old boy, has been diagnosed with global developmental delay.
-    <br>He was referred by a paediatrician for out-patient physiotherapy for developmental training.
-    <br><br>This is the 1st OPD Physio session, which has been scheduled on 20 December 2025. The weather today is sunny yet with the cold front, the temperature drops to 10 degrees Celsius.
-    <br><br>Johnny is brought by his mother with 45 minutes late. He wears a long-sleeved T-shirt and frayed trousers. He looks timid and slender, and is shivering. When asked if there were any concern on Johnny’s gross motor development, his mother replied: “I don’t think Johnny needs physiotherapy - just the doctor wrote referral for us to come here. He is good in everything."
-    <br><br>Birth history:
-    <br>G3 P3, Gestation 38 weeks born on arrival (BOA) at PWH
-    <br>No antenatal care
-    <br><br>PN: hx of maternal substance abuse
-    <br>newborn urine toxicology -ve
-    <br>seen by Psy: fit for home care with support of MGM, FU CCDS
-    <br><br>SHx:
-    <br>Siblings with all diﬀerent biological fathers
-    <br>1 half elder sister (+3 years) lives with foster parents, 1 half elder brother (+2 years) lives with MGM in Fanling
-    <br>Lives with mother in a village house in Sheung Shui
-    <br>Father in jail (not married)
-    <br>MGM visits Johnny occasionally to help take care of him
-    <br>Studying K1 in mainstream kindergarten, no PT/OT/ST training at school, on waitlist ICCC +/- SCCC
-    <br><br>PMH:
-    <br>- Global developmental delay; FU AHNH PAED Gen SOPD, referred HA PT, OT, ST
-    <br>- Hx of maternal substance abuse; FU CCDS
-    <br>- Hx of adm AHNH Paed ward for RSV, EV/RV infection 20-23/11/2025
-    <br><br>DHx:
-    <br>- Walk unaided independently: mother said forgot
-    <br><br>HPI:
-    <br>During assessment, he could barely jump forward, jump across or down from obstacle. When asked to lie in bed for assessment for joint ROM, muscle power and tone, light brown bruises were noted around bilateral ankle joints.
-    <br><br>Upon rolling up the trousers to assess the knee alignment, several more circular patterned purple and light brown bruises were noted over thighs.
-    <br>When asked, Johnny remained silent and his mother said he was very active and playful at home and loves bouncing around and jumping down from sofa and hence got hurt easily.
-    <br><br>PE:
-    <br>As at AHNH Paed SOPD FU on 10/12/2025
-    <br>Body weight 14 kg (50 percentile)
-    <br>Body height 94cm (50 percentile)
-    <br><br>Circular patterned light brown bruises over bilateral ankle
-    <br>Circular patterned purple and light brown bruises over bilateral thighs
-    <br><br>4 limbs ROM and muscle power full, muscle tone normal
-    <br><br>Gross motor: PDMS-2 locomotion ~18m
-    <br>Stairs walking: 1 hand on rail, 1 hand on therapist’s hand, same step, wobbling, sideway descending
-    <br>Jump forward: 10” with 1 foot leading
-    <br>Jump down from 2” block: with 2 hands assistance
-    <br>Jump across 2” hurdle: fail to perform<br></p>
+  He was referred by a paediatrician for out-patient physiotherapy for developmental training.</p>
+
+  <div class="tags">
+    <span class="tag diag">Diagnosis: Global developmental delay</span>
+    <span class="tag ref">Referral: Developmental training</span>
+  </div>
+
+  <p>This is the 1st OPD Physio session, which has been scheduled on 20 December 2025. The weather today is sunny yet with the cold front, the temperature drops to 10 degrees Celsius.</p>
+
+  <p>Johnny is brought by his mother with 45 minutes late. He wears a long-sleeved T-shirt and frayed trousers. He looks timid and slender, and is shivering. When asked if there were any concern on Johnny’s gross motor development, his mother replied: “I don’t think Johnny needs physiotherapy - just the doctor wrote referral for us to come here. He is good in everything."</p>
+
+  <div class="field-group">
+    <h4>Birth history:</h4>
+    <p>G3 P3, Gestation 38 weeks born on arrival (BOA) at PWH<br>
+    No antenatal care</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PN:</h4>
+    <p>hx of maternal substance abuse<br>
+    newborn urine toxicology -ve<br>
+    seen by Psy: fit for home care with support of MGM, FU CCDS</p>
+  </div>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>Siblings with all diﬀerent biological fathers<br>
+    1 half elder sister (+3 years) lives with foster parents, 1 half elder brother (+2 years) lives with MGM in Fanling<br>
+    Lives with mother in a village house in Sheung Shui<br>
+    Father in jail (not married)<br>
+    MGM visits Johnny occasionally to help take care of him<br>
+    Studying K1 in mainstream kindergarten, no PT/OT/ST training at school, on waitlist ICCC +/- SCCC</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PMH:</h4>
+    <ul>
+      <li>Global developmental delay; FU AHNH PAED Gen SOPD, referred HA PT, OT, ST</li>
+      <li>Hx of maternal substance abuse; FU CCDS</li>
+      <li>Hx of adm AHNH Paed ward for RSV, EV/RV infection 20-23/11/2025</li>
+    </ul>
+  </div>
+
+  <div class="field-group">
+    <h4>DHx:</h4>
+    <ul>
+      <li>Walk unaided independently: mother said forgot</li>
+    </ul>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>During assessment, he could barely jump forward, jump across or down from obstacle. When asked to lie in bed for assessment for joint ROM, muscle power and tone, light brown bruises were noted around bilateral ankle joints.</p>
+    <p>Upon rolling up the trousers to assess the knee alignment, several more circular patterned purple and light brown bruises were noted over thighs.</p>
+    <p>When asked, Johnny remained silent and his mother said he was very active and playful at home and loves bouncing around and jumping down from sofa and hence got hurt easily.</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PE:</h4>
+    <p>As at AHNH Paed SOPD FU on 10/12/2025<br>
+    Body weight 14 kg (50 percentile)<br>
+    Body height 94cm (50 percentile)</p>
+
+    <p>Circular patterned light brown bruises over bilateral ankle<br>
+    Circular patterned purple and light brown bruises over bilateral thighs</p>
+
+    <p>4 limbs ROM and muscle power full, muscle tone normal</p>
+
+    <p>Gross motor: PDMS-2 locomotion ~18m<br>
+    Stairs walking: 1 hand on rail, 1 hand on therapist’s hand, same step, wobbling, sideway descending<br>
+    Jump forward: 10” with 1 foot leading<br>
+    Jump down from 2” block: with 2 hands assistance<br>
+    Jump across 2” hurdle: fail to perform</p>
+  </div>
 </div>
 
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
-  
-  <div class="choice" onclick="selectChoice('investigations', 0)">1. Check blood profile </div>
+  <h3><span class="num">1</span> What investigation or physical exam would you check/perform?</h3>
+  <p class="subhint">Tap an option to reveal what you'd find.</p>
+
+  <div class="choice" onclick="selectChoice('investigations', 0)">Check blood profile</div>
   <div class="feedback" id="inv-result0"></div>
-  <div class="choice" onclick="selectChoice('investigations', 1)">2. Check head and neck, torso and mouth </div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">Check head and neck, torso and mouth</div>
   <div class="feedback" id="inv-result1"></div>
-  <div class="choice" onclick="selectChoice('investigations', 2)">3. Check single leg stand </div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">Check single leg stand</div>
   <div class="feedback" id="inv-result2"></div>
-  <div class="choice" onclick="selectChoice('investigations', 3)">4. Check vitals </div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">Check vitals</div>
   <div class="feedback" id="inv-result3"></div>
   <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
 </div>
 
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  
-  <label><input type="checkbox" id="man-check0" /> 1. Gross motor training </label>
-  <label><input type="checkbox" id="man-check1" /> 2. Escort to AED immediately </label>
-  <label><input type="checkbox" id="man-check2" /> 3. Consult MCCA (Medical Coordinator of Child Abuse) </label>
-  <label><input type="checkbox" id="man-check3" /> 4. Mandatory reporting </label>
+  <h3><span class="num">2</span> Select all management options you would provide:</h3>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> Gross motor training</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> Escort to AED immediately</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> Consult MCCA (Medical Coordinator of Child Abuse)</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> Mandatory reporting</label>
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
 
 <div class="box" id="result" style="display:none;">
   <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
+
   <table>
     <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
     <tbody id="result-table-body"></tbody>
   </table>
-  
-  <div style="margin-top:20px;"><strong>Learning point</strong>
-    <br>- Mandatory reporting
-    <br>- What signs and symptoms we need to be alerted
-    <br>- What action we need to be taken
-    <br><br><strong>Question 1</strong>
-    <br><strong>Option A - Check blood profile</strong>
-    <br>When encountering bruises in children, we should be alerted.
-    <br>Johnny had bruises over bilateral thighs and ankle joints. DDx could be accident, NAI (non-accidental injury) or other underlying diseases. Easy bruising in children could be due to platelet disorders that the blood has difficulty in clotting due to shortage of platelets. 
-    <br>Although Johnny does not have any past medial history of bleeding disorders, considering his recent RSV and EV/RV infection, we need to be cautious if he developed immune thrombocytopenia (ITP) after viral infection. ITP of childhood is an acquired immune-mediated, and usually self-limiting, condition of low platelet counts, which could lead to easy bruising in children.
-    <br><br><strong>Option B - Check head and neck, torso and mouth</strong>
-    <br>Following above about Johnny’s bruises, platelet disorders have been ruled out. Johnny’s mother said that Johnny was very active and playful at home and loves bouncing around and jumping down from sofa and hence got hurt easily.
-    <br><br>However, according to the physiotherapy assessment results, his gross motor performance was around 18 months only, with poor jumping performance. A mismatch was noted between carer’s explanation and the child’s actual developmental performance. NAI was therefore suspected. According to Bruising Clinical Decision Rule for children less than 4 years old, any one of the criteria below was highly suspicious of child abuse: any bruise found in torso, ear or neck; any bruise on infants less than 4 months; any bruise found over frenulums, angle of jaw, cheek, eyelid or sclera; pattered bruises.
-    <br><br><img src='Decision_Rule.png' alt='gait' style='max-width:100%;boder-radius:5px;'>
-    <br><br>(Refernce: Pierce, M. C., Kaczor, K., Lorenz, D. J., Bertocci, G., Fingarson, A. K., Makoroﬀ, K., ... & Leventhal, J. M. (2021). Validation of a clinical decision rule to predict abuse in young children based on bruising characteristics. JAMA network open, 4(4), e215832-e215832.)
-    <br><br><strong>Option C - Check single leg stand</strong>
-    <br>Balance is one of the gross motor physiotherapy assessment areas for children. A 3-year-old child should be able to perform a single leg stand for 3 seconds. However, for Johnny’s case, his unexplained multiple new and old patterned bruises might point to suspicious child abuse which are more emergent to be addressed and managed. Therefore, checking his single leg balance is in lower priority at this moment.
-    <br><br><strong>Option D - Check vitals</strong>
-    <br>Observation is very important for physiotherapists working with children.
-    <br>Apart from observing their gait and movement pattern, we need to pay attention to everything in fact - interaction between the child and the carer, the carer’s response, the child’s behaviours, clothings etc. Going back to Johnny’s case, he was shivering in his T shirt in a freezing cold day. Vitals need to be checked if he is suﬀering from hypothermia which needs urgent medical care.
-    <br><br><strong>Question 2</strong>
-    <br><strong>Option A - Gross motor training</strong>
-    <br>The unexplained multiple new and old patterned bruises in Johnny might point to suspicious child abuse which are more emergent to be addressed and managed. Gross motor training is in lower priority at this moment.
-    <br><br><strong>Option B - Escort to AED immediately</strong>
-    <br><strong>Option C - Consult MCCA (Medical Coordinator of Child Abuse)</strong>
-    <br>Johnny’s unexplained multiple new and old paeerned bruises might point to suspicious child abuse. Child protection mechanism needs to be activated and need further medical attention and management. Immediate escort to AED is needed if he has unstable vitals and needs urgent medical care (eg respiratory failure which needs respiratory support, loss of consciousness). Otherwise, if his vitals are stable, hospital MCCA (Medical Coordinator of Child Abuse) should be consulted for further management. Direct admission to ward for further management would be arranged if necessary instead of long waiting in AED and prevent secondary trauma to the child from repeated questioning.
-    <br><br><strong>Option D - Mandatory reporting</strong>
-    <br>The Mandatory Reporting of Child Abuse Ordinance (Cap. 650) has been eﬀective from January 20, 2026, requiring 25 categories of professionals in education, social welfare and healthcare to report suspected child abuse involving serious harm or risk of harm. Failure to report can result in fines and up to 3 months' imprisonment. Johnny’s unexplained multiple new and old patterned bruises might point to suspicious child abuse, falling to the criteria of mandatory reporting - at real risk of suﬀering serious harm.
-    <br><br><br><h6>Case Creator: Stephy Lau</h6></div>
+
+  <div class="learning">
+    <h4>Learning point</h4>
+    <div class="key-points">
+      <ul>
+        <li>Mandatory reporting</li>
+        <li>What signs and symptoms we need to be alerted</li>
+        <li>What action we need to be taken</li>
+      </ul>
+    </div>
+
+    <h4>Question 1</h4>
+
+    <div class="qa">
+      <div class="opt-title">Option A - Check blood profile</div>
+      <p>When encountering bruises in children, we should be alerted.</p>
+      <p>Johnny had bruises over bilateral thighs and ankle joints. DDx could be accident, NAI (non-accidental injury) or other underlying diseases. Easy bruising in children could be due to platelet disorders that the blood has difficulty in clotting due to shortage of platelets.</p>
+      <p>Although Johnny does not have any past medial history of bleeding disorders, considering his recent RSV and EV/RV infection, we need to be cautious if he developed immune thrombocytopenia (ITP) after viral infection. ITP of childhood is an acquired immune-mediated, and usually self-limiting, condition of low platelet counts, which could lead to easy bruising in children.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option B - Check head and neck, torso and mouth</div>
+      <p>Following above about Johnny’s bruises, platelet disorders have been ruled out. Johnny’s mother said that Johnny was very active and playful at home and loves bouncing around and jumping down from sofa and hence got hurt easily.</p>
+      <p>However, according to the physiotherapy assessment results, his gross motor performance was around 18 months only, with poor jumping performance. A mismatch was noted between carer’s explanation and the child’s actual developmental performance. NAI was therefore suspected. According to Bruising Clinical Decision Rule for children less than 4 years old, any one of the criteria below was highly suspicious of child abuse: any bruise found in torso, ear or neck; any bruise on infants less than 4 months; any bruise found over frenulums, angle of jaw, cheek, eyelid or sclera; pattered bruises.</p>
+      <div class="case-img"><img src='Decision_Rule.png' alt='gait'></div>
+      <p class="ref">(Refernce: Pierce, M. C., Kaczor, K., Lorenz, D. J., Bertocci, G., Fingarson, A. K., Makoroﬀ, K., ... & Leventhal, J. M. (2021). Validation of a clinical decision rule to predict abuse in young children based on bruising characteristics. JAMA network open, 4(4), e215832-e215832.)</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option C - Check single leg stand</div>
+      <p>Balance is one of the gross motor physiotherapy assessment areas for children. A 3-year-old child should be able to perform a single leg stand for 3 seconds. However, for Johnny’s case, his unexplained multiple new and old patterned bruises might point to suspicious child abuse which are more emergent to be addressed and managed. Therefore, checking his single leg balance is in lower priority at this moment.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option D - Check vitals</div>
+      <p>Observation is very important for physiotherapists working with children.</p>
+      <p>Apart from observing their gait and movement pattern, we need to pay attention to everything in fact - interaction between the child and the carer, the carer’s response, the child’s behaviours, clothings etc. Going back to Johnny’s case, he was shivering in his T shirt in a freezing cold day. Vitals need to be checked if he is suﬀering from hypothermia which needs urgent medical care.</p>
+    </div>
+
+    <h4>Question 2</h4>
+
+    <div class="qa">
+      <div class="opt-title">Option A - Gross motor training</div>
+      <p>The unexplained multiple new and old patterned bruises in Johnny might point to suspicious child abuse which are more emergent to be addressed and managed. Gross motor training is in lower priority at this moment.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option B - Escort to AED immediately</div>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option C - Consult MCCA (Medical Coordinator of Child Abuse)</div>
+      <p>Johnny’s unexplained multiple new and old paeerned bruises might point to suspicious child abuse. Child protection mechanism needs to be activated and need further medical attention and management. Immediate escort to AED is needed if he has unstable vitals and needs urgent medical care (eg respiratory failure which needs respiratory support, loss of consciousness). Otherwise, if his vitals are stable, hospital MCCA (Medical Coordinator of Child Abuse) should be consulted for further management. Direct admission to ward for further management would be arranged if necessary instead of long waiting in AED and prevent secondary trauma to the child from repeated questioning.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option D - Mandatory reporting</div>
+      <p>The Mandatory Reporting of Child Abuse Ordinance (Cap. 650) has been eﬀective from January 20, 2026, requiring 25 categories of professionals in education, social welfare and healthcare to report suspected child abuse involving serious harm or risk of harm. Failure to report can result in fines and up to 3 months' imprisonment. Johnny’s unexplained multiple new and old patterned bruises might point to suspicious child abuse, falling to the criteria of mandatory reporting - at real risk of suﬀering serious harm.</p>
+    </div>
+  </div>
+
+  <div class="creator">Case Creator: Stephy Lau</div>
+
   <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
 </div>
 
 <!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+<a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
 
 <script>
-  const investigations = [{"opt":"Check blood profile ","res":"Blood result one week ago in Paed SOPD FU:<br><img src='Lab.png' alt='gait' style='max-width:100%;boder-radius:5px;'>","cor":true},{"opt":"Check head and neck, torso and mouth ","res":"Light brown bruises over bilateral earlobes and abdomen.<br>No bleeding over mouth.","cor":true},{"opt":"Check single leg stand ","res":"He failed to stand on one leg independently. ","cor":false},{"opt":"Check vitals ","res":"BP 100/60<br>HR 100, SpO2 99%RA<br>Temp 36.5 deg Celsius ","cor":true}];
+  const investigations = [{"opt":"Check blood profile ","res":"Blood result one week ago in Paed SOPD FU:<br><img src='Lab.png' alt='gait' style='max-width:100%;border-radius:5px;'>","cor":true},{"opt":"Check head and neck, torso and mouth ","res":"Light brown bruises over bilateral earlobes and abdomen.<br>No bleeding over mouth.","cor":true},{"opt":"Check single leg stand ","res":"He failed to stand on one leg independently. ","cor":false},{"opt":"Check vitals ","res":"BP 100/60<br>HR 100, SpO2 99%RA<br>Temp 36.5 deg Celsius ","cor":true}];
   const management = [{"opt":"Gross motor training ","exp":"","cor":false},{"opt":"Escort to AED immediately ","exp":"","cor":false},{"opt":"Consult MCCA (Medical Coordinator of Child Abuse) ","exp":"","cor":true},{"opt":"Mandatory reporting ","exp":"","cor":true}];
   let selectedInv = [false, false, false, false];
 
@@ -146,27 +627,45 @@
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg2").classList.add("active");
   }
 
   function showFinalResult() {
     const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
     let score = 0;
-    
+
     investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
     management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
 
+    const maxScore = investigations.length + management.length;
+
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
-    
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
+
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
     const tbody = document.getElementById("result-table-body");
     tbody.innerHTML = "";
-    
+
     investigations.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
     });
     management.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
     });
+
+    document.getElementById("result").scrollIntoView({behavior:"smooth", block:"start"});
   }
 </script>
 </body>
