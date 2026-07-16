@@ -4,83 +4,550 @@
   <meta charset="UTF-8" />
   <title>Dyspnea</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
-    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
-    .choice:hover { background-color: #d0d0d0; }
-    .disabled { pointer-events: none; opacity: 0.6; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
-    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .btn:hover { background-color: #0056b3; }
-    label { display: block; margin-bottom: 10px; cursor: pointer; }
-    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f0f0f0; }
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.section-divider{
+  text-align:center;
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:20px 0 6px;
+}
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+.case-img .cap{
+  font-size:12.5px;
+  color:var(--muted);
+  margin-bottom:8px;
+  font-weight:600;
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
   </style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">🩺 Respiratory Ward Case</div>
+  <h1>Dyspnea</h1>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Investigation</span>
+  <span>Management</span>
+</div>
+
 <div class="box">
-  <h2>Case: Dyspnea</h2>
-  <p>On a cold winter's day, Mr Chan, a 68-year-old man, was admitted to the medical ward with severe dyspnoea and high fever. 
-    <br><br>Today marks his first day in hospital. You're the respiratory ward physiotherapist assigned to him.
-  <br><br>—————Admission note—————-
-  <br>SHx:
-  <br>Retired construction worker
-  <br>Chronic smoker(15cig/day), non-drinker.
-  <br>Live with wife in PHU
-  <br>Pre-morbid: walk unaided outdoor
-  <br><br>PMH:
-  <br>COPD (GOLD Stage 3) Dx 8yrs ago. 3–4 acute exacerbations per year in recent 2 years, mostly triggered by cold weather.
-  <br>HT on NORVASC
-  <br>DM on diet
-  <br>OA knee (KL2) with PT done
-  <br><br>HPI:
-  <br>Adm x inc SOB and fever x 2/7
-  <br>Claim worsen with recent cold weather
-  <br>Cough with yellowish green spt
-  <br>No chest discomfort
-  <br>Appetite ok
-  <br><br>P/E:
-  <br>SpO2 96% 2L
-  <br>Temp 39.4
-  <br>Alert dyspneic, partial sentences
-  <br>Chest T/S++
-  <br>No LL edema
-  <br><br>Ix:
-  <br>ECG SR 97
-  <br>CXR bil LZ haziness
-  <br>Hb: 13.0 WCC: 19.5
-  <br>Na/K N
-  <br>ALP/ALT N
-  <br>Cr N
-  <br><br>NPA: -ve
-  <br><br>Mx:
-  <br>DAT
-  <br>Obs Q4H
-  <br>Repeat CXR mane
-  <br>Blood test
-  <br>O2 keep SpO2 > 90%
-  <br>Resume usual meds
-  <br>Give Spiolto Respimat
-  <br>Empirical IV Augmentin
-  <br>Prednisolone IV
-  <br>Chest physio
-  <br>Spt x C/ST
-  <br><br>—————Today progress—————
-  <br>Patient alert, tired looking
-  <br>SOB++ lying on bed
-  <br><br><img src="patient.png" alt="Patient" style="max-width:100%;border-radius:5px;">
-  <br><br>Cardiac Monitor:
-  <br><img src="car_mon.gif" alt="Cardiac Monitor" style="max-width:100%;border-radius:5px;">
-  <br></p>
+  <p>On a cold winter's day, Mr Chan, a 68-year-old man, was admitted to the medical ward with severe dyspnoea and high fever.</p>
+  <p>Today marks his first day in hospital. You're the respiratory ward physiotherapist assigned to him.</p>
+
+  <div class="section-divider">—————Admission note—————-</div>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>Retired construction worker<br>
+    Chronic smoker(15cig/day), non-drinker.<br>
+    Live with wife in PHU<br>
+    Pre-morbid: walk unaided outdoor</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PMH:</h4>
+    <p>COPD (GOLD Stage 3) Dx 8yrs ago. 3–4 acute exacerbations per year in recent 2 years, mostly triggered by cold weather.<br>
+    HT on NORVASC<br>
+    DM on diet<br>
+    OA knee (KL2) with PT done</p>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>Adm x inc SOB and fever x 2/7<br>
+    Claim worsen with recent cold weather<br>
+    Cough with yellowish green spt<br>
+    No chest discomfort<br>
+    Appetite ok</p>
+  </div>
+
+  <div class="field-group">
+    <h4>P/E:</h4>
+    <p>SpO2 96% 2L<br>
+    Temp 39.4<br>
+    Alert dyspneic, partial sentences<br>
+    Chest T/S++<br>
+    No LL edema</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Ix:</h4>
+    <p>ECG SR 97<br>
+    CXR bil LZ haziness<br>
+    Hb: 13.0 WCC: 19.5<br>
+    Na/K N<br>
+    ALP/ALT N<br>
+    Cr N</p>
+    <p>NPA: -ve</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Mx:</h4>
+    <p>DAT<br>
+    Obs Q4H<br>
+    Repeat CXR mane<br>
+    Blood test<br>
+    O2 keep SpO2 &gt; 90%<br>
+    Resume usual meds<br>
+    Give Spiolto Respimat<br>
+    Empirical IV Augmentin<br>
+    Prednisolone IV<br>
+    Chest physio<br>
+    Spt x C/ST</p>
+  </div>
+
+  <div class="section-divider">—————Today progress—————</div>
+
+  <div class="field-group">
+    <p>Patient alert, tired looking<br>
+    SOB++ lying on bed</p>
+  </div>
+
+  <div class="case-img">
+    <img src="patient.png" alt="Patient">
+  </div>
+
+  <div class="case-img">
+    <div class="cap">Cardiac Monitor:</div>
+    <img src="car_mon.gif" alt="Cardiac Monitor">
+  </div>
 </div>
 
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you perform?</h3>
-  
+  <h3><span class="num">1</span> What investigation or physical exam would you perform?</h3>
+
   <div class="choice" onclick="selectChoice('investigations', 0)">1. Check Trop I level</div>
   <div class="feedback" id="inv-result0"></div>
   <div class="choice" onclick="selectChoice('investigations', 1)">2. Comprehensive chest auscultation </div>
@@ -93,70 +560,107 @@
 </div>
 
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  
-  <label><input type="checkbox" id="man-check0" /> 1. Diaphragmatic breathing exercises </label>
-  <label><input type="checkbox" id="man-check1" /> 2. EMS to bil. quadriceps</label>
-  <label><input type="checkbox" id="man-check2" /> 3. Stepping ex at bedside </label>
-  <label><input type="checkbox" id="man-check3" /> 4. Prescribe Oscillating Positive Expiratory Pressure (OPEP) device</label>
+  <h3><span class="num">2</span> Select all management options you would provide:</h3>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. Diaphragmatic breathing exercises </label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. EMS to bil. quadriceps</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Stepping ex at bedside </label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Prescribe Oscillating Positive Expiratory Pressure (OPEP) device</label>
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
 
 <div class="box" id="result" style="display:none;">
   <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
   <table>
     <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
     <tbody id="result-table-body"></tbody>
   </table>
-  
-  <div style="margin-top:20px;">📋Explanations:
-    <br><br><strong>1. Investigation Options</strong>
-    <br><strong>1) Check Troponin I Level ➔ Indicated</strong>
-    <br> <strong>The Rationale</strong>: Acute exacerbations of COPD (AECOPD) and cardiovascular events frequently mimic or trigger one another. Mr. Chan is a 68-year-old chronic smoker with hypertension—putting him at high risk for coronary artery disease.
-    <br><br> Measuring cardiac Troponin I in patients with COAD AE is crucial to assess underlying heart strain, identify a heart attack, and predict risk of severe complications and mortality.
-    <br><br> Elevated cardiac troponin I levels were observed in 55.7% of patients. A significant correlation was found between elevated cardiac troponin I levels and COPD severity (P < .01), increased need for ventilator support (74.6% vs. 36.2%; P < .01) and prolonged hospitalisation (7.47 vs. 5.75 days; P < .01). [1]
-    <br><br> <strong>Clinical Pearl for Staff</strong> An acute myocardial infarction (MI) can present purely as worsening dyspnoea (a "cardiac equivalent") without classic chest pain. Checking Troponin I is essential to rule out a concurrent cardiac event driving his respiratory distress.
-    <br><br><br><strong>2) Comprehensive Chest Auscultation ➔ Indicated</strong>
-    <br> <strong>The Rationale</strong>: This is a fundamental, non-invasive bedside tool to locate secretion retention and assess airflow. While the admission note highlights general "rhonchi," a detailed regional auscultation helps the physiotherapist map exactly where the secretions are densest (likely the lower zones matching the CXR haziness).
-    <br><br> Rhonchi is low-pitched, continuous, snoring, gurgling, or rattling sound. Rhonchi is caused by blockage in the larger airways (bronchi) caused by thick mucus, fluid, or airway inflammation.
-    <br><br> <strong>Clinical Pearl for Staff</strong>: This serves as a direct baseline to guide treatment (e.g., positioning for airway clearance) and immediately evaluate the effectiveness of your intervention post-treatment.
-    <br><br><br><strong>3) 6-Minute Walk Test (6MWT) ➔ Not Indicated</strong>
-    <br> <strong>The Rationale</strong>: The 6MWT is a submaximal exercise test used to assess functional capacity in stable chronic lung disease or during discharge planning. Mr. Chan is currently in acute respiratory distress (RR 24, SOB++ lying in bed) and highly febrile (39.4°C).
-    <br><br> <strong>Clinical Pearl for Staff</strong>: Performing a walking test right now is strictly contraindicated. It places an unsafe metabolic and ventilatory demand on a failing system, risking acute desaturation, respiratory exhaustion, or cardiovascular collapse.
-    <br><br><br><strong>4) Check Latest ABG ➔ Indicated</strong>
-    <br> <strong>The Rationale</strong>: Mr. Chan has severe underlying lung disease (GOLD Stage 3) and is showing signs of high work of breathing. He is a prime candidate for Type II respiratory failure (hypercapnia and respiratory acidosis).
-    <br><br> ABG result shows T1RF. This is caused by Ventilation-perfusion (VQ) mismatch. Whilst V/Q mismatch, shunts and diffusion limitation cause hypoxaemia they may also feature hypercapnia if the disease process is severe enough. Hypercapnia (+/- hypoxaemia) normally results from reduced alveolar ventilation or increased alveolar dead space.
-    <br><br> Here is the comparison of T1RF vs. T2RF
-    <br><img src="T1vsT2.png" alt="T1RF vs T2RF" style="max-width:100%;border-radius:5px;">
-    <br><br> <strong>Clinical Pearl for Staff</strong>: Pulse oximetry (SpO2 ) only tells us about oxygenation, not ventilation. An Arterial Blood Gas (ABG) is vital to check his PaCO2  and pH levels. This ensures his oxygen therapy (currently 2L) is safe and helps determine if he requires non-invasive ventilation (NIV).
-    <br><br><br><strong>2. Management Options</strong>
-    <br><strong>Option 1) Diaphragmatic Breathing Exercises ➔ Not Indicated</strong>
-    <br> <strong>The Rationale</strong>: In severe hyperinflation (GOLD Stage 3 COPD) during an acute hit, the diaphragm is already mechanically disadvantaged—it is flattened and working at a high metabolic cost. Forcing diaphragmatic breathing during an acute exacerbation can actually increase the work of breathing and accelerate diaphragmatic fatigue.
-    <br><img src="Hoover_sign.jpeg" alt="Hoover's Sign" style="max-width:100%;border-radius:5px;">
-    <br>Fig.1 Diaphragmatic Flattening and Hoover's Sign Mechanics in Severe COPD [2]
-    <br><br> <strong>Clinical Pearl for Staff</strong>: Diaphragmatic breathing shall not be taught routinely to moderate-severe COPD patients, as it may cause paradoxical breathing and worsen dyspnoea. [3]
-    <br><br> Instructing relaxed breathing control (pursed-lip breathing and forward-lean sitting) is much more appropriate right now to reduce air trapping and calm his respiratory rate.
-    <br><br><br><strong>Option 2) EMS to Bilateral Quadriceps ➔ Indicated</strong>
-    <br> <strong>The Rationale</strong>: Mr. Chan is confined to bed by severe dyspnoea and a high fever, making early active mobilization impossible. Electrical Muscle Stimulation (EMS) provides a passive metabolic stimulus to the skeletal muscles.
-    <br><br> <strong>Clinical Pearl for Staff</strong>: EMS allows us to preserve quadriceps muscle mass and prevent ICU/ward-acquired weakness without increasing his central ventilatory demand or worsening his shortness of breath. It is a perfect bridge during the acute phase.
-    <br><br> EMS (or NMES) is  recommended for bedbound, severely impaired patients or those recovering from severe AECOPD who cannot participate in active exercise. It is not recommended for patients capable of regular physical training. [3]
-    <br><br><strong>Option 3) Stepping Exercise at Bedside ➔ Not Indicated</strong>
-    <br> <strong>The Rationale</strong>: Similar to the 6MWT, active weight-bearing exercises like bedside stepping require a significant increase in cardiac output and oxygen consumption.
-    <br><br> <strong>Clinical Pearl for Staff</strong>: With an acute infection (WCC 19.5, high fever) and severe resting dyspnoea, his respiratory reserve is entirely spent. Energy conservation and airway clearance take absolute priority over active exercise on Day 1.
-    <br><br> Formal physical training is not recommended during uncompensated respiratory failure; only early mobilization is allowed once the patient's condition improves. [3]
-    <br><br><br><strong>Option 4) Prescribe Oscillating PEP (OPEP) Device ➔ Indicated</strong>
-    <br> <strong>The Rationale</strong>: Mr. Chan has clear signs of a productive chest infection: "yellowish green" sputum, rhonchi, and lower zone haziness. An OPEP device (like an Acapella or Flutter) uses positive expiratory pressure to splint open his poorly supported airways, while the acoustic oscillations change the viscoelastic properties of the mucus, shearing it from the airway walls.
-    <br><br> <strong>Clinical Pearl for Staff</strong>: OPEP is highly efficient and requires less physical energy from an already exhausted patient compared to aggressive coughing or manual techniques, making it ideal for an acute exacerbation. [3]
-    <h6>Reference:
-    <br>1. Gupta, N., Chaturvedi, M., Pursnani, N., Verma, R. K., Singh, G. V., K, K., Tripathi, S., & Lendo, H. (2025). A Study to Assess Cardiac Troponin I Levels in Acute Exacerbation of Chronic Obstructive Pulmonary Disease (AECOPD) and Its Correlation with Severity of COPD. Apollo Medicine. https://doi.org/10.1177/09760016251383984
-    <br><br>2. Murray and Nadel`s Textbook of Respiratory Medicine Vol. 1. Fourth-ed.. (2005). : Elsevier.
-    <br><br>3. The Physiotherapy Management of Patients with Acute Exacerbations of COPD (Version 4.0, HAHO-COC-GL-PHY-001-v04)
-    <br><br><br>Case creator: Mr. Thomas Mak, Mr. Eric Chan</h6></div>
+
+  <div class="learning">
+    <h4>📋 Explanations:</h4>
+
+    <h4 style="margin-top:16px;">1. Investigation Options</h4>
+
+    <div class="qa">
+      <div class="opt-title">1) Check Troponin I Level ➔ Indicated</div>
+      <p><strong>The Rationale</strong>: Acute exacerbations of COPD (AECOPD) and cardiovascular events frequently mimic or trigger one another. Mr. Chan is a 68-year-old chronic smoker with hypertension—putting him at high risk for coronary artery disease.</p>
+      <p>Measuring cardiac Troponin I in patients with COAD AE is crucial to assess underlying heart strain, identify a heart attack, and predict risk of severe complications and mortality.</p>
+      <p>Elevated cardiac troponin I levels were observed in 55.7% of patients. A significant correlation was found between elevated cardiac troponin I levels and COPD severity (P &lt; .01), increased need for ventilator support (74.6% vs. 36.2%; P &lt; .01) and prolonged hospitalisation (7.47 vs. 5.75 days; P &lt; .01). [1]</p>
+      <p><strong>Clinical Pearl for Staff</strong> An acute myocardial infarction (MI) can present purely as worsening dyspnoea (a "cardiac equivalent") without classic chest pain. Checking Troponin I is essential to rule out a concurrent cardiac event driving his respiratory distress.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">2) Comprehensive Chest Auscultation ➔ Indicated</div>
+      <p><strong>The Rationale</strong>: This is a fundamental, non-invasive bedside tool to locate secretion retention and assess airflow. While the admission note highlights general "rhonchi," a detailed regional auscultation helps the physiotherapist map exactly where the secretions are densest (likely the lower zones matching the CXR haziness).</p>
+      <p>Rhonchi is low-pitched, continuous, snoring, gurgling, or rattling sound. Rhonchi is caused by blockage in the larger airways (bronchi) caused by thick mucus, fluid, or airway inflammation.</p>
+      <p><strong>Clinical Pearl for Staff</strong>: This serves as a direct baseline to guide treatment (e.g., positioning for airway clearance) and immediately evaluate the effectiveness of your intervention post-treatment.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">3) 6-Minute Walk Test (6MWT) ➔ Not Indicated</div>
+      <p><strong>The Rationale</strong>: The 6MWT is a submaximal exercise test used to assess functional capacity in stable chronic lung disease or during discharge planning. Mr. Chan is currently in acute respiratory distress (RR 24, SOB++ lying in bed) and highly febrile (39.4°C).</p>
+      <p><strong>Clinical Pearl for Staff</strong>: Performing a walking test right now is strictly contraindicated. It places an unsafe metabolic and ventilatory demand on a failing system, risking acute desaturation, respiratory exhaustion, or cardiovascular collapse.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">4) Check Latest ABG ➔ Indicated</div>
+      <p><strong>The Rationale</strong>: Mr. Chan has severe underlying lung disease (GOLD Stage 3) and is showing signs of high work of breathing. He is a prime candidate for Type II respiratory failure (hypercapnia and respiratory acidosis).</p>
+      <p>ABG result shows T1RF. This is caused by Ventilation-perfusion (VQ) mismatch. Whilst V/Q mismatch, shunts and diffusion limitation cause hypoxaemia they may also feature hypercapnia if the disease process is severe enough. Hypercapnia (+/- hypoxaemia) normally results from reduced alveolar ventilation or increased alveolar dead space.</p>
+      <p>Here is the comparison of T1RF vs. T2RF</p>
+      <div class="case-img"><img src="T1vsT2.png" alt="T1RF vs T2RF"></div>
+      <p><strong>Clinical Pearl for Staff</strong>: Pulse oximetry (SpO2 ) only tells us about oxygenation, not ventilation. An Arterial Blood Gas (ABG) is vital to check his PaCO2  and pH levels. This ensures his oxygen therapy (currently 2L) is safe and helps determine if he requires non-invasive ventilation (NIV).</p>
+    </div>
+
+    <h4 style="margin-top:20px;">2. Management Options</h4>
+
+    <div class="qa">
+      <div class="opt-title">Option 1) Diaphragmatic Breathing Exercises ➔ Not Indicated</div>
+      <p><strong>The Rationale</strong>: In severe hyperinflation (GOLD Stage 3 COPD) during an acute hit, the diaphragm is already mechanically disadvantaged—it is flattened and working at a high metabolic cost. Forcing diaphragmatic breathing during an acute exacerbation can actually increase the work of breathing and accelerate diaphragmatic fatigue.</p>
+      <div class="case-img">
+        <img src="Hoover_sign.jpeg" alt="Hoover's Sign">
+      </div>
+      <p class="ref">Fig.1 Diaphragmatic Flattening and Hoover's Sign Mechanics in Severe COPD [2]</p>
+      <p><strong>Clinical Pearl for Staff</strong>: Diaphragmatic breathing shall not be taught routinely to moderate-severe COPD patients, as it may cause paradoxical breathing and worsen dyspnoea. [3]</p>
+      <p>Instructing relaxed breathing control (pursed-lip breathing and forward-lean sitting) is much more appropriate right now to reduce air trapping and calm his respiratory rate.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option 2) EMS to Bilateral Quadriceps ➔ Indicated</div>
+      <p><strong>The Rationale</strong>: Mr. Chan is confined to bed by severe dyspnoea and a high fever, making early active mobilization impossible. Electrical Muscle Stimulation (EMS) provides a passive metabolic stimulus to the skeletal muscles.</p>
+      <p><strong>Clinical Pearl for Staff</strong>: EMS allows us to preserve quadriceps muscle mass and prevent ICU/ward-acquired weakness without increasing his central ventilatory demand or worsening his shortness of breath. It is a perfect bridge during the acute phase.</p>
+      <p>EMS (or NMES) is  recommended for bedbound, severely impaired patients or those recovering from severe AECOPD who cannot participate in active exercise. It is not recommended for patients capable of regular physical training. [3]</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option 3) Stepping Exercise at Bedside ➔ Not Indicated</div>
+      <p><strong>The Rationale</strong>: Similar to the 6MWT, active weight-bearing exercises like bedside stepping require a significant increase in cardiac output and oxygen consumption.</p>
+      <p><strong>Clinical Pearl for Staff</strong>: With an acute infection (WCC 19.5, high fever) and severe resting dyspnoea, his respiratory reserve is entirely spent. Energy conservation and airway clearance take absolute priority over active exercise on Day 1.</p>
+      <p>Formal physical training is not recommended during uncompensated respiratory failure; only early mobilization is allowed once the patient's condition improves. [3]</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option 4) Prescribe Oscillating PEP (OPEP) Device ➔ Indicated</div>
+      <p><strong>The Rationale</strong>: Mr. Chan has clear signs of a productive chest infection: "yellowish green" sputum, rhonchi, and lower zone haziness. An OPEP device (like an Acapella or Flutter) uses positive expiratory pressure to splint open his poorly supported airways, while the acoustic oscillations change the viscoelastic properties of the mucus, shearing it from the airway walls.</p>
+      <p><strong>Clinical Pearl for Staff</strong>: OPEP is highly efficient and requires less physical energy from an already exhausted patient compared to aggressive coughing or manual techniques, making it ideal for an acute exacerbation. [3]</p>
+    </div>
+
+    <p class="ref" style="margin-top:20px;">Reference:<br>
+    1. Gupta, N., Chaturvedi, M., Pursnani, N., Verma, R. K., Singh, G. V., K, K., Tripathi, S., & Lendo, H. (2025). A Study to Assess Cardiac Troponin I Levels in Acute Exacerbation of Chronic Obstructive Pulmonary Disease (AECOPD) and Its Correlation with Severity of COPD. Apollo Medicine. https://doi.org/10.1177/09760016251383984<br><br>
+    2. Murray and Nadel`s Textbook of Respiratory Medicine Vol. 1. Fourth-ed.. (2005). : Elsevier.<br><br>
+    3. The Physiotherapy Management of Patients with Acute Exacerbations of COPD (Version 4.0, HAHO-COC-GL-PHY-001-v04)</p>
+
+    <p class="creator">Case creator: Mr. Thomas Mak, Mr. Eric Chan</p>
+  </div>
+
   <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
 </div>
 <!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+<a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
 
 
 <script>
@@ -179,21 +683,37 @@
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg2").classList.add("active");
   }
 
   function showFinalResult() {
     const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
     let score = 0;
-    
+
     investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
     management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
 
+    const maxScore = investigations.length + management.length;
+
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
-    
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
+
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
     const tbody = document.getElementById("result-table-body");
     tbody.innerHTML = "";
-    
+
     investigations.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
     });
