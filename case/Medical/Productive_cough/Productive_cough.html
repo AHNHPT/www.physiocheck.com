@@ -4,60 +4,497 @@
   <meta charset="UTF-8" />
   <title>Productive Cough</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
-    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
-    .choice:hover { background-color: #d0d0d0; }
-    .disabled { pointer-events: none; opacity: 0.6; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
-    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .btn:hover { background-color: #0056b3; }
-    label { display: block; margin-bottom: 10px; cursor: pointer; }
-    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f0f0f0; }
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
   </style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">Respiratory Physiotherapy Case</div>
+  <h1>Productive Cough</h1>
+  <p class="role">You are the attending physiotherapist</p>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Assessment</span>
+  <span>Management</span>
+</div>
+
 <div class="box">
-  <h2>Case: Productive Cough</h2>
-  <p>Mr. W is a 84 year old male. He was admitted for cough with whitish sputum x few days, with increased shortness of breath since day before admission. 
-  <br><br>Today is Day 4 since admission. He was referred for chest physiotherapy, you are the physiotherapist attending him today.
-  <br><br>--------- Admission findings ---------
-  <br>SHx: 
-  <br>OAHR, walks with Rollator
-  <br><br>PMHx:
-  <br>HT, DM, Hyperlipid
-  <br>COPD on 1L/min LTOT
-  <br><br>HPI:
-  <br>E adm x cough with whitish sputum x few days, with increased respiratory distress since day before admission.
-  <br><br>Not relieved by usual puffs. No fever. No chest pain. 
-  <br>Given 2L O2, Ventolin puff, prednisolone in AED
-  <br><br>Hb Plt N
-  <br>WCC 7
-  <br>CRP 15
-  <br>TnI CK LDH N
-  <br>NPS -ve
-  <br><br>----------------- Todays progress ---------------------
-  <br>Vital signs today:
+  <p>Mr. W is a 84 year old male. He was admitted for cough with whitish sputum x few days, with increased shortness of breath since day before admission.</p>
+  <p>Today is Day 4 since admission. He was referred for chest physiotherapy, you are the physiotherapist attending him today.</p>
+
+  <div class="field-group">
+    <h4>-----Admission findings-----</h4>
+  </div>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>OAHR, walks with Rollator</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PMHx:</h4>
+    <p>HT, DM, Hyperlipid<br>COPD on 1L/min LTOT</p>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>E adm x cough with whitish sputum x few days, with increased respiratory distress since day before admission.</p>
+    <p>Not relieved by usual puffs. No fever. No chest pain.</p>
+    <p>Given 2L O2, Ventolin puff, prednisolone in AED</p>
+    <p>Hb Plt N<br>WCC 7<br>CRP 15<br>TnI CK LDH N<br>NPS -ve</p>
+  </div>
+
+  <div class="field-group">
+    <h4>-----Todays progress-----</h4>
+    <p>Vital signs today:
   <br>Temperature: 36.4°C
   <br>Blood Pressure: 102/64
   <br>Respiratory Rate: 14/min
-  <br>Blood oxygen saturation rate (SPO2): 96%, O2 Therapy (L/min): 1L/min
-  <br>Level of consciousness: A: Alert
+  <br>SPO2: 96%, 1L O2
+  <br>Alert
   <br>MEWS: 0
   <br><br>Patient lying on bed
   <br>Alert and cooperative
-  <br><br>4 limb power full
-  <br><br><img src="patient.png" alt="Patient" style="max-width:100%;border-radius:5px;"></p>
+  <br><br>4 limb power full</p>
+    <div class="case-img">
+      <img src="patient.png" alt="Patient">
+    </div>
+  </div>
 </div>
 
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you perform?</h3>
-  
+  <h3><span class="num">1</span> 🩺 What investigation or physical exam would you perform?</h3>
+  <p class="subhint">Tap each option to reveal the finding</p>
+
   <div class="choice" onclick="selectChoice('investigations', 0)">1. Check Inflammatory markers</div>
   <div class="feedback" id="inv-result0"></div>
   <div class="choice" onclick="selectChoice('investigations', 1)">2. Check CXR</div>
@@ -70,63 +507,90 @@
 </div>
 
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  
-  <label><input type="checkbox" id="man-check0" /> 1. Breathing and coughing exercise</label>
-  <label><input type="checkbox" id="man-check1" /> 2. Use a PEP/OPEP device</label>
-  <label><input type="checkbox" id="man-check2" /> 3. Mobility training</label>
-  <label><input type="checkbox" id="man-check3" /> 4. Keep bed rest</label>
+  <h3><span class="num">2</span> 💊 Select all management options you would provide:</h3>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. Breathing and coughing exercise</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. Use a PEP/OPEP device</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Mobility training</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Keep bed rest</label>
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
 
 <div class="box" id="result" style="display:none;">
   <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
   <table>
     <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
     <tbody id="result-table-body"></tbody>
   </table>
-    
-  <div style="margin-top:20px;">
-    <strong>Explaination:</strong>
-    <br><strong>Option 1 Check Inflammatory markers</strong> 
-    <br>Checking the inflammatory markers such as WCC, CRP, or even ESR may provide an indication on the severity of the infection.
-    <br><br>Furthermore, by checking the trend of the inflammatory markers, you may see how the patient is currently responding to current treatment.
-    <br><br>If the inflammatory markers are decreasing, it may indicate that the patient is responding well to the treatment. However, if the inflammatory markers are increasing, it may mean that the patient is not responding to the current treatment, or that there is a new source of infection for investigation.
-    <br><br>Acute vs. Chronic: A high CRP with a normal ESR usually points to a new, acute infection. If ESR is elevated but CRP is normal, it may indicate a long-standing or chronic inflammatory process.
-    <br><br><br><strong>Q1. Option 2 Check CXR</strong>
-    <br>The patient presented with increased respiratory distress, and had an increased oxygen demand when first admitted.
-    <br><br>This Chest X-ray shows hyperinflated lungs, which is typically seen in patients with COPD. As COPD causes airway obstruction and a decrease in lung elasticity, air may become trapped in the lungs. In a CXR with lung hyperinflation, you may observe flattened diaphragms, increased rib counts, or even widened intercostal spaces.
-    <br><br>Having a CXR on hand may provide you with an indication for how congested their lung may be, which allows you to have an estimate on how likely they are to be in sputum retention. After seeing the latest CXR, you may also choose to compare this film with the last film, allowing you to have a comparison on whether there is a difference in lung consolidation.
-    <br><br>A CXR also allows the doctor to screen out any more acute conditions or life-threatening conditions such as pneumothorax or pleural effusion.
-    <br><br><br><strong>Q1. Option 3 Auscultation</strong>
-    <br>Auscultating the patient allows you to have a more comprehensive respiratory assessment. Assessing the air entry, and the type of transmitted sound they have (if any), can help guide your treatment.
-    <br><br>Auscultation may help you identify where secretions may be trapped. This may help to guide any positioning, vibrations or percussion that you may choose to use.
-    <br><br>Furthermore, it may also provide you with an indication of how much sputum the patient is retaining. If the patient is in excessive sputum retention, suction may be indicated.
-    <br><br><br><strong>Q1. Option 4 IPMOE (Current medications)</strong>
-    <br>Checking the current medications would allow you to have a picture of the doctor's differential diagnosis. Furthermore, it may give you an indication on the doctor's discharge plan. For example, if a patient was initially put on IV antibiotics, and later changed to oral antibiotics, it may be an indication that the patient is responding well to treatment, and that the doctor is aiming to discharge the patient home soon.
-    <br><br>If the patient is on a bronchodilator, checking when the medication was last taken may also give you a timeframe of the optimal time to see the patient. Bronchodilators help to open up airways by relaxing the surrounding muscles. Doing airway clearance techniques (eg. percussion, vibrations, huffing) around 10-15 mins after the use of bronchodilators may prove to be more effective in sputum clearance.
-    <br><br><br><strong>Q2. Option 1 Breathing and coughing exercise</strong>
-    <br>In acute respiratory conditions, excessive, thick mucus may be blocking the patient's airway. By directing a coughing exercise, the high expiratory flow may cause a shearing force, clearing the airway.
-    <br><br>On the other hand, you may choose to teach the patient a huffing technique, which is a gentler way to clear mucus. Huffing allows one to loosen sputum from their airways, but at the same time keeps your airways open, which may be more beneficial for patients with COPD.
-    <br><br>Teaching the patient breathing techniques such as pursed-lip breathing may also be beneficial. Pursed-lip breathing allows for more PEEP, keeping the airways open for longer during expiration. This helps to reduce the retention of carbon dioxide.
-    <br><br><strong>Q2. Option 2 Use a PEP/OPEP device for airway clearance</strong>
-    <br>Patients who present with AECOPD often present with increased sputum production and retention, hence indicating a prescription of Airway Clearance Techniques (ACTs).
-    <br><br>A standard Positive Expiratory Pressure (PEP) device provides resistance upon exhalation. This resistance helps to keep airways open, allowing air to travel through the Pores of Kohn and Canals of Lambert (Collateral channels of the lungs). The collateral ventilation allows the air to travel behind mucus plugs, helping to clear the secretion. As the secretion is cleared, the work of breathing is reduced. This allows for an improved respiratory rate and decreased fatigue.
-    <br><br>On the other hand, Oscillatory Positive Expiratory Pressure (OPEP) devices may be used. These devices combine an expiratory pressure with high frequency vibrations, which allows for better mucus clearance.
-    <br><br>Common OPEP devices that may be found in a hospital setting include the Akapella and Aerobika. Similarly, a common PEP device found in the hospital setting is the TheraPEP.
-    <br><img src="OPEP.png" alt="OPEP" style="max-width:100%;border-radius:5px;">
-    <br><br><strong>Q2. Option 3 Mobility training & Option 4 Keep bed rest</strong>
-    <br>Although the patient's current inflammatory markers are slightly elevated, they are not uncontrolled sepsis. There is no absolute contraindication for mobilization.
-    <br><br>Early mobilization may prevent physical decline, as well as lowering the risk for developing DVT/PE.
-    <br><br>Physical movement may also help with sputum clearing. Patients will naturally take deeper breaths when mobilizing, which may help create the mechanical shearing force needed to loosen sputum.
-    <br><br>Sitting or standing also allows for better lung expansion. Being in a “position of ease” may also help to offload the diaphragm, recruiting accessory breathing muscles.
-<br><br><h6>Case creator: Ms Elaine Liu, Ms Kiho Masui</h6>
-</div>
+
+  <div class="learning">
+    <h4>Explaination:</h4>
+    <div class="qa">
+      <div class="opt-title">Option 1 Check Inflammatory markers</div>
+      <p>Checking the inflammatory markers such as WCC, CRP, or even ESR may provide an indication on the severity of the infection.</p>
+      <p>Furthermore, by checking the trend of the inflammatory markers, you may see how the patient is currently responding to current treatment.</p>
+      <p>If the inflammatory markers are decreasing, it may indicate that the patient is responding well to the treatment. However, if the inflammatory markers are increasing, it may mean that the patient is not responding to the current treatment, or that there is a new source of infection for investigation.</p>
+      <p>Acute vs. Chronic: A high CRP with a normal ESR usually points to a new, acute infection. If ESR is elevated but CRP is normal, it may indicate a long-standing or chronic inflammatory process.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q1. Option 2 Check CXR</div>
+      <p>The patient presented with increased respiratory distress, and had an increased oxygen demand when first admitted.</p>
+      <p>This Chest X-ray shows hyperinflated lungs, which is typically seen in patients with COPD. As COPD causes airway obstruction and a decrease in lung elasticity, air may become trapped in the lungs. In a CXR with lung hyperinflation, you may observe flattened diaphragms, increased rib counts, or even widened intercostal spaces.</p>
+      <p>Having a CXR on hand may provide you with an indication for how congested their lung may be, which allows you to have an estimate on how likely they are to be in sputum retention. After seeing the latest CXR, you may also choose to compare this film with the last film, allowing you to have a comparison on whether there is a difference in lung consolidation.</p>
+      <p>A CXR also allows the doctor to screen out any more acute conditions or life-threatening conditions such as pneumothorax or pleural effusion.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q1. Option 3 Auscultation</div>
+      <p>Auscultating the patient allows you to have a more comprehensive respiratory assessment. Assessing the air entry, and the type of transmitted sound they have (if any), can help guide your treatment.</p>
+      <p>Auscultation may help you identify where secretions may be trapped. This may help to guide any positioning, vibrations or percussion that you may choose to use.</p>
+      <p>Furthermore, it may also provide you with an indication of how much sputum the patient is retaining. If the patient is in excessive sputum retention, suction may be indicated.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q1. Option 4 IPMOE (Current medications)</div>
+      <p>Checking the current medications would allow you to have a picture of the doctor's differential diagnosis. Furthermore, it may give you an indication on the doctor's discharge plan. For example, if a patient was initially put on IV antibiotics, and later changed to oral antibiotics, it may be an indication that the patient is responding well to treatment, and that the doctor is aiming to discharge the patient home soon.</p>
+      <p>If the patient is on a bronchodilator, checking when the medication was last taken may also give you a timeframe of the optimal time to see the patient. Bronchodilators help to open up airways by relaxing the surrounding muscles. Doing airway clearance techniques (eg. percussion, vibrations, huffing) around 10-15 mins after the use of bronchodilators may prove to be more effective in sputum clearance.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q2. Option 1 Breathing and coughing exercise</div>
+      <p>In acute respiratory conditions, excessive, thick mucus may be blocking the patient's airway. By directing a coughing exercise, the high expiratory flow may cause a shearing force, clearing the airway.</p>
+      <p>On the other hand, you may choose to teach the patient a huffing technique, which is a gentler way to clear mucus. Huffing allows one to loosen sputum from their airways, but at the same time keeps your airways open, which may be more beneficial for patients with COPD.</p>
+      <p>Teaching the patient breathing techniques such as pursed-lip breathing may also be beneficial. Pursed-lip breathing allows for more PEEP, keeping the airways open for longer during expiration. This helps to reduce the retention of carbon dioxide.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q2. Option 2 Use a PEP/OPEP device for airway clearance</div>
+      <p>Patients who present with AECOPD often present with increased sputum production and retention, hence indicating a prescription of Airway Clearance Techniques (ACTs).</p>
+      <p>A standard Positive Expiratory Pressure (PEP) device provides resistance upon exhalation. This resistance helps to keep airways open, allowing air to travel through the Pores of Kohn and Canals of Lambert (Collateral channels of the lungs). The collateral ventilation allows the air to travel behind mucus plugs, helping to clear the secretion. As the secretion is cleared, the work of breathing is reduced. This allows for an improved respiratory rate and decreased fatigue.</p>
+      <p>On the other hand, Oscillatory Positive Expiratory Pressure (OPEP) devices may be used. These devices combine an expiratory pressure with high frequency vibrations, which allows for better mucus clearance.</p>
+      <p>Common OPEP devices that may be found in a hospital setting include the Akapella and Aerobika. Similarly, a common PEP device found in the hospital setting is the TheraPEP.</p>
+      <div class="case-img">
+        <img src="OPEP.png" alt="OPEP">
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q2. Option 3 Mobility training & Option 4 Keep bed rest</div>
+      <p>Although the patient's current inflammatory markers are slightly elevated, they are not uncontrolled sepsis. There is no absolute contraindication for mobilization.</p>
+      <p>Early mobilization may prevent physical decline, as well as lowering the risk for developing DVT/PE.</p>
+      <p>Physical movement may also help with sputum clearing. Patients will naturally take deeper breaths when mobilizing, which may help create the mechanical shearing force needed to loosen sputum.</p>
+      <p>Sitting or standing also allows for better lung expansion. Being in a “position of ease” may also help to offload the diaphragm, recruiting accessory breathing muscles.</p>
+    </div>
+  </div>
+
+  <p class="creator">Case creator: Ms Elaine Liu, Ms Kiho Masui</p>
   <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
 </div>
-<!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+<a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
 
 <script>
   const investigations = [{"opt":"Check Inflammatory markers","res":'<img src="lab.png" alt="Lab" style="max-width:100%;border-radius:5px;">',"cor":true},
@@ -149,21 +613,38 @@
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg2").classList.add("active");
   }
 
   function showFinalResult() {
     const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
     let score = 0;
-    
+
     investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
     management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
 
+    const maxScore = investigations.length + management.length;
+
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
-    
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
     const tbody = document.getElementById("result-table-body");
     tbody.innerHTML = "";
-    
+
     investigations.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
     });

@@ -4,118 +4,546 @@
   <meta charset="UTF-8" />
   <title>Foot pain</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
-    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
-    .choice:hover { background-color: #d0d0d0; }
-    .disabled { pointer-events: none; opacity: 0.6; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
-    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .btn:hover { background-color: #0056b3; }
-    label { display: block; margin-bottom: 10px; cursor: pointer; }
-    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f0f0f0; }
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
+
+.divider-line{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  letter-spacing:.02em;
+  margin:16px 0;
+}
+
+.note-block{
+  margin:14px 0;
+  font-size:14.5px;
+}
+.note-block p{ margin:0 0 8px; }
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
   </style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">🩺 Case Study</div>
+  <h1>Foot pain</h1>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+  <div class="seg" id="seg3"></div>
+</div>
+<div class="progress-labels">
+  <span>Investigation</span>
+  <span>Management</span>
+  <span>Result</span>
+</div>
+
 <div class="box">
-  <h2>Case: Foot pain</h2>
-  <p><br><br>Mr. Ray Leung, a 72-year-old gentleman, suffered a stroke and was just discharged from the acute hospital. You are the case manager taking care of his post-discharge rehabilitation and care. This is your second home visit.
-    <br><br>————————— Discharge Summary ————————————
-    <br>SHx:
-    <br>Retired renovation worker
-    <br>Live with wife in PHU, lift-landing.
-    <br>Pre-morbid: walk unaided outdoor
-    <br><br>PMH:
-    <br>Rt floaters FU EYE
-    <br>Rt hearing loss with tinnitus FU ENT
-    <br>Chronic LUTS, pending URO
-    <br><br>HPI:
-    <br>Sudden onset vertigo, Rt tinnitus, Rt sided weakness at ~ 2:30pm
-    <br>Initial NIHSS 3/42, GCS 15/15 at AED
-    <br>Rt sided weakness and tinnitus resolved in ward
-    <br>still c/o some vertigo
-    <br>no chest pain/SOB
-    <br>no HI/LOC/fall
-    <br>no facial asymmetry / slurred speech
-    <br><br>Declined TPA
-    <br><br>P/E:
-    <br>GCS 15/15 PEARL.
-    <br>CN intact
-    <br>EOM full, no diplopia
-    <br>power
-    <br>5|5
-    <br>5|5
-    <br>no cerebellar signs
-    <br>chest clear
-    <br>HSDNM
-    <br>abd soft, non-tender
-    <br>no ankle edema
-    <br><br>CTB: tiny lacunar infarcts (old) at Lt brainstem, bilateral BG, white matter hypodensities indicating small vessel disease
-    <br>CXR clear. no widened mediastinum
-    <br><br>Imp: minor stroke, posterior circulation
-    <br><br>BP/Hstix good in ward
-    <br>PT: Rt side Dix hallpike +, Epley maneuver to Rt side, MFAC 6/7, unaided +/- supervision
-    <br>OT: MBI 89/100
-    <br>ST: regular diet, thin liquid
-    <br><br>A1c 5.8, LDL 2.7
-    <br>started DAPT, lipitor
-    <br>dizziness on cinnarizine
-    <br><br>Rt side persistent hearing loss with tinnitus
-    <br>consulted ENT, appt. 24/4/2026
-    <br><br>Mx:
-    <br>Home
-    <br>FU PDCC 8/52 with meds and prior bloods
-    <br>DAPT 3/52 till 7/5/26 then lifelong aspirin
-    <br><br>——————————————————————————————
-    <br>————————— Today’s home visit ——————————
-    <br>C/O:
-    <br>Vertigo resolved with previous Epley maneuver
-    <br>Tinnitus static
-    <br>Limb power preserved, able to go outdoor unaided.
-    <br><br>Left foot swelling started at base of toes (dorsal side) on 2days ago.
-    <br>No recent injury / trauma
-    <br>seen GP, told gout and given meds given
-    <br>Slight improvement with GP meds but develop chills after meds
-    <br>progressively ↑ in swelling and erythema
-    <br><br><br>P/E:
-    <br>Alert, cooperative
-    <br>GCS 15/15
-    <br>GC well
-    <br><br>Home environment:
-    <br>Very messy, Hoarding house
-    <br>Narrow walk path, enough for unaided walking
-    <br>Standing shower, no rails
-    <br><br>———————————
-    <br><strong>Current medications:</strong>
-    <br><strong>ASPIRIN</strong> tablet
-    <br>oral : 80 mg daily for 8weeks
-    <br><br><Strong>Clopidogrel (PLAVIX)</Strong> tablet (Special Drug)
-      <br>oral: 75 mg daily for 17 day(s)
-      <br><br><strong>LIPITOR (ATORVASTATIN)</strong> tablet
-      <br>oral : 20 mg daily for 8weeks
-      <br><br><strong>PANTOLOC (PANTOPRAZOLE SODIUM SESQUIHYDRATE)</strong> tablet
-      <br>oral : 20 mg daily for 8 weeks
-      <br><br><strong>HYTRIN (TERAZOSIN HCL)</strong> tablet
-      <br>oral : 2 mg nocte for 8 weeks
-      <br><br><strong>Cinnarizine</strong> tablet
-      <br>oral: 25 mg TDS PRN(100%) for 8 week(s)
-      <br><br><strong>VOLTAREN (DICLOFENAC SODIUM)</strong> tablet
-      <br>oral : 25 mg bd prn (100%) for 1 weeks
-      <br><br><strong>PANADOL (PARACETAMOL)</strong> tablet
-      <br>oral : 1000 mg q8h prn (100%) for 2 weeks
-      <br><br><strong>Colchicine</strong> tablet
-      <br>oral : 0.5 mg tds prn(100%) for 1 weeks
-      <br>———————————</p>
+  <p>Mr. Ray Leung, a 72-year-old gentleman, suffered a stroke and was just discharged from the acute hospital. You are the case manager taking care of his post-discharge rehabilitation and care. This is your second home visit.</p>
+
+  <p class="divider-line">————————— Discharge Summary ————————————</p>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>Retired renovation worker<br>Live with wife in PHU, lift-landing.<br>Pre-morbid: walk unaided outdoor</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PMH:</h4>
+    <p>Rt floaters FU EYE<br>Rt hearing loss with tinnitus FU ENT<br>Chronic LUTS, pending URO</p>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>Sudden onset vertigo, Rt tinnitus, Rt sided weakness at ~ 2:30pm<br>Initial NIHSS 3/42, GCS 15/15 at AED<br>Rt sided weakness and tinnitus resolved in ward<br>still c/o some vertigo<br>no chest pain/SOB<br>no HI/LOC/fall<br>no facial asymmetry / slurred speech<br><br>Declined TPA</p>
+  </div>
+
+  <div class="field-group">
+    <h4>P/E:</h4>
+    <p>GCS 15/15 PEARL.<br>CN intact<br>EOM full, no diplopia<br>power<br>5|5<br>5|5<br>no cerebellar signs<br>chest clear<br>HSDNM<br>abd soft, non-tender<br>no ankle edema</p>
+  </div>
+
+  <div class="note-block">
+    <p>CTB: tiny lacunar infarcts (old) at Lt brainstem, bilateral BG, white matter hypodensities indicating small vessel disease<br>CXR clear. no widened mediastinum</p>
+    <p>Imp: minor stroke, posterior circulation</p>
+    <p>BP/Hstix good in ward<br>PT: Rt side Dix hallpike +, Epley maneuver to Rt side, MFAC 6/7, unaided +/- supervision<br>OT: MBI 89/100<br>ST: regular diet, thin liquid</p>
+    <p>A1c 5.8, LDL 2.7<br>started DAPT, lipitor<br>dizziness on cinnarizine</p>
+    <p>Rt side persistent hearing loss with tinnitus<br>consulted ENT, appt. 24/4/2026</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Mx:</h4>
+    <p>Home<br>FU PDCC 8/52 with meds and prior bloods<br>DAPT 3/52 till 7/5/26 then lifelong aspirin</p>
+  </div>
+
+  <p class="divider-line">——————————————————————————————<br>————————— Today’s home visit ——————————</p>
+
+  <div class="field-group">
+    <h4>C/O:</h4>
+    <p>Vertigo resolved with previous Epley maneuver<br>Tinnitus static<br>Limb power preserved, able to go outdoor unaided.</p>
+  </div>
+
+  <div class="note-block">
+    <p>Left foot swelling started at base of toes (dorsal side) on 2days ago.<br>No recent injury / trauma<br>seen GP, told gout and given meds given<br>Slight improvement with GP meds but develop chills after meds<br>progressively ↑ in swelling and erythema</p>
+  </div>
+
+  <div class="field-group">
+    <h4>P/E:</h4>
+    <p>Alert, cooperative<br>GCS 15/15<br>GC well</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Home environment:</h4>
+    <p>Very messy, Hoarding house<br>Narrow walk path, enough for unaided walking<br>Standing shower, no rails</p>
+  </div>
+
+  <p class="divider-line">———————————</p>
+
+  <div class="field-group">
+    <h4>Current medications:</h4>
+    <p>
+      <strong>ASPIRIN</strong> tablet<br>oral : 80 mg daily for 8weeks
+      <br><br><strong>Clopidogrel (PLAVIX)</strong> tablet (Special Drug)<br>oral: 75 mg daily for 17 day(s)
+      <br><br><strong>LIPITOR (ATORVASTATIN)</strong> tablet<br>oral : 20 mg daily for 8weeks
+      <br><br><strong>PANTOLOC (PANTOPRAZOLE SODIUM SESQUIHYDRATE)</strong> tablet<br>oral : 20 mg daily for 8 weeks
+      <br><br><strong>HYTRIN (TERAZOSIN HCL)</strong> tablet<br>oral : 2 mg nocte for 8 weeks
+      <br><br><strong>Cinnarizine</strong> tablet<br>oral: 25 mg TDS PRN(100%) for 8 week(s)
+      <br><br><strong>VOLTAREN (DICLOFENAC SODIUM)</strong> tablet<br>oral : 25 mg bd prn (100%) for 1 weeks
+      <br><br><strong>PANADOL (PARACETAMOL)</strong> tablet<br>oral : 1000 mg q8h prn (100%) for 2 weeks
+      <br><br><strong>Colchicine</strong> tablet<br>oral : 0.5 mg tds prn(100%) for 1 weeks
+    </p>
+  </div>
+
+  <p class="divider-line">———————————</p>
 </div>
 
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you perform?</h3>
-  
+  <h3><span class="num">1</span> 🩺 What investigation or physical exam would you perform?</h3>
+
   <div class="choice" onclick="selectChoice('investigations', 0)">1. Check vitals</div>
   <div class="feedback" id="inv-result0"></div>
   <div class="choice" onclick="selectChoice('investigations', 1)">2. Inspect R foot</div>
@@ -128,70 +556,107 @@
 </div>
 
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  
-  <label><input type="checkbox" id="man-check0" /> 1. Cont'd meds and review 2 days later</label>
-  <label><input type="checkbox" id="man-check1" /> 2. Book FMC</label>
-  <label><input type="checkbox" id="man-check2" /> 3. Ice and compression to Rt foot</label>
-  <label><input type="checkbox" id="man-check3" /> 4. Withhold walking</label>
+  <h3><span class="num">2</span> 💊 Select all management options you would provide:</h3>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. Cont'd meds and review 2 days later</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. Book FMC</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Ice and compression to Rt foot</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Withhold walking</label>
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
 
 <div class="box" id="result" style="display:none;">
   <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
   <table>
     <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
     <tbody id="result-table-body"></tbody>
   </table>
-    
-  <div style="margin-top:20px;"><strong>📋Discussion:</strong>
-    <br>The diagnosis of this case was cellulitis.
-    <br><br>This case was referred to FM Clinic and given a course of Ampicillin and Cloxacillin to treat the underlying infection. The patient's wife also developed foot cellulitis two days after the patient was diagnosed. The messy home environment may lead to poor hygiene. Home cleansing (especially home slippers) was recommended.
-    <br><br>Acute stroke treatments and the physiological stress of a stroke itself frequently trigger gout flare-ups. Up to 4% of hospitalized stroke patients experience a gout attack within the first week. These flares commonly present in the paretic (weakened) limb and can complicate recovery. [1]
-    <br><br><strong>Why Strokes Trigger Gout Flares?</strong>
-    <br>1. Post-Stroke Inflammation: Acute stroke causes massive systemic inflammation and oxidative stress, which accelerates purine metabolism and causes sudden spikes in serum uric acid levels.
-    <br><br>2. Medications Used in Stroke Care:
-    <br><br>2A) Diuretics: Blood pressure-lowering "water pills" (e.g., hydrochlorothiazide) are common after strokes but impair the kidneys' ability to excrete uric acid.
-    <br><br>2B) Low-Dose Aspirin: Often prescribed after ischemic strokes, it can cause unpredictable shifts in uric acid levels.
-    <br><br>3. Dehydration & Immobility: Routine fluid restriction during stroke recovery or immobility can concentrate uric acid in the blood and joints.
-    <br><br>In this case, the initial suspicion of gout is reasonable given the onset of pain and medical comorbidities. However, a lack of treatment progress and the progression of the painful area should lead to a re-evaluation of the diagnosis, potentially shifting it from gout to cellulitis.
-    <br><br><strong>⭐️Learning point:</strong><br>-Some drugs may increase the likelihood of gout
-    <br>-Diagnosis is fluid to change with clinical picture progress
-    <br>-When treatment trial did not provide the expect effect, clinical team members should consider alternate possibilities
-    <br>-DDx between cellulitis and gouty attack
-    <br>-Triage decision
-    <br><br><br><strong>👍Explanation:</strong>
-    <br><br><strong>Q1.Option 1: Check vitals</strong>
-    <br>Raised body temperature is a crucial hint of severe or systemic infection. In this case, if the patient is febrile/septic looking on visit, the patient should be advised to AED instead of FMC for further management.
-    <br><br>Please also bear in mind that a febrile condition may be masked by medications (e.g. NSAID/Panadol).
-    <br><br>The patient also reported an episode of chills. Chills and rigours are your body's involuntary response to a sudden shift in temperature, usually signalling an underlying infection.
-    <br><br><strong>Q1.Option 2: Inspect R foot</strong>
-    <br>Both cellulitis and gouty attacks  have skin discolouration—redness on light skin tones; on brown or black skin, it may look purple, grey, or darker than the surrounding skin.
-    <br><br>However, gout should stay localised (most commonly the big toe, ankle, or knee). Cellulitis often spreads diffusely. Dimpling around hair follicles may give an "orange peel" texture.[2]
-    <br><br><img src="vs.png" alt='cellulitis vs gout' style='max-width:100%;boder-radius:5px;'>
-    <br><br><strong>Q1.Option 3: Palpation to R foot</strong>
-    <br>The area must be palpated for fluctuance (a wave-like feeling). A localised abscess requires incision and drainage, whereas pure cellulitis is treated with antibiotics. If fluctuance is detected in this patient, he should be advised to AED instead of FMC.
-    <br><br><strong>Q1.Option 4: Check capillary refill of toes</strong>
-    <br>Checking the capillary refill time (CRT) of an affected limb or extremity is a standard component of evaluating a patient with cellulitis.[2] It helps clinicians assess tissue perfusion, monitor for severe complications, and differentiate cellulitis from other vascular conditions.
-    <br><br><br><br><strong>Q2.Option 1&2: Cont'd meds and review 2 days later/ Book FMC</strong>
-    <br>Patient's clinical picture flavours the suspect of cellulitis instead of gout. Continue current medication cannot take the underlying infection and delaying the indicated treatment.
-    <br><br>Here are the comparison of cellulitis and gouty attack
-    <br><br><strong>Q2.Option 3: Ice and compression to Rt foot</strong>
-    <br>No, although studies shows that compression therapy is effective to alleviate symptoms without causing complications in cellulitis, compression should be started with a time window to allow the antibiotic therapy to take effect before initiating compression therapy. Moreover, if wound or ulcer is present in the cellulitis site, ice or compression maybe contraindicated. [3] In patients with initial CRP levels above 50 mg/dl at admission, CRP reduction occurred more rapidly.
-    <br><br><strong>Q2.Option 4: Withhold walking</strong>
-    <br>Walking is allowed in view of bone involvement being less likely in this case. The patient reported no trauma/injury history, making an underlying fracture less likely.
-    <br>In severe cases of cellulitis, the infection can spread into deeper tissues, potentially leading to osteomyelitis (OM). In this case, an X-ray is needed to rule out any osteomyelitic changes.
-    <h6><br><br><br>Reference:
-    <br>1. Panagiotopoulos E, Kotsali-Peteinelli V, Papagiannopoulou G, Theodorou A, Chondrogianni M, Bakola E, Palaiodimou L, Psychogios K, Kargiotis O, Safouris A, Tsalouchidou PE, Mengel A, Ziemann U, Krogias C, Tsivgoulis G, Stefanou MI. Gout flares following acute stroke: a single-center cohort and a systematic review/meta-analysis. Neurol Res Pract. 2025 Oct 15;7(1):75. doi: 10.1186/s42466-025-00424-w. PMID: 41094550; PMCID: PMC12529815.
-    <br><br>2. Brown BD, Syed HA, Hood Watson KL. Cellulitis. [Updated 2025 Dec 13]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026 Jan-. Available from: https://www.ncbi.nlm.nih.gov/sites/books/NBK549770/
-    <br><br>3. Dräger S, Kiehne C, Zinser G, Kahle B. Treating cellulitis promptly with compression therapy reduces C-reactive protein-levels and symptoms - a randomized-controlled trial. J Dtsch Dermatol Ges. 2025 Oct;23(10):1274-1280. doi: 10.1111/ddg.15829. Epub 2025 Aug 11. PMID: 40790909; PMCID: PMC12548327.</h6>
-  <h6><br>Case creator: Mr Thomas Mak</h6>
+
+  <div class="learning">
+    <h4>📋Discussion:</h4>
+    <p>The diagnosis of this case was cellulitis.</p>
+    <p>This case was referred to FM Clinic and given a course of Ampicillin and Cloxacillin to treat the underlying infection. The patient's wife also developed foot cellulitis two days after the patient was diagnosed. The messy home environment may lead to poor hygiene. Home cleansing (especially home slippers) was recommended.</p>
+    <p>Acute stroke treatments and the physiological stress of a stroke itself frequently trigger gout flare-ups. Up to 4% of hospitalized stroke patients experience a gout attack within the first week. These flares commonly present in the paretic (weakened) limb and can complicate recovery. [1]</p>
+    <p><strong>Why Strokes Trigger Gout Flares?</strong></p>
+    <p>1. Post-Stroke Inflammation: Acute stroke causes massive systemic inflammation and oxidative stress, which accelerates purine metabolism and causes sudden spikes in serum uric acid levels.</p>
+    <p>2. Medications Used in Stroke Care:</p>
+    <p>2A) Diuretics: Blood pressure-lowering "water pills" (e.g., hydrochlorothiazide) are common after strokes but impair the kidneys' ability to excrete uric acid.</p>
+    <p>2B) Low-Dose Aspirin: Often prescribed after ischemic strokes, it can cause unpredictable shifts in uric acid levels.</p>
+    <p>3. Dehydration & Immobility: Routine fluid restriction during stroke recovery or immobility can concentrate uric acid in the blood and joints.</p>
+    <p>In this case, the initial suspicion of gout is reasonable given the onset of pain and medical comorbidities. However, a lack of treatment progress and the progression of the painful area should lead to a re-evaluation of the diagnosis, potentially shifting it from gout to cellulitis.</p>
+
+    <div class="key-points">
+      <h4 style="margin-bottom:8px;">⭐️Learning point:</h4>
+      <ul>
+        <li>-Some drugs may increase the likelihood of gout</li>
+        <li>-Diagnosis is fluid to change with clinical picture progress</li>
+        <li>-When treatment trial did not provide the expect effect, clinical team members should consider alternate possibilities</li>
+        <li>-DDx between cellulitis and gouty attack</li>
+        <li>-Triage decision</li>
+      </ul>
+    </div>
+
+    <h4>👍Explanation:</h4>
+
+    <div class="qa">
+      <div class="opt-title">Q1.Option 1: Check vitals</div>
+      <p>Raised body temperature is a crucial hint of severe or systemic infection. In this case, if the patient is febrile/septic looking on visit, the patient should be advised to AED instead of FMC for further management.</p>
+      <p>Please also bear in mind that a febrile condition may be masked by medications (e.g. NSAID/Panadol).</p>
+      <p>The patient also reported an episode of chills. Chills and rigours are your body's involuntary response to a sudden shift in temperature, usually signalling an underlying infection.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q1.Option 2: Inspect R foot</div>
+      <p>Both cellulitis and gouty attacks  have skin discolouration—redness on light skin tones; on brown or black skin, it may look purple, grey, or darker than the surrounding skin.</p>
+      <p>However, gout should stay localised (most commonly the big toe, ankle, or knee). Cellulitis often spreads diffusely. Dimpling around hair follicles may give an "orange peel" texture.[2]</p>
+      <div class="case-img"><img src="vs.png" alt='cellulitis vs gout' style='max-width:100%;boder-radius:5px;'></div>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q1.Option 3: Palpation to R foot</div>
+      <p>The area must be palpated for fluctuance (a wave-like feeling). A localised abscess requires incision and drainage, whereas pure cellulitis is treated with antibiotics. If fluctuance is detected in this patient, he should be advised to AED instead of FMC.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q1.Option 4: Check capillary refill of toes</div>
+      <p>Checking the capillary refill time (CRT) of an affected limb or extremity is a standard component of evaluating a patient with cellulitis.[2] It helps clinicians assess tissue perfusion, monitor for severe complications, and differentiate cellulitis from other vascular conditions.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q2.Option 1&2: Cont'd meds and review 2 days later/ Book FMC</div>
+      <p>Patient's clinical picture flavours the suspect of cellulitis instead of gout. Continue current medication cannot take the underlying infection and delaying the indicated treatment.</p>
+      <p>Here are the comparison of cellulitis and gouty attack</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q2.Option 3: Ice and compression to Rt foot</div>
+      <p>No, although studies shows that compression therapy is effective to alleviate symptoms without causing complications in cellulitis, compression should be started with a time window to allow the antibiotic therapy to take effect before initiating compression therapy. Moreover, if wound or ulcer is present in the cellulitis site, ice or compression maybe contraindicated. [3] In patients with initial CRP levels above 50 mg/dl at admission, CRP reduction occurred more rapidly.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q2.Option 4: Withhold walking</div>
+      <p>Walking is allowed in view of bone involvement being less likely in this case. The patient reported no trauma/injury history, making an underlying fracture less likely.</p>
+      <p>In severe cases of cellulitis, the infection can spread into deeper tissues, potentially leading to osteomyelitis (OM). In this case, an X-ray is needed to rule out any osteomyelitic changes.</p>
+    </div>
+
+    <p class="ref">
+      Reference:<br>
+      1. Panagiotopoulos E, Kotsali-Peteinelli V, Papagiannopoulou G, Theodorou A, Chondrogianni M, Bakola E, Palaiodimou L, Psychogios K, Kargiotis O, Safouris A, Tsalouchidou PE, Mengel A, Ziemann U, Krogias C, Tsivgoulis G, Stefanou MI. Gout flares following acute stroke: a single-center cohort and a systematic review/meta-analysis. Neurol Res Pract. 2025 Oct 15;7(1):75. doi: 10.1186/s42466-025-00424-w. PMID: 41094550; PMCID: PMC12529815.
+      <br><br>2. Brown BD, Syed HA, Hood Watson KL. Cellulitis. [Updated 2025 Dec 13]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026 Jan-. Available from: https://www.ncbi.nlm.nih.gov/sites/books/NBK549770/
+      <br><br>3. Dräger S, Kiehne C, Zinser G, Kahle B. Treating cellulitis promptly with compression therapy reduces C-reactive protein-levels and symptoms - a randomized-controlled trial. J Dtsch Dermatol Ges. 2025 Oct;23(10):1274-1280. doi: 10.1111/ddg.15829. Epub 2025 Aug 11. PMID: 40790909; PMCID: PMC12548327.
+    </p>
+    <div class="creator">Case creator: Mr Thomas Mak</div>
   </div>
+
   <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
 </div>
 <!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+<a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
 
 
 <script>
@@ -215,27 +680,49 @@
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg2").classList.add("active");
+    document.getElementById("question2").scrollIntoView({behavior:"smooth", block:"start"});
   }
 
   function showFinalResult() {
     const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
     let score = 0;
-    
+
     investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
     management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
 
+    const maxScore = investigations.length + management.length;
+
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
-    
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
+    document.getElementById("seg3").classList.add("done");
+
     const tbody = document.getElementById("result-table-body");
     tbody.innerHTML = "";
-    
+
     investigations.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
     });
     management.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
     });
+
+    document.getElementById("result").scrollIntoView({behavior:"smooth", block:"start"});
   }
 </script>
 </body>
