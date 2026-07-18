@@ -4,43 +4,502 @@
   <meta charset="UTF-8" />
   <title>Rolling Over</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
-    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
-    .choice:hover { background-color: #d0d0d0; }
-    .disabled { pointer-events: none; opacity: 0.6; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
-    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .btn:hover { background-color: #0056b3; }
-    label { display: block; margin-bottom: 10px; cursor: pointer; }
-    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f0f0f0; }
+/*
+  Clinical case quiz — base stylesheet.
+  Paste this whole block into the <style> tag of every case file.
+  Do not change the --tokens unless the user asks for a different palette;
+  keeping them identical is what makes all 22 files look like one series.
+*/
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:bold;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+/* Applied by JS when the percentage is below 60 */
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .key-points p{ margin:0 0 8px; }
+.learning .key-points p:last-child{ margin-bottom:0; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .qa img{ max-width:100%; border-radius:8px; border:1px solid var(--line); margin:6px 0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
   </style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">🩺 Physiotherapy Case</div>
+  <h1>Case: Rolling Over</h1>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Assessment</span>
+  <span>Management</span>
+</div>
+
 <div class="box">
-  <h2>Case: Rolling Over</h2>
-  <p>On a hot & sunny day, Patient: Sarah, a 46-year-old female, presents to the AED after "rolling" her left foot while hiking on uneven ground two hours ago.
-    <br>She is able to limp into the assessment room with friend's support, but reports significant pain.
-    <br>She describes the pain as sharp and "deep" inside the foot.
-    <br><br>You are the on-call physiotherapist and being called for walking exercise to facilitate patient discharge home.
-    <br><br>SHx:<br>Salesperson, live with husband in PHU (lift landing).<br>NKDA, NDNS<br>Premorbid: walk unaided outdoor.
-    <br><br>PMH:<br>Hyperlipidemia on lipitor 10mg daily<br><br>HPI:<br>Sprain L ankle while hiking today.
-    <br>She felt too painful to walk and escort to AED by helicopter.<br><br>She report no HI / LOC.
-    <br>Only isolated injury at L foot. No other injury.<br><br>CBC: Normal<br>RLFT: Normal
-    <br><br>P/E:<br>GCS: 15/15<br>BP: 135/70 HR 75<br>SpO2: 99% RA<br>Temp: 36.5
-    <br><br>Patient alert and cooperative<br>L foot swelling++, bruise ++
-    <br><img src='look.png' alt='look' style='max-width:100%;boder-radius:5px;'>
-    <br><br>Ankle walker was given</p>
+  <p>On a hot &amp; sunny day, Patient: Sarah, a 46-year-old female, presents to the AED after "rolling" her left foot while hiking on uneven ground two hours ago.</p>
+  <p>She is able to limp into the assessment room with friend's support, but reports significant pain.</p>
+  <p>She describes the pain as sharp and "deep" inside the foot.</p>
+
+  <p class="prompt-line">You are the on-call physiotherapist and being called for walking exercise to facilitate patient discharge home.</p>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>Salesperson, live with husband in PHU (lift landing).<br>NKDA, NDNS<br>Premorbid: walk unaided outdoor.</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PMH:</h4>
+    <p>Hyperlipidemia on lipitor 10mg daily</p>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>Sprain L ankle while hiking today.<br>She felt too painful to walk and escort to AED by helicopter.</p>
+    <p>She report no HI / LOC.<br>Only isolated injury at L foot. No other injury.</p>
+    <p>CBC: Normal<br>RLFT: Normal</p>
+  </div>
+
+  <div class="field-group">
+    <h4>P/E:</h4>
+      <dl>
+        <dt>GCS</dt><dd>15/15</dd>
+        <dt>BP</dt><dd>135/70 HR 75</dd>
+        <dt>SpO2</dt><dd>99% RA</dd>
+        <dt>Temp</dt><dd>36.5</dd>
+      </dl>
+    <p>Patient alert and cooperative<br>L foot swelling++, bruise ++</p>
+    <div class="case-img">
+      <img src='look.png' alt='look'>
+    </div>
+    <p>Ankle walker was given</p>
+  </div>
 </div>
 
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
-  
+  <h3><span class="num">1</span> What investigation or physical exam would you perform/check?</h3>
+  <p class="subhint">Tap an option to reveal the finding.</p>
+
   <div class="choice" onclick="selectChoice('investigations', 0)">1. Palpation to L foot</div>
   <div class="feedback" id="inv-result0"></div>
   <div class="choice" onclick="selectChoice('investigations', 1)">2. Check Xray</div>
@@ -53,87 +512,124 @@
 </div>
 
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  
-  <label><input type="checkbox" id="man-check0" /> 1. WBAT with frame and ankle walker</label>
-  <label><input type="checkbox" id="man-check1" /> 2. Free active ankle mobilisation ex</label>
-  <label><input type="checkbox" id="man-check2" /> 3. Refer OPD PT for further rehabilitation</label>
-  <label><input type="checkbox" id="man-check3" /> 4. Inform doctor for re-assessment +/- further imaging</label>
+  <h3><span class="num">2</span> Select all management options you would provide:</h3>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. WBAT with frame and ankle walker</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. Free active ankle mobilisation ex</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Refer OPD PT for further rehabilitation</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Inform doctor for re-assessment +/- further imaging</label>
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
 
 <div class="box" id="result" style="display:none;">
-  <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+  <h3>📊 Final Score &amp; Response Chart</h3>
+
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
+
   <table>
     <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
     <tbody id="result-table-body"></tbody>
   </table>
-  
-  
-  <div style="margin-top:20px;">
-    <br> This case challange was developed based on a real case.
-    <br><br><strong>Diagnosis:Intra-articular navicular fracture</strong>
-<br> This patient was initially diagnosed with a sprained ankle. Initial referral order was PWB walking.
-<br><br> With the history, physical findings and positive Ottawa rule, a fracture was suspected. The abnormalty in XR warranted advanced imaging (eg. CT or MRI) to detect obstructed fracture lines or occult fractures.  
-<br><br>This patient was sent to AED by the physiotherapist in charge, and CT confirmed the diagnosis later.
-<br><br>The patient was then received for ORIF in the orthopaedic ward with post-op orders of NWB 6/52, PWB 6/52.
-<br><br><strong>Epidemiology</strong>
-<br>Navicular fractures are responsible for approximately 5% of all foot fractures and 35% of all midfoot fractures.
-<br>It may present with pain, swelling or haematoma directly over the mid-foot. Stress fractures in athletes and construction workers may present with vague pain and swelling over the mid-foot, which worsens with exercise.
-<br><br><strong>Pathology</strong>
-<br>The fracture occurs via two main mechanisms:
-<br> 1. chronic overuse injuries causing a stress fracture (often in athletes)
-<br> 2. acute high-energy trauma where the head of the talus impacts the concavity of the navicular bone
-<br><br><br><strong>Case explantion:</strong>
-<br><strong>Question 1</strong>
-<br><strong>Option 1: Palpation to L foot</strong>
-<br>Correct. Palpation of foot found severe tenderness over medial mid-foot which navicular was located. Ottawa ankle rules was positive with the fact that patient was unable to weight bear.
-<br><img src='Ottawa.png' alt='Ottawa' style='max-width:100%;boder-radius:5px;'>
-<br>Fig. 1 Ottawa ankle rule
-<br>Evidence supports the Ottawa ankle rules as an accurate instrument for excluding fractures of the ankle and mid-foot. The instrument has a sensitivity of almost 100% and a modest specificity, and its use should reduce the number of unnecessary radiographs by 30-40%. A patient who presents without the symptoms is less than 1% likely to have a fracture.
-<br><br><strong>Option 2: Check Xray</strong>
-<br>Correct. Xray showed intra-articular navicular fracture. Alignment within normal limits.
-<br><br>Radiographic features:
-<br>Plain radiograph:
-<br>Plain radiographs are the best initial test in a suspected navicular fracture. Their sensitivity for identifying navicular fracture is low; however, lateral and oblique radiographs provide the greatest chance of identifying a fracture. Rarely fractures of an accessory navicular bone (if present) are also possible and may be visible.
-<br><br>CT:
-<br>CT is more sensitive for identifying navicular fractures. It also allows for the assessment of the extent of the fracture line and the degree of comminution.
-<br><br>MRI:
-<br>T2: may demonstrate areas of hyperintensity over the fracture site indicating bone oedema. It should be noted that MRI is more sensitive than CT in identifying stress fractures.
-<br><br><strong>Option 3: Ankle AROM</strong>
-<br>Correct. You can follow "look, feel, move" or "TOTAPS" diagnostic squence. The severe limited AROM demonstrated would also support the presence of a major fracture or intra-articular fracture.
-<br><br>Navicular stress fractures in athletes and construction workers may present with vague pain and swelling over the mid-foot, which worsens with exercise. These patients generally have a normal range of motion and a normal neurovascular examination.
-<br><br><strong>Option 4: Anterior drawer test (ankle)</strong>
-<br>Incorrect. In such high irritablilty and strong sign of presence of fracture, special test is contraindicated. Anterior drawer test may worsen the condition by displacing the fracture in this case.
-<br><br><br><br>
-<br><strong>Question 2</strong>
-<br><strong>Option 1: WBAT with frame and ankle walker</strong>
-<br> Incorrect. Weight bearing on a foot with an intra-articular navicular fracture may make the filament displace.
-<br><br><strong>Option 2: Free active ankle mobilisation ex</strong>
-<br>Incorrect. Mobilising an intra-articular navicular fracture may make the filament displace.
-<br><br><strong>Option 3: Refer OPD PT for further rehabilitation & Option 4: Inform doctor for re-assessment +/- further imaging</strong>
-<br>Further rehabilitation may not be appropriate before reviewing by doctor. 
-<br>This patient may need operative management instead of conservative one. 
-<br><br>Rarely, navicular fracture could be treated conservetively if the fragments are small and undisplaced.  In that circumstance, it will not lead to any instability of the talar-navicular joint. 
-<br><br>In contrast, larger or displaced fragments may be fixed with lag screws.
-<br>Fig 2. Insertion a cannulated lag screw according to the standard technique. A washer is typically used. In contrast to lag screws inserted in the diaphysis, these lag screws will typically not penetrate the far cortex, as this would damage the opposite articular surface.
-<br><br>The strict non-weight bearing should be maintained until there is evidence of healing and any transfixion K-wires (6–12 weeks) or bridging devices (min 12 weeks) are removed.
-<br><br><h6><br><br><br>Reference:
-<br>1. AO Surgery Reference, surgeryreference.aofoundation.org.
-<br>2. Rasmussen C, Jørgensen S, Larsen P, Horodyskyy M, Kjær I, Elsoe R. Population-Based Incidence and Epidemiology of 5912 Foot Fractures. Foot Ankle Surg. 2021;27(2):181-5. doi:10.1016/j.fas.2020.03.009 - Pubmed
-<br>3. Kerkhoffs, G.M., van den Bekerom, M., Elders, L.A., van Beek, P.A., Hullegie, W.A., Bloemers, G.M., de Heus, E.M., Loogman, M.C., Rosenbrand, K.C., Kuipers, T. and Hoogstraten, J.W.A.P., 2012. Diagnosis, treatment and prevention of ankle sprains: an evidence-based clinical guideline. British journal of sports medicine, 46(12), pp.854-860.
-<br>4. Radiopaedia.org
-<br><br>Case creator: Mr. Thomas Mak</h6>
-           <!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
-</div>
+
+  <div class="learning">
+    <p style="text-align:center;color:var(--muted);font-size:13px;">This case challange was developed based on a real case.</p>
+
+    <div class="key-points">
+      <p><strong>Diagnosis: Intra-articular navicular fracture</strong></p>
+      <p>This patient was initially diagnosed with a sprained ankle. Initial referral order was PWB walking.</p>
+      <p>With the history, physical findings and positive Ottawa rule, a fracture was suspected. The abnormalty in XR warranted advanced imaging (eg. CT or MRI) to detect obstructed fracture lines or occult fractures.</p>
+      <p>This patient was sent to AED by the physiotherapist in charge, and CT confirmed the diagnosis later.</p>
+      <p>The patient was then received for ORIF in the orthopaedic ward with post-op orders of NWB 6/52, PWB 6/52.</p>
+    </div>
+
+    <h4>Epidemiology</h4>
+    <p>Navicular fractures are responsible for approximately 5% of all foot fractures and 35% of all midfoot fractures.</p>
+    <p>It may present with pain, swelling or haematoma directly over the mid-foot. Stress fractures in athletes and construction workers may present with vague pain and swelling over the mid-foot, which worsens with exercise.</p>
+
+    <h4>Pathology</h4>
+    <p>The fracture occurs via two main mechanisms:</p>
+    <p>1. chronic overuse injuries causing a stress fracture (often in athletes)<br>2. acute high-energy trauma where the head of the talus impacts the concavity of the navicular bone</p>
+
+    <h4>Case explantion:</h4>
+
+    <p style="font-weight:700;font-family:'Lexend',sans-serif;color:var(--ink);margin:14px 0 0;">Question 1</p>
+
+    <div class="qa">
+      <div class="opt-title">Option 1: Palpation to L foot</div>
+      <p>Correct. Palpation of foot found severe tenderness over medial mid-foot which navicular was located. Ottawa ankle rules was positive with the fact that patient was unable to weight bear.</p>
+      <img src='Ottawa.png' alt='Ottawa'>
+      <p>Fig. 1 Ottawa ankle rule</p>
+      <p>Evidence supports the Ottawa ankle rules as an accurate instrument for excluding fractures of the ankle and mid-foot. The instrument has a sensitivity of almost 100% and a modest specificity, and its use should reduce the number of unnecessary radiographs by 30-40%. A patient who presents without the symptoms is less than 1% likely to have a fracture.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option 2: Check Xray</div>
+      <p>Correct. Xray showed intra-articular navicular fracture. Alignment within normal limits.</p>
+      <p>Radiographic features:</p>
+      <p>Plain radiograph:</p>
+      <p>Plain radiographs are the best initial test in a suspected navicular fracture. Their sensitivity for identifying navicular fracture is low; however, lateral and oblique radiographs provide the greatest chance of identifying a fracture. Rarely fractures of an accessory navicular bone (if present) are also possible and may be visible.</p>
+      <p>CT:</p>
+      <p>CT is more sensitive for identifying navicular fractures. It also allows for the assessment of the extent of the fracture line and the degree of comminution.</p>
+      <p>MRI:</p>
+      <p>T2: may demonstrate areas of hyperintensity over the fracture site indicating bone oedema. It should be noted that MRI is more sensitive than CT in identifying stress fractures.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option 3: Ankle AROM</div>
+      <p>Correct. You can follow "look, feel, move" or "TOTAPS" diagnostic squence. The severe limited AROM demonstrated would also support the presence of a major fracture or intra-articular fracture.</p>
+      <p>Navicular stress fractures in athletes and construction workers may present with vague pain and swelling over the mid-foot, which worsens with exercise. These patients generally have a normal range of motion and a normal neurovascular examination.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option 4: Anterior drawer test (ankle)</div>
+      <p>Incorrect. In such high irritablilty and strong sign of presence of fracture, special test is contraindicated. Anterior drawer test may worsen the condition by displacing the fracture in this case.</p>
+    </div>
+
+    <p style="font-weight:700;font-family:'Lexend',sans-serif;color:var(--ink);margin:20px 0 0;">Question 2</p>
+
+    <div class="qa">
+      <div class="opt-title">Option 1: WBAT with frame and ankle walker</div>
+      <p>Incorrect. Weight bearing on a foot with an intra-articular navicular fracture may make the filament displace.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option 2: Free active ankle mobilisation ex</div>
+      <p>Incorrect. Mobilising an intra-articular navicular fracture may make the filament displace.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Option 3: Refer OPD PT for further rehabilitation &amp; Option 4: Inform doctor for re-assessment +/- further imaging</div>
+      <p>Further rehabilitation may not be appropriate before reviewing by doctor.</p>
+      <p>This patient may need operative management instead of conservative one.</p>
+      <p>Rarely, navicular fracture could be treated conservetively if the fragments are small and undisplaced.  In that circumstance, it will not lead to any instability of the talar-navicular joint.</p>
+      <p>In contrast, larger or displaced fragments may be fixed with lag screws.</p>
+      <p>Fig 2. Insertion a cannulated lag screw according to the standard technique. A washer is typically used. In contrast to lag screws inserted in the diaphysis, these lag screws will typically not penetrate the far cortex, as this would damage the opposite articular surface.</p>
+      <p>The strict non-weight bearing should be maintained until there is evidence of healing and any transfixion K-wires (6–12 weeks) or bridging devices (min 12 weeks) are removed.</p>
+    </div>
+
+    <p class="ref" style="margin-top:18px;">
+      Reference:<br>
+      1. AO Surgery Reference, surgeryreference.aofoundation.org.<br>
+      2. Rasmussen C, Jørgensen S, Larsen P, Horodyskyy M, Kjær I, Elsoe R. Population-Based Incidence and Epidemiology of 5912 Foot Fractures. Foot Ankle Surg. 2021;27(2):181-5. doi:10.1016/j.fas.2020.03.009 - Pubmed<br>
+      3. Kerkhoffs, G.M., van den Bekerom, M., Elders, L.A., van Beek, P.A., Hullegie, W.A., Bloemers, G.M., de Heus, E.M., Loogman, M.C., Rosenbrand, K.C., Kuipers, T. and Hoogstraten, J.W.A.P., 2012. Diagnosis, treatment and prevention of ankle sprains: an evidence-based clinical guideline. British journal of sports medicine, 46(12), pp.854-860.<br>
+      4. Radiopaedia.org
+    </p>
+
+    <p class="creator">Case creator: Mr. Thomas Mak</p>
+
+    <a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
+  </div>
+
   <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
 </div>
 
 <script>
   const investigations = [{"opt":"Palpation to L foot","res":"Tenderness++ at mid-foot arch especially medial side ","cor":true},
-  {"opt":"Check Xray","res":"<img src='X1.jpeg' alt='XR1' style='max-width:100%;boder-radius:5px;'><br><img src='X2.jpeg' alt='XR2' style='max-width:100%;boder-radius:5px;'><br><img src='X3.jpeg' alt='XR3' style='max-width:100%;boder-radius:5px;'>","cor":true},
+  {"opt":"Check Xray","res":"<img src='X1.jpeg' alt='XR1' style='max-width:100%;border-radius:5px;'><br><img src='X2.jpeg' alt='XR2' style='max-width:100%;border-radius:5px;'><br><img src='X3.jpeg' alt='XR3' style='max-width:100%;border-radius:5px;'>","cor":true},
   {"opt":"Ankle AROM","res":"DF: trace movement, p+++ <br>PF: trace movement, p+++","cor":true},
   {"opt":"Anterior drawer test (ankle)","res":"Severe pain with guarding","cor":false}];
   const management = [{"opt":"WBAT with frame and ankle walker","exp":"","cor":false},{"opt":"Free active ankle mobilisation ex","exp":"","cor":false},{"opt":"Refer OPD PT for further rehabilitation","exp":"","cor":false},{"opt":"Inform doctor for re-assessment +/- further imaging","exp":"","cor":true}];
@@ -149,27 +645,45 @@
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg2").classList.add("active");
+    document.getElementById("question2").scrollIntoView({behavior:"smooth", block:"start"});
   }
 
   function showFinalResult() {
     const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
     let score = 0;
-    
+
     investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
     management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
 
+    const maxScore = investigations.length + management.length;
+
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
-    
+
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
     const tbody = document.getElementById("result-table-body");
     tbody.innerHTML = "";
-    
+
     investigations.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
     });
     management.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
     });
+
+    document.getElementById("result").scrollIntoView({behavior:"smooth", block:"start"});
   }
 </script>
 </body>

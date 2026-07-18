@@ -4,117 +4,506 @@
   <meta charset="UTF-8" />
   <title>Tired Looking</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    .box {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .choice {
-      padding: 10px;
-      background-color: #e0e0e0;
-      border-radius: 5px;
-      margin: 10px 0;
-      cursor: pointer;
-    }
-    .choice:hover {
-      background-color: #d0d0d0;
-    }
-    .disabled {
-      pointer-events: none;
-      opacity: 0.6;
-    }
-    .feedback {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 5px;
-      background-color: #f8f9fa;
-    }
-    .btn {
-      margin-top: 20px;
-      padding: 10px 15px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn:hover { background-color: #0056b3; }
-    label {
-      display: block;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-    input[type="checkbox"] {
-      margin-right: 10px;
-      transform: scale(1.2);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
-      background-color: #f0f0f0;
-    }
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+.case-img .cap{
+  font-size:12.5px;
+  color:var(--muted);
+  margin-top:6px;
+  font-style:italic;
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
   </style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">🩺 Home PT Case</div>
+  <h1>Tired Looking</h1>
+</div>
+
+<div class="progress" id="progress-bar">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Investigations</span>
+  <span>Management</span>
+</div>
+
 <div class="box" id="case-box">
-  <h2>Tired Looking</h2>
-  <p><strong>Mrs. Mary Ma</strong>, a 73year-old woman, suffered from Rt #NOF with unipolar hip arthroplasty done.</br></br>
-	She started community PT rehab and this is your 3rd home visit.</br>On home visit today, patient is lying supine on bed claiming that recent 2 days were too tired to have home exercise and feel SOB on walking.</p>
-</br></br>
-SHx: NKDA </br>
-Live with husband in Private appratment, few steps stair to access lift lobby.</br>
-Premorbid: Walk unaided outdoor.</br></br>
-PMH:</br>
-- HT</br>
-- IFG</br>
-- hyperlipidemia</br>
-- Dementia, probable mixed vascular and AD, moderate stage with BPSD</br>
-- Dx Pancreatic head tumour</br>
-- seen private Oncologist, Stent inserted</br>
-- FNAC: No malignant cells seen</br>
-</br></br>
-HPI:</br>
-- Fall on day of Chemotherapy due to lower limb weakness. No preceeding symptoms, No head injury reported, Chemo not yet given.</br>
-X-Ray Pelvis/Right hip: Garden III # right NOF</br>
-Right unipolar hip arthroplasty done</br>
-Rehab done in TPH:</br>
-MBI 33 -> 45</br>
-MOCA 6 (below 2th percentile)</br>
-MFAC: cat 3 frame + 1A</br>
-ADL max A</br>
-</br>
-	<p>P/E on site:</br>
-GCS: 15/15</br>
-BP: 150/76 HR:108</br>
-SpO2: 88-90% RA at rest</br>
-Temp: 36.2C</br>
-Patient alreat and responsive.</br>
-Speech coherence</br>
-</p>
+  <p><strong>Mrs. Mary Ma</strong>, a 73year-old woman, suffered from Rt #NOF with unipolar hip arthroplasty done.<br><br>
+  She started community PT rehab and this is your 3rd home visit.<br>On home visit today, patient is lying supine on bed claiming that recent 2 days were too tired to have home exercise and feel SOB on walking.</p>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>NKDA<br>
+    Live with husband in Private appratment, few steps stair to access lift lobby.<br>
+    Premorbid: Walk unaided outdoor.</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PMH:</h4>
+    <ul>
+      <li>HT</li>
+      <li>IFG</li>
+      <li>hyperlipidemia</li>
+      <li>Dementia, probable mixed vascular and AD, moderate stage with BPSD</li>
+      <li>Dx Pancreatic head tumour</li>
+      <li>seen private Oncologist, Stent inserted</li>
+      <li>FNAC: No malignant cells seen</li>
+    </ul>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>Fall on day of chemotherapy due to lower limb weakness. No preceeding symptoms, No head injury reported, Chemo not yet given.</p>
+    <p>X-Ray Pelvis/Right hip: Garden III # right NOF<br>
+    Right unipolar hip arthroplasty done<br>
+    Rehab done in TPH:<br>
+    MBI 33 -&gt; 45<br>
+    MOCA 6 (below 2th percentile)<br>
+    MFAC: cat 3 frame + 1A<br>
+    ADL max A</p>
+  </div>
+
+  <div class="field-group">
+    <h4>P/E on site:</h4>
+    <p>GCS: 15/15<br>
+    BP: 150/76 HR:108<br>
+    SpO2: 88-90% RA at rest<br>
+    Temp: 36.2C<br>
+    Patient alreat and responsive.<br>
+    Speech coherence</p>
+  </div>
 </div>
 
 <!-- QUESTION 1 -->
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
+  <h3><span class="num">1</span> 🩺 What investigation or physical exam would you check/perform?</h3>
+  <p class="subhint">Tap an option to reveal the finding.</p>
+
   <div class="choice" onclick="selectChoice('investigations', 0)">1. Check Hstix</div>
   <div class="feedback" id="inv-result0"></div>
 
@@ -132,11 +521,11 @@ Speech coherence</br>
 
 <!-- QUESTION 2 -->
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  <label><input type="checkbox" id="man-check0" /> 1. Mobilise patient</label>
-  <label><input type="checkbox" id="man-check1" /> 2. Refer GOPC same day</label>
-  <label><input type="checkbox" id="man-check2" /> 3. Call ambulance</label>
-  <label><input type="checkbox" id="man-check3" /> 4. Position patient in Right side lying</label>
+  <h3><span class="num">2</span> 💊 Which of the following would form part of your management plan? (select all that apply)</h3>
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. Mobilise patient</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. Refer GOPC same day</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Call ambulance</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Position patient in Right side lying</label>
 
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
@@ -144,7 +533,12 @@ Speech coherence</br>
 <!-- FINAL RESULT -->
 <div class="box" id="result" style="display:none;">
   <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
 
   <table>
     <thead>
@@ -152,38 +546,81 @@ Speech coherence</br>
         <th>Question</th>
         <th>Option</th>
         <th>Indicated?</th>
-        <th>User Your Selection</th>
+        <th>Your Selection</th>
       </tr>
     </thead>
     <tbody id="result-table-body"></tbody>
   </table>
 
-  <h4 style="margin-top: 30px;">🧪 Investigations – Explanation</h4>
-  <ul>
-    <li><strong>Check Hstix:</strong> Correct, low blood sugar (hypoglycemia) can cause shortness of breath (SOB) because the body releases stress hormones like adrenaline, which can lead to rapid breathing, and because the respiratory muscles need glucose to function properly. Hypoglycemia can also trigger anxiety, causing hyperventilation, which also leads to a feeling of breathlessness.</br>In this case, spot Hstix was 7.8mmol/L, which is in normal range. This rule out hypoglycemia causing breathlessness.</br></li>
-    <li><strong>Check pupil size and reflex:</strong> Incorrect. Pupil asymmetry or pupil dilation may be a sign of a serious neurological condition, such as optic nerve/brain damage. However, the checking of pupil is less improtant in this case as patient was fully awake, lack of history of neurological demage and no other associated neurological symptoms/sign.</br></br></li>
-    <li><strong>Ascultation of lungs:</strong> Correct, Patient presented with excertional SOB, boderline SpO2. Cardio-respiratory dysfunction was the 1st consideration. Dull lung sound and decreased vocal resonance suggests a lack of normal lung tissue or the presence of fluid or air between the lung and chest wall, as seen in a pleural effusion or pneumothorax. With patient history of untreated cancer, pleural effusion was highly susspected clinically.</br></br>
-Malignant pleural effusion most often occurs with advanced stage 4 cancer, including lung and breast cancer. It is usually a sign of a poorer outcome and shortened life expectancy.</br></br><img src="Pleural effusion.png" alt='effusion' style='max-width:100%;boder-radius:5px;'></br>img: Complete white out the Rt pleural space indicating severe pleural effusion and lost of Rt lung volume.</br></br></li>
-    <li><strong>Check subconjunctiva circulation:</strong> Correct. Conjunctival pallor is present if there is loss of the normal redness of the anterior rim of the conjunctiva, which is highly suggestive of anemia.(LR 4.49, 95% confidence interval [CI] 1.80, 10.99)(1) Severe anemia can presented with tiredness and SOB. If any suspection of acute anemia, futher questioning of other causes maybe indicated, for example GI bleed or recent trauma.</br><img src="Eye rim.jpeg" alt='Eye' style='max-width:100%;boder-radius:5px;'></br>img: Normal vs pallor anterior rim of the conjunctiva.</br></li>
-  </ul>
+  <div class="learning">
+    <h4>🧪 Investigations – Explanation</h4>
 
-  <h4>💊 Management – Explanation</h4>
-  <ul>
-    <li><strong>Mobilise patient:</strong> Incorrect. Based on the clinical findings, pleural effusion is highly suspected. Pneumothorax is considered unlikely, as it is typically associated with decreased/absent breath sounds and hyperresonance on percussion secondary to trapped air, which were not observed in this case.
-Given the borderline SpO₂ even at rest, the pleural effusion is most likely moderate to severe. Position changes or turning may exacerbate the condition and lead to further desaturation. Therefore, mobilisation of the patient should be approached with caution, as it may cause more harm than benefit. </br></br></li>
-    <li><strong>Refer GOPC same day:</strong> Incorrect. Based on the clinical findings, a large/symptomatic pleural effusion is highly suspected and constitutes a medical emergency requiring prompt assessment and intervention.</br></br></li>
-    <li><strong>Call ambulance</strong> Correct. It is recommended to remain with the patient until the ambulance staff arrive. Continuously monitor the patient’s condition and vital signs. Where possible, attempt to stabilise the patient’s condition.</br></br></li>
-    <li><strong>Position patient in Right side lying:</strong> Incorrect. According to the ascultation, Right pleural effusion was highly suspected. Position patient with good lung lying below can enhance better V/Q ratio, thus improves satuation. Position paient in LEFT slide lying would be a better option.</br></br><img src="Effects of positioning.jpg" alt='Position' style='max-width:100%;boder-radius:5px;'>
-  </ul>
-<p><h5>Refrence:</br>
-1. Sheth TN, Choudhry NK, Bowes M, Detsky AS. The relation of conjunctival pallor to the presence of anemia. J Gen Intern Med. 1997;12(2):102-6.</br></br>
-</br></br>
-<h6>Case contributor: Mr Thomas Mak </h6>
-  <button class="btn" onclick="restart()">🔁 Restart Case</button>
+    <div class="qa">
+      <div class="opt-title">Check Hstix</div>
+      <p>Correct, low blood sugar (hypoglycemia) can cause shortness of breath (SOB) because the body releases stress hormones like adrenaline, which can lead to rapid breathing, and because the respiratory muscles need glucose to function properly. Hypoglycemia can also trigger anxiety, causing hyperventilation, which also leads to a feeling of breathlessness.<br>In this case, spot Hstix was 7.8mmol/L, which is in normal range. This rule out hypoglycemia causing breathlessness.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Check pupil size and reflex</div>
+      <p>Incorrect. Pupil asymmetry or pupil dilation may be a sign of a serious neurological condition, such as optic nerve/brain damage. However, the checking of pupil is less improtant in this case as patient was fully awake, lack of history of neurological demage and no other associated neurological symptoms/sign.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Ascultation of lungs</div>
+      <p>Correct, Patient presented with excertional SOB, boderline SpO2. Cardio-respiratory dysfunction was the 1st consideration. Dull lung sound and decreased vocal resonance suggests a lack of normal lung tissue or the presence of fluid or air between the lung and chest wall, as seen in a pleural effusion or pneumothorax. With patient history of untreated cancer, pleural effusion was highly susspected clinically.</p>
+      <p>Malignant pleural effusion most often occurs with advanced stage 4 cancer, including lung and breast cancer. It is usually a sign of a poorer outcome and shortened life expectancy.</p>
+      <div class="case-img">
+        <img src="Pleural effusion.png" alt="effusion">
+        <div class="cap">img: Complete white out the Rt pleural space indicating severe pleural effusion and lost of Rt lung volume.</div>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Check subconjunctiva circulation</div>
+      <p>Correct. Conjunctival pallor is present if there is loss of the normal redness of the anterior rim of the conjunctiva, which is highly suggestive of anemia.(LR 4.49, 95% confidence interval [CI] 1.80, 10.99)(1) Severe anemia can presented with tiredness and SOB. If any suspection of acute anemia, futher questioning of other causes maybe indicated, for example GI bleed or recent trauma.</p>
+      <div class="case-img">
+        <img src="Eye rim.jpeg" alt="Eye">
+        <div class="cap">img: Normal vs pallor anterior rim of the conjunctiva.</div>
+      </div>
+    </div>
+
+    <h4 style="margin-top:22px;">💊 Management – Explanation</h4>
+
+    <div class="qa">
+      <div class="opt-title">Mobilise patient</div>
+      <p>Incorrect. Based on the clinical findings, pleural effusion is highly suspected. Pneumothorax is considered unlikely, as it is typically associated with decreased/absent breath sounds and hyperresonance on percussion secondary to trapped air, which were not observed in this case.
+Given the borderline SpO₂ even at rest, the pleural effusion is most likely moderate to severe. Position changes or turning may exacerbate the condition and lead to further desaturation. Therefore, mobilisation of the patient should be approached with caution, as it may cause more harm than benefit.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Refer GOPC same day</div>
+      <p>Incorrect. Based on the clinical findings, a large/symptomatic pleural effusion is highly suspected and constitutes a medical emergency requiring prompt assessment and intervention.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Call ambulance</div>
+      <p>Correct. It is recommended to remain with the patient until the ambulance staff arrive. Continuously monitor the patient's condition and vital signs. Where possible, attempt to stabilise the patient's condition.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Position patient in Right side lying</div>
+      <p>Incorrect. According to the ascultation, Right pleural effusion was highly suspected. Position patient with good lung lying below can enhance better V/Q ratio, thus improves satuation. Position paient in LEFT slide lying would be a better option.</p>
+      <div class="case-img">
+        <img src="Effects of positioning.jpg" alt="Position">
+      </div>
+    </div>
+
+    <p class="ref">Refrence:<br>
+    1. Sheth TN, Choudhry NK, Bowes M, Detsky AS. The relation of conjunctival pallor to the presence of anemia. J Gen Intern Med. 1997;12(2):102-6.</p>
+  </div>
+
+  <div class="creator">Case contributor: Mr Thomas Mak</div>
+
+  <button class="btn ghost" onclick="restart()">🔁 Restart Case</button>
 </div>
 
 <!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+<a href="../../case_index.html" class="btn back-link">← Back to Homepage</a>
 
 <script>
   const investigations = [
@@ -217,6 +654,10 @@ Given the borderline SpO₂ even at rest, the pleural effusion is most likely mo
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg2").classList.add("active");
+    document.getElementById("question2").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function scorePerItem(type, data, checkedArray) {
@@ -241,13 +682,23 @@ Given the borderline SpO₂ even at rest, the pleural effusion is most likely mo
     const invScore = scorePerItem("investigations", investigations, []);
     const manScore = scorePerItem("management", management, checkedMan);
     const totalScore = invScore + manScore;
-    const totalPossible = 8;
-    const percentage = Math.round((totalScore / totalPossible) * 100);
+    const totalPossible = investigations.length + management.length;
 
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = `
-      <strong>Total Score: ${totalScore} / ${totalPossible} → ${percentage}%</strong>
-    `;
+    document.getElementById("final-score").innerHTML = `${totalScore} / ${totalPossible}`;
+
+    const pct = Math.ceil((totalScore / totalPossible) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
 
     for (let i = 0; i < 4; i++) {
       document.getElementById("man-check" + i).disabled = true;
@@ -291,6 +742,8 @@ Given the borderline SpO₂ even at rest, the pleural effusion is most likely mo
       `;
       tbody.appendChild(tr);
     }
+
+    document.getElementById("result").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function restart() {
@@ -303,6 +756,10 @@ Given the borderline SpO₂ even at rest, the pleural effusion is most likely mo
     }
     document.getElementById("question2").style.display = "none";
     document.getElementById("result").style.display = "none";
+    document.getElementById("seg1").classList.remove("done");
+    document.getElementById("seg1").classList.add("active");
+    document.getElementById("seg2").classList.remove("done", "active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 </script>
 

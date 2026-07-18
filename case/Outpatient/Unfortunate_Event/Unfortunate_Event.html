@@ -4,50 +4,480 @@
   <meta charset="UTF-8" />
   <title>Unfortunate Event</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
-    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
-    .choice:hover { background-color: #d0d0d0; }
-    .disabled { pointer-events: none; opacity: 0.6; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
-    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .btn:hover { background-color: #0056b3; }
-    label { display: block; margin-bottom: 10px; cursor: pointer; }
-    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f0f0f0; }
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:bold;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points p{ margin:0; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
   </style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">🩺 Physiotherapy OPD Case</div>
+  <h1>Case: Unfortunate Event</h1>
+</div>
+
+<div class="progress">
+  <div class="seg" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Investigations</span>
+  <span>Management</span>
+</div>
+
 <div class="box">
-  <h2>Case: Unfortunate Event</h2>
-  <p>Ms. Janice Chow's Case Summary:
-   <br><br>SHx:
-   <br>F/72
-   <br>living alone with NGO-supported MOW and escort services
-   <br><br>Premorbid walk with stick + handrails at home, electric wheelchair outdoor
-   <br><br>PMHx:
-   <br>1. IGT
-   <br>2. Ray amputation left 4th & 5th metatarsals in 11/2016
-   <br>3. Right TKR in 04/2016
-   <br><br>HPI:
-   <br>Admitted ORT 3 months ago for acute-on-chronic low back pain radiating to buttocks
-   <br><br>X-ray: no fracture, pedicles and endplates intact, L4/5 spondylolisthesis similar to old films
-   <br><br>D/C home with OPD PT referral
-   <br><br>================================ 
-   <br>You are the case physiotherapist of Ms. Chow. She is attending her 7th outpatient session today. Focus to date has been lumbar mobilisation exercises, general lower-limb strengthening, functional training.
-   <br><br>Ms. Chow attended OPD today on electric wheelchair as usual. Upon approach, she reported a recent fall onto right knee and right arm 3 days ago while exiting the toilet at home.
-   <br><br>Right knee pain had been present for 1 month prior (intermittent, NPRS 4/10); pain exacerbated post-fall but she remained ambulant and symptoms were improving, so no medical review was sought.
-   <br><br>She also reported that low back pain remained unchanged. Right knee pain now intermittent NPRS 6-7/10, aggravated by walking or end-range flexion/extension, eased by sitting/lying.
-   <br><br>================================<br></p>
+  <p>Ms. Janice Chow's Case Summary:</p>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>F/72<br>living alone with NGO-supported MOW and escort services</p>
+  </div>
+
+  <p>Premorbid walk with stick + handrails at home, electric wheelchair outdoor</p>
+
+  <div class="field-group">
+    <h4>PMHx:</h4>
+    <p>1. IGT<br>2. Ray amputation left 4th & 5th metatarsals in 11/2016<br>3. Right TKR in 04/2016</p>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>Admitted ORT 3 months ago for acute-on-chronic low back pain radiating to buttocks</p>
+    <p>X-ray: no fracture, pedicles and endplates intact, L4/5 spondylolisthesis similar to old films</p>
+    <p>D/C home with OPD PT referral</p>
+  </div>
+
+  <p class="prompt-line">You are the case physiotherapist of Ms. Chow. She is attending her 7th outpatient session today. Focus to date has been lumbar mobilisation exercises, general lower-limb strengthening, functional training.</p>
+
+  <p>Ms. Chow attended OPD today on electric wheelchair as usual. Upon approach, she reported a recent fall onto right knee and right arm 3 days ago while exiting the toilet at home.</p>
+  <p>Right knee pain had been present for 1 month prior (intermittent, NPRS 4/10); pain exacerbated post-fall but she remained ambulant and symptoms were improving, so no medical review was sought.</p>
+  <p>She also reported that low back pain remained unchanged. <strong>Right knee pain now intermittent NPRS 6-7/10</strong>, aggravated by walking or end-range flexion/extension, eased by sitting/lying.</p>
 </div>
 
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
-  
+  <h3><span class="num">1</span> 🩺 What investigation or physical exam would you perform/check?</h3>
+  <p class="subhint">Tap an option to reveal the finding.</p>
+
   <div class="choice" onclick="selectChoice('investigations', 0)">1. Checking right knee AROM</div>
   <div class="feedback" id="inv-result0"></div>
   <div class="choice" onclick="selectChoice('investigations', 1)">2. Checking back AROM in standing</div>
@@ -60,63 +490,93 @@
 </div>
 
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  
-  <label><input type="checkbox" id="man-check0" /> 1. Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training.</label>
-  <label><input type="checkbox" id="man-check1" /> 2. Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week.</label>
-  <label><input type="checkbox" id="man-check2" /> 3. Send the patient to the Accident and Emergency Department (AED) for further review and management.</label>
-  <label><input type="checkbox" id="man-check3" /> 4. Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements. </label>
+  <h3><span class="num">2</span> 💊 Select all management options you would provide:</h3>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training.</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week.</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Send the patient to the Accident and Emergency Department (AED) for further review and management.</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements. </label>
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
 
 <div class="box" id="result" style="display:none;">
   <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
+
   <table>
     <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
     <tbody id="result-table-body"></tbody>
   </table>
-    
-  <div style="margin-top:20px;"><strong>------- Explanations --------</strong>
-    <br><strong>Investigations:</strong>
-    <br><strong>Option 1. Checking right knee AROM</strong>
-    <br>Checking right knee AROM is necessary as the next step. In a patient with recent TKR who sustained a fall onto the prosthetic knee, a new extension lag (e.g., 20° lag not present in prior sessions) is a critical red flag for possible extensor mechanism disruption (quadriceps or patellar tendon rupture) or periprosthetic fracture. This objective mechanical deficit takes precedence over stable chronic lumbar symptoms and mandates urgent medical review rather than continuing routine outpatient assessment.
-    <br><br><strong>Option 2. Checking back AROM in standing</strong>
-    <br>Checking back AROM in standing is not necessary as the next step. The patient's low back pain is chronic, unchanged, and unrelated to the acute post-fall knee complaint. Repeating lumbar AROM adds no new diagnostic value when a higher-priority post-TKR mechanical issue exists and risks further damage (e.g., fracture propagation or implant loosening).
-    <br><br><strong>Option 3. Observation of the right knee for inflammatory signs and/or deformity</strong>
-    <br>Observation of the right knee for inflammatory signs and/or deformity is necessary as the next step. As possible extensor mechanism disruption or periprosthetic fracture is highly suspected in this case, observation for any deformity, swelling, and bruising might provide cues to support your clinical decision making on referring for medical evaluation.
-    <br><br><strong>Option 4. Functional gait assessment</strong>
-    <br>Functional gait assessment is not necessary as the next step. Assessing patient's ability to weight bear may provide supportive information for a suspected extensor mechanism disruption or periprosthetic fracture. However, weight bearing activities are contraindicated when AROM already reveals a clear red flag.
-    <br><br><br><strong>Treatment:</strong>
-    <br><strong>Option 1. Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training.</strong>
-    <br>Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training is not optimal. Ignoring the new post-fall knee trauma and objective extension lag risks exacerbating an undiagnosed periprosthetic fracture, implant loosening, or extensor mechanism rupture. Medical clearance before resuming loading is required when new mechanical symptoms appear.
-    <br><br><strong>Option 2. Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week.</strong>
-    <br>Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week is not optimal. Conservative modification with delayed medical review is unsafe. The history meets Ottawa Knee Rule criteria (age >55 years + trauma) and the new extension lag indicates possible structural failure and the need for urgent medical evaluation (Stiell et al., 1997).
-    <br><br><br><img src='Ottawa_knee.png' alt='knee' style='max-width:100%;boder-radius:5px;'>
-    <br>Fig.1 Ottawa Knee Rule Criteria 
-    <br><br><strong>Option 3. Send the patient to the Accident and Emergency Department (AED) for further review and management.</strong>
-    <br>Send the patient to the Accident and Emergency Department (AED) for further review and management is optimal. The combination of:
-    <br><br>(1) fall onto the prosthetic knee
-    <br><br>(2) persistent pain
-    <br><br>(3) new extension lag constitutes red flags for periprosthetic fracture or extensor mechanism disruption.
-    <br><br>Immediate AED referral ensures urgent X-ray (± CT) and orthopaedic assessment, which is the evidence-based standard to prevent long-term morbidity in elderly patients with prosthetic joints (Stiell et al., 1997).
-    <br><br><strong>Option 4. Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements. </strong>
-    <br>Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements is not optimal. Knee-specific loading or mobilisations are contraindicated until serious pathology is excluded. Forcing exercises on a potentially unstable TKR risks fracture propagation or implant damage.
-    <br><br><strong>Key Take Home Messages:</strong>
-    <br>Always re-prioritise assessment and management when a new symptom arises, especially after trauma. Objective findings (extension lag) trump subjective improvement trends. Early medical referral protects patient safety and prevents avoidable complications. Document clearly and communicate handover details when referring to AED.
-    <br><br>References:
-    <br>Stiell, I. G., Wells, G. A., Hoag, R. H., Sivilotti, M. L., Cacciotti, T. F., Verbeek, P. R., Greenway, K. T., McDowell, I., Cwinn, A. A., Greenberg, G. H., Nichol, G., & Michael, J. A. (1997). Implementation of the Ottawa Knee Rule for the use of radiography in acute knee injuries. *JAMA*, 278(23), 2075-2079. https://doi.org/10.1001/jama.1997.03550230051036
-    <br><br><h6>Case Creator: Gigi Cheung</h6>
-               <!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+
+  <div class="learning">
+    <h4>Explanations</h4>
+
+    <div class="qa">
+      <div class="opt-title">Investigations — Option 1. Checking right knee AROM</div>
+      <p>Checking right knee AROM is necessary as the next step. In a patient with recent TKR who sustained a fall onto the prosthetic knee, a new extension lag (e.g., 20° lag not present in prior sessions) is a critical red flag for possible extensor mechanism disruption (quadriceps or patellar tendon rupture) or periprosthetic fracture. This objective mechanical deficit takes precedence over stable chronic lumbar symptoms and mandates urgent medical review rather than continuing routine outpatient assessment.</p>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Investigations — Option 2. Checking back AROM in standing</div>
+      <p>Checking back AROM in standing is not necessary as the next step. The patient's low back pain is chronic, unchanged, and unrelated to the acute post-fall knee complaint. Repeating lumbar AROM adds no new diagnostic value when a higher-priority post-TKR mechanical issue exists and risks further damage (e.g., fracture propagation or implant loosening).</p>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Investigations — Option 3. Observation of the right knee for inflammatory signs and/or deformity</div>
+      <p>Observation of the right knee for inflammatory signs and/or deformity is necessary as the next step. As possible extensor mechanism disruption or periprosthetic fracture is highly suspected in this case, observation for any deformity, swelling, and bruising might provide cues to support your clinical decision making on referring for medical evaluation.</p>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Investigations — Option 4. Functional gait assessment</div>
+      <p>Functional gait assessment is not necessary as the next step. Assessing patient's ability to weight bear may provide supportive information for a suspected extensor mechanism disruption or periprosthetic fracture. However, weight bearing activities are contraindicated when AROM already reveals a clear red flag.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Treatment — Option 1. Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training.</div>
+      <p>Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training is not optimal. Ignoring the new post-fall knee trauma and objective extension lag risks exacerbating an undiagnosed periprosthetic fracture, implant loosening, or extensor mechanism rupture. Medical clearance before resuming loading is required when new mechanical symptoms appear.</p>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Treatment — Option 2. Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week.</div>
+      <p>Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week is not optimal. Conservative modification with delayed medical review is unsafe. The history meets Ottawa Knee Rule criteria (age >55 years + trauma) and the new extension lag indicates possible structural failure and the need for urgent medical evaluation (Stiell et al., 1997).</p>
+      <div class="case-img">
+        <img src='Ottawa_knee.png' alt='knee'>
+        <p class="ref">Fig.1 Ottawa Knee Rule Criteria</p>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Treatment — Option 3. Send the patient to the Accident and Emergency Department (AED) for further review and management.</div>
+      <p>Send the patient to the Accident and Emergency Department (AED) for further review and management is optimal. The combination of:</p>
+      <p>(1) fall onto the prosthetic knee</p>
+      <p>(2) persistent pain</p>
+      <p>(3) new extension lag constitutes red flags for periprosthetic fracture or extensor mechanism disruption.</p>
+      <p>Immediate AED referral ensures urgent X-ray (± CT) and orthopaedic assessment, which is the evidence-based standard to prevent long-term morbidity in elderly patients with prosthetic joints (Stiell et al., 1997).</p>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Treatment — Option 4. Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements.</div>
+      <p>Progress lower-limb strengthening with added right-knee-specific exercises (e.g., patellar mobilisations and quadriceps sets) while avoiding painful end-range movements is not optimal. Knee-specific loading or mobilisations are contraindicated until serious pathology is excluded. Forcing exercises on a potentially unstable TKR risks fracture propagation or implant damage.</p>
+    </div>
+
+    <div class="key-points">
+      <p><strong>Key Take Home Messages:</strong><br>
+      Always re-prioritise assessment and management when a new symptom arises, especially after trauma. Objective findings (extension lag) trump subjective improvement trends. Early medical referral protects patient safety and prevents avoidable complications. Document clearly and communicate handover details when referring to AED.</p>
+    </div>
+
+    <p class="ref">References:<br>
+    Stiell, I. G., Wells, G. A., Hoag, R. H., Sivilotti, M. L., Cacciotti, T. F., Verbeek, P. R., Greenway, K. T., McDowell, I., Cwinn, A. A., Greenberg, G. H., Nichol, G., & Michael, J. A. (1997). Implementation of the Ottawa Knee Rule for the use of radiography in acute knee injuries. <em>JAMA</em>, 278(23), 2075-2079. https://doi.org/10.1001/jama.1997.03550230051036</p>
+
+    <div class="creator">Case Creator: Gigi Cheung</div>
+    <a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
   </div>
+
   <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
 </div>
 
 <script>
   const investigations = [{"opt":"Checking right knee AROM","res":"Right knee AROM 20°-100° (20° extension lag), which was not present in previous sessions (previously 0°-120°)","cor":true},
   {"opt":"Checking back AROM in standing","res":"Ms. Chow required frame support for standing in view of her right knee pain. <br><br>Lumbar AROM was performed in sitting instead: <br> forward flexion limited to mid-shin level with increased back pain <br> extension limited with bilateral buttock pain (similar to previous sessions)","cor":false},
-  {"opt":"Observation of the right knee for inflammatory signs and/or deformity ","res":"Mild generalised swelling over the supra-patellar pouch and anterior knee with no obvious deformity, malalignment, or patella alta/baja <br>No increased local heat or erythema compared to the contralateral side.","cor":true},
+  {"opt":"Observation of the right knee for inflammatory signs and/or deformity ","res":"Mild generalised swelling over the supra-patellar pouch and anterior knee with no obvious deformity, malalignment, or patella alta/baja <br><br>No increased local heat or erythema compared to the contralateral side.","cor":true},
   {"opt":"Functional gait assessment ","res":"Ms. Chow walked with limping gait with reduced stance time on the right lower limb and heavy reliance on the walking frame. <br><br> She was unable to achieve full knee extension in terminal stance on the right and could only tolerate few steps of walking.","cor":false}];
   const management = [{"opt":"Continue previous treatments of back mobilisation exercises, general lower-limb strengthening, and functional training.","exp":"","cor":false},
   {"opt":"Modify the session to focus on back and upper-limb exercises only; advise RICE for the right knee and review in 1 week.","exp":"","cor":false},
@@ -134,21 +594,35 @@
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg2").classList.add("active");
   }
 
   function showFinalResult() {
     const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
     let score = 0;
-    
+
     investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
     management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
 
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
-    
+    document.getElementById("seg2").classList.remove("active");
+    document.getElementById("seg2").classList.add("done");
+
+    const maxScore = investigations.length + management.length;
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
     const tbody = document.getElementById("result-table-body");
     tbody.innerHTML = "";
-    
+
     investigations.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
     });

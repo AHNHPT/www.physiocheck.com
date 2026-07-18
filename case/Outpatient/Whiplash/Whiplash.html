@@ -4,74 +4,523 @@
   <meta charset="UTF-8" />
   <title>Whiplash</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; max-width: 600px; margin: auto; padding: 20px; }
-    .box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .choice { padding: 10px; background-color: #e0e0e0; border-radius: 5px; margin: 10px 0; cursor: pointer; }
-    .choice:hover { background-color: #d0d0d0; }
-    .disabled { pointer-events: none; opacity: 0.6; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #f8f9fa; min-height: 20px; }
-    .btn { margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .btn:hover { background-color: #0056b3; }
-    label { display: block; margin-bottom: 10px; cursor: pointer; }
-    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f0f0f0; }
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:bold;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+  text-decoration:none;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .qa img{ max-width:100%; border-radius:10px; border:1px solid var(--line); margin:4px 0 8px; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.learning .ref p{ margin:0 0 10px; }
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
   </style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">🩺 Physiotherapy Case</div>
+  <h1>Whiplash</h1>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Assessment</span>
+  <span>Management</span>
+</div>
+
 <div class="box">
-  <h2>Case: Whiplash</h2>
-  <p>Mr. Cheung is a 25-year-old male presenting with persistent neck pain and a distressing sensation of "head heaviness" 4 days following a motor vehicle accident. 
-  <br><br>He was the driver of a private car that was stationary when it was struck from behind by another vehicle traveling at approximately 50 km/hour. The collision resulted in a significant whiplash motion to the body.
-  <br><br>He sought immediate medical attention at the Accident & Emergency department, where initial X-rays were performed and told of “no obvious fractures”. He was subsequently discharged with a prescription for NSAIDs. However, in the days following the accident, his symptoms persisted and developed sharp, occipital headaches that radiate toward the occipital area.
-  <br><br>You are the physiotherapist in-charge of Mr. Cheung at the adult out-patient department.
-  <br><br>------------------------------------------
-  <br><strong>SHx:</strong>
-  <br>- NKDA
-  <br>- NDNS
-  <br>- Live alone in a subdivided flat, 1 FOS to home.
-  <br>- Officer worker
-  <br>- Right handed
-  <br><br><strong>PMHx:</strong>
-  <br>Unremarkable
-  <br><br><strong>HPI:</strong>
-  <br>RTA, front private car driver hit by another SUV at behind (~50km/hr)
-  <br>Attended AED same day
-  <br><br>X-ray:
-  <br>Cx AP,Lat: no obvious fractures
-  <br>Home with prn Panadol and Volteran SR
-  <br><br>--------------------
-  <br><strong>S/E:</strong>
-  <br><strong>C/O:</strong>
-  <br>- He reported severe upper neck pain and a persistent headache localized to the occipital region, NPRS 7/10.
-  <br>- Patient reports head heaviness++, needs a hand to support his head.
-  <br>- Bilateral radiation down to medial arms when head down.
-  <br>- Turning your head also causes severe pain and “clicking” sound heard.
-  <br>- Right hand weakness that cannot grip a water bottle.
-  <br><br>Aggravating: turning from side to side.
-  <br>Easing:  headrest while sitting or lying down.
-  <br><br><br><strong>Body Diagram:</strong>
-  <br><img src='body.png' alt='body' style='max-width:100%;boder-radius:5px;'>
-  <br><br><strong>P/E:</strong>
-  <br>BP: 112/78 HR 68
-  <br>- Come alone
-  <br>- Cooperative
-  <br><br><strong>Observation:</strong>
-  <br><img src='face.png' alt='face' style='max-width:100%;boder-radius:5px;'>
-  <br>- Sitting with guarded neutral position
-  <br>- Prominent SCM and trapezius muscle
-  <br>- Apprehension++
-  <br><br>- Right fine hand: clumsiness+
-  <br>- Left fine hand: normal
-  </p>
+  <p>Mr. Cheung is a 25-year-old male presenting with persistent neck pain and a distressing sensation of "head heaviness" 4 days following a motor vehicle accident.</p>
+  <p>He was the driver of a private car that was stationary when it was struck from behind by another vehicle traveling at approximately 50 km/hour. The collision resulted in a significant whiplash motion to the body.</p>
+  <p>He sought immediate medical attention at the Accident &amp; Emergency department, where initial X-rays were performed and told of “no obvious fractures”. He was subsequently discharged with a prescription for NSAIDs. However, in the days following the accident, his symptoms persisted and developed sharp, occipital headaches that radiate toward the occipital area.</p>
+  <p class="prompt-line">You are the physiotherapist in-charge of Mr. Cheung at the adult out-patient department.</p>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <ul>
+      <li>NKDA</li>
+      <li>NDNS</li>
+      <li>Live alone in a subdivided flat, 1 FOS to home.</li>
+      <li>Officer worker</li>
+      <li>Right handed</li>
+    </ul>
+  </div>
+
+  <div class="field-group">
+    <h4>PMHx:</h4>
+    <p>Unremarkable</p>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>RTA, front private car driver hit by another SUV at behind (~50km/hr)<br>Attended AED same day</p>
+    <p><strong>X-ray:</strong><br>Cx AP,Lat: no obvious fractures<br>Home with prn Panadol and Volteran SR</p>
+  </div>
+
+  <div class="field-group">
+    <h4>C/O:</h4>
+    <ul>
+      <li>He reported severe upper neck pain and a persistent headache localized to the occipital region, NPRS 7/10.</li>
+      <li>Patient reports head heaviness++, needs a hand to support his head.</li>
+      <li>Bilateral radiation down to medial arms when head down.</li>
+      <li>Turning your head also causes severe pain and “clicking” sound heard.</li>
+      <li>Right hand weakness that cannot grip a water bottle.</li>
+    </ul>
+    <p>Aggravating: turning from side to side.<br>Easing:  headrest while sitting or lying down.</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Body Diagram:</h4>
+    <div class="case-img"><img src='body.png' alt='body'></div>
+  </div>
+
+  <div class="field-group">
+    <h4>P/E:</h4>
+    <p>BP: 112/78 HR 68</p>
+    <ul>
+      <li>Come alone</li>
+      <li>Cooperative</li>
+    </ul>
+  </div>
+
+  <div class="field-group">
+    <h4>Observation:</h4>
+    <div class="case-img"><img src='face.png' alt='face'></div>
+    <ul>
+      <li>Sitting with guarded neutral position</li>
+      <li>Prominent SCM and trapezius muscle</li>
+      <li>Apprehension++</li>
+    </ul>
+    <ul>
+      <li>Right fine hand: clumsiness+</li>
+      <li>Left fine hand: normal</li>
+    </ul>
+  </div>
 </div>
 
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you perform/check?</h3>
-  
+  <h3><span class="num">1</span> What investigation or physical exam would you perform/check?</h3>
+
   <div class="choice" onclick="selectChoice('investigations', 0)">1. Cx AROM</div>
   <div class="feedback" id="inv-result0"></div>
   <div class="choice" onclick="selectChoice('investigations', 1)">2. Cx Central PA / Unilateral PA</div>
@@ -84,94 +533,97 @@
 </div>
 
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  
-  <label><input type="checkbox" id="man-check0" /> 1. Free active Cx mobilization ex</label>
-  <label><input type="checkbox" id="man-check1" /> 2. Passive mobilization for C1-3 levels central PA / right unilateral PA</label>
-  <label><input type="checkbox" id="man-check2" /> 3. Neurodynamics exercise with median nerve slider ex</label>
-  <label><input type="checkbox" id="man-check3" /> 4. Inform doctor for re-assessment +/- further Cx CT scan / MRI</label>
+  <h3><span class="num">2</span> Select all management options you would provide:</h3>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. Free active Cx mobilization ex</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. Passive mobilization for C1-3 levels central PA / right unilateral PA</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Neurodynamics exercise with median nerve slider ex</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Inform doctor for re-assessment +/- further Cx CT scan / MRI</label>
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
 
 <div class="box" id="result" style="display:none;">
-  <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+  <h3>📊 Final Score &amp; Response Chart</h3>
+
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
+
   <table>
     <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
     <tbody id="result-table-body"></tbody>
   </table>
-  
-  
-  <div style="margin-top:20px;">  
-  <h4 style="margin-top:30px;">🧪 Explanation</h4>
-<br><strong>1. Free active Cx mobilization ex</strong>
-<br>When treating a patient with potential upper cervical instability - involving the atlanto-occipital (C0-C1) and atlanto-axial (C1-C2) joints - the clinical priority shifts entirely from "restoring mobility" to "ensuring structural integrity." Providing free active mobilization in this context is generally considered contraindicated as mobilization likely jeopardizes structural integrity.
-<br><br>The clinical rationale for withholding free active cervical mobilization in patients with suspected upper cervical instability is rooted in the prevention of catastrophic neurovascular complications. In cases where the structural integrity of the atlanto-axial (C1-C2) or atlanto-occipital (C0-C1) joints is compromised, active movement can transition from a therapeutic exercise to a mechanical trigger for serious injury (Hutting et al., 2018; Puentedura et al., 2012).
-<br>The primary concern for a physiotherapist is the potential for a serious adverse event, which includes neurovascular insults to the brain, arterial dissection, and even death (Hutting et al., 2018).
-<br><br><br><strong>2. Passive mobilization for C1-3 levels central PA / right unilateral PA</strong>
-<br>Similar to active mobilization, passive mobilization is also generally considered contraindicated since mobilization jeopardizes structural integrity under the context of upper cervical instability.
-<br><br>Clinical guidelines explicitly list "instability" and "ligamentous rupture" as absolute contraindications for manual interventions, including manipulation and certain forms of mobilization (Puentedura et al., 2012).
-<br><br>The IFOMPT Framework Guidance
-<br>The International Federation of Orthopaedic Manipulative Physical Therapists (IFOMPT) framework provides the gold standard for clinical reasoning in this area:
-<br>-Risk Categorization: Patients screened as "high-risk" for cervical vascular or structural issues are given a directive to "Avoid treatment" (de Best et al., 2021).
-<br>-Informed Reasoning: The framework emphasizes identifying clinical findings like upper cervical ligamentous insufficiency or arterial insufficiency before any planned interventions, including exercise (Blanpied et al., 2017).
-<br>-Mandatory Screening: Clinicians must use sound reasoning to identify "red flags"—such as dizziness, visual disturbances, or symptoms aggravated by neck movement—which indicate that mobilization is unsafe (Puentedura et al., 2012).
-<br><br><br><strong>3. Neurodynamics exercise with median nerve slider ex</strong>
-<br>Clinical guidelines explicitly list "instability" and "ligamentous rupture" as absolute contraindications for manual interventions and provocative movements (Puentedura et al., 2012). In the upper cervical spine (C0-C2), rotation or end-range movement can cause mechanical compression or excessive stretching of the vertebral arteries (Steilen et al., 2014).
-<br><br>Neurodynamic maneuvers cause "neural sliding," where the spinal cord moves within the canal. In an unstable segment, this can pull sensitive neural tissue against displaced bony structures or a protruding dens (Rowe et al., 2018).
-<br><br>Stability at the C1-C2 level is almost entirely dependent on the Alar and Transverse ligaments. When these ligaments are injured or lax, they allow excessive movement of the cervical vertebrae, which can lead to nerve root impingement and vertebrobasilar insufficiency (Steilen et al., 2014).
-<br><br><br><strong>4. Inform doctor for re-assessment +/- further Cx CT scan / MRI</strong>
-<br>Clinical Prediction Rules (CPRs) for upper cervical instability are designed to identify patients at high risk for serious structural injury while minimizing unnecessary radiation. For physiotherapists, this screening is a two-step process: using validated trauma rules to decide if to image, followed by specific radiological criteria to interpret those images.
-<br><br>The two gold-standard CPRs used to rule out clinically important cervical spine injury in trauma cases are the Canadian C-Spine Rule (CCR) and the NEXUS Low-Risk Criteria.
-<br><br><strong>- Canadian C-Spine Rule (CCR)</strong>
-<br>Considered superior in sensitivity and specificity compared to NEXUS.
-<br>• Step 1: High-Risk Factors? (Age ≥ 65, dangerous mechanism, or paresthesias in extremities). If YES, Radiography is required.
-<br>• Step 2: Low-Risk Factors? (Simple rear-end MVC, sitting position in ED, ambulatory at any time, delayed onset of neck pain, or absence of midline c-spine tenderness). If NO, Radiography is required.
-<br>• Step 3: Can the patient rotate neck 45°? If NO, Radiography is required.
-<br><br><strong>- NEXUS Criteria</strong>
-<br>Radiography is indicated unless the patient meets ALL five criteria:
-<br>• No posterior midline cervical tenderness.
-<br>• No evidence of intoxication.
-<br>• Normal level of alertness (GCS 15).
-<br>• No focal neurological deficit.
-<br>• No painful distracting injuries.
-<br><br><br>In clinical practice, the discrepancy between "normal" X-rays (XR) and positive MRI/CT findings is a well-documented phenomenon, particularly in the upper cervical spine (C0-C2). This occurs because plain films are 2D projections that often obscure complex 3D fractures or fail to show the ligamentous "soft tissue" damage that constitutes functional instability.
-<br><br>The following evidence-based insights explain why MRI is the gold standard for occult upper cervical instability when X-rays appear clear.
-<br><br><strong>1. The "Occult" Odontoid Fracture (Type II)</strong>
-<br>Type II odontoid fractures (through the base of the dens) are notoriously difficult to see on X-ray, especially in elderly patients with osteopenia or when there is no significant displacement.
-<br><br>Why XR Misses It: Overlying shadows from the teeth (in the Open-Mouth view) or the base of the skull can obscure the fracture line.
-<br>The MRI/CT Advantage: MRI (STIR sequences) will show bone marrow edema at the base of the dens, which is a "smoking gun" for an acute fracture, even if the cortical bone looks intact on plain film.
-<br><br><img src='type.png' alt='type' style='max-width:100%;boder-radius:5px;'>
-<br><br><strong>2. Transverse Ligament Rupture (The "Invisible" Instability)</strong>
-<br>A patient can have a completely stable-looking X-ray with a normal Atlanto-Dens Interval (ADI) but still have a ruptured transverse ligament. This is known as a functional instability.
-<br><br>Why XR Misses It: X-rays only show bone. If the patient is not in a position of stress (flexion), the C1-C2 relationship may appear normal.
-<br><br>The MRI Advantage: T2-weighted MRI can directly visualize the Transverse Ligament. A "high signal" or discontinuity in the ligament confirms instability that is physically impossible to see on an X-ray.
-<br><br><img src='ruputre.png' alt='rupture' style='max-width:100%;boder-radius:5px;'>
-<br><br><strong>3. Craniocervical Dissociation (C0-C1)</strong>
-<br>Subtle instability at the occiput-C1 junction often presents with "normal" alignment on X-ray but significant ligamentous tearing on MRI.
-<br><br>The "Black Hole" of XR: The complex geometry of the occipital condyles makes it difficult to assess the joint space accurately on lateral X-rays.
-<br><br>MRI Findings: MRI can identify hemorrhage or edema in the Alar ligaments or the tectorial membrane. Damage here constitutes global instability, even if the bones have "snapped back" into a neutral position (pseudoreduction).
-<br><br><img src='dislocation.png' alt='dislocation' style='max-width:100%;boder-radius:5px;'>
-<br><br>References:
-<br>Blanpied, P. R., Gross, A. R., Elliott, J. M., Devaney, L. L., Clewley, D., Walton, D. M., Sparks, C., & Robertson, E. K. (2017). Neck Pain: Revision 2017. Journal of Orthopaedic & Sports Physical Therapy, 47(7), A1–A83. https://doi.org/10.2519/jospt.2017.0302<br>Cited by: 1342
-<br><br>de Best, R. F., Coppieters, M. W., van Trijffel, E., Compter, A., Uyttenboogaart, M., Bot, J. C., Castien, R., Pool, J. J. M., Cagnie, B., & Scholten-Peeters, G. G. M. (2021). Interexaminer Agreement and Reliability of an Internationally Endorsed Screening Framework for Cervical Vascular Risks Following Manual Therapy and Exercise: The Go4Safe Project. Physical Therapy, 101(10). https://doi.org/10.1093/ptj/pzab166<br>Cited by: 13
-<br><br>Hutting, N., Kerry, R., Coppieters, M. W., & Scholten-Peeters, G. G. M. (2018). Considerations to improve the safety of cervical spine manual therapy. Musculoskeletal Science and Practice, 33, 41–45. https://doi.org/10.1016/j.msksp.2017.11.003<br>Cited by: 78
-<br><br>Puentedura, E. J., March, J., Anders, J., Perez, A., Landers, M. R., Wallmann, H. W., & Cleland, J. A. (2012). Safety of cervical spine manipulation: are adverse events preventable and are manipulations being performed appropriately? A review of 134 case reports. Journal of Manual & Manipulative Therapy, 20(2), 66–74. https://doi.org/10.1179/2042618611y.0000000022<br>Cited by: 133
-<br><br>Rowe, P. C., Marden, C. L., Heinlein, S., & Edwards, C. C. (2018). Improvement of severe myalgic encephalomyelitis/chronic fatigue syndrome symptoms following surgical treatment of cervical spinal stenosis. Journal of Translational Medicine, 16. https://doi.org/10.1186/s12967-018-1397-7<br>Cited by: 32
-<br><br>Sanz, D. R., Solano, F. U., López, D. L., Corbalan, I. S., Morales, C. R., & Lobo, C. C. (2017). Effectiveness of median nerve neural mobilization versus oral ibuprofen treatment in subjects who suffer from cervicobrachial pain: a randomized clinical trial. Archives of Medical Science. https://doi.org/10.5114/aoms.2017.70328<br>Cited by: 26
-<br><br>Steilen, D., Hauser, R., Woldin, B., & Sawyer, S. (2014). Chronic Neck Pain: Making the Connection Between Capsular Ligament Laxity and Cervical Instability. The Open Orthopaedics Journal, 8, 326-345. https://doi.org/10.2174/1874325001408010326<br>Cited by: 202
-<br><br><h6>Case creator: Mr. Ashley Chan</h6>
-               <!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
 
-</div>
+  <div class="learning">
+    <h4>🧪 Explanation</h4>
+
+    <div class="qa">
+      <div class="opt-title">1. Free active Cx mobilization ex</div>
+      <p>When treating a patient with potential upper cervical instability - involving the atlanto-occipital (C0-C1) and atlanto-axial (C1-C2) joints - the clinical priority shifts entirely from "restoring mobility" to "ensuring structural integrity." Providing free active mobilization in this context is generally considered contraindicated as mobilization likely jeopardizes structural integrity.</p>
+      <p>The clinical rationale for withholding free active cervical mobilization in patients with suspected upper cervical instability is rooted in the prevention of catastrophic neurovascular complications. In cases where the structural integrity of the atlanto-axial (C1-C2) or atlanto-occipital (C0-C1) joints is compromised, active movement can transition from a therapeutic exercise to a mechanical trigger for serious injury (Hutting et al., 2018; Puentedura et al., 2012).</p>
+      <p>The primary concern for a physiotherapist is the potential for a serious adverse event, which includes neurovascular insults to the brain, arterial dissection, and even death (Hutting et al., 2018).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">2. Passive mobilization for C1-3 levels central PA / right unilateral PA</div>
+      <p>Similar to active mobilization, passive mobilization is also generally considered contraindicated since mobilization jeopardizes structural integrity under the context of upper cervical instability.</p>
+      <p>Clinical guidelines explicitly list "instability" and "ligamentous rupture" as absolute contraindications for manual interventions, including manipulation and certain forms of mobilization (Puentedura et al., 2012).</p>
+      <p>The IFOMPT Framework Guidance</p>
+      <p>The International Federation of Orthopaedic Manipulative Physical Therapists (IFOMPT) framework provides the gold standard for clinical reasoning in this area:<br>-Risk Categorization: Patients screened as "high-risk" for cervical vascular or structural issues are given a directive to "Avoid treatment" (de Best et al., 2021).<br>-Informed Reasoning: The framework emphasizes identifying clinical findings like upper cervical ligamentous insufficiency or arterial insufficiency before any planned interventions, including exercise (Blanpied et al., 2017).<br>-Mandatory Screening: Clinicians must use sound reasoning to identify "red flags"—such as dizziness, visual disturbances, or symptoms aggravated by neck movement—which indicate that mobilization is unsafe (Puentedura et al., 2012).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">3. Neurodynamics exercise with median nerve slider ex</div>
+      <p>Clinical guidelines explicitly list "instability" and "ligamentous rupture" as absolute contraindications for manual interventions and provocative movements (Puentedura et al., 2012). In the upper cervical spine (C0-C2), rotation or end-range movement can cause mechanical compression or excessive stretching of the vertebral arteries (Steilen et al., 2014).</p>
+      <p>Neurodynamic maneuvers cause "neural sliding," where the spinal cord moves within the canal. In an unstable segment, this can pull sensitive neural tissue against displaced bony structures or a protruding dens (Rowe et al., 2018).</p>
+      <p>Stability at the C1-C2 level is almost entirely dependent on the Alar and Transverse ligaments. When these ligaments are injured or lax, they allow excessive movement of the cervical vertebrae, which can lead to nerve root impingement and vertebrobasilar insufficiency (Steilen et al., 2014).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">4. Inform doctor for re-assessment +/- further Cx CT scan / MRI</div>
+      <p>Clinical Prediction Rules (CPRs) for upper cervical instability are designed to identify patients at high risk for serious structural injury while minimizing unnecessary radiation. For physiotherapists, this screening is a two-step process: using validated trauma rules to decide if to image, followed by specific radiological criteria to interpret those images.</p>
+      <p>The two gold-standard CPRs used to rule out clinically important cervical spine injury in trauma cases are the Canadian C-Spine Rule (CCR) and the NEXUS Low-Risk Criteria.</p>
+      <p><strong>- Canadian C-Spine Rule (CCR)</strong><br>Considered superior in sensitivity and specificity compared to NEXUS.<br>• Step 1: High-Risk Factors? (Age ≥ 65, dangerous mechanism, or paresthesias in extremities). If YES, Radiography is required.<br>• Step 2: Low-Risk Factors? (Simple rear-end MVC, sitting position in ED, ambulatory at any time, delayed onset of neck pain, or absence of midline c-spine tenderness). If NO, Radiography is required.<br>• Step 3: Can the patient rotate neck 45°? If NO, Radiography is required.</p>
+      <p><strong>- NEXUS Criteria</strong><br>Radiography is indicated unless the patient meets ALL five criteria:<br>• No posterior midline cervical tenderness.<br>• No evidence of intoxication.<br>• Normal level of alertness (GCS 15).<br>• No focal neurological deficit.<br>• No painful distracting injuries.</p>
+      <p>In clinical practice, the discrepancy between "normal" X-rays (XR) and positive MRI/CT findings is a well-documented phenomenon, particularly in the upper cervical spine (C0-C2). This occurs because plain films are 2D projections that often obscure complex 3D fractures or fail to show the ligamentous "soft tissue" damage that constitutes functional instability.</p>
+      <p>The following evidence-based insights explain why MRI is the gold standard for occult upper cervical instability when X-rays appear clear.</p>
+      <p><strong>1. The "Occult" Odontoid Fracture (Type II)</strong><br>Type II odontoid fractures (through the base of the dens) are notoriously difficult to see on X-ray, especially in elderly patients with osteopenia or when there is no significant displacement.</p>
+      <p>Why XR Misses It: Overlying shadows from the teeth (in the Open-Mouth view) or the base of the skull can obscure the fracture line.<br>The MRI/CT Advantage: MRI (STIR sequences) will show bone marrow edema at the base of the dens, which is a "smoking gun" for an acute fracture, even if the cortical bone looks intact on plain film.</p>
+      <img src='type.png' alt='type'>
+      <p><strong>2. Transverse Ligament Rupture (The "Invisible" Instability)</strong><br>A patient can have a completely stable-looking X-ray with a normal Atlanto-Dens Interval (ADI) but still have a ruptured transverse ligament. This is known as a functional instability.</p>
+      <p>Why XR Misses It: X-rays only show bone. If the patient is not in a position of stress (flexion), the C1-C2 relationship may appear normal.</p>
+      <p>The MRI Advantage: T2-weighted MRI can directly visualize the Transverse Ligament. A "high signal" or discontinuity in the ligament confirms instability that is physically impossible to see on an X-ray.</p>
+      <img src='ruputre.png' alt='rupture'>
+      <p><strong>3. Craniocervical Dissociation (C0-C1)</strong><br>Subtle instability at the occiput-C1 junction often presents with "normal" alignment on X-ray but significant ligamentous tearing on MRI.</p>
+      <p>The "Black Hole" of XR: The complex geometry of the occipital condyles makes it difficult to assess the joint space accurately on lateral X-rays.</p>
+      <p>MRI Findings: MRI can identify hemorrhage or edema in the Alar ligaments or the tectorial membrane. Damage here constitutes global instability, even if the bones have "snapped back" into a neutral position (pseudoreduction).</p>
+      <img src='dislocation.png' alt='dislocation'>
+    </div>
+
+    <div class="ref">
+      <p>References:</p>
+      <p>Blanpied, P. R., Gross, A. R., Elliott, J. M., Devaney, L. L., Clewley, D., Walton, D. M., Sparks, C., &amp; Robertson, E. K. (2017). Neck Pain: Revision 2017. Journal of Orthopaedic &amp; Sports Physical Therapy, 47(7), A1–A83. https://doi.org/10.2519/jospt.2017.0302<br>Cited by: 1342</p>
+      <p>de Best, R. F., Coppieters, M. W., van Trijffel, E., Compter, A., Uyttenboogaart, M., Bot, J. C., Castien, R., Pool, J. J. M., Cagnie, B., &amp; Scholten-Peeters, G. G. M. (2021). Interexaminer Agreement and Reliability of an Internationally Endorsed Screening Framework for Cervical Vascular Risks Following Manual Therapy and Exercise: The Go4Safe Project. Physical Therapy, 101(10). https://doi.org/10.1093/ptj/pzab166<br>Cited by: 13</p>
+      <p>Hutting, N., Kerry, R., Coppieters, M. W., &amp; Scholten-Peeters, G. G. M. (2018). Considerations to improve the safety of cervical spine manual therapy. Musculoskeletal Science and Practice, 33, 41–45. https://doi.org/10.1016/j.msksp.2017.11.003<br>Cited by: 78</p>
+      <p>Puentedura, E. J., March, J., Anders, J., Perez, A., Landers, M. R., Wallmann, H. W., &amp; Cleland, J. A. (2012). Safety of cervical spine manipulation: are adverse events preventable and are manipulations being performed appropriately? A review of 134 case reports. Journal of Manual &amp; Manipulative Therapy, 20(2), 66–74. https://doi.org/10.1179/2042618611y.0000000022<br>Cited by: 133</p>
+      <p>Rowe, P. C., Marden, C. L., Heinlein, S., &amp; Edwards, C. C. (2018). Improvement of severe myalgic encephalomyelitis/chronic fatigue syndrome symptoms following surgical treatment of cervical spinal stenosis. Journal of Translational Medicine, 16. https://doi.org/10.1186/s12967-018-1397-7<br>Cited by: 32</p>
+      <p>Sanz, D. R., Solano, F. U., López, D. L., Corbalan, I. S., Morales, C. R., &amp; Lobo, C. C. (2017). Effectiveness of median nerve neural mobilization versus oral ibuprofen treatment in subjects who suffer from cervicobrachial pain: a randomized clinical trial. Archives of Medical Science. https://doi.org/10.5114/aoms.2017.70328<br>Cited by: 26</p>
+      <p>Steilen, D., Hauser, R., Woldin, B., &amp; Sawyer, S. (2014). Chronic Neck Pain: Making the Connection Between Capsular Ligament Laxity and Cervical Instability. The Open Orthopaedics Journal, 8, 326-345. https://doi.org/10.2174/1874325001408010326<br>Cited by: 202</p>
+    </div>
+  </div>
+
+  <p class="creator">Case creator: Mr. Ashley Chan</p>
+  <!-- Back to Homepage Button -->
+  <a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
   <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
 </div>
 
 <script>
-  const investigations = [{"opt":"Cx AROM","res":"<img src='AROM.png' alt='AROM' style='max-width:100%;boder-radius:5px;'>","cor":true},
+  const investigations = [{"opt":"Cx AROM","res":"<img src='AROM.png' alt='AROM' style='max-width:100%;border-radius:5px;'>","cor":true},
   {"opt":"Cx Central PA / Unilateral PA","res":"<strong>Central PA</strong> - pain++ over C1-C3 levels <br><strong>Unilateral PA</strong> - pain++ over right C1-C3 levels","cor":false},
-  {"opt":"Cx neurological examination","res":"<img src='tone.png' alt='tone' style='max-width:100%;boder-radius:5px;'>","cor":true},
+  {"opt":"Cx neurological examination","res":"<img src='tone.png' alt='tone' style='max-width:100%;border-radius:5px;'>","cor":true},
   {"opt":"Sharp-Purser test and alar ligament test","res":"<strong>Sharp-Purser test:</strong> The patient experienced symptomatic relief during the maneuver, reporting that his pain subsided and his tingling sensations temporarily disappeared. <br><br><strong>Alar ligament test:</strong> empty end-feel","cor":true}];
   const management = [{"opt":"Free active Cx mobilization ex","exp":"","cor":false},{"opt":"Passive mobilization for C1-3 levels central PA / right unilateral PA","exp":"","cor":false},{"opt":"Neurodynamics exercise with median nerve slider ex","exp":"","cor":false},{"opt":"Inform doctor for re-assessment +/- further Cx CT scan / MRI","exp":"","cor":true}];
   let selectedInv = [false, false, false, false];
@@ -186,21 +638,38 @@
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg2").classList.add("active");
   }
 
   function showFinalResult() {
     const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
     let score = 0;
-    
+
     investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
     management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
 
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = "<strong>Total Score: " + score + " / 8</strong>";
-    
+    const maxScore = investigations.length + management.length;
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
+    document.getElementById("seg2").classList.remove("active");
+    document.getElementById("seg2").classList.add("done");
+
     const tbody = document.getElementById("result-table-body");
     tbody.innerHTML = "";
-    
+
     investigations.forEach((d, i) => {
       tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
     });
