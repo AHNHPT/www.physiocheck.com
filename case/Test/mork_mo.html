@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Staff Clinical Knowledge Assessment</title>
+<style>
+  :root{
+    --navy:#0f2a43;
+    --blue:#1d5b96;
+    --blue-light:#e8f1fb;
+    --green:#1e8e5a;
+    --red:#c0392b;
+    --gray:#5b6673;
+    --bg:#f4f6f9;
+    --card:#ffffff;
+    --border:#d8e0ea;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:#1b2733;
+    line-height:1.5;
+  }
+  header{
+    background:linear-gradient(135deg,var(--navy),var(--blue));
+    color:#fff;
+    padding:26px 20px 22px;
+    text-align:center;
+  }
+  header h1{ margin:0 0 6px; font-size:1.4rem; }
+  header p{ margin:2px 0; font-size:0.9rem; opacity:0.92; }
+  .container{ max-width:760px; margin:0 auto; padding:18px 16px 60px; }
+
+  .info-bar{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 18px;
+    margin-bottom:16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 22px;
+    font-size:0.88rem;
+    color:var(--gray);
+    justify-content:center;
+  }
+  .info-bar strong{color:#1b2733;}
+
+  #progress-wrap{
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    padding:10px 0 12px;
+    z-index:5;
+  }
+  #progress-track{ background:#dfe6ee; border-radius:20px; height:8px; overflow:hidden; }
+  #progress-fill{ background:var(--blue); height:100%; width:0%; transition:width 0.25s ease; }
+  #progress-text{ text-align:center; font-size:0.8rem; color:var(--gray); margin-top:6px; }
+
+  #jump-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    justify-content:center;
+    margin-top:10px;
+  }
+  .jump-dot{
+    width:28px; height:28px;
+    border-radius:6px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--gray);
+    font-size:0.72rem;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  .jump-dot.answered{ background:var(--blue-light); border-color:var(--blue); color:var(--blue); }
+  .jump-dot.current{ background:var(--navy); color:#fff; border-color:var(--navy); font-weight:700; }
+  .jump-dot.correct{ background:#e6f4ec; border-color:var(--green); color:var(--green); }
+  .jump-dot.incorrect{ background:#fbeae8; border-color:var(--red); color:var(--red); }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 1px 3px rgba(20,30,50,0.04);
+  }
+  .q-header{ display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
+  .q-num{
+    background:var(--blue-light); color:var(--blue); font-weight:700;
+    font-size:0.8rem; padding:3px 10px; border-radius:20px; white-space:nowrap;
+  }
+  .q-tag{
+    font-size:0.72rem; text-transform:uppercase; letter-spacing:0.4px;
+    color:var(--gray); background:#eef1f5; padding:3px 8px; border-radius:6px;
+  }
+  .q-stem{ font-size:0.98rem; white-space:pre-line; margin-bottom:14px; }
+  .q-prompt{ font-weight:600; margin-top:10px; display:block; }
+  .options{ display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+  .option{
+    display:flex; align-items:flex-start; gap:10px;
+    border:1px solid var(--border); border-radius:8px;
+    padding:10px 12px; cursor:pointer;
+    transition:background 0.15s, border-color 0.15s;
+    font-size:0.94rem;
+  }
+  .option:hover{background:var(--blue-light);}
+  .option input{margin-top:3px; flex-shrink:0;}
+  .option.selected{ background:var(--blue-light); border-color:var(--blue); }
+  .option.correct{ background:#e6f4ec; border-color:var(--green); }
+  .option.incorrect{ background:#fbeae8; border-color:var(--red); }
+  .option.disabled{ pointer-events:none; }
+  .option .letter{font-weight:700; min-width:16px;}
+  .feedback{ margin-top:12px; padding:10px 12px; border-radius:8px; font-size:0.88rem; display:none; }
+  .feedback.show{display:block;}
+  .feedback.right{background:#e6f4ec;color:var(--green);border:1px solid #bfe3cd;}
+  .feedback.wrong{background:#fbeae8;color:var(--red);border:1px solid #f2c6c1;}
+
+  #nav-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-top:6px;
+  }
+  #nav-bar .spacer{flex:1;}
+  button{
+    font-family:inherit; font-size:0.95rem; font-weight:600;
+    padding:11px 22px; border-radius:8px; border:none; cursor:pointer;
+    transition:opacity 0.15s;
+  }
+  #prev-btn{ background:#fff; color:var(--blue); border:1px solid var(--blue); }
+  #next-btn, #submit-btn{ background:var(--blue); color:#fff; }
+  button:disabled{ background:#c6cfd9; color:#fff; border-color:#c6cfd9; cursor:not-allowed; }
+  #prev-btn:disabled{ background:#fff; color:#b7c0cb; border-color:#dde3ea; }
+  button:not(:disabled):hover{opacity:0.9;}
+
+  #hint-note{ text-align:center; font-size:0.82rem; color:var(--gray); margin:10px 0 4px; }
+
+  #results{
+    display:none;
+    text-align:center;
+    background:var(--card);
+    border-radius:12px;
+    border:1px solid var(--border);
+    padding:28px 20px;
+    margin-bottom:24px;
+  }
+  #results.show{display:block;}
+  #score-circle{
+    width:150px;height:150px;border-radius:50%;
+    margin:0 auto 16px;
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;
+    border:8px solid var(--border);
+  }
+  #score-circle.pass{border-color:var(--green);}
+  #score-circle.fail{border-color:var(--red);}
+  #score-circle .pct{font-size:1.9rem;font-weight:800;}
+  #score-circle .frac{font-size:0.85rem;color:var(--gray);}
+  #result-status{ font-size:1.3rem; font-weight:700; margin:6px 0 2px; }
+  #result-status.pass{color:var(--green);}
+  #result-status.fail{color:var(--red);}
+  #result-sub{color:var(--gray);font-size:0.92rem;margin-bottom:18px;}
+  #review-btn, #retry-btn{ margin:4px 6px; }
+  #review-btn{background:var(--navy); color:#fff;}
+  #retry-btn{background:#fff; color:var(--blue); border:1px solid var(--blue);}
+
+  #quiz-view.hidden, #results.hidden{ display:none; }
+
+  footer{ text-align:center; color:var(--gray); font-size:0.78rem; padding:10px 20px 30px; }
+
+  @media (max-width:480px){
+    header h1{font-size:1.2rem;}
+    .card{padding:16px;}
+    #score-circle{width:130px;height:130px;}
+    #score-circle .pct{font-size:1.6rem;}
+    .jump-dot{width:24px;height:24px;font-size:0.68rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>New Staff Clinical Knowledge Assessment</h1>
+  <p>30 questions &nbsp;•&nbsp; Passing score: 60% (18 / 30)</p>
+  <p>Adapted from the Japanese National Medical Licensing Examination (translated into English for internal training use)</p>
+</header>
+
+<div class="container">
+
+  <div class="info-bar">
+    <span><strong>18</strong> case-based questions</span>
+    <span><strong>12</strong> knowledge-based questions</span>
+    <span>All single-best-answer (5 options)</span>
+  </div>
+
+  <div id="progress-wrap">
+    <div id="progress-track"><div id="progress-fill"></div></div>
+    <div id="progress-text">Question 1 / 30</div>
+    <div id="jump-grid"></div>
+  </div>
+
+  <div id="quiz-view">
+    <div id="quiz"></div>
+
+    <div id="nav-bar">
+      <button id="prev-btn">← Previous</button>
+      <div class="spacer"></div>
+      <button id="next-btn">Next →</button>
+      <button id="submit-btn" style="display:none;">Submit Assessment</button>
+    </div>
+    <div id="hint-note">Select an answer to continue.</div>
+  </div>
+
+  <div id="results">
+    <div id="score-circle">
+      <div class="pct" id="score-pct">0%</div>
+      <div class="frac" id="score-frac">0 / 30</div>
+    </div>
+    <div id="result-status"></div>
+    <div id="result-sub"></div>
+    <button id="review-btn">Review Answers</button>
+    <button id="retry-btn">Retake Assessment</button>
+  </div>
+
+</div>
+
+<footer>
+  Content adapted from the 120th Japanese National Medical Licensing Examination (令和8年 / 2026), Ministry of Health, Labour and Welfare — translated and adapted for internal staff education purposes only. Not for redistribution.
+</footer>
+
+<script>
+const QUESTIONS = [
+  {
+    type: "Case-based",
+    stem: "A 3-day-old female newborn is being examined during a routine nursery check. The pregnancy was uncomplicated, and she was delivered vaginally at 38 weeks 6 days, with birth weight 3,050 g and length 49 cm. Apgar scores were 9 and 9 at one and five minutes. Current vitals: heart rate 138/min (regular), blood pressure 78/50 mmHg, respiratory rate 58/min, SpO2 97% on room air.\n\n① There is a soft, boggy swelling over the right parietal scalp that stays within the suture lines.\n② The anterior fontanelle is soft, flat, and open, measuring about 2.5 cm × 3 cm.\n③ A faint yellow tinge is seen in the sclerae.\n④ Breathing shows visible indrawing of the lower rib margins.\n⑤ Light vaginal spotting is present.\n\nHeart sounds and the abdominal exam are unremarkable, and no external anomalies are seen.",
+    prompt: "Among the five circled findings above, which one represents an abnormal finding?",
+    options: ["①", "②", "③", "④", "⑤"],
+    answer: 3
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "Graft-versus-host disease (GVHD) is primarily mediated by which type of white blood cell?",
+    options: ["Monocytes", "Eosinophils", "Neutrophils", "Basophils", "Lymphocytes"],
+    answer: 4
+  },
+  {
+    type: "Case-based",
+    stem: "A 70-year-old man is evaluated for swelling in both legs. He has taken ① a proton-pump inhibitor for reflux symptoms since his late fifties. For the past several years he has had nighttime urinary frequency and takes ② an alpha-1 blocker for an enlarged prostate. He was physically active as a schoolteacher until retiring five years ago, after which he began having trouble falling asleep and started ③ an orexin-receptor antagonist. His LDL cholesterol had been creeping upward and this year crossed the treatment threshold; despite dietary changes it remained high, so about four months ago he began ④ a statin. Roughly three months ago he developed aching in his calves and has since been taking an over-the-counter ⑤ NSAID as needed. Over the last several weeks he has noticed swelling in both feet that leaves an indentation when pressed, and it has not gone away.",
+    prompt: "Which of the circled medications is the most probable cause of this patient's leg swelling?",
+    options: ["①", "②", "③", "④", "⑤"],
+    answer: 4
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "During an outbreak of infectious disease, what is the main goal of conducting an active epidemiological investigation?",
+    options: [
+      "To increase vaccine coverage in the community",
+      "To develop novel antimicrobial therapies",
+      "To quickly confirm the diagnosis in individual patients",
+      "To lower healthcare costs at treating facilities",
+      "To trace routes of transmission so that further spread can be contained"
+    ],
+    answer: 4
+  },
+  {
+    type: "Case-based",
+    stem: "A 7-year-old girl becomes acutely short of breath and nauseated moments after eating a peanut-containing granola bar during school lunch. She has a documented history of peanut anaphylaxis, and her physician has previously trained her homeroom teacher in how to use her prescribed epinephrine auto-injector, which she keeps with her at school. The teacher asks a colleague to phone the parents and call for an ambulance. The ambulance is expected in about 12 minutes, the parents in about 18 minutes, and the drive from school to the receiving hospital takes roughly 25 minutes. The girl is now drowsy, with a palpable but rapid pulse, pale face, forceful coughing, and hives covering her body. Uncertain how to proceed, the teacher phones the physician for guidance.",
+    prompt: "At this point, whom should the physician direct to give the epinephrine injection?",
+    options: ["A family member", "The homeroom teacher", "The child herself", "An arriving paramedic", "The physician, once she reaches the hospital"],
+    answer: 1
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "Which immune cell presents antigen in a way that triggers activation of the adaptive (acquired) immune response?",
+    options: ["Eosinophil", "Neutrophil", "NK cell", "Basophil", "Dendritic cell"],
+    answer: 4
+  },
+  {
+    type: "Case-based",
+    stem: "An 18-month-old girl presents with decreased responsiveness. Her caregiver, frustrated by her persistent crying, grasped her under the arms and shook her forcefully several times; she then went limp and stopped responding normally. On arrival her level of consciousness is JCS III-100. Examination reveals several healed burn marks and bruises of varying ages scattered across her trunk and limbs.",
+    prompt: "Which examination is most critical for confirming the underlying cause of this child's altered consciousness?",
+    options: ["Pharyngeal exam", "Fundoscopic (retinal) exam", "Otoscopic exam", "Tongue exam", "Nasal exam"],
+    answer: 1
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "Biological monitoring is a standard occupational-health surveillance tool primarily used for detecting exposure to which of the following?",
+    options: ["Chronic overwork", "Mood disturbances", "Musculoskeletal strain injuries", "Organic solvents", "Ionizing radiation"],
+    answer: 3
+  },
+  {
+    type: "Case-based",
+    stem: "A 71-year-old woman on long-term immunosuppression following a living-donor kidney transplant six years ago presents with new-onset nausea. She has never smoked. Her neurological exam is normal. Contrast-enhanced brain MRI (T1) and non-contrast FLAIR sequences reveal a focal lesion; staging CT of the chest and abdomen is otherwise unremarkable. A stereotactic biopsy is performed. Histology (H&E) shows a proliferation of atypical cells, and immunohistochemistry for CD20 (a B-lymphocyte surface marker) is strongly positive.",
+    prompt: "Given these findings, what is the most likely diagnosis?",
+    options: ["Glioblastoma", "Cerebral abscess", "Post-transplant malignant lymphoma", "Multiple sclerosis", "Metastatic carcinoma"],
+    answer: 2
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "Which class of antibody predominates in mucosal secretions and is central to mucosal immune defense?",
+    options: ["IgA", "IgD", "IgE", "IgG", "IgM"],
+    answer: 0
+  },
+  {
+    type: "Case-based",
+    stem: "A 34-year-old woman, pregnant for the first time, is referred at 29 weeks' gestation for evaluation of excess amniotic fluid. Her earlier prenatal labs were unremarkable, and a 1-hour 50 g glucose challenge test at 24 weeks came back at 128 mg/dL (cutoff for further testing is 140 mg/dL). Ultrasound confirms normal fetal growth, with an amniotic fluid index of 26 cm (normal range 5–24 cm) and no structural anomalies.",
+    prompt: "What is the most appropriate immediate next step in her management?",
+    options: ["Therapeutic amniotic fluid drainage (amnioreduction)", "Transvaginal cervical length measurement", "Intramuscular corticosteroids for fetal lung maturity", "Intravenous tocolysis with ritodrine", "A follow-up 75 g oral glucose tolerance test"],
+    answer: 1
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "Which statement below does NOT correctly describe the typical presentation of hypovolemic shock?",
+    options: ["Rapid heart rate", "Diaphoresis (cold, clammy sweating)", "Reduced urine output", "Pallor of the skin", "An increased pulse pressure"],
+    answer: 4
+  },
+  {
+    type: "Case-based",
+    stem: "A mother brings in her 4-year-old son because of concerns about his limited speech. He resists wearing anything with a collar or long trousers, and tends to play by himself arranging his toy cars in long rows rather than engaging with other children. A hearing screen is normal.",
+    prompt: "Which of the following assessment tools would be most appropriate to administer to this child?",
+    options: ["Tanaka–Binet Intelligence Scale", "Frontal Assessment Battery (FAB)", "Standard Language Test of Aphasia (SLTA)", "Revised Hasegawa Dementia Rating Scale", "Wechsler Intelligence Scale for Children (WISC-IV)"],
+    answer: 0
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "One of the following disease–complication pairs is mismatched. Which one?",
+    options: [
+      "Acquired hemophilia, paired with intramuscular bleeding",
+      "Essential thrombocythemia, paired with ischemic stroke",
+      "Vitamin K deficiency, paired with deep venous thrombosis",
+      "Antiphospholipid syndrome, paired with recurrent pregnancy loss",
+      "Thrombotic thrombocytopenic purpura, paired with acute kidney injury"
+    ],
+    answer: 2
+  },
+  {
+    type: "Case-based",
+    stem: "A 66-year-old man undergoes pulmonary function testing before planned surgery for a kidney tumor. He has no respiratory symptoms. His height is 164 cm and weight 64 kg. Spirometry shows: vital capacity 2,500 mL; FEV1 2,200 mL; forced vital capacity 2,300 mL; predicted vital capacity 3,600 mL; predicted FEV1 2,900 mL.",
+    prompt: "Calculate his %VC (measured vital capacity divided by predicted vital capacity), rounding to the nearest whole percentage.",
+    options: ["64%", "69%", "76%", "81%", "92%"],
+    answer: 1
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "Which of the following cutaneous findings is characteristic of dermatomyositis?",
+    options: ["Oral ulcers", "Ulceration of the fingertips", "A violet discoloration and swelling of the upper eyelids", "A butterfly-shaped facial rash", "Net-like mottling of the skin (livedo reticularis)"],
+    answer: 2
+  },
+  {
+    type: "Case-based",
+    stem: "A 77-year-old man is found to have an incidental abnormality on a screening abdominal ultrasound. His history includes hypertension and elevated cholesterol. A pulsatile mass is felt in the upper abdomen, and a follow-up contrast CT confirms an abdominal aortic aneurysm. While counseling the patient, a resident explains:\n① 'Rupture is still possible even without symptoms, so given the size of this aneurysm we'd recommend repair — either an open surgical graft or an endovascular stent-graft.'\n② 'The open surgical approach involves temporarily clamping the aorta.'\n③ 'We generally favor the open surgical approach in older patients or those with several coexisting illnesses.'\n④ 'A stent-graft is a metal-framed device combined with graft material that is threaded into the artery using a catheter.'\n⑤ 'Here in Japan, the stent-graft technique is now used more often than open surgery.'",
+    prompt: "One of the circled statements is factually incorrect. Which one?",
+    options: ["①", "②", "③", "④", "⑤"],
+    answer: 2
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "Regarding proper technique for obtaining a blood culture specimen, which statement is correct?",
+    options: [
+      "Begin the draw before the antiseptic has had time to dry",
+      "Sterile gloves should be worn for the venipuncture",
+      "It is acceptable to draw several bottles from a single puncture site",
+      "The femoral vein is the preferred collection site",
+      "Fill the anaerobic bottle first, then the aerobic bottle"
+    ],
+    answer: 1
+  },
+  {
+    type: "Case-based",
+    stem: "A 60-year-old man reports weakness and numbness affecting both arms. He noticed occasional tingling in his fingertips for about two years but never sought evaluation. Over the last two weeks he developed progressively worsening bilateral arm weakness, and over the past week his walking has become unsteady. On exam there is mild weakness of both arms and both legs, slightly worse on the right. Reflexes are diminished at the biceps/triceps but brisk at the knees and ankles (right greater than left), with an upgoing right toe (Babinski sign). Sensation is reduced in a distal, right-predominant pattern in the hands. He walks unsteadily with a positive Romberg test, though finger-to-nose testing is intact. He also reports mild difficulty controlling his bladder.",
+    prompt: "Where is this patient's lesion most likely located?",
+    options: ["Cerebral hemisphere", "Cerebellum", "Brainstem", "Cervical spinal cord", "Peripheral skeletal muscle"],
+    answer: 3
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "Regarding primary lung carcinoma, which of the following statements is accurate?",
+    options: [
+      "Large cell carcinoma occurs most frequently",
+      "Small cell carcinoma tends to respond well to chemotherapy",
+      "Squamous cell carcinoma is uncommon among smokers",
+      "Adenocarcinoma is usually detected early via sputum cytology",
+      "Adenocarcinoma seldom carries actionable driver mutations"
+    ],
+    answer: 1
+  },
+  {
+    type: "Case-based",
+    stem: "A 14-month-old girl is brought by ambulance after a brief episode of unresponsiveness and pallor. Her older brother, age 4, abruptly took a toy from her hands while they were playing together. She began crying forcefully, held her breath during exhalation, turned pale, and briefly lost consciousness for roughly 10–15 seconds before waking on her own. On arrival she is alert, moving all four limbs normally, with good color. Temperature 36.9°C, heart rate 126/min, respiratory rate 30/min, SpO2 99% on room air.",
+    prompt: "What is the most appropriate next step in her management?",
+    options: ["Observe without intervention", "Give supplemental oxygen", "Administer a sedative", "Administer an analgesic", "Administer an anticonvulsant"],
+    answer: 0
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "A patient reports, 'Normal light seems too bright, and it's painful to keep my eyes open.' Damage to which cranial nerve is most likely responsible for this?",
+    options: ["Optic nerve", "Oculomotor nerve", "Trochlear nerve", "Abducens nerve", "Facial nerve"],
+    answer: 1
+  },
+  {
+    type: "Case-based",
+    stem: "A 51-year-old man reports generalized fatigue. About a month ago he shared a hot-pot meal containing wild boar meat and vegetables, and admits he ate hurriedly, so some pieces of meat may not have been thoroughly cooked. Roughly a week ago he began feeling tired, lost his appetite, and developed a low-grade fever, without any abdominal pain, vomiting, or diarrhea. His liver edge is palpable about 2 cm below the right costal margin. Laboratory results: total bilirubin 1.4 mg/dL, AST 160 U/L, ALT 380 U/L, ALP 82 U/L, γ-GT 72 U/L.",
+    prompt: "Which organism most likely explains his presentation?",
+    options: ["Hepatitis A virus", "Hepatitis E virus", "Campylobacter jejuni", "Salmonella species", "Yersinia enterocolitica"],
+    answer: 1
+  },
+  {
+    type: "Knowledge",
+    stem: "",
+    prompt: "On auscultation, a loud, high-pitched murmur is heard throughout systole at the cardiac apex. This finding is most consistent with which diagnosis?",
+    options: ["Ventricular septal defect", "Aortic valve stenosis", "Pulmonary valve stenosis", "Tricuspid valve regurgitation", "Mitral valve regurgitation"],
+    answer: 4
+  },
+  {
+    type: "Case-based",
+    stem: "An 82-year-old man reports breathlessness with exertion that has slowly worsened over three years, with a productive cough for the last six months; for the past month he has been unable to climb a flight of stairs without stopping to rest. He smoked roughly two packs a day for six decades. On exam, breath sounds are diffusely reduced with audible wheeze, accessory neck muscles are prominent, and there is no jugular venous distension. Arterial blood gas on room air: pH 7.41, PaCO2 54 mmHg, PaO2 58 mmHg, bicarbonate 32 mEq/L. Chest radiograph shows flattened diaphragms and a narrow, vertically elongated cardiac silhouette.",
+    prompt: "Which pulmonary function abnormality would be expected in this patient?",
+    options: ["Reduced residual volume", "Increased gas diffusing capacity", "An FEV1/FVC ratio below 70%", "Reduced static lung compliance", "A flow-volume loop that curves convex-upward"],
+    answer: 2
+  },
+  {
+    type: "Case-based",
+    stem: "A 63-year-old woman with longstanding IgA nephropathy and hypertension presents with fatigue and exertional breathlessness that developed over the past month, following a period of poor clinic follow-up due to work demands. She had stopped refilling her angiotensin-receptor blocker but continued taking her SGLT2 inhibitor as prescribed. Urinalysis taken two hours after a meal shows protein 2+, glucose 4+, occult blood 2+, with a urine protein-to-creatinine ratio of 0.45 g/gCr. Bloodwork shows creatinine 5.0 mg/dL, eGFR 7.4 mL/min/1.73m², post-meal glucose 110 mg/dL, and HbA1c 5.4% (reference 4.9–6.0%).",
+    prompt: "What best explains the glucose found in her urine?",
+    options: ["A medication she is taking", "Underlying diabetes mellitus", "Her elevated blood pressure", "Testing shortly after a meal", "A false-positive result from blood in the urine"],
+    answer: 0
+  },
+  {
+    type: "Case-based",
+    stem: "A 90-year-old man presents with breathlessness that has worsened over the past week, accompanied by an overnight productive cough and increasing fatigue that persists despite rest. On examination there is jugular venous distension, a fourth heart sound, reduced breath sounds at both lung bases with coarse crackles heard higher up, cool extremities, and pitting edema of both legs. BNP is markedly elevated at 681 pg/mL (upper normal ≤18.4), and troponin T is elevated at 0.9 ng/mL. Echocardiogram shows a preserved ejection fraction but diffusely thickened, unusually bright-appearing ventricular walls. Serum protein electrophoresis with immunofixation shows no monoclonal spike.",
+    prompt: "What is the primary mechanism driving this patient's breathlessness?",
+    options: ["Myocardial ischemia", "Thromboembolism", "Anemia", "Fluid congestion", "An allergic reaction"],
+    answer: 3
+  },
+  {
+    type: "Case-based",
+    stem: "A 44-year-old woman is brought in by ambulance with abrupt chest pain and breathlessness. Her mental status is JCS II-10. She is 168 cm tall and weighs 58 kg. Temperature 37.0°C, heart rate 124/min and regular, blood pressure 78/58 mmHg, respiratory rate 32/min, SpO2 90% on a 10 L/min reservoir mask. Capillary refill is delayed at 3 seconds, with visible cyanosis and jugular venous distension. Breath sounds are absent on the left side of the chest, which is hyperresonant to percussion.",
+    prompt: "What is the immediate priority intervention?",
+    options: ["Insert a chest tube (thoracostomy)", "Start a vasopressor infusion", "Transfuse packed red blood cells", "Begin manual bag-valve-mask ventilation", "Administer an inhaled beta-agonist"],
+    answer: 0
+  },
+  {
+    type: "Case-based",
+    stem: "A 7-year-old boy is brought in with blood in his urine and swelling. He had a sore throat roughly two weeks earlier. Three days ago his upper eyelids began swelling in the mornings, and yesterday his urine turned visibly bloody. He has gained about 2 kg over the last two weeks. Blood pressure is 118/72 mmHg. Urinalysis shows protein 2+ and occult blood 3+. Labs show albumin 4.1 g/dL, ASO titer 698 U (normal ≤250), C3 21 mg/dL (normal 52–112), and CH50 under 15 U/mL (normal 25–35).",
+    prompt: "Which dietary component should be limited first in his management?",
+    options: ["Phosphorus", "Potassium", "Calcium", "Sodium", "Magnesium"],
+    answer: 3
+  },
+  {
+    type: "Case-based",
+    stem: "A 60-year-old man is referred for diabetes care. He was diagnosed with type 2 diabetes two decades ago but has attended follow-up only sporadically. He recently noticed blurry vision, and his ophthalmologist diagnosed proliferative diabetic retinopathy, prompting the referral. His BMI is 30.1, blood pressure 162/92 mmHg, and he has mild pitting edema of both legs. Urinalysis shows protein 2+, glucose 3+, occult blood negative, with a urine protein-to-creatinine ratio of 1.4 g/gCr. Labs show creatinine 1.4 mg/dL, eGFR 41.1 mL/min/1.73m², random glucose 268 mg/dL, and HbA1c 8.5%.",
+    prompt: "Which finding most strongly supports diabetic nephropathy as the cause of his kidney impairment?",
+    options: ["His elevated BMI", "The presence of proteinuria", "Pitting edema in his legs", "His elevated serum creatinine", "His diagnosis of proliferative diabetic retinopathy"],
+    answer: 4
+  }
+];
+
+const LETTERS = ["a","b","c","d","e"];
+let userAnswers = new Array(QUESTIONS.length).fill(null);
+let currentIndex = 0;
+let submitted = false;
+let reviewMode = false;
+
+const quizEl = document.getElementById('quiz');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const submitBtn = document.getElementById('submit-btn');
+const hintNote = document.getElementById('hint-note');
+const progressFill = document.getElementById('progress-fill');
+const progressText = document.getElementById('progress-text');
+const jumpGrid = document.getElementById('jump-grid');
+const resultsEl = document.getElementById('results');
+const quizView = document.getElementById('quiz-view');
+
+function buildJumpGrid(){
+  jumpGrid.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'jump-dot';
+    dot.id = 'dot-' + i;
+    dot.textContent = i + 1;
+    dot.addEventListener('click', () => {
+      if(reviewMode || submitted || userAnswers[i] !== null || i <= currentIndex || i === currentIndexNextAllowed()){
+        goTo(i);
+      }
+    });
+    jumpGrid.appendChild(dot);
+  });
+  updateJumpGrid();
+}
+
+function currentIndexNextAllowed(){
+  // allow jumping to the first unanswered question at most
+  for(let i=0;i<QUESTIONS.length;i++){
+    if(userAnswers[i] === null) return i;
+  }
+  return QUESTIONS.length - 1;
+}
+
+function updateJumpGrid(){
+  QUESTIONS.forEach((q, i) => {
+    const dot = document.getElementById('dot-' + i);
+    dot.classList.remove('answered','current','correct','incorrect');
+    if(submitted){
+      if(userAnswers[i] === q.answer) dot.classList.add('correct');
+      else dot.classList.add('incorrect');
+    } else if(userAnswers[i] !== null){
+      dot.classList.add('answered');
+    }
+    if(i === currentIndex) dot.classList.add('current');
+  });
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[currentIndex];
+  quizEl.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const header = document.createElement('div');
+  header.className = 'q-header';
+  header.innerHTML = `<span class="q-num">Question ${currentIndex+1} / ${QUESTIONS.length}</span><span class="q-tag">${q.type}</span>`;
+  card.appendChild(header);
+
+  if(q.stem){
+    const stemEl = document.createElement('div');
+    stemEl.className = 'q-stem';
+    stemEl.textContent = q.stem;
+    card.appendChild(stemEl);
+  }
+
+  const promptEl = document.createElement('span');
+  promptEl.className = 'q-prompt';
+  promptEl.textContent = q.prompt;
+  card.appendChild(promptEl);
+
+  const optWrap = document.createElement('div');
+  optWrap.className = 'options';
+
+  q.options.forEach((optText, oi) => {
+    const label = document.createElement('label');
+    label.className = 'option';
+    label.id = `opt-${oi}`;
+    label.innerHTML = `<input type="radio" name="q" value="${oi}"><span class="letter">${LETTERS[oi]}.</span><span>${optText}</span>`;
+    if(!submitted){
+      label.addEventListener('click', () => selectAnswer(oi));
+    } else {
+      label.classList.add('disabled');
+    }
+    optWrap.appendChild(label);
+  });
+  card.appendChild(optWrap);
+
+  const fb = document.createElement('div');
+  fb.className = 'feedback';
+  fb.id = 'fb';
+  card.appendChild(fb);
+
+  quizEl.appendChild(card);
+
+  // restore selection
+  if(userAnswers[currentIndex] !== null){
+    document.getElementById('opt-' + userAnswers[currentIndex]).classList.add('selected');
+  }
+
+  if(submitted){
+    showFeedback();
+  }
+
+  updateNavBar();
+  updateProgress();
+  updateJumpGrid();
+}
+
+function selectAnswer(oi){
+  if(submitted) return;
+  userAnswers[currentIndex] = oi;
+  for(let i=0;i<QUESTIONS[currentIndex].options.length;i++){
+    document.getElementById('opt-' + i).classList.toggle('selected', i===oi);
+  }
+  updateNavBar();
+  updateProgress();
+  updateJumpGrid();
+}
+
+function updateNavBar(){
+  prevBtn.disabled = currentIndex === 0;
+  const isLast = currentIndex === QUESTIONS.length - 1;
+  const answered = userAnswers[currentIndex] !== null;
+
+  if(submitted){
+    nextBtn.style.display = isLast ? 'none' : 'inline-block';
+    submitBtn.style.display = 'none';
+    nextBtn.disabled = false;
+    hintNote.style.display = 'none';
+    return;
+  }
+
+  hintNote.style.display = answered ? 'none' : 'block';
+
+  if(isLast){
+    nextBtn.style.display = 'none';
+    submitBtn.style.display = 'inline-block';
+    submitBtn.disabled = userAnswers.some(a => a === null);
+  } else {
+    nextBtn.style.display = 'inline-block';
+    submitBtn.style.display = 'none';
+    nextBtn.disabled = !answered;
+  }
+}
+
+function updateProgress(){
+  const answered = userAnswers.filter(a => a !== null).length;
+  const pct = Math.round(((currentIndex+1)/QUESTIONS.length)*100);
+  progressFill.style.width = pct + '%';
+  progressText.textContent = submitted
+    ? `Reviewing question ${currentIndex+1} / ${QUESTIONS.length}`
+    : `Question ${currentIndex+1} / ${QUESTIONS.length}  •  ${answered} answered so far`;
+}
+
+function goTo(i){
+  if(i < 0 || i >= QUESTIONS.length) return;
+  currentIndex = i;
+  renderQuestion();
+  quizView.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function showFeedback(){
+  const q = QUESTIONS[currentIndex];
+  const chosen = userAnswers[currentIndex];
+  const correct = q.answer;
+
+  for(let i=0;i<q.options.length;i++){
+    const optEl = document.getElementById('opt-' + i);
+    if(i === correct) optEl.classList.add('correct');
+    else if(i === chosen && chosen !== correct) optEl.classList.add('incorrect');
+  }
+
+  const fb = document.getElementById('fb');
+  fb.classList.add('show');
+  if(chosen === correct){
+    fb.classList.add('right');
+    fb.textContent = `Correct — the answer is (${LETTERS[correct]}).`;
+  } else {
+    fb.classList.add('wrong');
+    fb.textContent = `Incorrect — you selected (${LETTERS[chosen]}); the correct answer is (${LETTERS[correct]}).`;
+  }
+}
+
+function submitQuiz(){
+  if(userAnswers.some(a => a === null)) return;
+  submitted = true;
+
+  let score = 0;
+  QUESTIONS.forEach((q, i) => { if(userAnswers[i] === q.answer) score++; });
+
+  const pct = Math.round((score/QUESTIONS.length)*100);
+  const pass = pct >= 60;
+
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('score-frac').textContent = `${score} / ${QUESTIONS.length}`;
+  const circle = document.getElementById('score-circle');
+  circle.classList.add(pass ? 'pass' : 'fail');
+  const statusEl = document.getElementById('result-status');
+  statusEl.textContent = pass ? 'PASS' : 'DID NOT PASS';
+  statusEl.classList.add(pass ? 'pass' : 'fail');
+  document.getElementById('result-sub').textContent = pass
+    ? 'Well done — this meets the 60% passing threshold.'
+    : 'This is below the 60% passing threshold. Use "Review Answers" to go through each question.';
+
+  resultsEl.classList.add('show');
+  resultsEl.scrollIntoView({behavior:'smooth'});
+}
+
+prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
+nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
+submitBtn.addEventListener('click', submitQuiz);
+
+document.getElementById('review-btn').addEventListener('click', () => {
+  reviewMode = true;
+  quizView.classList.remove('hidden');
+  resultsEl.classList.remove('show');
+  goTo(0);
+});
+
+document.getElementById('retry-btn').addEventListener('click', () => {
+  userAnswers = new Array(QUESTIONS.length).fill(null);
+  currentIndex = 0;
+  submitted = false;
+  reviewMode = false;
+  resultsEl.classList.remove('show');
+  document.getElementById('score-circle').classList.remove('pass','fail');
+  document.getElementById('result-status').classList.remove('pass','fail');
+  quizView.classList.remove('hidden');
+  goTo(0);
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+buildJumpGrid();
+renderQuestion();
+</script>
+
+</body>
+</html>

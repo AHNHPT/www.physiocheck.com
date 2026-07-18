@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiopulmonary &amp; Pediatric PT Competency Check</title>
+<style>
+  :root{
+    --bg:#F5F7F8;
+    --surface:#FFFFFF;
+    --ink:#16232E;
+    --muted:#5B6B77;
+    --line:#E1E7EA;
+    --teal:#0E7C7B;
+    --teal-dim:#E4F1F1;
+    --plum:#5B4B8A;
+    --plum-dim:#EDE9F5;
+    --coral:#E4572E;
+    --coral-dim:#FCEAE3;
+    --green:#2F9E44;
+    --green-dim:#E6F5E9;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  body{
+    min-height:100vh;
+    padding-top:10px;
+  }
+
+  /* ---------- ECG progress strip ---------- */
+  .ecg-wrap{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    padding:10px 0 6px;
+  }
+  .ecg-inner{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 20px;
+  }
+  .ecg-svg{
+    width:100%;
+    height:46px;
+    display:block;
+    overflow:visible;
+  }
+  .ecg-track{
+    fill:none;
+    stroke:var(--line);
+    stroke-width:2;
+  }
+  .ecg-fill{
+    fill:none;
+    stroke:var(--coral);
+    stroke-width:2.25;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .ecg-blip{
+    fill:var(--coral);
+    r:4.5;
+  }
+  .ecg-meta{
+    display:flex;
+    justify-content:space-between;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--muted);
+    letter-spacing:.03em;
+    margin-top:2px;
+  }
+
+  @keyframes pulse{
+    0%,100%{opacity:1; r:4.5;}
+    50%{opacity:.55; r:6.5;}
+  }
+  .ecg-blip{animation:pulse 1.4s ease-in-out infinite;}
+  @media (prefers-reduced-motion: reduce){
+    .ecg-blip{animation:none;}
+  }
+
+  /* ---------- Layout ---------- */
+  .page{
+    max-width:760px;
+    margin:0 auto;
+    padding:22px 20px 60px;
+  }
+
+  header.masthead{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin:0 0 8px;
+  }
+  h1{
+    font-size:28px;
+    line-height:1.2;
+    margin:0 0 8px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .sub{
+    color:var(--muted);
+    font-size:14.5px;
+    line-height:1.5;
+    margin:0;
+    max-width:56ch;
+  }
+  .legend{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-family:var(--mono);
+    padding:4px 10px;
+    border-radius:20px;
+    font-weight:600;
+  }
+  .tag.cardio{background:var(--teal-dim); color:var(--teal);}
+  .tag.peds{background:var(--plum-dim); color:var(--plum);}
+  .tag .dot{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block;}
+
+  /* ---------- Quiz card ---------- */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:26px 26px 22px;
+    box-shadow:0 1px 2px rgba(22,35,46,0.04);
+  }
+
+  .qhead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .qnum{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--muted);
+    letter-spacing:.03em;
+  }
+  .qtext{
+    font-size:18px;
+    line-height:1.5;
+    font-weight:600;
+    margin:0 0 20px;
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .opt{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    text-align:left;
+    width:100%;
+    padding:13px 16px;
+    border-radius:10px;
+    border:1.5px solid var(--line);
+    background:var(--surface);
+    font-family:var(--sans);
+    font-size:15px;
+    line-height:1.45;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover{border-color:var(--teal);}
+  .opt:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+  .opt.selected{
+    border-color:var(--teal);
+    background:var(--teal-dim);
+  }
+  .opt .letter{
+    font-family:var(--mono);
+    font-weight:700;
+    color:var(--teal);
+    flex:0 0 auto;
+    width:1.4em;
+  }
+  .opt.selected .letter{color:var(--teal);}
+
+  .navrow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:24px;
+  }
+  button.nav{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:14px;
+    padding:10px 18px;
+    border-radius:8px;
+    border:1.5px solid var(--line);
+    background:var(--surface);
+    color:var(--ink);
+    cursor:pointer;
+  }
+  button.nav:hover:not(:disabled){border-color:var(--ink);}
+  button.nav:disabled{opacity:.35; cursor:not-allowed;}
+  button.primary{
+    background:var(--teal);
+    border-color:var(--teal);
+    color:#fff;
+  }
+  button.primary:hover{background:#0B6362;}
+  button.primary:disabled{opacity:.4; cursor:not-allowed; background:var(--teal); border-color:var(--teal);}
+
+  .jump-hint{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  /* ---------- Results ---------- */
+  .results{display:none;}
+  .score-block{
+    text-align:center;
+    padding:34px 20px 26px;
+  }
+  .score-num{
+    font-family:var(--mono);
+    font-size:64px;
+    font-weight:700;
+    letter-spacing:-0.02em;
+    line-height:1;
+  }
+  .score-num span{font-size:28px; color:var(--muted); font-weight:600;}
+  .score-pct{
+    font-family:var(--mono);
+    font-size:15px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+  .verdict{
+    display:inline-block;
+    margin-top:16px;
+    padding:7px 18px;
+    border-radius:20px;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.02em;
+  }
+  .verdict.pass{background:var(--green-dim); color:var(--green);}
+  .verdict.fail{background:var(--coral-dim); color:var(--coral);}
+
+  .breakdown{
+    display:flex;
+    gap:14px;
+    justify-content:center;
+    margin-top:22px;
+    flex-wrap:wrap;
+  }
+  .bstat{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 18px;
+    min-width:140px;
+  }
+  .bstat .label{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--muted);
+  }
+  .bstat .val{
+    font-family:var(--mono);
+    font-size:20px;
+    font-weight:700;
+    margin-top:2px;
+  }
+
+  .review-toggle{
+    display:block;
+    margin:26px auto 0;
+    background:none;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    padding:10px 20px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .review-toggle:hover{border-color:var(--ink);}
+
+  .review-list{
+    display:none;
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+  }
+  .review-item{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .review-item:last-child{border-bottom:none;}
+  .review-item .rihead{
+    display:flex;
+    gap:10px;
+    align-items:baseline;
+    margin-bottom:8px;
+    flex-wrap:wrap;
+  }
+  .review-item .rinum{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--muted);
+  }
+  .review-item .rimark{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:12px;
+  }
+  .rimark.correct{background:var(--green-dim); color:var(--green);}
+  .rimark.wrong{background:var(--coral-dim); color:var(--coral);}
+  .review-item .riq{
+    font-size:14.5px;
+    font-weight:600;
+    margin:0 0 8px;
+    line-height:1.5;
+  }
+  .review-item .riopt{
+    font-size:13.5px;
+    line-height:1.5;
+    margin:2px 0;
+    color:var(--muted);
+  }
+  .review-item .riopt.is-correct{color:var(--green); font-weight:600;}
+  .review-item .riopt.is-user-wrong{color:var(--coral); font-weight:600;}
+
+  .restart{
+    display:block;
+    margin:28px auto 0;
+    background:var(--ink);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:11px 24px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .restart:hover{background:#0B141C;}
+
+  footer{
+    text-align:center;
+    margin-top:30px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.6;
+  }
+
+  @media (max-width:480px){
+    h1{font-size:23px;}
+    .card{padding:20px 16px 18px;}
+    .qtext{font-size:16.5px;}
+    .score-num{font-size:50px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="ecg-wrap">
+    <div class="ecg-inner">
+      <svg class="ecg-svg" viewBox="0 0 700 46" preserveAspectRatio="none" aria-hidden="true">
+        <path class="ecg-track" d="M0,23 L60,23 L72,23 L78,5 L86,40 L94,23 L110,23 L700,23"/>
+        <path id="ecgFill" class="ecg-fill" d="M0,23 L60,23 L72,23 L78,5 L86,40 L94,23 L110,23 L700,23" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+        <circle id="ecgBlip" class="ecg-blip" cx="0" cy="23"></circle>
+      </svg>
+      <div class="ecg-meta">
+        <span id="progLabel">QUESTION 1 / 30</span>
+        <span id="progPct">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <header class="masthead">
+      <p class="eyebrow">Staff Competency Check</p>
+      <h1>Cardiopulmonary &amp; Pediatric PT Knowledge Test</h1>
+      <p class="sub">30 questions adapted from the Taiwan Physiotherapist Licensing Examination (Cardiopulmonary &amp; Pediatric Diseases in Physical Therapy paper). Passing score: 60% (18 / 30).</p>
+      <div class="legend">
+        <span class="tag cardio"><span class="dot"></span>Cardiopulmonary</span>
+        <span class="tag peds"><span class="dot"></span>Pediatric</span>
+      </div>
+    </header>
+
+    <div class="card" id="quizCard">
+      <div class="qhead">
+        <span class="qnum" id="qNumLabel">Q01 / 30</span>
+        <span class="tag" id="qCatTag"></span>
+      </div>
+      <p class="qtext" id="qText"></p>
+      <div class="options" id="qOptions"></div>
+
+      <div class="navrow">
+        <button class="nav" id="prevBtn">&larr; Previous</button>
+        <span class="jump-hint" id="answeredHint"></span>
+        <button class="nav primary" id="nextBtn">Next &rarr;</button>
+      </div>
+    </div>
+
+    <div class="card results" id="resultsCard">
+      <div class="score-block">
+        <p class="eyebrow" style="text-align:center;">Result</p>
+        <div class="score-num"><span id="scoreCount">0</span><span>/30</span></div>
+        <p class="score-pct" id="scorePct">0%</p>
+        <div class="verdict" id="verdict"></div>
+
+        <div class="breakdown">
+          <div class="bstat">
+            <div class="label">Cardiopulmonary</div>
+            <div class="val" id="cardioScore">0/15</div>
+          </div>
+          <div class="bstat">
+            <div class="label">Pediatric</div>
+            <div class="val" id="pedsScore">0/15</div>
+          </div>
+        </div>
+
+        <button class="review-toggle" id="reviewToggle">Show full answer review</button>
+      </div>
+
+      <div class="review-list" id="reviewList"></div>
+
+      <button class="restart" id="restartBtn">Retake test</button>
+    </div>
+
+    <footer>
+      Source items adapted from the 113年第一次 Taiwan Physiotherapist Licensing Examination, subject 3311 (心肺疾病與小兒疾病物理治療學). For internal staff training use only.
+    </footer>
+
+  </div>
+
+<script>
+(function(){
+
+  const questions = [
+    // ---------------- CARDIOPULMONARY (15) ----------------
+    {
+      cat:"cardio",
+      q:"Which statement about measuring Functional Residual Capacity (FRC) is accurate?",
+      opts:[
+        "Body plethysmography (based on Boyle's law) gives an average adult FRC of roughly 2500 mL",
+        "A simple flow-based spirometer gives an average adult FRC of roughly 5000 mL",
+        "Body plethysmography (based on Boyle's law) shows FRC making up roughly 25% of Total Lung Capacity",
+        "A simple flow-based spirometer shows FRC making up roughly 50% of Total Lung Capacity"
+      ],
+      correct:0
+    },
+    {
+      cat:"cardio",
+      q:"Which of these claims about normal pulmonary function values in healthy adults does NOT hold up?",
+      opts:[
+        "During maximal respiratory effort, alveolar pressure may swing as high as \u00b1200 mmHg",
+        "Anatomic dead space \u2014 airway volume not involved in gas exchange \u2014 usually falls between 145 and 155 mL",
+        "The ratio of dead space to tidal volume (VD/VT) reflects how effective mechanical ventilation is, and typically sits around 25\u201340%",
+        "Elastance, the inverse of compliance, typically falls between 2.5 and 8.5 cmH2O/L"
+      ],
+      correct:0
+    },
+    {
+      cat:"cardio",
+      q:"Which of the following reflects sound technique when assessing breath sounds?",
+      opts:[
+        "Out of respect for patient privacy, breath sounds should be listened to over the clothing rather than the skin",
+        "Since it's less tiring for the patient, breath sounds are best assessed with them lying flat on their back",
+        "When sounds come across faint or distant, having the patient take a few deep breaths helps confirm the finding",
+        "Only the front of the chest needs auscultation; comparing it with the back isn't necessary"
+      ],
+      correct:2
+    },
+    {
+      cat:"cardio",
+      q:"Some people with asthma have no symptoms and normal lung function between flare-ups. Severity grading for asthma mainly relies on which measures?",
+      opts:[
+        "Peak expiratory flow, along with daytime and nighttime symptom frequency",
+        "FEV1 and FVC",
+        "How much rescue medication is used, plus a perceived-exertion scale",
+        "Maximal inspiratory and expiratory pressures"
+      ],
+      correct:0
+    },
+    {
+      cat:"cardio",
+      q:"A patient with COPD shows FEV1 = 65%, DLCO = 65%, and FVC = 70% predicted. Under the AMA's respiratory disability classification, where does this land?",
+      opts:["Class 1","Class 2","Class 3","Class 4"],
+      correct:1
+    },
+    {
+      cat:"cardio",
+      q:"During pulmonary rehab, a patient with asthma reports needing a rescue bronchodilator on almost every day this past week. What's the most fitting response from the physiotherapist?",
+      opts:[
+        "Scale back the intensity of exercise training",
+        "Bump up the pre-exercise dose of inhaled bronchodilator",
+        "Pause training and arrange further medical review",
+        "Step up oxygen saturation monitoring during exercise"
+      ],
+      correct:2
+    },
+    {
+      cat:"cardio",
+      q:"Which of these does NOT influence stroke volume?",
+      opts:["Preload","Myocardial contractility","Afterload","How many atrioventricular valves are present"],
+      correct:3
+    },
+    {
+      cat:"cardio",
+      q:"During exercise, which physiological factor drives the largest share of the rise in cardiac output?",
+      opts:["Heart rate","Stroke volume","Mean arterial pressure","Peripheral vascular resistance"],
+      correct:0
+    },
+    {
+      cat:"cardio",
+      q:"Regarding how exercise test results get applied clinically, which statement doesn't hold up?",
+      opts:[
+        "Because cardiac patients are on beta-blockers, their exercise heart rate won't reflect true exercise intensity",
+        "A symptom-limited maximal test can establish a patient's peak heart rate and peak exercise capacity",
+        "Among cardiac patients, the angina threshold tracks positively with myocardial oxygen consumption",
+        "The angina threshold is calculated as heart rate multiplied by mean arterial pressure (HR \u00d7 MAP)"
+      ],
+      correct:3
+    },
+    {
+      cat:"cardio",
+      q:"Which biomarker is the most specific indicator of myocardial injury?",
+      opts:["Creatine phosphokinase (CPK)","Lactate dehydrogenase (LDH)","Serum glutamic oxaloacetic transaminase (SGOT)","Troponin I or T"],
+      correct:3
+    },
+    {
+      cat:"cardio",
+      q:"A patient with ischemic heart disease records a VO2max of 25 mL/kg/min. Applying METs-based risk classification from relevant cardiac and pulmonary rehabilitation guidelines, which risk tier fits?",
+      opts:["No risk","Low risk","Moderate risk","High risk"],
+      correct:1
+    },
+    {
+      cat:"cardio",
+      q:"Working as a home-care physiotherapist, which of these medication precautions is inaccurate?",
+      opts:[
+        "A patient on Coumadin (warfarin) should avoid bumps or knocks that might trigger bleeding during sessions",
+        "A patient on Inderal (propranolol) shouldn't have exercise intensity set using heart rate",
+        "A patient on Nitroglycerin should be watched for chest tightness and signs of cardiac ischemia",
+        "A patient on Bosmin (epinephrine) may experience exercise-induced asthma as a result"
+      ],
+      correct:3
+    },
+    {
+      cat:"cardio",
+      q:"Which combination correctly lists absolute contraindications to a symptom-limited maximal exercise test? \u2460 Ongoing unstable angina \u2461 Moderate aortic stenosis \u2462 Systolic BP of 180 mmHg \u2463 Active endocarditis",
+      opts:["\u2460\u2463","\u2461\u2462","\u2460\u2461\u2462","\u2461\u2462\u2463"],
+      correct:0
+    },
+    {
+      cat:"cardio",
+      q:"What's the most likely acute danger tied to vigorous physical exertion?",
+      opts:["Coronary artery aneurysm","Acute myocardial infarction","Atherosclerosis","Osteoporosis"],
+      correct:1
+    },
+    {
+      cat:"cardio",
+      q:"Concerning exercise testing for patients with hypertension, which statement is accurate?",
+      opts:[
+        "A resting BP of \u2265200/110 mmHg is itself grounds to proceed with testing",
+        "Well-controlled hypertension means the patient can go straight into vigorous exercise",
+        "For a diagnostic test, there's no need to hold antihypertensive medication beforehand",
+        "When the goal is designing an exercise prescription, medically supervised testing doesn't require holding antihypertensive medication"
+      ],
+      correct:3
+    },
+
+    // ---------------- PEDIATRIC (15) ----------------
+    {
+      cat:"peds",
+      q:"Per motor learning theory, a child with cerebral palsy repeatedly walks on a treadmill in a quiet, undisturbed treatment room. What category of motor task does this represent?",
+      opts:["Continuous\u2013open task","Discrete\u2013open task","Continuous\u2013closed task","Discrete\u2013closed task"],
+      correct:2
+    },
+    {
+      cat:"peds",
+      q:"Using Cech and Martin's postural control framework, a therapist has a child practice walking across varied surfaces \u2014 wood floor, mats, sand. Which postural control skill is the focus here?",
+      opts:["Static","Reactive","Anticipatory","Adaptive"],
+      correct:3
+    },
+    {
+      cat:"peds",
+      q:"A team is building a new developmental screening tool and validates it against an already-established standardized checklist. What type of validity does this test?",
+      opts:["Predictive validity","Content validity","Concurrent validity","Face validity"],
+      correct:2
+    },
+    {
+      cat:"peds",
+      q:"A roughly two-year-old watches her mother feed a younger sibling, then grabs a toy bottle and pretends to feed her doll. Which Piagetian stage does this behaviour belong to?",
+      opts:["Reflex stage","Primary circular reactions","Secondary circular reactions","Invention of new means through mental combination"],
+      correct:3
+    },
+    {
+      cat:"peds",
+      q:"Which tool would best help a school-based physiotherapist brief a PE teacher on a student with Down syndrome's coordination and balance?",
+      opts:[
+        "Gross Motor Function Measure (GMFM-66)",
+        "Movement Assessment Battery for Children, 2nd Edition (MABC-2)",
+        "School Function Assessment (SFA)",
+        "Pediatric Evaluation of Disability Inventory (PEDI)"
+      ],
+      correct:1
+    },
+    {
+      cat:"peds",
+      q:"Regarding gait changes seen with gastrocnemius\u2013soleus weakness, which statement doesn't fit?",
+      opts:[
+        "Gait speed drops",
+        "During stance, the hamstrings are what keeps the trunk upright",
+        "Terminal stance shows excess knee flexion",
+        "Clearing the foot during swing is difficult, requiring extra help from the hip flexors"
+      ],
+      correct:1
+    },
+    {
+      cat:"peds",
+      q:"Which sequence correctly orders typical toilet-training milestones, earliest to latest? \u2460 Shows discomfort after a bowel movement \u2461 Manages the toilet independently except for wiping \u2462 Can indicate they've already gone \u2463 Announces the need to go beforehand",
+      opts:["\u2460\u2461\u2462\u2463","\u2460\u2462\u2463\u2461","\u2462\u2460\u2463\u2461","\u2463\u2460\u2461\u2462"],
+      correct:1
+    },
+    {
+      cat:"peds",
+      q:"Which of these is NOT one of the developmental theories that currently guide early intervention for high-risk newborns?",
+      opts:["Dynamic systems theory","Family-centered care theory","Classical conditioning theory","Co-development / synactive theory"],
+      correct:2
+    },
+    {
+      cat:"peds",
+      q:"Concerning the neuromotor structure and function of premature infants with no major brain injury, which claim is false?",
+      opts:[
+        "Lower-limb primitive reflexes emerge before upper-limb ones",
+        "Limb flexor tone develops in a proximal-to-distal direction",
+        "Compared to full-term infants, preterm infants at term-equivalent age show weaker flexor tone",
+        "Compared to full-term infants, preterm infants at term-equivalent age show less mature white/grey matter differentiation"
+      ],
+      correct:1
+    },
+    {
+      cat:"peds",
+      q:"Regarding assistive technology use for children with cerebral palsy, which statement is inaccurate?",
+      opts:[
+        "Within the ICF model, assistive technology counts as an environmental factor",
+        "A hip dislocation rate of \u226550% is one contraindication for a prone/supine stander",
+        "Among children who walk independently, less restrictive lower-limb orthoses tend to yield better gross motor gains than more restrictive ones",
+        "Children at GMFCS levels IV\u2013V, given their non-ambulatory prognosis, don't need functional mobility devices considered"
+      ],
+      correct:3
+    },
+    {
+      cat:"peds",
+      q:"Based on research into motor development among children with Autism Spectrum Disorder, which statement is incorrect?",
+      opts:[
+        "Some children also show motor impairment or developmental coordination disorder",
+        "Some show delayed motor development as early as 6 months old",
+        "Children not diagnosed with ASD until school age display hypertonic postural muscles from early on",
+        "Some repeatedly show stereotyped motor patterns, like spinning their whole body"
+      ],
+      correct:2
+    },
+    {
+      cat:"peds",
+      q:"A child cries loudly and gags when angry, seeking adult attention. The parent and therapist agree that when this happens, the adults will step out of the child's sight and return once the crying eases. Which behavioural principle does this apply?",
+      opts:[
+        "Positive reinforcement (adding a positive stimulus)",
+        "Negative reinforcement (removing a negative stimulus)",
+        "Punishment (adding a negative stimulus)",
+        "Extinction / time-out (removing a positive reinforcer)"
+      ],
+      correct:3
+    },
+    {
+      cat:"peds",
+      q:"Regarding treatment principles for Duchenne Muscular Dystrophy, which statement is wrong?",
+      opts:[
+        "Work on strengthening remaining muscle capacity",
+        "Respiratory training can help slow the decline in breathing function",
+        "Suitable resistance exercise can begin early after diagnosis",
+        "In the late ambulatory stage, active movement should be emphasized while passive stretching is avoided"
+      ],
+      correct:3
+    },
+    {
+      cat:"peds",
+      q:"Concerning typical cardiopulmonary development in full-term infants and children, which claim is false?",
+      opts:[
+        "Respiratory rate starts around 35/min at birth and falls to about 20/min by age 8",
+        "Heart rate starts around 80/min at 5 minutes after birth and rises to about 100/min by age 8",
+        "PaO2 starts around 62\u201386 mmHg at 5 hours after birth and rises to 80\u2013100 mmHg by adolescence",
+        "Alveolar count starts around 25 million at birth and exceeds 250 million by age 8"
+      ],
+      correct:1
+    },
+    {
+      cat:"peds",
+      q:"Using functional strength testing, which observation would earn a \u201cfair\u201d grade for trunk extensor strength in a 10-month-old?",
+      opts:[
+        "In quadruped, the back stays in a straight line without lumbar sway",
+        "Holding onto a table while standing, can bend forward and touch the floor with one hand",
+        "From sitting, can reach forward for an object and return upright without pushing off the floor with the hands",
+        "In prone, held at the pelvis, can hold an airplane/superman position for 16 seconds"
+      ],
+      correct:2
+    }
+  ];
+
+  const TOTAL = questions.length;
+  const PASS_PCT = 0.6;
+  const letters = ["A","B","C","D"];
+
+  let current = 0;
+  const answers = new Array(TOTAL).fill(null);
+
+  const qNumLabel = document.getElementById('qNumLabel');
+  const qCatTag = document.getElementById('qCatTag');
+  const qText = document.getElementById('qText');
+  const qOptions = document.getElementById('qOptions');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const answeredHint = document.getElementById('answeredHint');
+  const quizCard = document.getElementById('quizCard');
+  const resultsCard = document.getElementById('resultsCard');
+  const progLabel = document.getElementById('progLabel');
+  const progPct = document.getElementById('progPct');
+  const ecgFill = document.getElementById('ecgFill');
+  const ecgBlip = document.getElementById('ecgBlip');
+
+  function catLabel(cat){
+    return cat === 'cardio' ? 'Cardiopulmonary' : 'Pediatric';
+  }
+
+  function renderQuestion(){
+    const item = questions[current];
+    qNumLabel.textContent = 'Q' + String(current+1).padStart(2,'0') + ' / ' + TOTAL;
+    qCatTag.className = 'tag ' + item.cat;
+    qCatTag.innerHTML = '<span class="dot"></span>' + catLabel(item.cat);
+    qText.textContent = item.q;
+
+    qOptions.innerHTML = '';
+    item.opts.forEach((optText, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'opt' + (answers[current] === idx ? ' selected' : '');
+      btn.innerHTML = '<span class="letter">' + letters[idx] + '</span><span>' + optText + '</span>';
+      btn.addEventListener('click', () => {
+        answers[current] = idx;
+        renderQuestion();
+      });
+      qOptions.appendChild(btn);
+    });
+
+    prevBtn.disabled = current === 0;
+    const isLast = current === TOTAL - 1;
+    nextBtn.textContent = isLast ? 'Submit test \u2192' : 'Next \u2192';
+    nextBtn.disabled = answers[current] === null;
+
+    const answeredCount = answers.filter(a => a !== null).length;
+    answeredHint.textContent = answeredCount + ' / ' + TOTAL + ' answered';
+
+    updateProgress();
+  }
+
+  function updateProgress(){
+    const frac = current / (TOTAL - 1);
+    const pct = Math.round(((current+1) / TOTAL) * 100);
+    progLabel.textContent = 'QUESTION ' + (current+1) + ' / ' + TOTAL;
+    progPct.textContent = pct + '%';
+
+    const pathLen = 1000;
+    const offset = pathLen - (pathLen * frac);
+    ecgFill.style.strokeDashoffset = offset;
+
+    // move blip roughly along the track's x-range (0 to 700)
+    const x = frac * 700;
+    ecgBlip.setAttribute('cx', x.toFixed(1));
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if(current > 0){
+      current--;
+      renderQuestion();
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if(answers[current] === null) return;
+    if(current < TOTAL - 1){
+      current++;
+      renderQuestion();
+    } else {
+      showResults();
+    }
+  });
+
+  function showResults(){
+    let score = 0;
+    let cardioTotal = 0, cardioCorrect = 0, pedsTotal = 0, pedsCorrect = 0;
+
+    questions.forEach((item, i) => {
+      const correct = answers[i] === item.correct;
+      if(correct) score++;
+      if(item.cat === 'cardio'){
+        cardioTotal++;
+        if(correct) cardioCorrect++;
+      } else {
+        pedsTotal++;
+        if(correct) pedsCorrect++;
+      }
+    });
+
+    const pct = score / TOTAL;
+    document.getElementById('scoreCount').textContent = score;
+    document.getElementById('scorePct').textContent = Math.round(pct*100) + '%';
+    document.getElementById('cardioScore').textContent = cardioCorrect + '/' + cardioTotal;
+    document.getElementById('pedsScore').textContent = pedsCorrect + '/' + pedsTotal;
+
+    const verdict = document.getElementById('verdict');
+    if(pct >= PASS_PCT){
+      verdict.textContent = 'PASS';
+      verdict.className = 'verdict pass';
+    } else {
+      verdict.textContent = 'BELOW PASSING (60%)';
+      verdict.className = 'verdict fail';
+    }
+
+    buildReview();
+
+    quizCard.style.display = 'none';
+    resultsCard.style.display = 'block';
+    document.querySelector('.ecg-wrap').style.display = 'none';
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function buildReview(){
+    const list = document.getElementById('reviewList');
+    list.innerHTML = '';
+    questions.forEach((item, i) => {
+      const userIdx = answers[i];
+      const isCorrect = userIdx === item.correct;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'review-item';
+
+      const head = document.createElement('div');
+      head.className = 'rihead';
+      head.innerHTML =
+        '<span class="rinum">Q' + String(i+1).padStart(2,'0') + '</span>' +
+        '<span class="tag ' + item.cat + '"><span class="dot"></span>' + catLabel(item.cat) + '</span>' +
+        '<span class="rimark ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? 'CORRECT' : 'INCORRECT') + '</span>';
+      wrap.appendChild(head);
+
+      const qp = document.createElement('p');
+      qp.className = 'riq';
+      qp.textContent = item.q;
+      wrap.appendChild(qp);
+
+      item.opts.forEach((optText, idx) => {
+        const p = document.createElement('p');
+        let cls = 'riopt';
+        let prefix = letters[idx] + '. ';
+        if(idx === item.correct){
+          cls += ' is-correct';
+          prefix += '';
+        }
+        if(idx === userIdx && !isCorrect){
+          cls += ' is-user-wrong';
+        }
+        let suffix = '';
+        if(idx === item.correct) suffix = '  \u2713 correct answer';
+        if(idx === userIdx && !isCorrect) suffix = '  \u2717 your answer';
+        p.className = cls;
+        p.textContent = prefix + optText + suffix;
+        wrap.appendChild(p);
+      });
+
+      list.appendChild(wrap);
+    });
+  }
+
+  document.getElementById('reviewToggle').addEventListener('click', function(){
+    const list = document.getElementById('reviewList');
+    const showing = list.style.display === 'block';
+    list.style.display = showing ? 'none' : 'block';
+    this.textContent = showing ? 'Show full answer review' : 'Hide full answer review';
+  });
+
+  document.getElementById('restartBtn').addEventListener('click', function(){
+    current = 0;
+    for(let i=0;i<TOTAL;i++) answers[i] = null;
+    quizCard.style.display = 'block';
+    resultsCard.style.display = 'none';
+    document.querySelector('.ecg-wrap').style.display = 'block';
+    document.getElementById('reviewList').style.display = 'none';
+    document.getElementById('reviewToggle').textContent = 'Show full answer review';
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  renderQuestion();
+})();
+</script>
+
+</body>
+</html>

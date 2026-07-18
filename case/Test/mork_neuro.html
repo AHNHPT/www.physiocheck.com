@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neurological Physiotherapy — Staff Competency Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2B27;
+    --ink-soft:#4C615B;
+    --paper:#F6F8F7;
+    --panel:#FFFFFF;
+    --line:#DDE5E2;
+    --teal:#1B4B43;
+    --teal-deep:#123430;
+    --amber:#B5732A;
+    --good:#2F7A57;
+    --good-bg:#E8F3EC;
+    --bad:#AE4530;
+    --bad-bg:#FBEAE5;
+    --chip:#EEF3F1;
+    --radius:10px;
+    --serif:'Source Serif 4', Georgia, serif;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  header.masthead{
+    background:var(--teal-deep);
+    color:#EFF5F2;
+    padding:34px 20px 26px;
+    border-bottom:4px solid var(--amber);
+  }
+  .masthead-inner{max-width:760px; margin:0 auto;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#B9D6C9;
+    display:flex; gap:10px; align-items:center;
+    margin-bottom:10px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);display:inline-block;}
+  h1{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(22px,4vw,32px);
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  .masthead p{margin:0;color:#C7DAD3;font-size:14px;max-width:60ch;}
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:18px;
+    margin-top:16px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:#A9C9BC;
+  }
+  .meta-row b{color:#EFF5F2;font-weight:600;}
+
+  .progress-wrap{
+    position:sticky; top:0; z-index:30;
+    background:rgba(246,248,247,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:12px 20px;
+  }
+  .progress-inner{
+    max-width:760px; margin:0 auto;
+    display:flex; align-items:center; gap:14px;
+  }
+  .progress-track{flex:1; height:7px; background:var(--chip); border-radius:20px; overflow:hidden;}
+  .progress-fill{height:100%; width:0%; background:var(--teal); border-radius:20px; transition:width .25s ease;}
+  .progress-label{font-family:var(--mono); font-size:12.5px; color:var(--ink-soft); white-space:nowrap;}
+
+  .dot-rail{
+    max-width:760px; margin:10px auto 0;
+    padding:0 20px;
+    display:flex; flex-wrap:wrap; gap:6px;
+  }
+  .dot-rail button{
+    width:22px; height:22px;
+    border-radius:5px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .15s ease;
+  }
+  .dot-rail button.answered{background:var(--chip); border-color:var(--teal); color:var(--teal);}
+  .dot-rail button.current{background:var(--teal); border-color:var(--teal); color:#fff;}
+  .dot-rail button.correct{background:var(--good-bg); border-color:var(--good); color:var(--good);}
+  .dot-rail button.incorrect{background:var(--bad-bg); border-color:var(--bad); color:var(--bad);}
+
+  main{max-width:760px; margin:0 auto; padding:22px 20px 100px;}
+  .intro-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    margin-bottom:20px;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .intro-card strong{color:var(--ink);}
+  .pass-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12px;
+    background:var(--chip); color:var(--teal-deep);
+    padding:5px 10px; border-radius:20px; margin-top:10px;
+  }
+
+  .q-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px 22px 20px;
+    animation:fadein .2s ease;
+  }
+  @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .q-head{display:flex; gap:14px; align-items:baseline; margin-bottom:14px;}
+  .q-num{
+    font-family:var(--mono); font-weight:600; font-size:13px;
+    color:var(--teal); background:var(--chip);
+    padding:3px 9px; border-radius:6px; flex-shrink:0;
+  }
+  .q-topic{
+    font-family:var(--mono); font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ink-soft); margin-left:auto; flex-shrink:0;
+  }
+  .q-stem{font-size:17px; font-weight:500; color:var(--ink); margin:0 0 18px;}
+
+  .options{display:flex; flex-direction:column; gap:9px;}
+  .opt{
+    display:flex; align-items:flex-start; gap:12px;
+    padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .opt:hover{border-color:var(--teal);}
+  .opt input{margin-top:3px; accent-color:var(--teal); flex-shrink:0;}
+  .opt .opt-letter{font-family:var(--mono); font-weight:600; color:var(--teal); flex-shrink:0;}
+  .opt .opt-text{font-size:14.5px; color:var(--ink);}
+  .opt.selected{border-color:var(--teal); background:#F0F6F3;}
+  .opt.mark-correct{border-color:var(--good); background:var(--good-bg);}
+  .opt.mark-incorrect{border-color:var(--bad); background:var(--bad-bg);}
+
+  .result-tag{
+    font-family:var(--mono); font-size:11.5px; font-weight:600;
+    padding:2px 8px; border-radius:5px; margin-left:8px;
+  }
+  .result-tag.correct{background:var(--good-bg); color:var(--good);}
+  .result-tag.incorrect{background:var(--bad-bg); color:var(--bad);}
+
+  .nav-bar{
+    position:sticky; bottom:0;
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    padding:14px 20px;
+    display:flex; justify-content:center;
+    box-shadow:0 -6px 18px rgba(20,40,35,0.06);
+  }
+  .nav-bar-inner{
+    max-width:760px; width:100%;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .nav-btn{
+    font-family:var(--sans); font-weight:600; font-size:14px;
+    padding:11px 20px; border-radius:8px; cursor:pointer;
+    border:1px solid var(--line); background:var(--panel); color:var(--ink);
+    transition:all .15s ease;
+  }
+  .nav-btn:hover:not(:disabled){border-color:var(--teal); color:var(--teal);}
+  .nav-btn:disabled{opacity:.4; cursor:not-allowed;}
+  .nav-btn.primary{background:var(--teal); border-color:var(--teal); color:#fff;}
+  .nav-btn.primary:hover:not(:disabled){background:var(--teal-deep);}
+  .nav-center-note{
+    font-family:var(--mono); font-size:12px; color:var(--ink-soft); text-align:center; flex:1;
+  }
+  .nav-btn:focus-visible{outline:3px solid var(--amber); outline-offset:2px;}
+
+  .results-panel{
+    display:none;
+    background:var(--teal-deep); color:#EFF5F2;
+    border-radius:var(--radius); padding:30px 26px; margin-bottom:22px; text-align:center;
+  }
+  .results-panel.show{display:block;}
+  .gauge{width:170px; height:170px; margin:0 auto 14px; position:relative;}
+  .gauge svg{transform:rotate(-90deg);}
+  .gauge-track{fill:none; stroke:rgba(255,255,255,0.14); stroke-width:12;}
+  .gauge-fill{fill:none; stroke:var(--amber); stroke-width:12; stroke-linecap:round; transition:stroke-dashoffset 1s ease;}
+  .gauge-fill.pass{stroke:#5FCB93;}
+  .gauge-center{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .gauge-score{font-family:var(--serif); font-size:38px; font-weight:600;}
+  .gauge-of{font-family:var(--mono); font-size:12px; color:#B9D6C9;}
+  .result-verdict{font-family:var(--serif); font-size:22px; font-weight:600; margin:6px 0 4px;}
+  .result-verdict.pass{color:#8FE0B6;}
+  .result-verdict.fail{color:#F1A98F;}
+  .result-sub{font-size:13.5px; color:#C7DAD3; margin-bottom:18px;}
+  .results-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
+  .results-actions button{
+    font-family:var(--sans); font-weight:600; font-size:13.5px;
+    padding:10px 18px; border-radius:8px;
+    border:1px solid rgba(255,255,255,0.35); background:transparent; color:#EFF5F2; cursor:pointer;
+  }
+  .results-actions button.primary{background:var(--amber); border-color:var(--amber); color:#231407;}
+
+  footer{text-align:center; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); padding:20px;}
+
+  @media (max-width:480px){
+    .q-head{flex-wrap:wrap;}
+    .q-topic{margin-left:0;}
+    .nav-bar-inner{gap:8px;}
+    .nav-center-note{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="eyebrow"><span class="dot"></span>NEUROLOGICAL PHYSIOTHERAPY · STAFF ORIENTATION</div>
+    <h1>Competency Check — Neurological Physical Therapy</h1>
+    <p>30 single-best-answer items covering motor control, stroke rehabilitation, spinal cord injury, traumatic brain injury, movement disorders, vestibular dysfunction and peripheral neuropathies. Written for internal staff orientation.</p>
+    <div class="meta-row">
+      <span><b>Items:</b> 30</span>
+      <span><b>Passing score:</b> 60% (18 / 30)</span>
+      <span><b>Format:</b> single best answer, one at a time</span>
+    </div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Question 1 / 30</div>
+  </div>
+  <div class="dot-rail" id="dotRail"></div>
+</div>
+
+<main>
+  <div class="intro-card" id="introCard">
+    <strong>Instructions.</strong> Questions appear one at a time. Select an answer, then use <em>Next</em> to continue — you can move back at any point with <em>Previous</em>, or jump to any question using the numbered squares above. Submit becomes available once all 30 have been answered.
+    <div class="pass-badge">✓ Passing threshold: 18 correct out of 30</div>
+  </div>
+
+  <div class="results-panel" id="resultsPanel">
+    <div class="gauge">
+      <svg viewBox="0 0 120 120" width="170" height="170">
+        <circle class="gauge-track" cx="60" cy="60" r="50"></circle>
+        <circle class="gauge-fill" id="gaugeFill" cx="60" cy="60" r="50" stroke-dasharray="314.159" stroke-dashoffset="314.159"></circle>
+      </svg>
+      <div class="gauge-center">
+        <div class="gauge-score" id="gaugeScore">0%</div>
+        <div class="gauge-of" id="gaugeOf">0 / 30</div>
+      </div>
+    </div>
+    <div class="result-verdict" id="resultVerdict">—</div>
+    <div class="result-sub" id="resultSub">Review your answers below — correct answers are marked in green, incorrect selections in red.</div>
+    <div class="results-actions">
+      <button class="primary" id="reviewBtn">Jump to first miss</button>
+      <button id="retakeBtn">Retake quiz</button>
+    </div>
+  </div>
+
+  <div id="questionHost"></div>
+</main>
+
+<div class="nav-bar">
+  <div class="nav-bar-inner">
+    <button class="nav-btn" id="prevBtn">← Previous</button>
+    <span class="nav-center-note" id="navNote">30 questions remaining</span>
+    <button class="nav-btn primary" id="nextBtn">Next →</button>
+  </div>
+</div>
+
+<footer>Internal staff training use only</footer>
+
+<script>
+const QUESTIONS = [
+{topic:"Motor Control", stem:"Which statement about the \u201cmotor program\u201d concept in motor control theory is accurate?",
+ options:["A movement can only be produced when continuous sensory feedback is available","Motor programs are stored within the central nervous system","A motor program is a detailed neural map that forms only after a movement has already occurred","The motor program concept is fundamentally a closed-loop model"], answer:1},
+
+{topic:"Motor Control", stem:"Which theoretical model of motor control holds that movement is regulated in a top-down manner by higher centers, such that damage to those centers causes primitive reflexive patterns to resurface?",
+ options:["Dynamical systems theory","Reflex theory","Motor programming theory","Hierarchical theory"], answer:3},
+
+{topic:"Motor Learning", stem:"Which motor learning framework proposes that the central challenge of acquiring a skill is learning to manage the body's mechanical degrees of freedom?",
+ options:["Ecological theory","Gentile's two-stage model","Bernstein's three-stage approach to motor learning","Fitts and Posner's three-stage model"], answer:2},
+
+{topic:"Neuroplasticity", stem:"Which of the following statements about neuroplasticity and motor recovery is FALSE?",
+ options:["Cerebellar circuits contribute meaningfully to recovery after damage to the primary motor cortex","Reorganization of secondary motor areas on the affected side contributes to recovery after primary motor cortex damage","Cortical remapping does not occur following peripheral nerve injury","Recruitment of reticulospinal pathways contributes to recovery after corticospinal tract damage"], answer:2},
+
+{topic:"ICF Framework", stem:"A 40-year-old woman with cerebellar atrophy shows the following on upper-limb exam: (1) slowed performance on finger-to-nose testing; (2) inaccurate reach when attempting to pick up a cup placed in front of her; (3) inability to fasten the buttons on her blouse independently. Which ICF categories correspond to findings (1), (2) and (3), in that order?",
+ options:["(1) Activity (2) Body function (3) Environmental factor","(1) Body function (2) Activity (3) Activity","(1) Activity (2) Body function (3) Activity","(1) Body function (2) Activity (3) Personal factor"], answer:1},
+
+{topic:"ICF Framework", stem:"Prescribing a rigid ankle-foot orthosis to correct foot drop in a stroke patient, thereby easing gait-related disability, represents a change to which ICF component?",
+ options:["Personal factor","Activity","Environmental factor","Participation"], answer:2},
+
+{topic:"Treatment Approaches", stem:"Which treatment approach relies on active, dynamic movement — rather than passive handling — as the primary means of regulating muscle tone?",
+ options:["Motor Relearning Programme","Proprioceptive Neuromuscular Facilitation (PNF)","Brunnstrom approach","Bobath approach"], answer:3},
+
+{topic:"Treatment Approaches", stem:"Which of the following best reflects contemporary Bobath practice for eliciting movement in a patient with hemiplegia?",
+ options:["The therapist should guide the limb passively first, to prevent abnormal patterns from emerging","Movement is elicited mainly through repeated quick-stretch stimuli","The patient actively generates movement once placed, through preparatory handling, in a suitable dynamic posture","A period of static postural holding should always precede any attempt at active movement"], answer:2},
+
+{topic:"PNF", stem:"Which PNF technique is best suited to helping a patient who struggles to initiate a movement get started?",
+ options:["Hold-relax active motion","Alternating isometrics","Rhythmic initiation","Agonist reversal"], answer:2},
+
+{topic:"Stroke Assessment", stem:"During gait, a stroke patient shows recurrent ankle inversion just before heel strike, leading to instability at initial contact on that side. Based on Brunnstrom staging, what most likely explains this?",
+ options:["Persistent stage II extensor tone","Coexisting Raimiste's phenomenon","The limb is still in stage III flexor synergy","Selective ankle control at stage V has not yet been achieved"], answer:3},
+
+{topic:"Stroke Pathophysiology", stem:"Within the Bobath framework, damage to which pathway is considered most responsible for the abnormal tone and reflex activity seen after stroke?",
+ options:["Dorsal column–medial lemniscus pathway","Spinocerebellar tract","Corticospinal tract","Spinothalamic tract"], answer:2},
+
+{topic:"CIMT", stem:"Regarding constraint-induced movement therapy, which of the following claims is NOT well supported?",
+ options:["Upper-limb CIMT benefits patients in the chronic stage after stroke","Lower-limb CIMT can improve motor function in chronic stroke patients","Upper-limb CIMT benefits patients in the acute stage after stroke","Upper-limb CIMT can generate movement in patients who have no voluntary movement at all on the affected side"], answer:3},
+
+{topic:"Balance Assessment", stem:"An older adult living in the community relies heavily on visual input to stay balanced, which causes difficulty walking under certain conditions. Which assessment would best expose this issue?",
+ options:["6-Minute Walk Test","Timed Up and Go Test","Dynamic Gait Index","Stops Walking When Talking Test"], answer:2},
+
+{topic:"Pusher Syndrome", stem:"When managing the postural abnormality seen in pusher syndrome, which of the following approaches is least appropriate?",
+ options:["Encouraging the patient to actively identify and correct their own postural errors","Resisting the hemiplegic shoulder to push the patient's weight further toward the hemiplegic side","Using a mirror to give feedback on vertical alignment","Minimizing reliance on the unaffected arm for support during modified plantigrade stance training"], answer:1},
+
+{topic:"Cranial Nerve Exam", stem:"A stable patient, two weeks after a left putaminal hemorrhage, is asked to keep his eyes on the therapist's finger as it moves left-right and up-down in front of him, without turning his head. This assesses which cranial nerve?",
+ options:["VII (Facial)","III (Oculomotor)","X (Vagus)","V (Trigeminal)"], answer:1},
+
+{topic:"Stroke Rehabilitation", stem:"A patient with a right posterolateral thalamic lesion shows hip flexion with excess weight-bearing on the affected side while standing, plus hip adduction during swing phase on that side. Which intervention is most appropriate?",
+ options:["Provide extensor-facilitating sensory input to the affected leg during standing","Stretch the hip adductors before beginning gait training","Cue the patient to shift weight toward a doorframe positioned on the unaffected side while standing","Have the patient stand with each foot on a separate scale, for visual weight-bearing feedback"], answer:2},
+
+{topic:"Visual Field Deficits", stem:"Regarding visual field deficits, which statement is accurate?",
+ options:["A lesion at the optic chiasm typically first produces a right inferior quadrantanopia in both eyes","A left optic tract lesion produces right homonymous hemianopia in both eyes","A left optic nerve lesion produces right homonymous hemianopia in both eyes","A left visual cortex lesion produces bitemporal hemianopia"], answer:1},
+
+{topic:"Neurological Signs", stem:"Which of the following is NOT typically associated with elevated intracranial pressure?",
+ options:["Papilledema","Irregular respiratory pattern","Reduced level of consciousness","Bradycardia"], answer:3},
+
+{topic:"Stroke Etiology", stem:"A right-handed man develops right-sided hemiplegia after an ischemic stroke and is left able to communicate only through gestures. Which vessel is most likely completely occluded?",
+ options:["Basilar artery","Left posterior cerebral artery","Left middle cerebral artery","Left anterior cerebral artery"], answer:2},
+
+{topic:"Spinal Cord Injury", stem:"Which of the following is NOT a typical respiratory complication in patients with spinal cord injury?",
+ options:["Greater compliance of the chest wall","Weakness and reduced endurance of respiratory muscles","Reduced lung volumes","Hypoxemia"], answer:0},
+
+{topic:"Spinal Cord Injury", stem:"Which combination of findings would be expected in a man with a complete T4 spinal cord injury, 24 hours after injury? (1) diminished sweating below the level of injury (2) preserved erectile function (3) hypotension (4) tachycardia",
+ options:["(2) and (4)","(1) and (3)","(1) and (2)","(3) and (4)"], answer:1},
+
+{topic:"ASIA Impairment Scale", stem:"Regarding the ASIA Impairment Scale for spinal cord injury, which statement is correct?",
+ options:["Tetraplegia is defined as thoracic, lumbar, or sacral cord injury causing deficits in the lower limbs, trunk, or pelvis","ASIA D indicates an incomplete injury in which most key muscles below the level of injury score below grade 3","ASIA A denotes a complete injury with no sensory or motor function preserved in the lowest sacral segments","Whether an injury is incomplete is determined by testing sensation at the anal mucocutaneous junction"], answer:2},
+
+{topic:"Disorders of Consciousness", stem:"Regarding disorders of consciousness, which statement is correct?",
+ options:["Coma is characterized by a clearly preserved sleep-wake cycle","A patient in a minimally conscious state may correctly follow a simple one-step command","Vegetative state includes intact, smooth visual pursuit of a moving target","Of the three states, vegetative state shows the most purposeful response to external stimuli"], answer:1},
+
+{topic:"Traumatic Brain Injury", stem:"Following traumatic brain injury, patients often cannot recall events that happened before the injury occurred. This is best described as:",
+ options:["Selective amnesia","Anterograde amnesia","Retrograde amnesia","Dissociative amnesia"], answer:2},
+
+{topic:"Parkinson's Disease", stem:"Physical therapy for Parkinson's disease relies more heavily on cueing strategies than therapy for brain injury typically does. Which statement about cueing is incorrect?",
+ options:["Lines marked on the floor can help lengthen a patient's stride","Because of basal ganglia dysfunction, internal cueing is deficient, contributing to start hesitation and slowed movement","External cues can enhance frontal-lobe activity and attention","A metronome's steady beat reliably increases the total number of steps a patient takes"], answer:3},
+
+{topic:"Parkinson's Disease", stem:"Which of the following is least likely to appear during the early stage of idiopathic Parkinson's disease?",
+ options:["Masked facial expression","Small, cramped handwriting","Pronounced orthostatic hypotension together with bladder dysfunction","Unilateral resting tremor with bradykinesia"], answer:2},
+
+{topic:"Cerebellar Function", stem:"Imaging in a 40-year-old patient with cerebellar disease shows involvement of the flocculonodular lobe. Which of the following is most likely to be impaired?",
+ options:["Asymmetrical tonic neck reflex","Tonic lumbar reflex","Vestibulo-ocular reflex","Symmetrical tonic labyrinthine reflex"], answer:2},
+
+{topic:"Multiple Sclerosis", stem:"Which statement about multiple sclerosis is incorrect?",
+ options:["Interferon-beta injections are commonly used to slow disease progression","Relapsing-remitting is the most common subtype","The underlying pathology mainly involves damage at the neuromuscular junction","Acute relapses are often managed with corticosteroids"], answer:2},
+
+{topic:"Movement Disorders", stem:"Abnormal copper metabolism leading to basal ganglia damage characterizes which condition?",
+ options:["Huntington's disease","Alzheimer's disease","Wilson's disease","Parkinson's disease"], answer:2},
+
+{topic:"Myasthenia Gravis", stem:"Which statement about myasthenia gravis is least appropriate?",
+ options:["Symptom improvement with medication occurs in most patients","The main treatment principle is to keep exercise fixed and unvarying, avoiding any activity that might fatigue the muscles","Limb muscles are commonly affected early in the disease","It is an autoimmune condition targeting acetylcholine receptors at the neuromuscular junction"], answer:1}
+];
+
+const letters = ["A","B","C","D"];
+const N = QUESTIONS.length;
+const answers = new Array(N).fill(-1);
+let current = 0;
+let graded = false;
+
+const questionHost = document.getElementById('questionHost');
+const dotRail = document.getElementById('dotRail');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const navNote = document.getElementById('navNote');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const resultsPanel = document.getElementById('resultsPanel');
+const introCard = document.getElementById('introCard');
+
+function buildDotRail(){
+  dotRail.innerHTML = "";
+  QUESTIONS.forEach((_, qi) => {
+    const b = document.createElement('button');
+    b.type = "button";
+    b.textContent = qi + 1;
+    b.title = `Go to question ${qi+1}`;
+    b.addEventListener('click', () => { current = qi; renderQuestion(); });
+    dotRail.appendChild(b);
+  });
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.id = 'q' + current;
+
+  const head = document.createElement('div');
+  head.className = 'q-head';
+  head.innerHTML = `<span class="q-num">Q${current+1}</span><span class="q-topic">${q.topic}</span>`;
+  card.appendChild(head);
+
+  const stem = document.createElement('p');
+  stem.className = 'q-stem';
+  stem.textContent = q.stem;
+  card.appendChild(stem);
+
+  const opts = document.createElement('div');
+  opts.className = 'options';
+  q.options.forEach((optText, oi) => {
+    const label = document.createElement('label');
+    label.className = 'opt';
+    if(answers[current] === oi) label.classList.add('selected');
+    label.innerHTML = `<input type="radio" name="qcurrent" value="${oi}" ${answers[current]===oi ? 'checked' : ''} ${graded ? 'disabled' : ''}>
+      <span class="opt-letter">${letters[oi]}</span>
+      <span class="opt-text">${optText}</span>`;
+    label.querySelector('input').addEventListener('change', () => {
+      answers[current] = oi;
+      renderQuestion();
+      updateProgress();
+    });
+    opts.appendChild(label);
+  });
+  card.appendChild(opts);
+
+  if(graded){
+    const isCorrect = answers[current] === q.answer;
+    card.classList.add(isCorrect ? 'correct' : 'incorrect');
+    const tag = document.createElement('span');
+    tag.className = 'result-tag ' + (isCorrect ? 'correct' : 'incorrect');
+    tag.textContent = isCorrect ? 'Correct' : 'Incorrect';
+    head.appendChild(tag);
+    opts.querySelectorAll('.opt').forEach((optEl, oi) => {
+      if(oi === q.answer) optEl.classList.add('mark-correct');
+      else if(oi === answers[current] && !isCorrect) optEl.classList.add('mark-incorrect');
+    });
+  }
+
+  questionHost.innerHTML = "";
+  questionHost.appendChild(card);
+
+  prevBtn.disabled = current === 0;
+  if(current === N - 1){
+    nextBtn.textContent = graded ? 'Finish review' : 'Submit answers';
+  } else {
+    nextBtn.textContent = 'Next →';
+  }
+
+  updateDotRail();
+  updateProgress();
+}
+
+function updateDotRail(){
+  Array.from(dotRail.children).forEach((b, qi) => {
+    b.classList.remove('answered','current','correct','incorrect');
+    if(graded){
+      b.classList.add(answers[qi] === QUESTIONS[qi].answer ? 'correct' : 'incorrect');
+    } else if(answers[qi] !== -1){
+      b.classList.add('answered');
+    }
+    if(qi === current) b.classList.add('current');
+  });
+}
+
+function updateProgress(){
+  const answeredCount = answers.filter(a => a !== -1).length;
+  progressLabel.textContent = `Question ${current+1} / ${N}`;
+  progressFill.style.width = `${((current+1)/N)*100}%`;
+  if(graded){
+    navNote.textContent = 'Review mode';
+  } else {
+    const remaining = N - answeredCount;
+    navNote.textContent = remaining === 0 ? 'All questions answered — ready to submit' : `${remaining} question${remaining===1?'':'s'} remaining`;
+  }
+}
+
+prevBtn.addEventListener('click', () => {
+  if(current > 0){ current--; renderQuestion(); window.scrollTo({top:0, behavior:'smooth'}); }
+});
+
+nextBtn.addEventListener('click', () => {
+  if(current < N - 1){
+    current++;
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'smooth'});
+  } else if(!graded){
+    if(answers.includes(-1)){
+      const firstUnanswered = answers.indexOf(-1);
+      current = firstUnanswered;
+      renderQuestion();
+      window.scrollTo({top:0, behavior:'smooth'});
+      return;
+    }
+    gradeQuiz();
+  } else {
+    resultsPanel.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+});
+
+function gradeQuiz(){
+  graded = true;
+  const score = answers.filter((a, qi) => a === QUESTIONS[qi].answer).length;
+  const pct = Math.round((score / N) * 100);
+  const passed = score >= 18;
+
+  document.getElementById('gaugeScore').textContent = pct + '%';
+  document.getElementById('gaugeOf').textContent = `${score} / ${N} correct`;
+  const verdict = document.getElementById('resultVerdict');
+  verdict.textContent = passed ? 'Pass' : 'Not yet passing';
+  verdict.className = 'result-verdict ' + (passed ? 'pass' : 'fail');
+  document.getElementById('resultSub').textContent = passed
+    ? 'Passing threshold of 60% (18/30) has been met. Step through the questions to review any missed items.'
+    : 'Passing threshold is 60% (18/30). Step through the questions below to review before retaking.';
+
+  const circumference = 2 * Math.PI * 50;
+  const gaugeFill = document.getElementById('gaugeFill');
+  gaugeFill.setAttribute('stroke-dasharray', circumference.toFixed(3));
+  const offset = circumference * (1 - score / N);
+  requestAnimationFrame(() => { gaugeFill.style.strokeDashoffset = offset.toFixed(3); });
+  gaugeFill.classList.toggle('pass', passed);
+
+  introCard.style.display = 'none';
+  resultsPanel.classList.add('show');
+  resultsPanel.scrollIntoView({behavior:'smooth', block:'start'});
+
+  const reviewBtn = document.getElementById('reviewBtn');
+  const firstMiss = answers.findIndex((a, qi) => a !== QUESTIONS[qi].answer);
+  if(firstMiss !== -1){
+    reviewBtn.style.display = 'inline-block';
+    reviewBtn.onclick = () => { current = firstMiss; renderQuestion(); questionHost.scrollIntoView({behavior:'smooth', block:'center'}); };
+  } else {
+    reviewBtn.style.display = 'none';
+  }
+
+  current = 0;
+  renderQuestion();
+}
+
+document.getElementById('retakeBtn').addEventListener('click', () => {
+  graded = false;
+  answers.fill(-1);
+  current = 0;
+  introCard.style.display = 'block';
+  resultsPanel.classList.remove('show');
+  renderQuestion();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+buildDotRail();
+renderQuestion();
+</script>
+
+</body>
+</html>

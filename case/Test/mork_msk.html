@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSK Clinical Competency Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0E1A2B;
+    --navy-panel:#152540;
+    --film-light:#EDF1F3;
+    --film-line:#C7D2D9;
+    --ink:#1B2A3D;
+    --amber:#E8A33D;
+    --amber-dim:#c98a2c;
+    --green:#4C7A5E;
+    --green-bg:#e4efe8;
+    --red:#B4483A;
+    --red-bg:#f6e6e3;
+    --muted:#5C6B7A;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(ellipse at top, #16273f 0%, var(--navy-deep) 55%);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    padding:32px 16px 80px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .wrap{max-width:760px;margin:0 auto;}
+
+  /* ---------- header / lightbox strip ---------- */
+  .lightbox{
+    background:var(--navy-panel);
+    border:1px solid #24395c;
+    border-radius:10px;
+    padding:22px 26px;
+    margin-bottom:22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .lightbox::before{
+    content:"";
+    position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 34px);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-size:11.5px;
+    color:var(--amber);
+    margin:0 0 8px;
+  }
+  .title{
+    font-family:'Spectral', serif;
+    font-weight:700;
+    font-size:clamp(22px, 4.4vw, 30px);
+    color:#F3F0E6;
+    margin:0 0 6px;
+    line-height:1.15;
+  }
+  .subtitle{
+    color:#A9B7C6;
+    font-size:14px;
+    margin:0;
+    line-height:1.5;
+  }
+
+  /* ---------- film panel (card) ---------- */
+  .panel{
+    background:var(--film-light);
+    border-radius:8px;
+    box-shadow:0 18px 40px -18px rgba(0,0,0,0.6);
+    position:relative;
+    padding:28px 26px 24px;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; top:-9px; left:28px;
+    width:46px; height:18px;
+    background:var(--amber);
+    border-radius:3px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.35);
+  }
+
+  /* ---------- intro screen ---------- */
+  .intro-list{
+    list-style:none; margin:18px 0 24px; padding:0;
+    display:grid; gap:10px;
+  }
+  .intro-list li{
+    display:flex; gap:10px; align-items:flex-start;
+    font-size:14.5px; line-height:1.5; color:var(--ink);
+  }
+  .intro-list li .num{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--amber-dim);
+    font-weight:600;
+    flex:0 0 auto;
+  }
+  .field-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--muted); display:block; margin-bottom:6px;
+  }
+  input[type="text"]{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:15px;
+    padding:11px 13px;
+    border:1.5px solid var(--film-line);
+    border-radius:6px;
+    background:#fff;
+    color:var(--ink);
+    margin-bottom:18px;
+  }
+  input[type="text"]:focus{outline:2px solid var(--amber); outline-offset:1px; border-color:var(--amber);}
+
+  .btn{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    padding:13px 22px;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+    background:var(--ink);
+    color:#F3F0E6;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .btn:hover{background:#28405e;}
+  .btn:active{transform:scale(0.98);}
+  .btn:focus-visible{outline:3px solid var(--amber); outline-offset:2px;}
+  .btn.full{width:100%;}
+  .btn.ghost{
+    background:transparent; color:var(--ink);
+    border:1.5px solid var(--film-line);
+  }
+  .btn.ghost:hover{background:#e2e8ec;}
+  .btn:disabled{opacity:0.4; cursor:not-allowed;}
+
+  /* ---------- progress (filmstrip) ---------- */
+  .filmstrip{
+    display:flex; gap:4px; margin:0 0 18px;
+  }
+  .frame{
+    flex:1; height:6px; border-radius:3px;
+    background:#233b5c;
+  }
+  .frame.done{background:var(--amber);}
+  .frame.current{background:#8fa6c2;}
+  .progress-text{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; color:#A9B7C6; margin:0 0 8px;
+    display:flex; justify-content:space-between;
+  }
+
+  /* ---------- question ---------- */
+  .case-id{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; color:var(--amber-dim); font-weight:600;
+    letter-spacing:0.05em;
+    margin:0 0 4px;
+  }
+  .tag{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;
+    background:#dfe6ea; color:var(--muted);
+    padding:3px 8px; border-radius:20px;
+    margin-bottom:12px;
+  }
+  .question-text{
+    font-size:17px; line-height:1.55; font-weight:500;
+    margin:0 0 20px; color:var(--ink);
+  }
+  .options{list-style:none; margin:0 0 22px; padding:0; display:grid; gap:10px;}
+  .option{
+    display:flex; align-items:flex-start; gap:12px;
+    width:100%; text-align:left;
+    background:#fff;
+    border:1.5px solid var(--film-line);
+    border-left:4px solid var(--film-line);
+    border-radius:6px;
+    padding:12px 14px;
+    font-size:14.5px; line-height:1.5;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .option:hover{border-left-color:var(--amber); background:#f7f4ec;}
+  .option:focus-visible{outline:3px solid var(--amber); outline-offset:1px;}
+  .option.selected{border-left-color:var(--amber); background:#fdf3e2; border-color:var(--amber-dim);}
+  .option .letter{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    flex:0 0 auto;
+    color:var(--amber-dim);
+  }
+  .option.selected .letter{color:var(--ink);}
+
+  .option.correct{border-left-color:var(--green); background:var(--green-bg); border-color:var(--green);}
+  .option.incorrect{border-left-color:var(--red); background:var(--red-bg); border-color:var(--red);}
+  .option[disabled]{cursor:default;}
+
+  .nav-row{display:flex; justify-content:space-between; gap:10px; margin-top:6px;}
+
+  /* ---------- results ---------- */
+  .stamp-wrap{display:flex; justify-content:center; margin:6px 0 20px;}
+  .stamp{
+    font-family:'Spectral', serif;
+    font-weight:700;
+    font-size:30px;
+    letter-spacing:0.08em;
+    padding:10px 30px;
+    border:4px double currentColor;
+    border-radius:8px;
+    transform:rotate(-4deg);
+    display:inline-block;
+  }
+  .stamp.pass{color:var(--green);}
+  .stamp.fail{color:var(--red);}
+
+  .score-row{
+    display:flex; align-items:baseline; justify-content:center; gap:8px;
+    margin-bottom:4px;
+  }
+  .score-big{font-family:'IBM Plex Mono', monospace; font-size:44px; font-weight:600; color:var(--ink);}
+  .score-of{font-family:'IBM Plex Mono', monospace; font-size:16px; color:var(--muted);}
+  .score-pct{text-align:center; font-size:13px; color:var(--muted); margin-bottom:20px;}
+
+  .breakdown{margin:0 0 22px;}
+  .breakdown h3{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--muted); margin:0 0 10px;
+  }
+  .bd-row{
+    display:grid; grid-template-columns:1fr auto; gap:8px;
+    align-items:center; font-size:13.5px; margin-bottom:8px;
+  }
+  .bd-bar-bg{grid-column:1/2; height:8px; background:#dfe6ea; border-radius:4px; overflow:hidden;}
+  .bd-bar{height:100%; background:var(--amber); border-radius:4px;}
+  .bd-label{grid-column:1/-1; display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink);}
+  .bd-frac{font-family:'IBM Plex Mono', monospace; color:var(--muted);}
+
+  .review-item{
+    border-top:1px solid var(--film-line);
+    padding:16px 0;
+  }
+  .review-item:first-child{border-top:none;}
+  .review-head{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; margin-bottom:6px;}
+  .review-status{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600;
+    padding:2px 8px; border-radius:20px;
+  }
+  .review-status.ok{background:var(--green-bg); color:var(--green);}
+  .review-status.no{background:var(--red-bg); color:var(--red);}
+  .review-q{font-size:14.5px; margin:0 0 8px; line-height:1.5;}
+  .review-opts{list-style:none; margin:0; padding:0; display:grid; gap:6px;}
+  .review-opts li{font-size:13.5px; padding:7px 10px; border-radius:5px; border:1px solid var(--film-line);}
+  .review-opts li.correct{background:var(--green-bg); border-color:var(--green); color:#26493a;}
+  .review-opts li.chosen-wrong{background:var(--red-bg); border-color:var(--red); color:#6d2318;}
+
+  .footnote{
+    text-align:center; color:#7f93a8; font-size:12px; margin-top:18px;
+  }
+
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="lightbox">
+    <p class="eyebrow">MSK Physiotherapy · New Staff Orientation</p>
+    <h1 class="title">Clinical Competency Check</h1>
+    <p class="subtitle">30 items adapted from the Taiwan Physical Therapist Registration Examination (Orthopaedic Physical Therapy). Passing threshold: 60%.</p>
+  </div>
+
+  <!-- INTRO SCREEN -->
+  <div class="panel" id="screen-intro">
+    <p class="field-label">Candidate name</p>
+    <input type="text" id="candidate-name" placeholder="Enter your name">
+
+    <ul class="intro-list">
+      <li><span class="num">01</span><span>30 single-best-answer questions covering the cervical, thoracic and lumbar spine, shoulder, elbow, hand, hip, knee, ankle/foot, gait, and integumentary/wound topics.</span></li>
+      <li><span class="num">02</span><span>Select one answer per question, then move to the next. You can revisit a question before submitting.</span></li>
+      <li><span class="num">03</span><span>A score of 18/30 (60%) or higher is a pass.</span></li>
+      <li><span class="num">04</span><span>A full answer review with category breakdown is shown at the end.</span></li>
+    </ul>
+
+    <button class="btn full" id="start-btn">Begin assessment</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="panel hidden" id="screen-quiz">
+    <div class="progress-text">
+      <span id="progress-label">Question 1 of 30</span>
+      <span id="progress-answered">0 answered</span>
+    </div>
+    <div class="filmstrip" id="filmstrip"></div>
+
+    <p class="case-id" id="case-id">CASE 01</p>
+    <span class="tag" id="case-tag">Cervical Spine</span>
+    <p class="question-text" id="question-text"></p>
+    <ul class="options" id="options-list"></ul>
+
+    <div class="nav-row">
+      <button class="btn ghost" id="prev-btn">Back</button>
+      <button class="btn" id="next-btn" disabled>Next</button>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="panel hidden" id="screen-results">
+    <div class="stamp-wrap"><span class="stamp" id="stamp"></span></div>
+    <div class="score-row">
+      <span class="score-big" id="score-big">0</span>
+      <span class="score-of">/ 30</span>
+    </div>
+    <p class="score-pct" id="score-pct-text"></p>
+
+    <div class="breakdown">
+      <h3>Performance by region</h3>
+      <div id="breakdown-list"></div>
+    </div>
+
+    <div>
+      <h3 style="font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin:0 0 4px;">Full review</h3>
+      <div id="review-list"></div>
+    </div>
+
+    <div class="nav-row" style="margin-top:20px;">
+      <button class="btn ghost" id="retake-btn">Retake assessment</button>
+    </div>
+  </div>
+
+  <p class="footnote">Source items adapted from the 2024 (Year 113) Taiwan Senior Professional and Technical Examination — Physical Therapist: Orthopaedic Physical Therapy.</p>
+</div>
+
+<script>
+const QUESTIONS = [
+  {n:1, cat:"Cervical Spine", q:"A clinician is reviewing key features of cervical myelopathy with a new graduate. Which statement should be flagged as INCORRECT?", opts:{A:"Presentation is usually one-sided — for example, symptoms limited to a single hand or foot",B:"Upper motor neuron findings, such as bladder dysfunction, can be part of the presentation",C:"MRI is considered a reliable imaging method for confirming the diagnosis",D:"Cervical spinal canal stenosis is a recognized underlying cause"}, ans:"A"},
+  {n:4, cat:"Thoracic / Posture", q:"A 47-year-old office worker reports chronic aching across the back of the neck and shoulders. Examination shows a pronounced \"dowager's hump\" (excessive upper-thoracic kyphosis) together with a forward-head posture. Which intervention would be LEAST suitable?", opts:{A:"Mobilize the thoracic spine into extension",B:"Mobilize the upper cervical spine into extension",C:"Strengthen the thoracic and upper-back extensors",D:"Stretch the pectoral muscle group"}, ans:"B"},
+  {n:6, cat:"TMJ", q:"Which pair of muscles act together as the prime movers for opening the jaw?", opts:{A:"Medial pterygoid and anterior temporalis",B:"Lateral pterygoid and masseter",C:"Medial pterygoid and geniohyoid",D:"Lateral pterygoid and the anterior belly of digastric"}, ans:"D"},
+  {n:9, cat:"Headache / Cervical", q:"A 32-year-old graphic designer who spends long hours at a computer reports stiffness on both sides of the upper neck that sometimes spreads over the back of the skull to the crown of the head, with a tight, band-like sensation across the forehead. Symptoms are absent on waking but build through the afternoon. Which is the most likely diagnosis?", opts:{A:"Tension-type headache",B:"Cervicogenic headache",C:"Migraine",D:"Cervical facet joint pain"}, ans:"A"},
+  {n:11, cat:"Lumbar Spine", q:"When differentiating causes of mechanical low back pain, which pairing of pathology and clinical behavior is correct?", opts:{A:"Muscle strain: pain centered in the back, aggravated by standing or bending forward, eased by sitting",B:"Lumbar facet osteoarthritis: pain centered in the back, eased by standing, aggravated by sitting or forward bending",C:"Scoliosis: pain centered in the back, eased by standing or sitting, aggravated by forward bending",D:"Spondylolisthesis: pain centered in the back, eased by standing, aggravated by sitting"}, ans:"A"},
+  {n:14, cat:"Lumbar Radiculopathy", q:"A patient with low back pain also reports altered sensation over the lateral calf, weakness of the gluteus medius and ankle dorsiflexors, a diminished ankle reflex, a limited straight-leg raise on one side, and pain reproduced by neck flexion. Which nerve root is most likely involved?", opts:{A:"L3",B:"L4",C:"L5",D:"S1"}, ans:"C"},
+  {n:17, cat:"Lumbar Spine / Imaging", q:"Which radiographic view best demonstrates a defect or fracture of the pars interarticularis in the lumbar spine?", opts:{A:"Anterior-posterior view",B:"Posterior-anterior view",C:"Lateral view",D:"Oblique view"}, ans:"D"},
+  {n:19, cat:"Lumbar Spine / McKenzie", q:"Which of the following is NOT one of the categories in the McKenzie classification system for low back pain?", opts:{A:"Postural syndrome",B:"Dysfunction syndrome",C:"Derangement syndrome",D:"Degenerative syndrome"}, ans:"D"},
+  {n:22, cat:"Thoracic Spine", q:"Which of the following statements about thoracic postural dysfunction is INCORRECT?", opts:{A:"Rib restrictions linked to frozen shoulder or limited shoulder motion are most often found at ribs 4 through 8",B:"After a sternotomy for coronary artery bypass surgery, reduced rib cage mobility can be addressed with rib and vertebral mobilization",C:"Once a vertebral compression fracture from osteoporosis has healed, postural correction exercise can be introduced",D:"Manual therapy may be used to address thoracic postural issues in patients with chronic obstructive pulmonary disease"}, ans:"A"},
+  {n:23, cat:"Posture", q:"Which postural presentation is most likely to leave the one-joint hip flexors in a lengthened, weakened position?", opts:{A:"Exaggerated lordosis",B:"Sway back",C:"Round back",D:"Scoliosis"}, ans:"B"},
+  {n:25, cat:"Shoulder / Peripheral Nerve", q:"Regarding nerve injuries affecting the shoulder region, which pairing is LEAST accurate?", opts:{A:"Repetitive overhead work such as prolonged chainsaw or logging use can damage the long thoracic nerve, weakening serratus anterior and producing scapular winging",B:"Prolonged axillary crutch use can compress the suprascapular nerve, weakening supraspinatus and limiting shoulder abduction",C:"Anterior shoulder dislocation can damage the musculocutaneous nerve, reducing biceps brachii strength",D:"A fracture of the humeral neck can damage the axillary nerve, weakening teres minor and limiting external rotation"}, ans:"B"},
+  {n:27, cat:"Shoulder", q:"A 52-year-old presents with insidious-onset left shoulder pain, difficulty lifting the arm, restricted and painful range of motion, and disturbed sleep. During assessment, raising the arm below 90° triggers a shrugging compensation with pain. With the arm resting at the side, resisted strength testing in every direction is graded 4/5 and pain-free. What is the most probable diagnosis, and which test should be performed first?", opts:{A:"Adhesive capsulitis; passive range-of-motion testing to check for a capsular pattern of restriction",B:"Rotator cuff pathology; empty can test",C:"Glenohumeral instability; drop arm test",D:"Glenoid labral tear; clunk test"}, ans:"A"},
+  {n:29, cat:"Thoracic Outlet Syndrome", q:"Which of the following is NOT an appropriate treatment approach for thoracic outlet syndrome?", opts:{A:"Coach the patient on correct posture and build control and endurance of the postural muscles",B:"Strengthen the scalene muscles so the shoulder girdle is held in an elevated position, reducing neural tension",C:"Teach diaphragmatic breathing",D:"Apply neural mobilization when neurodynamic testing is positive and tension signs are present"}, ans:"B"},
+  {n:31, cat:"Shoulder / Special Test", q:"Which statement correctly describes the shoulder jerk test?", opts:{A:"It is used to detect anterior instability of the glenohumeral joint",B:"With the shoulder flexed and internally rotated and the elbow bent to 90°, the examiner pushes along the axis of the humerus while passively guiding the arm into horizontal adduction, then returns it to the start position",C:"A positive result is reproduction of pain at the front of the shoulder",D:"It is also called the horizontal adduction test and can double as a screen for the acromioclavicular joint"}, ans:"B"},
+  {n:35, cat:"Thoracic Outlet Syndrome", q:"A university student notices that carrying a heavy backpack brings on left shoulder pain along with weakness, tingling, coolness, puffiness, and pallor of the left hand. Which condition should be suspected first?", opts:{A:"Carpal tunnel syndrome",B:"Acromioclavicular joint sprain",C:"Thoracic outlet syndrome",D:"Cervical radiculopathy"}, ans:"C"},
+  {n:39, cat:"Elbow", q:"Which finding is characteristic of lateral epicondylitis?", opts:{A:"Pain with resisted wrist extension",B:"Pain with passive wrist extension while the elbow is kept straight",C:"Pain triggered by repeated wrist flexion",D:"Medial elbow pain during resisted elbow extension with the elbow flexed and the forearm supinated"}, ans:"A"},
+  {n:40, cat:"Elbow / Nerve", q:"Elbow trauma most commonly results in injury to which nerve?", opts:{A:"Musculocutaneous nerve",B:"Median nerve",C:"Ulnar nerve",D:"Radial nerve"}, ans:"C"},
+  {n:42, cat:"Hand", q:"A patient suddenly loses the ability to actively flex the fingertip joint after a finger caught while pulling off a sweater — the classic \"sweater finger\" presentation. Which structure is most likely torn?", opts:{A:"A1 pulley",B:"Volar plate",C:"Flexor digitorum profundus",D:"Flexor digitorum superficialis"}, ans:"C"},
+  {n:44, cat:"Wrist", q:"An athlete falls during sport and lands on an outstretched, hyperextended wrist, later developing wrist pain. Which injury is LEAST likely to have occurred?", opts:{A:"Volar radiocarpal ligament sprain",B:"Dorsal radiocarpal ligament sprain",C:"Scaphoid fracture",D:"Colles' fracture"}, ans:"B"},
+  {n:46, cat:"Hip", q:"Following hip arthroscopy for a labral repair, which element of the postoperative rehabilitation plan is INCORRECT?", opts:{A:"Hip flexion range should be kept to roughly 80-90° or less",B:"Weight-bearing is limited to partial for the first 2 weeks, then advances to full weight-bearing right after",C:"Active-assisted range-of-motion exercise can start on day one after surgery",D:"A stationary bike with the seat raised can be used during the first postoperative week"}, ans:"B"},
+  {n:49, cat:"Hip", q:"Which statement about assessing rectus femoris tightness is INCORRECT?", opts:{A:"A positive Ely's test is a possible finding",B:"In Ely's test, flexing the knee of the leg being tested causes the hip on the opposite side to flex",C:"A positive Kendall's test is also a possible finding",D:"In Kendall's test, the patient hugs the non-test hip to the chest; a positive result shows the test-side knee extending off the table"}, ans:"B"},
+  {n:50, cat:"Hip / Arthroplasty", q:"For a young, active patient following total hip replacement, current guidelines such as those proposed by Klein et al. suggest caution with which of these activities?", opts:{A:"Golf",B:"Bowling",C:"Jogging",D:"Brisk walking"}, ans:"C"},
+  {n:51, cat:"Knee", q:"A patient has a grade II tear of the right medial collateral ligament, managed conservatively with no other structures involved. At the initial evaluation there is mild swelling, mild tenderness, pain-free flexion from 0-130°, and mild valgus laxity. Which intervention best matches this stage of recovery?", opts:{A:"Single-leg balance work on a BOSU",B:"Open-chain resistance training for the quadriceps and hamstrings",C:"Double-leg 30 cm depth jump-landing drills",D:"Agility shuttle-run drills"}, ans:"B"},
+  {n:54, cat:"Knee / Special Test", q:"An inexperienced student performing a straight-leg anterior drawer test on a patient with knee instability reports a positive result on a knee that was actually stable — a false-positive finding. Which of the following best explains this error?", opts:{A:"Hemarthrosis of the knee",B:"Guarding or spasm of the hamstrings",C:"A tear of the medial meniscus",D:"Rupture of the posterior cruciate ligament"}, ans:"D"},
+  {n:57, cat:"Knee / Referred Pain", q:"A patient reports non-traumatic pain along the front-inner thigh. If this is thought to be referred from the knee, which nerve root is most likely responsible?", opts:{A:"L1",B:"L3",C:"L5",D:"S2"}, ans:"B"},
+  {n:58, cat:"Ankle", q:"Which statement about the medial ankle is INCORRECT?", opts:{A:"The spring ligament is another name for the plantar calcaneonavicular ligament",B:"The posterior tibiotalar, tibiocalcaneal, and tibionavicular ligaments together make up the deltoid ligament",C:"The sustentaculum tali, a projection of the calcaneus, helps support the talus",D:"Sectioning the deltoid ligament would allow the talus to shift into inversion relative to the tibia"}, ans:"D"},
+  {n:61, cat:"Leg / Nerve", q:"Anterior compartment syndrome of the leg most commonly compromises which nerve?", opts:{A:"Deep peroneal nerve",B:"Superficial peroneal nerve",C:"Tibial nerve",D:"Sural nerve"}, ans:"A"},
+  {n:63, cat:"Gait Analysis", q:"On gait assessment, the affected foot strikes the ground abruptly with an audible \"slap\" at initial contact. This finding is most consistent with weakness of which muscle group?", opts:{A:"Tibialis anterior on the involved side",B:"Gastrocnemius-soleus on the involved side",C:"Gluteus maximus on the uninvolved side",D:"Quadriceps on the uninvolved side"}, ans:"A"},
+  {n:68, cat:"Spine / Osteoporosis", q:"Regarding exercise prescription for a patient with an osteoporotic vertebral compression fracture, which combination of statements is correct? ① Spinal exercise should generally be avoided so as not to increase load on the spine ② Postural correction exercise may still be needed for a kyphotic posture even without pain ③ Extension-biased spinal exercise can be appropriate ④ Scapular stabilization work can help maintain posture or slow further postural decline", opts:{A:"①②",B:"③④",C:"①④",D:"②③④"}, ans:"D"},
+  {n:75, cat:"Integumentary / Burns", q:"Which statement about burn classification is INCORRECT?", opts:{A:"First-degree burns affect only the epidermis, cause redness, warmth, and significant pain, and are counted toward total body surface area estimates",B:"Superficial second-degree burns involve part of the dermis, are quite painful, and generally heal on their own within about a week to ten days",C:"Deep second-degree burns involve most of the dermis and commonly leave scarring",D:"Third-degree burns invariably require skin grafting"}, ans:"A"}
+];
+
+const state = {
+  current: 0,
+  answers: new Array(QUESTIONS.length).fill(null)
+};
+
+const screenIntro = document.getElementById('screen-intro');
+const screenQuiz = document.getElementById('screen-quiz');
+const screenResults = document.getElementById('screen-results');
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  screenIntro.classList.add('hidden');
+  screenQuiz.classList.remove('hidden');
+  buildFilmstrip();
+  renderQuestion();
+});
+
+function buildFilmstrip(){
+  const strip = document.getElementById('filmstrip');
+  strip.innerHTML = '';
+  QUESTIONS.forEach((_, i) => {
+    const f = document.createElement('div');
+    f.className = 'frame';
+    f.id = 'frame-' + i;
+    strip.appendChild(f);
+  });
+  updateFilmstrip();
+}
+
+function updateFilmstrip(){
+  QUESTIONS.forEach((_, i) => {
+    const f = document.getElementById('frame-' + i);
+    f.classList.remove('done', 'current');
+    if (state.answers[i] !== null) f.classList.add('done');
+    if (i === state.current) f.classList.add('current');
+  });
+}
+
+function renderQuestion(){
+  const item = QUESTIONS[state.current];
+  document.getElementById('progress-label').textContent = `Question ${state.current + 1} of ${QUESTIONS.length}`;
+  const answeredCount = state.answers.filter(a => a !== null).length;
+  document.getElementById('progress-answered').textContent = `${answeredCount} answered`;
+  document.getElementById('case-id').textContent = 'CASE ' + String(state.current + 1).padStart(2, '0');
+  document.getElementById('case-tag').textContent = item.cat;
+  document.getElementById('question-text').textContent = item.q;
+
+  const list = document.getElementById('options-list');
+  list.innerHTML = '';
+  Object.keys(item.opts).forEach(letter => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.type = 'button';
+    if (state.answers[state.current] === letter) btn.classList.add('selected');
+    btn.innerHTML = `<span class="letter">${letter}.</span><span>${item.opts[letter]}</span>`;
+    btn.addEventListener('click', () => {
+      state.answers[state.current] = letter;
+      renderQuestion();
+      updateFilmstrip();
+    });
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+
+  document.getElementById('prev-btn').disabled = state.current === 0;
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.disabled = state.answers[state.current] === null;
+  nextBtn.textContent = state.current === QUESTIONS.length - 1 ? 'Submit assessment' : 'Next';
+}
+
+document.getElementById('prev-btn').addEventListener('click', () => {
+  if (state.current > 0){
+    state.current--;
+    renderQuestion();
+    updateFilmstrip();
+  }
+});
+
+document.getElementById('next-btn').addEventListener('click', () => {
+  if (state.current < QUESTIONS.length - 1){
+    state.current++;
+    renderQuestion();
+    updateFilmstrip();
+  } else {
+    showResults();
+  }
+});
+
+document.getElementById('retake-btn').addEventListener('click', () => {
+  state.current = 0;
+  state.answers = new Array(QUESTIONS.length).fill(null);
+  screenResults.classList.add('hidden');
+  screenIntro.classList.remove('hidden');
+  document.getElementById('candidate-name').value = '';
+});
+
+function showResults(){
+  screenQuiz.classList.add('hidden');
+  screenResults.classList.remove('hidden');
+
+  let correctCount = 0;
+  const catTotals = {};
+  const catCorrect = {};
+
+  QUESTIONS.forEach((item, i) => {
+    catTotals[item.cat] = (catTotals[item.cat] || 0) + 1;
+    if (state.answers[i] === item.ans){
+      correctCount++;
+      catCorrect[item.cat] = (catCorrect[item.cat] || 0) + 1;
+    } else {
+      catCorrect[item.cat] = catCorrect[item.cat] || 0;
+    }
+  });
+
+  const pct = Math.round((correctCount / QUESTIONS.length) * 100);
+  const passed = pct >= 60;
+
+  const stamp = document.getElementById('stamp');
+  stamp.textContent = passed ? 'PASS' : 'FAIL';
+  stamp.className = 'stamp ' + (passed ? 'pass' : 'fail');
+
+  document.getElementById('score-big').textContent = correctCount;
+  document.getElementById('score-pct-text').textContent = `${pct}% — threshold for passing is 60% (18/30)`;
+
+  const bdList = document.getElementById('breakdown-list');
+  bdList.innerHTML = '';
+  Object.keys(catTotals).forEach(cat => {
+    const total = catTotals[cat];
+    const correct = catCorrect[cat];
+    const row = document.createElement('div');
+    row.className = 'bd-row';
+    row.innerHTML = `
+      <div class="bd-label"><span>${cat}</span><span class="bd-frac">${correct}/${total}</span></div>
+      <div class="bd-bar-bg"><div class="bd-bar" style="width:${(correct/total)*100}%"></div></div>
+    `;
+    bdList.appendChild(row);
+  });
+
+  const reviewList = document.getElementById('review-list');
+  reviewList.innerHTML = '';
+  QUESTIONS.forEach((item, i) => {
+    const userAns = state.answers[i];
+    const isCorrect = userAns === item.ans;
+    const div = document.createElement('div');
+    div.className = 'review-item';
+
+    let optsHtml = '';
+    Object.keys(item.opts).forEach(letter => {
+      let cls = '';
+      if (letter === item.ans) cls = 'correct';
+      else if (letter === userAns && !isCorrect) cls = 'chosen-wrong';
+      optsHtml += `<li class="${cls}"><strong>${letter}.</strong> ${item.opts[letter]}</li>`;
+    });
+
+    div.innerHTML = `
+      <div class="review-head">
+        <span class="case-id">CASE ${String(i + 1).padStart(2, '0')}</span>
+        <span class="tag">${item.cat}</span>
+        <span class="review-status ${isCorrect ? 'ok' : 'no'}">${isCorrect ? 'Correct' : 'Incorrect'}${userAns ? '' : ' (unanswered)'}</span>
+      </div>
+      <p class="review-q">${item.q}</p>
+      <ul class="review-opts">${optsHtml}</ul>
+    `;
+    reviewList.appendChild(div);
+  });
+}
+</script>
+</body>
+</html>
