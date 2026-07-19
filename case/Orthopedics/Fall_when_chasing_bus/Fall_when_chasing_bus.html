@@ -4,108 +4,505 @@
   <meta charset="UTF-8" />
   <title>Fall when chasing bus</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    .box {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .choice {
-      padding: 10px;
-      background-color: #e0e0e0;
-      border-radius: 5px;
-      margin: 10px 0;
-      cursor: pointer;
-    }
-    .choice:hover {
-      background-color: #d0d0d0;
-    }
-    .disabled {
-      pointer-events: none;
-      opacity: 0.6;
-    }
-    .feedback {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 5px;
-      background-color: #f8f9fa;
-    }
-    .btn {
-      margin-top: 20px;
-      padding: 10px 15px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn:hover { background-color: #0056b3; }
-    label {
-      display: block;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-    input[type="checkbox"] {
-      margin-right: 10px;
-      transform: scale(1.2);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
-      background-color: #f0f0f0;
-    }
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
   </style>
 </head>
 <body>
 
+<div class="masthead">
+  <div class="eyebrow">🩺 Orthopedic Ward Case</div>
+  <h1>Fall when chasing bus</h1>
+  <p class="role">Physiotherapy case-based learning</p>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+  <div class="seg" id="seg3"></div>
+</div>
+<div class="progress-labels">
+  <span>Investigations</span>
+  <span>Management</span>
+  <span>Result</span>
+</div>
+
 <div class="box" id="case-box">
-  <h2>Case: Fall when chasing bus</h2>
-  <p><strong>Ms. Gigi Wan</strong>, a 78year-old woman, was sent to AED due to fall. Patient report that she lost balance and fell on ground while chasing bus in a hot and sunny day.</br></br>
-	Patient was landed on buttock and cannot walk after fall. She report no head injury and no preceeding symptoms before fall.</p>
-	<p>P/E:</br>
-GCS: 15/15</br>
-BP: 163/96 HR:96</br>
-SpO2: 98% RA</br>
-Hstix: 7.3</br>
-ECG: 82bpm, SR</br></br>
-Patient alert and oriented to T/P/P</br>
-Chest: clear</br>
-Abd soft, no ecchymosis, T- G- R-</br>
-pelvis stable on rocking</br>
-L hip T+</br></br>
-Limb power: </br>
-5 / 5</br>
-5- / 5- (except hip)</br>
-UL & LL coordination grossly normal</br></br>
-SHx: live with son's family in lift landing private flat. Day time alone.</br>
-Premorbid: stick outdoor.</br></br>
-PMH:</br>
-DM/HT/lipid</br>
-GAD FU Psy</br>
-</p>
-<p>You are the orthopedic ward physiotherapist going to provide treatment to her.</p>
+  <h3>Case: Fall when chasing bus</h3>
+  <p><strong>Ms. Gigi Wan</strong>, a 78year-old woman, was sent to AED due to fall. Patient report that she lost balance and fell on ground while chasing bus in a hot and sunny day.</p>
+  <p>Patient was landed on buttock and cannot walk after fall. She report no head injury and no preceeding symptoms before fall.</p>
+
+  <div class="field-group">
+    <h4>P/E:</h4>
+    <p>
+      GCS: 15/15<br>
+      BP: 163/96 HR:96<br>
+      SpO2: 98% RA<br>
+      Hstix: 7.3<br>
+      ECG: 82bpm, SR
+    </p>
+    <p>
+      Patient alert and oriented to T/P/P<br>
+      Chest: clear<br>
+      Abd soft, no ecchymosis, T- G- R-<br>
+      pelvis stable on rocking<br>
+      L hip T+
+    </p>
+    <p>
+      Limb power: <br>
+      5 / 5<br>
+      5- / 5- (except hip)<br>
+      UL &amp; LL coordination grossly normal
+    </p>
+  </div>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <p>live with son's family in lift landing private flat. Day time alone.</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Premorbid:</h4>
+    <p>stick outdoor.</p>
+  </div>
+
+  <div class="field-group">
+    <h4>PMH:</h4>
+    <p>
+      DM/HT/lipid<br>
+      GAD FU Psy
+    </p>
+  </div>
+
+  <p class="prompt-line">You are the orthopedic ward physiotherapist going to provide treatment to her.</p>
 </div>
 
 <!-- QUESTION 1 -->
 <div class="box" id="question1">
-  <h3>🩺 What investigation or physical exam would you check/perform?</h3>
+  <h3><span class="num">1</span> 🩺 What investigation or physical exam would you check/perform?</h3>
+  <p class="subhint">Tap an option to reveal the finding.</p>
   <div class="choice" onclick="selectChoice('investigations', 0)">1. Xray Pelvic</div>
   <div class="feedback" id="inv-result0"></div>
 
@@ -123,19 +520,24 @@ GAD FU Psy</br>
 
 <!-- QUESTION 2 -->
 <div class="box" id="question2" style="display:none;">
-  <h3>💊 Select all management options you would provide:</h3>
-  <label><input type="checkbox" id="man-check0" /> 1. PWB walking</label>
-  <label><input type="checkbox" id="man-check1" /> 2. Bed rest</label>
-  <label><input type="checkbox" id="man-check2" /> 3. Check sodium chloride prescription</label>
-  <label><input type="checkbox" id="man-check3" /> 4. Ankle toes exercise</label>
+  <h3><span class="num">2</span> 💊 Select all management options you would provide:</h3>
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. PWB walking</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. Bed rest</label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Check sodium chloride prescription</label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Ankle toes exercise</label>
 
   <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
 </div>
 
 <!-- FINAL RESULT -->
 <div class="box" id="result" style="display:none;">
-  <h3>📊 Final Score & Response Chart</h3>
-  <p id="final-score"></p>
+  <h3>📊 Final Score &amp; Response Chart</h3>
+
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
 
   <table>
     <thead>
@@ -149,42 +551,72 @@ GAD FU Psy</br>
     <tbody id="result-table-body"></tbody>
   </table>
 
-  <h4 style="margin-top: 30px;">🧪 Investigations – Explanation</h4>
-  <ul>
-    <li><strong>Xray:</strong> The xray pelvic shows # L superior & inferior pubic rami and L sacral ala. Vertical shear fracture should be considered.</br><img src='Pelvic_xr_contrast_ans.png' alt='Xray ans' style='max-width:100%;boder-radius:5px;'></br><img src='Vertical_shear_fracture.jpg' alt='Xray ans' style='max-width:100%;boder-radius:5px;'></br></li>
-    <li><strong>CT Brain:</strong> CT Brain was not a necessary option since pateint report no head injury and her GCS was full. </br> CT Brain will be highly indicated if pateint presented with history of head injury, laceration over the head, reduced GCS, any neurological symptoms, amnesia, abnormal drowsiness, vomiting, seizures and etc. </br>Stroke can be another cause of fall. However, no acute stroke sign was noted in physical exam. CT Brain will be indicated to rule out any stroke related fall if potensital stroke was suspected.</br>
-Cardiac syncope, a type of fainting due to heart-related issues, significantly increases the risk of falls. Studies show that individuals experiencing syncope have a higher likelihood of falling compared to those without syncope.There is a positive association between most common cardiovascular disorders and falls in adults aged over 50 years.</br></br></li>
-    <li><strong>Check Electrolytes:</strong> Older adults are particularly susceptible to the effects of hyponatremia, as they are more likely to experience falls in general, and hyponatremia can exacerbate this risk.</br></br>
-In study of Boyer, S. et al 2019, The prevalence of mild hyponatremia was 13.2% (95% CI: 10.1–16.3%) in patients without falls and 26.1% (95% CI: 19.8–32.4%) in patients admitted for falls. Mild hyponatremia was significantly associated with falls (P < 0.001) and the adjusted odds ratio (OR) was 3.02 (95% CI: 1.84–4.96). The association between mild hyponatremia and falls remained significant after controlling for covariates. </br></br>
-Because mild hyponatremia might be a risk factor for injurious falls and ED admission, determination of sodium levels during basic biomarker assessment on ED admission could be an important component of fall prevention strategies for the elderly.</br></br></li>
-    <li><strong>EEG:</strong> EEG was not considered indicated since the patient reported no preceding symptoms before the fall, making convulsion less likely. Convulsion should associated with other sign and symptoms, such as absent seizures, tonic seizures, tonic-chronic seizures, LOC, incontinence and etc.</li>
-  </ul>
+  <div class="learning">
+    <h4>🧪 Investigations – Explanation</h4>
+    <div class="qa">
+      <div class="opt-title">Xray</div>
+      <p>The xray pelvic shows # L superior &amp; inferior pubic rami and L sacral ala. Vertical shear fracture should be considered.</p>
+      <div class="case-img"><img src='Pelvic_xr_contrast_ans.png' alt='Xray ans'></div>
+      <div class="case-img"><img src='Vertical_shear_fracture.jpg' alt='Xray ans'></div>
+    </div>
+    <div class="qa">
+      <div class="opt-title">CT Brain</div>
+      <p>CT Brain was not a necessary option since pateint report no head injury and her GCS was full.</p>
+      <p>CT Brain will be highly indicated if pateint presented with history of head injury, laceration over the head, reduced GCS, any neurological symptoms, amnesia, abnormal drowsiness, vomiting, seizures and etc.</p>
+      <p>Stroke can be another cause of fall. However, no acute stroke sign was noted in physical exam. CT Brain will be indicated to rule out any stroke related fall if potensital stroke was suspected.</p>
+      <p>Cardiac syncope, a type of fainting due to heart-related issues, significantly increases the risk of falls. Studies show that individuals experiencing syncope have a higher likelihood of falling compared to those without syncope.There is a positive association between most common cardiovascular disorders and falls in adults aged over 50 years.</p>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Check Electrolytes</div>
+      <p>Older adults are particularly susceptible to the effects of hyponatremia, as they are more likely to experience falls in general, and hyponatremia can exacerbate this risk.</p>
+      <p>In study of Boyer, S. et al 2019, The prevalence of mild hyponatremia was 13.2% (95% CI: 10.1–16.3%) in patients without falls and 26.1% (95% CI: 19.8–32.4%) in patients admitted for falls. Mild hyponatremia was significantly associated with falls (P &lt; 0.001) and the adjusted odds ratio (OR) was 3.02 (95% CI: 1.84–4.96). The association between mild hyponatremia and falls remained significant after controlling for covariates.</p>
+      <p>Because mild hyponatremia might be a risk factor for injurious falls and ED admission, determination of sodium levels during basic biomarker assessment on ED admission could be an important component of fall prevention strategies for the elderly.</p>
+    </div>
+    <div class="qa">
+      <div class="opt-title">EEG</div>
+      <p>EEG was not considered indicated since the patient reported no preceding symptoms before the fall, making convulsion less likely. Convulsion should associated with other sign and symptoms, such as absent seizures, tonic seizures, tonic-chronic seizures, LOC, incontinence and etc.</p>
+    </div>
 
-  <h4>💊 Management – Explanation</h4>
-  <ul>
-    <li><strong>PWB walking:</strong> Not a good option due to multiple breaks in the pelvic ring. An unstable pelvic ring is considered when there are two or more fracture points. The management plan depends on the degree of instability, fracture displacement, and the patient’s activity demands. </br></br></li>
-    <li><strong>Bed rest:</strong> Correct. Due to multiple breaks in the pelvic ring, surgical option maybe indicated.</br></br></li>
-    <li><strong>Check sodium chloride prescription</strong> This patient is suffering from moderate hyponatremia. Sodium replacement is needed and can be done orally or intravenously, depending on the degree of deficit.  <img src='HypoNa.png' alt='Xray' style='max-width:100%;boder-radius:5px;'></br></br></li>
-    <li><strong>Ankle toes exercise:</strong> Correct. Joint mobilization can often begin early but should be individualized. Even in a bed bound patient, exercises to avoid stiffness and promote muscle function are advisable.</li>
-  </ul>
-<p><h5>Refrence:</br>
-Boyer, S., Gayot, C., Bimou, C. et al. Prevalence of mild hyponatremia and its association with falls in older adults admitted to an emergency geriatric medicine unit (the MUPA unit). BMC Geriatr 19, 265 (2019). https://doi.org/10.1186/s12877-019-1282-0</br></br>
-Bourke R, Doody P, Pérez S, Moloney D, Lipsitz LA, Kenny RA. Cardiovascular Disorders and Falls Among Older Adults: A Systematic Review and Meta-Analysis. J Gerontol A Biol Sci Med Sci. 2024 Feb 1;79(2):glad221. doi: 10.1093/gerona/glad221. PMID: 37738307; PMCID: PMC10809055.</br></br>
-For more infomaiton about Pelvic ring fracture:</br>
-<a href="https://orthoinfo.aaos.org/en/diseases--conditions/pelvic-fractures/">https://orthoinfo.aaos.org/en/diseases--conditions/pelvic-fractures/</a></h5></p>
-</br></br>
-<h6>Case contributor: Mr Thomas Mak, Ms Gigi Cheung</h6>
+    <h4 style="margin-top:22px;">💊 Management – Explanation</h4>
+    <div class="qa">
+      <div class="opt-title">PWB walking</div>
+      <p>Not a good option due to multiple breaks in the pelvic ring. An unstable pelvic ring is considered when there are two or more fracture points. The management plan depends on the degree of instability, fracture displacement, and the patient’s activity demands.</p>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Bed rest</div>
+      <p>Correct. Due to multiple breaks in the pelvic ring, surgical option maybe indicated.</p>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Check sodium chloride prescription</div>
+      <p>This patient is suffering from moderate hyponatremia. Sodium replacement is needed and can be done orally or intravenously, depending on the degree of deficit.</p>
+      <div class="case-img"><img src='HypoNa.png' alt='Xray'></div>
+    </div>
+    <div class="qa">
+      <div class="opt-title">Ankle toes exercise</div>
+      <p>Correct. Joint mobilization can often begin early but should be individualized. Even in a bed bound patient, exercises to avoid stiffness and promote muscle function are advisable.</p>
+    </div>
+
+    <p class="ref">
+      Refrence:<br>
+      Boyer, S., Gayot, C., Bimou, C. et al. Prevalence of mild hyponatremia and its association with falls in older adults admitted to an emergency geriatric medicine unit (the MUPA unit). BMC Geriatr 19, 265 (2019). https://doi.org/10.1186/s12877-019-1282-0<br><br>
+      Bourke R, Doody P, Pérez S, Moloney D, Lipsitz LA, Kenny RA. Cardiovascular Disorders and Falls Among Older Adults: A Systematic Review and Meta-Analysis. J Gerontol A Biol Sci Med Sci. 2024 Feb 1;79(2):glad221. doi: 10.1093/gerona/glad221. PMID: 37738307; PMCID: PMC10809055.<br><br>
+      For more infomaiton about Pelvic ring fracture:<br>
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/pelvic-fractures/">https://orthoinfo.aaos.org/en/diseases--conditions/pelvic-fractures/</a>
+    </p>
+  </div>
+
+  <p class="creator">Case contributor: Mr Thomas Mak, Ms Gigi Cheung</p>
   <button class="btn" onclick="restart()">🔁 Restart Case</button>
 </div>
 
 <!-- Back to Homepage Button -->
-<a href="../../case_index.html" class="btn">← Back to Homepage</a>
+<a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
 
 <script>
   const investigations = [
-    { text: "<img src='Pelvic_xr.jpg' alt='Xray' style='max-width:100%;boder-radius:5px;'></br><img src='Pelvic_xr_contrast.jpg' alt='Xray c' style='max-width:100%;boder-radius:5px;'>", correct: true },
+    { text: "<div class='case-img'><img src='Pelvic_xr.jpg' alt='Xray'></div><div class='case-img'><img src='Pelvic_xr_contrast.jpg' alt='Xray c'></div>", correct: true },
     { text: "CTB: no ICH/MLS/SOL/SDH.", correct: false },
-    { text: "<img src='Lab.png' alt='Lab' style='max-width:100%;boder-radius:5px;'>", correct: true },
+    { text: "<div class='case-img'><img src='Lab.png' alt='Lab'></div>", correct: true },
     { text: "No abnormal brain wave patterns", correct: false }
   ];
 
@@ -212,6 +644,9 @@ For more infomaiton about Pelvic ring fracture:</br>
   function proceedToManagement() {
     document.getElementById("question2").style.display = "block";
     document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg2").classList.add("active");
   }
 
   function scorePerItem(type, data, checkedArray) {
@@ -236,13 +671,26 @@ For more infomaiton about Pelvic ring fracture:</br>
     const invScore = scorePerItem("investigations", investigations, []);
     const manScore = scorePerItem("management", management, checkedMan);
     const totalScore = invScore + manScore;
-    const totalPossible = 8;
-    const percentage = Math.round((totalScore / totalPossible) * 100);
+    const totalPossible = investigations.length + management.length;
+    const score = totalScore;
+    const maxScore = totalPossible;
 
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-score").innerHTML = `
-      <strong>Total Score: ${totalScore} / ${totalPossible} → ${percentage}%</strong>
-    `;
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
+    document.getElementById("seg3").classList.add("done", "active");
 
     for (let i = 0; i < 4; i++) {
       document.getElementById("man-check" + i).disabled = true;
@@ -290,7 +738,7 @@ For more infomaiton about Pelvic ring fracture:</br>
 
   function restart() {
     selected.investigations = [false, false, false, false];
-    document.querySelectorAll(".feedback").forEach(el => el.innerText = "");
+    document.querySelectorAll(".feedback").forEach(el => el.innerHTML = "");
     document.querySelectorAll(".choice").forEach(el => el.classList.remove("disabled"));
     for (let i = 0; i < 4; i++) {
       document.getElementById("man-check" + i).checked = false;
@@ -298,6 +746,11 @@ For more infomaiton about Pelvic ring fracture:</br>
     }
     document.getElementById("question2").style.display = "none";
     document.getElementById("result").style.display = "none";
+
+    document.getElementById("seg1").classList.add("active");
+    document.getElementById("seg1").classList.remove("done");
+    document.getElementById("seg2").classList.remove("active", "done");
+    document.getElementById("seg3").classList.remove("active", "done");
   }
 </script>
 
