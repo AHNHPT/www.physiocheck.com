@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>R side weakness (Part 2)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+.case-img.placeholder{
+  border:1.5px dashed var(--line);
+  border-radius:10px;
+  padding:26px 14px;
+  color:var(--muted);
+  font-size:13px;
+  background:#FAFBFB;
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:bold;
+  color:var(--muted);
+}
+
+/* ---------- Choices (single-select style questions) ---------- */
+.choice{
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.choice:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+.choice:active{ transform:scale(.995); }
+.choice.disabled{
+  pointer-events:none;
+  opacity:.55;
+}
+.feedback{
+  margin:-4px 0 4px;
+  padding:0 16px;
+  font-size:13.5px;
+  color:var(--teal-dark);
+  min-height:0;
+}
+.feedback:not(:empty){
+  padding:10px 14px;
+  background:var(--teal-tint);
+  border-radius:9px;
+  margin:2px 0 12px;
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+  text-decoration:none;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:bold;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
+  </style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="eyebrow">🩺 Stroke &amp; Rehab Case</div>
+  <h1>R side weakness (Part 2)</h1>
+  <p class="role">Physiotherapist · Medical Ward (ASU) · Difficulty ★★☆</p>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Investigations</span>
+  <span>Management</span>
+</div>
+
+<div class="box">
+  <p><strong>Continue from Case R LL weakness (Part 1).</strong></p>
+  <p>On 25/1 (Day 2 of admission), you plan to attend Mr. Lau again. You read Dr.'s progress notes written on 25/1 09:00 on CMS:</p>
+
+  <div class="tags"><span class="tag ref">----------------Dr.'s Progress Note (25/1, 09:00)----------------</span></div>
+
+  <div class="field-group">
+    <h4>Dx:</h4>
+    <p>CVA (R Hemi), post-IVT Day 2</p>
+  </div>
+
+  <div class="field-group">
+    <h4>P/E:</h4>
+    <p>Afebrile
+    <br>BP 159/90, P 73, on 1L O2
+    <br>E4V4M6
+    <br>Nil C/O
+    <br>Power:
+    <br>4|5
+    <br>3|5</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Investigations:</h4>
+    <p>WCC 12 → 15
+    <br>Repeat CTB: static L frontal infarct
+    <br>CXR: RLZ hazziness</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Management:</h4>
+    <p>- Resume Losartan Potassium
+    <br>- Start Aspirin today
+    <br>- Continue Augmentin
+    <br>- Sputum c/st if any
+    <br>- Chest physio</p>
+  </div>
+
+  <p class="prompt-line">When you approach him, you find him <strong>drowsy and ill-looking</strong>.</p>
+
+  <div class="case-img placeholder">
+  <img src="Patient2.png" alt="Patient Image" style='width:100%; max-width:600px; margin-top:10px; border-radius:5px;'>
+  </div>
+</div>
+
+<div class="box" id="question1">
+  <h3><span class="num">1</span>🩺 What investigation results would you like to check / what P/E would you like to perform?</h3>
+  <p class="subhint">Tap each option to reveal the finding.</p>
+
+  <div class="choice" onclick="selectChoice('investigations', 0)">1. Recheck GCS</div>
+  <div class="feedback" id="inv-result0"></div>
+  <div class="choice" onclick="selectChoice('investigations', 1)">2. Vital signs stat</div>
+  <div class="feedback" id="inv-result1"></div>
+  <div class="choice" onclick="selectChoice('investigations', 2)">3. H'stix stat</div>
+  <div class="feedback" id="inv-result2"></div>
+  <div class="choice" onclick="selectChoice('investigations', 3)">4. Assess mobility level </div>
+  <div class="feedback" id="inv-result3"></div>
+  <button class="btn" onclick="proceedToManagement()">➡️ Proceed to Management</button>
+</div>
+
+<div class="box" id="question2" style="display:none;">
+  <h3><span class="num">2</span> 💊 What management would you provide?</h3>
+
+  <label class="opt"><input type="checkbox" id="man-check0" /> 1. Keep bed rest and clarify with case nurse</label>
+  <label class="opt"><input type="checkbox" id="man-check1" /> 2. Bedside sitting / walking +/- sit out of bed </label>
+  <label class="opt"><input type="checkbox" id="man-check2" /> 3. Gentle limbs ROM exercise </label>
+  <label class="opt"><input type="checkbox" id="man-check3" /> 4. Chest physiotherapy </label>
+  <button class="btn" onclick="showFinalResult()">✅ Submit and Show Result</button>
+</div>
+
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score & Response Chart</h3>
+
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr></thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+
+  <div class="learning">
+    <h4>📚 Learning Points</h4>
+    <div class="qa">
+      <div class="opt-title">Key Points</div>
+      <ul>
+        <li>When a patient presents with drowsiness, it is important to <strong>first rule out acute neurological changes</strong> (e.g. stroke progression / restroke / hemorrhagic transformation) and <strong>common causes of drowsiness</strong> (e.g. infection, hypoglycemia, hypotension, hypoxemia).</li>
+        <li>Any sudden change or deterioration in a patient's condition (such as a drop in GCS) means mobilization must be halted and bed rest maintained until <strong>medical emergencies are thoroughly cleared</strong>.</li>
+        <li>While managing concurrent issues like a chest infection is important for bronchial hygiene, vigorous techniques (e.g., cough stimulation, chest percussion, tracheal suctioning) must be refrained from until the cause of altered mental status is identified.</li>
+      </ul>
+    </div>
+    <h4>🧪 Investigations – Explanation</h4>
+
+    <div class="qa">
+      <div class="opt-title">Q1-Option 1: Recheck GCS</div>
+      <p>GCS should be assessed to see if there is any neurological decline. <strong>A drop in GCS might indicate stroke progression / restroke / hemorrhagic transformation</strong> which are conditions that require immediate medical attention. In fact, the risk of recurrent stroke in the week after a TIA or minor stroke is up to <strong>10%</strong> [1].</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q1-Option 2: Vital signs stat</div>
+      <p>Vital signs should be checked to look for possible causes of drowsiness.</p>
+      <p>High fever may indicate infection which causes one's body to redirect cellular energy to fight against pathogens, potentially leading to fatigue and drowsiness.</p>
+      <p>A low blood pressure can cause drowsiness as blood flow to the brain is reduced.</p>
+      <p>Bradycardia / tachycardia can limit the heart's ability to pump blood properly, leading to drowsiness or fainting.</p>
+      <p>Finally, a low SpO2 level may indicate hypoxemia, leading to drowsiness.</p>
+      <p>As Mr. Lau has stable blood pressure and heart rate, has normal SpO2 level and has no fever, the above are likely not the causes of his drowsiness and other diagnoses should be considered (e.g. restroke).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q1-Option 3: H'stix stat</div>
+      <p>H'stix should be checked to see if hypoglycemia / hyperglycemia is causing Mr. Lau's drowsiness.</p>
+      <p>Hypoglycemia may cause drowsiness as the brain does not have enough fuel, i.e. glucose to function properly, while hyperglycemia happens when body cells fail to utilize glucose in blood due to insulin resistance / insufficient insulin in the body.</p>
+      <p>Since Mr. Lau's H'stix level is within normal range, the above are likely not the causes of his drowsiness and other diagnoses should be considered (e.g. restroke).</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q1-Option 4: Assess mobility level</div>
+      <p>As there is change in Mr. Lau's condition, mobility assessment should not be performed until medical emergencies are cleared.</p>
+    </div>
+
+    <h4 style="margin-top:22px;">💊 Management – Explanation</h4>
+
+    <div class="qa">
+      <div class="opt-title">Q2-Option 1: Keep bed rest and clarify with case nurse + Option 2: Bedside sitting / walking +/- sit out of bed + Option 3: Gentle limbs ROM exercise</div>
+      <p>Noting a drop in GCS of Mr. Lau, we should <strong>clarify with case nurse</strong> on whether Mr. Lau's condition has deteriorated. We should suspend mobilization and allow bed rest until medical emergencies are cleared.</p>
+    </div>
+
+    <div class="qa">
+      <div class="opt-title">Q2-Option 4: Chest physiotherapy</div>
+      <p>Chest physiotherapy should still be performed as Mr. Lau is suffering from chest infection. We should assist in maintaining bronchial hygiene and sputum sampling. However, cough stimulation and vigorous chest physiotherapy, e.g. tracheal suctioning and chest percussion should be refrained until the cause of drowsiness is clarified. This is because these maneuvers may lead to a rise in intracranial pressure [2] [3], which may worsen Mr. Lau's condition.</p>
+    </div>
+
+    <p class="ref">References:
+    <br>[1] Sanossian N, Ovbiagele B. The risk of stroke within a week of minor stroke or transient ischemic attack. Expert Opinion on Pharmacotherapy. 2008 July 31;9(12):2069–76.
+    <br>[2] Brucia J, Rudy E. The effect of suction catheter insertion and tracheal stimulation in adults with severe brain injury. Heart &amp; Lung. 1996 July;25(4):295–303.
+    <br>[3] Ferreira LL, Valenti VE, Vanderlei LCM. Chest physiotherapy on intracranial pressure of critically ill patients admitted to the intensive care unit: a systematic review. Revista Brasileira de Terapia Intensiva. 2013;25(4).</p>
+
+    <p class="creator">Case Creator: Ms. Jamie Ip, Mr. Eric Chan</p>
+  </div>
+
+  <button class="btn" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
+
+<script>
+  const investigations = [{"opt":"Recheck GCS","res":"<strong>E2V3M5<br>GCS = 10</strong>","cor":true},
+  {"opt":"Vital signs stat","res":"Afebrile <br>BP 145/68 mmHg <br>HR 85 bpm <br>SpO2 98% on 1L O2 via n.c. ","cor":true},
+  {"opt":"H'stix stat","res":"<strong>7.0 mmol/L</strong>","cor":true},
+  {"opt":"Assess mobility level ","res":"Bed mobility and transfer dependent <br><br><strong>MFAC 1/7</strong> ","cor":false}];
+  const management = [{"opt":"Keep bed rest and clarify with case nurse","exp":"","cor":true},
+  {"opt":"Bedside sitting / walking +/- sit out of bed ","exp":"","cor":false},
+  {"opt":"Gentle limbs ROM exercise ","exp":"","cor":false},
+  {"opt":"Chest physiotherapy ","exp":"","cor":true}];
+  let selectedInv = [false, false, false, false];
+
+  function selectChoice(type, index) {
+    if (!selectedInv[index]) {
+      selectedInv[index] = true;
+      document.getElementById("inv-result" + index).innerHTML = investigations[index].res;
+    }
+  }
+
+  function proceedToManagement() {
+    document.getElementById("question2").style.display = "block";
+    document.querySelectorAll("#question1 .choice").forEach(el => el.classList.add("disabled"));
+    document.getElementById("seg1").classList.add("done");
+    document.getElementById("seg1").classList.remove("active");
+    document.getElementById("seg2").classList.add("active");
+  }
+
+  function showFinalResult() {
+    const checkedMan = [0,1,2,3].map(i => document.getElementById("man-check"+i).checked);
+    let score = 0;
+
+    investigations.forEach((d, i) => { if(selectedInv[i] === d.cor) score++; });
+    management.forEach((d, i) => { if(checkedMan[i] === d.cor) score++; });
+
+    const maxScore = investigations.length + management.length;
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("seg2").classList.add("done");
+    document.getElementById("seg2").classList.remove("active");
+    document.getElementById("final-score").innerHTML = score + " / " + maxScore;
+
+    const pct = Math.ceil((score / maxScore) * 100);
+    document.getElementById("final-pct").innerHTML = pct + "%";
+
+    const banner = document.getElementById("score-banner");
+    if (pct < 60) {
+      banner.classList.add("low");
+    } else {
+      banner.classList.remove("low");
+    }
+
+    const tbody = document.getElementById("result-table-body");
+    tbody.innerHTML = "";
+
+    investigations.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q1</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(selectedInv[i]?'✅':'❌')+"</td></tr>";
+    });
+    management.forEach((d, i) => {
+      tbody.innerHTML += "<tr><td>Q2</td><td>"+d.opt+"</td><td>"+(d.cor?'✅':'❌')+"</td><td>"+(checkedMan[i]?'✅':'❌')+"</td></tr>";
+    });
+  }
+</script>
+</body>
+</html>
