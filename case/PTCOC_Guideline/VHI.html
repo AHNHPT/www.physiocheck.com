@@ -1,870 +1,1231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HA Physiotherapy Guidelines: Ventilator Hyperinflation (VHI)</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for clinical icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --ha-red: #B41424;
-            --ha-dark-red: #8B0E1B;
-            --ha-teal: #007D8A;
-            --ha-teal-light: #EBF8F9;
-        }
-        .bg-ha-red { background-color: var(--ha-red); }
-        .text-ha-red { color: var(--ha-red); }
-        .hover-bg-ha-red:hover { background-color: var(--ha-dark-red); }
-        .bg-ha-teal { background-color: var(--ha-teal); }
-        .text-ha-teal { color: var(--ha-teal); }
-        .border-ha-teal { border-color: var(--ha-teal); }
-        
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8fafc;
-        }
-        
-        /* Smooth fade-in animation for active tab content */
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out forwards;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ventilator Hyperinflation — Clinical Guideline Explainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================= TOKENS ============================= */
+:root{
+  --bg:#0a1120;
+  --bg-alt:#0d1626;
+  --panel:#101b2e;
+  --panel-2:#0d1728;
+  --panel-border:rgba(148,178,206,.14);
+  --panel-border-strong:rgba(148,178,206,.26);
+  --text:#e9eff6;
+  --text-muted:#9aacc2;
+  --text-dim:#63758c;
+  --cyan:#2fd9c7;
+  --cyan-dim:rgba(47,217,199,.14);
+  --amber:#f5b942;
+  --amber-dim:rgba(245,185,66,.14);
+  --red:#f2645f;
+  --red-dim:rgba(242,100,95,.14);
+  --green:#54d98c;
+  --green-dim:rgba(84,217,140,.14);
+  --violet:#9b9bf0;
+  --font-display:'Space Grotesk',system-ui,sans-serif;
+  --font-body:'IBM Plex Sans',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --radius:16px;
+  --radius-sm:10px;
+  --maxw:1120px;
+}
 
-        .pulse-soft {
-            animation: softPulse 2s infinite;
-        }
-        @keyframes softPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-    </style>
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}
+}
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(47,217,199,.08), transparent 60%),
+    radial-gradient(ellipse 900px 600px at 100% 0%, rgba(245,185,66,.06), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0;letter-spacing:-.01em;}
+p{margin:0;}
+a{color:inherit;}
+img,svg{display:block;max-width:100%;}
+button{font-family:inherit;cursor:pointer;}
+::selection{background:var(--cyan-dim);color:var(--text);}
+
+.icon{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+@media (max-width:640px){.wrap{padding:0 18px;}}
+
+/* ============================= SCROLL PROGRESS ============================= */
+#scrollbar{position:fixed;top:0;left:0;height:3px;width:0%;
+  background:linear-gradient(90deg,var(--cyan),var(--amber));
+  z-index:200;transition:width .08s linear;}
+
+/* ============================= NAV ============================= */
+header.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(9,15,27,.82);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--panel-border);
+}
+.nav-inner{max-width:var(--maxw);margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:20px;}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:700;font-size:14px;letter-spacing:.02em;white-space:nowrap;color:var(--text);}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px var(--cyan-dim);flex-shrink:0;}
+.navlinks{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
+.navlinks::-webkit-scrollbar{display:none;}
+.navlinks a{
+  font-size:12.5px;font-weight:500;color:var(--text-muted);text-decoration:none;
+  padding:7px 12px;border-radius:999px;white-space:nowrap;transition:.15s;
+  border:1px solid transparent;
+}
+.navlinks a:hover{color:var(--text);background:rgba(255,255,255,.04);}
+.navlinks a.active{color:var(--bg);background:var(--cyan);font-weight:600;}
+@media (max-width:900px){.nav-inner{padding:10px 16px;gap:12px;}}
+
+/* ============================= HERO ============================= */
+.hero{position:relative;padding:64px 0 40px;overflow:hidden;}
+.hero-wave{position:absolute;left:0;right:0;bottom:0;height:150px;opacity:.55;pointer-events:none;}
+.hero-wave svg{width:200%;height:100%;animation:scrollwave 14s linear infinite;}
+@keyframes scrollwave{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--cyan);background:var(--cyan-dim);border:1px solid rgba(47,217,199,.3);
+  padding:6px 12px;border-radius:999px;margin-bottom:22px;
+}
+.hero h1{font-size:clamp(34px,6vw,58px);line-height:1.04;max-width:14ch;}
+.hero .lead{margin-top:18px;font-size:clamp(15px,2vw,18px);color:var(--text-muted);max-width:56ch;}
+.hero-meta{
+  margin-top:26px;display:flex;flex-wrap:wrap;gap:8px 22px;
+  font-family:var(--font-mono);font-size:12px;color:var(--text-dim);
+}
+.hero-meta b{color:var(--text-muted);font-weight:600;}
+
+.vitals{
+  margin-top:38px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+@media (max-width:800px){.vitals{grid-template-columns:repeat(2,1fr);}}
+.vital{
+  background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius-sm);
+  padding:14px 16px;position:relative;overflow:hidden;
+}
+.vital::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,var(--cyan));}
+.vital .num{font-family:var(--font-mono);font-size:22px;font-weight:600;color:var(--c,var(--cyan));}
+.vital .lbl{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;margin-top:4px;}
+
+/* ============================= SECTION SHELL ============================= */
+section{padding:64px 0;position:relative;}
+.section-head{max-width:64ch;margin-bottom:36px;}
+.section-tag{
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:10px;display:block;
+}
+.section-head h2{font-size:clamp(24px,3.4vw,34px);}
+.section-head .sub{margin-top:10px;color:var(--text-muted);font-size:15.5px;}
+
+.divider{position:relative;height:46px;overflow:hidden;opacity:.4;}
+.divider svg{width:200%;height:100%;animation:scrollwave 20s linear infinite;}
+
+/* ============================= PANEL / CARD PRIMITIVES ============================= */
+.panel{
+  background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius);
+  padding:22px;
+}
+.grid{display:grid;gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:820px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr;}}
+@media (max-width:560px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  padding:4px 10px;border-radius:999px;
+}
+.badge.cyan{color:var(--cyan);background:var(--cyan-dim);border:1px solid rgba(47,217,199,.3);}
+.badge.amber{color:var(--amber);background:var(--amber-dim);border:1px solid rgba(245,185,66,.3);}
+.badge.red{color:var(--red);background:var(--red-dim);border:1px solid rgba(242,100,95,.35);}
+.badge.green{color:var(--green);background:var(--green-dim);border:1px solid rgba(84,217,140,.3);}
+
+/* ============================= TABS ============================= */
+.tabbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.tabbtn{
+  background:var(--panel-2);border:1px solid var(--panel-border);color:var(--text-muted);
+  padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;transition:.15s;
+}
+.tabbtn:hover{color:var(--text);border-color:var(--panel-border-strong);}
+.tabbtn.active{background:var(--text);color:var(--bg);border-color:var(--text);}
+.tabpanel{display:none;}
+.tabpanel.active{display:block;animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+/* ============================= FOOTER ============================= */
+footer{padding:56px 0 80px;border-top:1px solid var(--panel-border);margin-top:20px;}
+details.refs{margin-top:18px;}
+details.refs summary{cursor:pointer;color:var(--cyan);font-size:13px;font-weight:600;font-family:var(--font-mono);}
+details.refs ol{margin-top:14px;padding-left:20px;color:var(--text-dim);font-size:12.5px;line-height:1.7;}
+
+#top-fab{
+  position:fixed;right:20px;bottom:20px;z-index:120;
+  width:42px;height:42px;border-radius:50%;
+  background:var(--panel);border:1px solid var(--panel-border-strong);color:var(--text);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transform:translateY(8px);transition:.2s;
+}
+#top-fab.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+</style>
 </head>
-<body class="text-slate-800 flex flex-col min-h-screen">
+<body>
 
-    <!-- Header / Branding Bar -->
-    <header class="bg-white border-b-4 border-red-700 shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div class="flex items-center gap-3">
-                <div class="bg-red-700 text-white p-2 rounded-lg flex items-center justify-center font-bold text-lg tracking-wider">
-                    醫院管理局
-                </div>
-                <div>
-                    <h1 class="text-lg md:text-xl font-bold text-slate-800">Hospital Authority</h1>
-                    <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Physiotherapy Education Portal</p>
-                </div>
-            </div>
-            <div class="text-right sm:text-right text-xs text-slate-600 bg-slate-100 px-3 py-1.5 rounded-md border border-slate-200">
-                <div><strong>Doc No:</strong> HAHO-COC-GL-PHY-011-v01</div>
-                <div><strong>Effective Date:</strong> 24/07/2025 | <strong>Review Date:</strong> 24/07/2028</div>
-            </div>
-        </div>
-    </header>
+<div id="scrollbar"></div>
 
-    <!-- Main Banner -->
-    <div class="bg-gradient-to-r from-red-800 via-red-700 to-rose-900 text-white py-10 px-4 shadow-inner relative overflow-hidden">
-        <div class="absolute inset-0 bg-grid-white\/10 [mask-image:linear-gradient(0deg,white,transparent)] pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto relative z-10">
-            <span class="bg-yellow-400 text-slate-950 font-bold text-xs uppercase px-3 py-1 rounded-full tracking-wider shadow-sm">Cardiopulmonary Practice Guideline</span>
-            <h2 class="text-3xl md:text-5xl font-black mt-3 tracking-tight drop-shadow-sm">Ventilator Hyperinflation (VHI)</h2>
-            <p class="text-sm md:text-base text-rose-100 mt-2 max-w-3xl">
-                An interactive training hub summarizing clinical directives from <strong class="underline decoration-yellow-400 decoration-2">Physiotherapy Guidelines on Ventilator Hyperinflation</strong>.
-            </p>
-        </div>
+<!-- ICON SPRITE -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 L22.5 21 L1.5 21 Z"/><line x1="12" y1="9.5" x2="12" y2="14.5"/><circle cx="12" cy="17.6" r="0.6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-octagon" viewBox="0 0 24 24"><polygon points="7.5 2 16.5 2 22 7.5 22 16.5 16.5 22 7.5 22 2 16.5 2 7.5"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><polyline points="2 13 7 13 9.5 5 13.5 20 16 13 22 13"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 L20.5 5.5 V11.5 C20.5 17 16.5 21 12 22.5 C7.5 21 3.5 17 3.5 11.5 V5.5 Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><polyline points="12 7 12 12.5 16 14.5"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15.5 18 9"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.8" r="0.6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8 H15 a3 3 0 1 0 -2.6 -4.5"/><path d="M3 16 H18 a3 3 0 1 1 -2.6 4.5"/><path d="M3 12 H10.5"/></symbol>
+  <symbol id="i-droplet" viewBox="0 0 24 24"><path d="M12 2.5 C12 2.5 5 11 5 15.5 A7 7 0 0 0 19 15.5 C19 11 12 2.5 12 2.5 Z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5 C6 16 2.5 12.4 2.5 8.6 A5 5 0 0 1 12 6 A5 5 0 0 1 21.5 8.6 C21.5 12.4 18 16 12 20.5 Z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="0.8" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="0.8" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="0.8" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.5"/><line x1="12" y1="13" x2="16" y2="9"/><line x1="7" y1="5" x2="8.3" y2="6.6"/><line x1="17" y1="5" x2="15.7" y2="6.6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4.5 C7 3.2 10 3.2 12 4.5 C14 3.2 17 3.2 20 4.5 V19 C17 17.7 14 17.7 12 19 C10 17.7 7 17.7 4 19 Z"/><line x1="12" y1="4.5" x2="12" y2="19"/></symbol>
+</svg>
+
+<!-- ============================= NAV ============================= -->
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span>VHI&nbsp;Guide</div>
+    <nav class="navlinks" id="navlinks">
+      <a href="#overview">Overview</a>
+      <a href="#indications">Indications</a>
+      <a href="#contraindications">Contraindications</a>
+      <a href="#implementation">Implementation</a>
+      <a href="#technique">Technique</a>
+      <a href="#monitoring">Monitoring</a>
+      <a href="#wrapup">Wrap-Up</a>
+      <a href="#training">Training</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================= HERO ============================= -->
+<div class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow"><svg class="icon" style="width:13px;height:13px"><use href="#i-activity"/></svg>HAHO-COC-GL-PHY-011-v01 · Cardiopulmonary Physiotherapy</span>
+    <h1>Ventilator<br>Hyperinflation</h1>
+    <p class="lead">A bedside-ready guide to safe, effective VHI in the mechanically ventilated patient — built for junior physiotherapist orientation and revision.</p>
+    <div class="hero-meta">
+      <span><b>Issue</b> 24 Jul 2025</span>
+      <span><b>Review</b> 24 Jul 2028</span>
+      <span><b>Version</b> 1.0</span>
+      <span><b>Author</b> Specialty Group on Cardiopulmonary Service, COC-Grade(PT)</span>
     </div>
 
-    <!-- Tab Navigation System (Eliminates full page scrolling) -->
-    <div class="bg-white border-b border-slate-200 sticky top-[72px] z-40 shadow-sm overflow-x-auto">
-        <div class="max-w-7xl mx-auto px-4 flex gap-1 md:gap-4" role="tablist">
-            <button id="tab-btn-overview" onclick="switchTab('sec-overview')" class="tab-nav-btn px-4 py-4 text-sm font-bold border-b-2 border-red-700 text-red-700 whitespace-nowrap flex items-center gap-2 transition-all">
-                <i class="fa-solid fa-circle-info"></i> Core Concepts
-            </button>
-            <button id="tab-btn-safety" onclick="switchTab('sec-safety')" class="tab-nav-btn px-4 py-4 text-sm font-bold border-b-2 border-transparent text-slate-600 hover:text-red-700 hover:border-red-300 whitespace-nowrap flex items-center gap-2 transition-all">
-                <i class="fa-solid fa-shield-halved"></i> Safety Screening Tool
-            </button>
-            <button id="tab-btn-protocol" onclick="switchTab('sec-protocol')" class="tab-nav-btn px-4 py-4 text-sm font-bold border-b-2 border-transparent text-slate-600 hover:text-red-700 hover:border-red-300 whitespace-nowrap flex items-center gap-2 transition-all">
-                <i class="fa-solid fa-list-check"></i> Clinical Protocol
-            </button>
-            <button id="tab-btn-parameters" onclick="switchTab('sec-parameters')" class="tab-nav-btn px-4 py-4 text-sm font-bold border-b-2 border-transparent text-slate-600 hover:text-red-700 hover:border-red-300 whitespace-nowrap flex items-center gap-2 transition-all">
-                <i class="fa-solid fa-sliders"></i> Ventilator Parameters
-            </button>
-            <button id="tab-btn-quiz" onclick="switchTab('sec-quiz')" class="tab-nav-btn px-4 py-4 text-sm font-bold border-b-2 border-transparent text-slate-600 hover:text-red-700 hover:border-red-300 whitespace-nowrap flex items-center gap-2 transition-all">
-                <i class="fa-solid fa-graduation-cap"></i> Knowledge Quiz
-            </button>
-        </div>
+    <div class="vitals">
+      <div class="vital" style="--c:var(--amber)"><div class="num">40</div><div class="lbl">Upper pressure limit, cmH₂O</div></div>
+      <div class="vital" style="--c:var(--cyan)"><div class="num">&lt;35</div><div class="lbl">Plateau pressure alarm, cmH₂O</div></div>
+      <div class="vital" style="--c:var(--green)"><div class="num">&lt;1000</div><div class="lbl">Target tidal volume, mL</div></div>
+      <div class="vital" style="--c:var(--red)"><div class="num">≥15</div><div class="lbl">PEEP — absolute stop, cmH₂O</div></div>
+    </div>
+  </div>
+
+  <div class="hero-wave">
+    <svg viewBox="0 0 3200 200" preserveAspectRatio="none">
+      <path d="M0,145 c50,0 50,-75 100,-75 c50,0 50,75 100,75 c50,0 50,-75 100,-75 c50,0 50,75 100,75 c50,0 50,-75 100,-75 c50,0 50,75 100,75 c50,0 50,-75 100,-75 c50,0 50,75 100,75 c50,0 50,-75 100,-75 c50,0 50,75 100,75 c50,0 50,-75 100,-75 c50,0 50,75 100,75 c50,0 50,-75 100,-75 c50,0 50,75 100,75 c50,0 50,-75 100,-75 c50,0 50,75 100,75" fill="none" stroke="#f5b942" stroke-width="3" opacity=".65"/>
+      <path d="M0,70 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40" fill="none" stroke="#2fd9c7" stroke-width="2.5" opacity=".55"/>
+    </svg>
+  </div>
+</div>
+
+<div class="divider"><svg viewBox="0 0 3200 100" preserveAspectRatio="none"><path d="M0,70 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40" fill="none" stroke="#2fd9c7" stroke-width="2"/></svg></div>
+
+<!-- ============================= OVERVIEW ============================= -->
+<section id="overview">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">// 00 — Why this technique exists</span>
+      <h2>Secretions, atelectasis, and a disconnected circuit problem</h2>
+      <p class="sub">Intubated patients on mechanical ventilation are prone to atelectasis, secretion retention, and ventilator-associated pneumonia (VAP) as mucociliary clearance breaks down. Hyperinflation — a slow deep breath in, fast release out — has been used to counter this since the 1960s.</p>
     </div>
 
-    <!-- Tabbed Content Workspace -->
-    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow">
-
-        <!-- ============================================== -->
-        <!-- TAB 1: CORE CONCEPTS                           -->
-        <!-- ============================================== -->
-        <section id="sec-overview" class="tab-content active scroll-mt-36">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- VHI Definition & Aims -->
-                <div class="lg:col-span-1 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <span class="p-3 bg-red-100 text-red-700 rounded-xl"><i class="fa-solid fa-wind text-xl"></i></span>
-                            <h3 class="text-xl font-bold text-slate-800">What is VHI?</h3>
-                        </div>
-                        <p class="text-slate-600 leading-relaxed text-sm mb-4">
-                            <strong>Ventilator Hyperinflation (VHI)</strong> is an advanced chest physiotherapy technique mimicking manual lung expansion (MHI) directly via mechanical ventilator adjustments. Larger tidal volumes are safely delivered to clear secretions and recruit atelectatic alveoli without breaking the closed breathing circuit.
-                        </p>
-                        
-                        <h4 class="font-bold text-slate-800 text-sm mb-2 uppercase tracking-wider">Aims of Lung Hyperinflation:</h4>
-                        <ul class="space-y-2 text-sm text-slate-600">
-                            <li class="flex items-start gap-2">
-                                <i class="fa-solid fa-circle-check text-green-600 mt-1"></i>
-                                <span><strong>Secretions Mobilization:</strong> Achieved through an expiratory flow bias (Inspiratory flow &lt; 90% of Expiratory flow rate).</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i class="fa-solid fa-circle-check text-green-600 mt-1"></i>
-                                <span><strong>Re-inflation of Atelectasis:</strong> Achieved by increasing airway pressure or lung volume combined with a deliberate inspiratory pause.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i class="fa-solid fa-circle-check text-green-600 mt-1"></i>
-                                <span><strong>Oxygenation Support:</strong> Promotes recruitment of alveolar gas volume to maximize ventilation/perfusion (V/Q) matching.</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mt-6 bg-slate-50 p-4 rounded-xl border border-slate-100 text-xs text-slate-500">
-                        <i class="fa-solid fa-info-circle mr-1"></i> Note: Direct comparison research shows VHI and MHI provide equivalent secretion clearance while avoiding recruitment loss.
-                    </div>
-                </div>
-
-                <!-- Benefits of VHI over MHI -->
-                <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 rounded-2xl shadow-xl flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute -right-24 -bottom-24 w-80 h-80 bg-red-700 rounded-full blur-3xl opacity-20"></div>
-                    <div>
-                        <div class="flex items-center gap-3 mb-6">
-                            <span class="p-3 bg-slate-800 text-yellow-400 rounded-xl border border-slate-700"><i class="fa-solid fa-shield-heart text-xl"></i></span>
-                            <h3 class="text-2xl font-bold">Why VHI over MHI?</h3>
-                        </div>
-                        <p class="text-slate-300 text-sm mb-6">
-                            By eliminating the need to disconnect the patient from the ventilator circuit, VHI offers distinct clinical safety advantages:
-                        </p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 flex gap-3">
-                                <div class="text-emerald-400 text-lg"><i class="fa-solid fa-compress"></i></div>
-                                <div>
-                                    <h4 class="font-bold text-white text-sm">Maintains PEEP Level</h4>
-                                    <p class="text-slate-400 text-xs mt-1">Prevents alveolar de-recruitment and loss of volume in PEEP-dependent patients.</p>
-                                </div>
-                            </div>
-                            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 flex gap-3">
-                                <div class="text-emerald-400 text-lg"><i class="fa-solid fa-shield-virus"></i></div>
-                                <div>
-                                    <h4 class="font-bold text-white text-sm">Prevents Cross-Infection</h4>
-                                    <p class="text-slate-400 text-xs mt-1">Eliminates droplet/airborne dissemination during tube disconnection (vital for MDR/airborne pathogens).</p>
-                                </div>
-                            </div>
-                            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 flex gap-3">
-                                <div class="text-emerald-400 text-lg"><i class="fa-solid fa-virus-slash"></i></div>
-                                <div>
-                                    <h4 class="font-bold text-white text-sm">Reduces VAP Incidence</h4>
-                                    <p class="text-slate-400 text-xs mt-1">Reduced circuit manipulation directly correlates to lower ventilator-associated pneumonia rates.</p>
-                                </div>
-                            </div>
-                            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 flex gap-3">
-                                <div class="text-emerald-400 text-lg"><i class="fa-solid fa-chart-line"></i></div>
-                                <div>
-                                    <h4 class="font-bold text-white text-sm">Real-Time Parameter Feed</h4>
-                                    <p class="text-slate-400 text-xs mt-1">Allows immediate viewing of lung compliance, dynamic volume, and pressure changes on-screen.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ============================================== -->
-        <!-- TAB 2: INTERACTIVE SAFETY SCREENING            -->
-        <!-- ============================================== -->
-        <section id="sec-safety" class="tab-content scroll-mt-36">
-            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 md:p-8">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-calculator text-red-600"></i> Interactive Triage & Screening Assistant
-                        </h3>
-                        <p class="text-slate-500 text-xs md:text-sm">Check appropriate flags to determine if your patient meets eligibility guidelines or demands physician clearance.</p>
-                    </div>
-                    <button onclick="resetTriage()" class="text-xs bg-slate-100 text-slate-600 border border-slate-300 font-bold px-3 py-1.5 rounded hover:bg-slate-200 transition-colors">
-                        Reset All Selections
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Column 1: Indications -->
-                    <div class="space-y-4">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h4 class="font-bold text-slate-800 text-sm mb-3 flex items-center gap-2 text-ha-teal">
-                                <i class="fa-solid fa-circle-exclamation"></i> 1. INDICATIONS (At least 1 required)
-                            </h4>
-                            <div class="space-y-2">
-                                <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer">
-                                    <input type="checkbox" id="ind-peep" class="triage-input mt-0.5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" onchange="runTriage()">
-                                    <span>High PEEP level ≥ 10cmH2O</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer">
-                                    <input type="checkbox" id="ind-fio2" class="triage-input mt-0.5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" onchange="runTriage()">
-                                    <span>Fraction of inspired oxygen ≥ 0.7</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer">
-                                    <input type="checkbox" id="ind-mdr" class="triage-input mt-0.5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" onchange="runTriage()">
-                                    <span>Pulmonary multidrug-resistant and/or airborne pathogens</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer">
-                                    <input type="checkbox" id="ind-imm" class="triage-input mt-0.5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" onchange="runTriage()">
-                                    <span>Immunocompromised patient</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer">
-                                    <input type="checkbox" id="ind-mon" class="triage-input mt-0.5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" onchange="runTriage()">
-                                    <span>Close respiratory monitoring highly desirable</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer">
-                                    <input type="checkbox" id="ind-dep" class="triage-input mt-0.5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" onchange="runTriage()">
-                                    <span>Patient is highly PEEP dependent</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Column 2: Contraindications & High Risks -->
-                    <div class="space-y-4">
-                        <div class="bg-red-50 p-4 rounded-xl border border-red-200">
-                            <h4 class="font-bold text-red-800 text-sm mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-skull-crossbones"></i> 2. CRITICAL ABSOLUTE CONTRAINDICATIONS
-                            </h4>
-                            <div class="space-y-2">
-                                <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
-                                    <input type="checkbox" id="con-cystic" class="triage-input mt-0.5 rounded border-slate-300 text-red-600 focus:ring-red-500" onchange="runTriage()">
-                                    <span>Cystic lung changes (Severe COPD, bullae/blebs)</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
-                                    <input type="checkbox" id="con-pneumo" class="triage-input mt-0.5 rounded border-slate-300 text-red-600 focus:ring-red-500" onchange="runTriage()">
-                                    <span>Undrained pneumothorax / Bronchopulmonary fistula</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
-                                    <input type="checkbox" id="con-hemo" class="triage-input mt-0.5 rounded border-slate-300 text-red-600 focus:ring-red-500" onchange="runTriage()">
-                                    <span>Unexplained haemoptysis / Subcutaneous emphysema</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
-                                    <input type="checkbox" id="con-peep15" class="triage-input mt-0.5 rounded border-slate-300 text-red-600 focus:ring-red-500" onchange="runTriage()">
-                                    <span>PEEP ≥ 15 cmH2O or PIP ≥ 35 cmH2O </span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
-                                    <input type="checkbox" id="con-hemo_uns" class="triage-input mt-0.5 rounded border-slate-300 text-red-600 focus:ring-red-500" onchange="runTriage()">
-                                    <span>Hemodynamic instability (SBP ≤ 80mmHg / uncontrolled arrhythmia)</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
-                                    <input type="checkbox" id="con-icp" class="triage-input mt-0.5 rounded border-slate-300 text-red-600 focus:ring-red-500" onchange="runTriage()">
-                                    <span>ICP > 20 mmHg / Acute bronchospasm</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
-                            <h4 class="font-bold text-amber-800 text-sm mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-triangle-exclamation"></i> 3. HIGH RISK & RELATIVE CAUTIONS
-                            </h4>
-                            <div class="space-y-2">
-                                <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
-                                    <input type="checkbox" id="caut-ards" class="triage-input mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500" onchange="runTriage()">
-                                    <span>ARDS / Fibrosis / Low baseline compliance</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
-                                    <input type="checkbox" id="caut-ecmo" class="triage-input mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500" onchange="runTriage()">
-                                    <span>Patient receiving ECMO / Recent CT surgery</span>
-                                </label>
-                                <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
-                                    <input type="checkbox" id="caut-ribs" class="triage-input mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500" onchange="runTriage()">
-                                    <span>Fractured ribs / Flail chest segment / Head injury</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Column 3: Triage Output Console -->
-                    <div class="flex flex-col justify-between">
-                        <div id="triage-result" class="bg-slate-100 rounded-xl p-6 border-2 border-slate-300 flex-grow flex flex-col justify-center items-center text-center">
-                            <div class="p-4 bg-slate-200 rounded-full text-slate-600 mb-4 text-3xl">
-                                <i class="fa-solid fa-user-check"></i>
-                            </div>
-                            <h5 class="text-lg font-bold text-slate-700">Awaiting Selections</h5>
-                            <p class="text-xs text-slate-500 mt-2">Activate criteria in column 1, 2, or 3 to dynamically output VHI candidate status under HA Guideline guidelines.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ============================================== -->
-        <!-- TAB 3: CLINICAL PROTOCOL                       -->
-        <!-- ============================================== -->
-        <section id="sec-protocol" class="tab-content scroll-mt-36">
-            <h3 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-timeline text-ha-red"></i> VHI Clinical Pathway & Appendices Guide
-            </h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <!-- Step 1 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div>
-                        <div class="w-10 h-10 bg-red-100 text-ha-red flex items-center justify-center rounded-full font-black text-lg mb-4">
-                            01
-                        </div>
-                        <h4 class="font-bold text-slate-800 mb-2">Pre-Screening</h4>
-                        <ul class="text-xs text-slate-600 space-y-2">
-                            <li>• Ensure personnel pass VHI competency standard (Appendix II).</li>
-                            <li>• Review the Initial Assessment checklist.</li>
-                            <li>• Engage ward medical officers and the nursing team in-charge.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Step 2 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div>
-                        <div class="w-10 h-10 bg-red-100 text-ha-red flex items-center justify-center rounded-full font-black text-lg mb-4">
-                            02
-                        </div>
-                        <h4 class="font-bold text-slate-800 mb-2">Setup Checks</h4>
-                        <ul class="text-xs text-slate-600 space-y-2">
-                            <li>• Chart baseline vitals: HR, BP, SpO2, EtCO2, and peak/plateau pressures.</li>
-                            <li>• Ensure Upper Pressure Limit alarm is configured to max <strong>40cmH2O</strong>.</li>
-                            <li>• Prior to VHI, apply suctioning using a closed system.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div>
-                        <div class="w-10 h-10 bg-red-100 text-ha-red flex items-center justify-center rounded-full font-black text-lg mb-4">
-                            03
-                        </div>
-                        <h4 class="font-bold text-slate-800 mb-2">Application</h4>
-                        <ul class="text-xs text-slate-600 space-y-2">
-                            <li>• Adjust mechanical values stepwise per specified mode guides.</li>
-                            <li>• Deliver in synchronized batches of 6 breaths up to a few minutes.</li>
-                            <li>• Add manual chest shaking during expiration phases.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div>
-                        <div class="w-10 h-10 bg-red-100 text-ha-red flex items-center justify-center rounded-full font-black text-lg mb-4">
-                            04
-                        </div>
-                        <h4 class="font-bold text-slate-800 mb-2">Recovery & Logs</h4>
-                        <ul class="text-xs text-slate-600 space-y-2">
-                            <li>• Revert ventilator values to baseline parameters immediately.</li>
-                            <li>• Countersign document logs and confirm values with the bedside nurse.</li>
-                            <li>• Document: achieved TV, compliance shifts, dynamic changes, and signatures.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Supporting Protocol Appendices -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Appendix III: Initial Checklist -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                    <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-clipboard-check text-ha-teal"></i> Appendix III: Initial Assessment Checklist
-                    </h4>
-                    <p class="text-xs text-slate-500 mb-4">Verify prior to starting any patient treatment cycle:</p>
-                    <ul class="text-xs text-slate-600 space-y-2">
-                        <li class="flex items-center gap-2">
-                            <i class="fa-regular fa-square-check text-ha-teal"></i>
-                            <span>Patient's clinical state matches VHI indicators.</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fa-regular fa-square-check text-ha-teal"></i>
-                            <span>All absolute contraindications have been reviewed and ruled out.</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fa-regular fa-square-check text-ha-teal"></i>
-                            <span>Relative cautions are cleared by the Cardiopulmonary PT in-charge or senior.</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fa-regular fa-square-check text-ha-teal"></i>
-                            <span>Physician consultation completed on complicated or high-risk ICU conditions.</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Appendix IV: Adverse Complications & Remedies -->
-                <div class="bg-red-50 p-6 rounded-2xl border border-red-200 shadow-sm">
-                    <h4 class="font-bold text-red-800 mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-heart-crack"></i> Appendix IV: Potential Complications & Remedial Actions
-                    </h4>
-                    <div class="text-xs text-slate-700 space-y-3 leading-relaxed">
-                        <p>
-                            <strong>A. Hemodynamic or Respiratory Instability:</strong> If ICP exceeds parameters, HR/BP limits are violated, severe bronchospasm triggers, or pulse desaturation occurs:
-                        </p>
-                        <span class="block bg-white text-red-800 p-2 rounded border border-red-200 font-bold">
-                            ➔ Immediately resume original baseline ventilator values, cease manipulation, and seek immediate ICU nursing and medical assistance.
-                        </span>
-                        <p>
-                            <strong>B. Patient Agitation:</strong> If the patient is unsedated and shows intense dyssynchrony despite clinical reassurances:
-                        </p>
-                        <span class="block bg-white text-red-800 p-2 rounded border border-red-200 font-bold">
-                            ➔ Stop VHI therapy immediately, reset settings, and consult ICU staff.
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ============================================== -->
-        <!-- TAB 4: PARAMETER ADJUSTMENT GUIDE              -->
-        <!-- ============================================== -->
-        <section id="sec-parameters" class="tab-content scroll-mt-36">
-            <div class="bg-slate-900 text-white rounded-2xl p-6 md:p-8 shadow-xl">
-                <div class="border-b border-slate-800 pb-4 mb-6">
-                    <h3 class="text-2xl font-bold flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-yellow-400"></i> Mode-Specific Adjustment Matrices
-                    </h3>
-                    <p class="text-slate-400 text-xs md:text-sm">Technical parameters mapping slow inhalation and expiratory flow bias (Inspiratory &lt; 90% of Expiratory flow) as outlined in the guideline document.</p>
-                </div>
-
-                <!-- Interactive Grid Details -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Pressure-Targeted Mode -->
-                    <div class="bg-slate-800 rounded-xl p-5 border border-slate-700 hover:border-slate-600 transition-all">
-                        <div class="flex items-center gap-2 text-yellow-400 font-bold text-base mb-3 border-b border-slate-700 pb-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse"></span>
-                            Pressure-Targeted (PC)
-                        </div>
-                        <p class="text-xs text-slate-400 mb-3">Replicating bag squeezing slow inspiration and expiratory bias:</p>
-                        <ul class="space-y-3 text-xs text-slate-300">
-                            <li>• <strong class="text-white">Inspiratory Flow:</strong> Slow down flow rate by increasing rise time duration.</li>
-                            <li>• <strong class="text-white">Expiratory Flow Bias:</strong> Decrease respiratory rate (RR) and increase the I:E ratio.</li>
-                            <li>• <strong class="text-white">Hyperinflation:</strong> Stepwise increases of pressure control values, keeping PIP strict within safety levels until target TV is attained.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Volume-Targeted Mode -->
-                    <div class="bg-slate-800 rounded-xl p-5 border border-slate-700 hover:border-slate-600 transition-all">
-                        <div class="flex items-center gap-2 text-cyan-400 font-bold text-base mb-3 border-b border-slate-700 pb-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
-                            Volume-Targeted (VC)
-                        </div>
-                        <p class="text-xs text-slate-400 mb-3">Replicating bag squeezing slow inspiration and expiratory bias:</p>
-                        <ul class="space-y-3 text-xs text-slate-300">
-                            <li>• <strong class="text-white">Inspiratory Flow:</strong> Slow down inspiratory flow by extending duration parameters to reach peak flow.</li>
-                            <li>• <strong class="text-white">Inspiratory Hold:</strong> Manually program/increase end-inspiration pause time settings on the ventilator console.</li>
-                            <li>• <strong class="text-white">Hyperinflation:</strong> Stepwise increase in Tidal Volume (TV) with PIP closely tracked within pressure thresholds.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Spontaneous Modes -->
-                    <div class="bg-slate-800 rounded-xl p-5 border border-slate-700 hover:border-slate-600 transition-all">
-                        <div class="flex items-center gap-2 text-emerald-400 font-bold text-base mb-3 border-b border-slate-700 pb-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                            Spontaneous (PS/CPAP)
-                        </div>
-                        <p class="text-xs text-slate-400 mb-3">Replicating bag squeezing slow inspiration and expiratory bias:</p>
-                        <ul class="space-y-3 text-xs text-slate-300">
-                            <li>• <strong class="text-white">Cycle Threshold:</strong> Decrease the percentage of peak flow that cycles into expiration to prolong inhalation time.</li>
-                            <li>• <strong class="text-white">Inspiratory Flow:</strong> Extend flow rise duration to gently reach target pressure targets.</li>
-                            <li>• <strong class="text-white">Hyperinflation:</strong> Stepwise increases of Pressure Support with PIP strictly monitored. Consider transitioning to a VC/PC controlled mode if needed.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Physiological Guardrail Panel -->
-                <div class="mt-8 bg-red-950/40 border border-red-800/60 p-5 rounded-xl">
-                    <h4 class="text-red-400 font-extrabold text-sm mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-triangle-exclamation animate-bounce"></i> STRICT PHYSIOLOGIC ALARM ALERTS & LIMITS
-                    </h4>
-                    <p class="text-xs text-slate-400 mb-4">If any parameter matches or crosses these boundaries during hyperinflation, cease VHI instantly and return ventilator settings to clinical baseline values:</p>
-                    
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-                        <div class="bg-slate-950 p-3 rounded border border-slate-800">
-                            <span class="block text-red-500 font-extrabold text-lg">&lt; 40 cmH₂O</span>
-                            <span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Airway PIP</span>
-                        </div>
-                        <div class="bg-slate-950 p-3 rounded border border-slate-800">
-                            <span class="block text-red-500 font-extrabold text-lg">&lt; 35 cmH₂O</span>
-                            <span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Plateau Pressure</span>
-                        </div>
-                        <div class="bg-slate-950 p-3 rounded border border-slate-800">
-                            <span class="block text-red-500 font-extrabold text-lg">&lt; 1000 mL</span>
-                            <span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Max Tidal Volume</span>
-                        </div>
-                        <div class="bg-slate-950 p-3 rounded border border-slate-800">
-                            <span class="block text-red-500 font-extrabold text-lg">&lt; 20 mmHg</span>
-                            <span class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Intracranial P (ICP)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ============================================== -->
-        <!-- TAB 5: CLINICAL REASONING QUIZ                 -->
-        <!-- ============================================== -->
-        <section id="sec-quiz" class="tab-content scroll-mt-36">
-            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 md:p-8">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-graduation-cap text-ha-red"></i> Knowledge Quiz
-                        </h3>
-                        <p class="text-slate-500 text-xs md:text-sm">Refine your clinical decision-making across standard HA ICU respiratory situations.</p>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm bg-slate-100 px-4 py-2 rounded-xl border">
-                        <span class="font-semibold text-slate-600">Quiz Progress:</span>
-                        <span id="score-counter" class="font-extrabold text-ha-red text-base">0/5 Completed</span>
-                    </div>
-                </div>
-
-                <!-- Questions Container -->
-                <div class="space-y-8" id="quiz-container">
-                    
-                    <!-- Question 1 -->
-                    <div class="p-6 rounded-xl border border-slate-200 bg-slate-50/50 quiz-card" data-q="0">
-                        <span class="bg-red-100 text-ha-red font-bold text-[10px] uppercase px-2.5 py-1 rounded-md">CASE STUDY 1: CLINICAL TRIAGE</span>
-                        <h4 class="text-sm md:text-base font-bold text-slate-800 mt-2">
-                            A patient in the Intensive Care Unit is intubated following an acute respiratory episode, presenting with high retention of thick yellow secretions. Current baseline ventilator parameters are: FiO2 = 0.75, PEEP = 11cmH2O, peak airway pressure (PIP) is stable at 32cmH2O, and SBP is stable at 110/70 mmHg. Is VHI appropriate according to the guidelines?
-                        </h4>
-                        
-                        <div class="mt-4 space-y-2">
-                            <button onclick="checkAnswer(0, 'A', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">A</span>
-                                <span>Yes. Since secretions are thick and the patient is PEEP dependent (>10), VHI is indicated. However, because FiO2 >70% and PEEP >10, they are classified as high risk, demanding formal advice from the ICU physician.</span>
-                            </button>
-                            <button onclick="checkAnswer(0, 'B', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">B</span>
-                                <span>No. The patient is on an oxygen concentration above 70% (FiO2 = 0.75), which is an absolute contraindication under Section V of the HA guideline.</span>
-                            </button>
-                            <button onclick="checkAnswer(0, 'C', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">C</span>
-                                <span>Yes. You may proceed immediately without senior consultation because the baseline PIP (32cmH2O) is currently less than the absolute contraindication cutoff of 35cmH2O.</span>
-                            </button>
-                        </div>
-                        <div class="rationale-box hidden mt-4 p-4 rounded-lg text-xs leading-relaxed"></div>
-                    </div>
-
-                    <!-- Question 2 -->
-                    <div class="p-6 rounded-xl border border-slate-200 bg-slate-50/50 quiz-card" data-q="1">
-                        <span class="bg-red-100 text-ha-red font-bold text-[10px] uppercase px-2.5 py-1 rounded-md">CASE STUDY 2: ABSOLUTE EXCLUSIONS</span>
-                        <h4 class="text-sm md:text-base font-bold text-slate-800 mt-2">
-                            A consult is sent for secretion clearance on an intubated 68-year-old with a long history of severe chronic obstructive pulmonary disease. The patient's chest radiograph confirms structural emphysematous bullae and hyperinflated lung fields. Retained secretions are noted. What is your clinical decision?
-                        </h4>
-                        
-                        <div class="mt-4 space-y-2">
-                            <button onclick="checkAnswer(1, 'A', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">A</span>
-                                <span>VHI is indicated. Apply Volume-Control mode and stepwise increase TV, ensuring peak pressures are kept strictly under 30cmH2O to avoid barotrauma.</span>
-                            </button>
-                            <button onclick="checkAnswer(1, 'B', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">B</span>
-                                <span>VHI is absolutely contraindicated due to documented cystic lung changes (emphysematous bullae) which carry high risks of alveolar rupture and tension pneumothorax. Use alternative airway clearance techniques.</span>
-                            </button>
-                            <button onclick="checkAnswer(1, 'C', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">C</span>
-                                <span>This is a relative contraindication. Proceed with VHI cautiously under direct supervision from a Cardiopulmonary Specialty physiotherapist.</span>
-                            </button>
-                        </div>
-                        <div class="rationale-box hidden mt-4 p-4 rounded-lg text-xs leading-relaxed"></div>
-                    </div>
-
-                    <!-- Question 3 -->
-                    <div class="p-6 rounded-xl border border-slate-200 bg-slate-50/50 quiz-card" data-q="2">
-                        <span class="bg-red-100 text-ha-red font-bold text-[10px] uppercase px-2.5 py-1 rounded-md">CASE STUDY 3: INTRA-OPERATIVE CRISIS</span>
-                        <h4 class="text-sm md:text-base font-bold text-slate-800 mt-2">
-                            During VHI application in Volume Control mode (stepwise increasing TV to clear mucus plug), the high airway pressure alarm triggers on the ventilator console, signaling a PIP of 42cmH2O. Simultaneously, the patient's heart rate spikes from 85 to 118 bpm. What is the immediate correct step?
-                        </h4>
-                        
-                        <div class="mt-4 space-y-2">
-                            <button onclick="checkAnswer(2, 'A', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">A</span>
-                                <span>Complete the remaining breaths of the current VHI cycle to recruit the alveoli, then immediately lower settings back to original values.</span>
-                            </button>
-                            <button onclick="checkAnswer(2, 'B', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">B</span>
-                                <span>Immediately cease VHI, return the ventilator settings back to original baseline parameters, monitor respiratory and hemodynamic metrics closely, and notify the ward nurse in-charge and primary physician.</span>
-                            </button>
-                            <button onclick="checkAnswer(2, 'C', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">C</span>
-                                <span>Disconnect the circuit immediately to perform Manual Hyperinflation (MHI) via a manual breathing bag to clear the airway.</span>
-                            </button>
-                        </div>
-                        <div class="rationale-box hidden mt-4 p-4 rounded-lg text-xs leading-relaxed"></div>
-                    </div>
-
-                    <!-- Question 4 -->
-                    <div class="p-6 rounded-xl border border-slate-200 bg-slate-50/50 quiz-card" data-q="3">
-                        <span class="bg-red-100 text-ha-red font-bold text-[10px] uppercase px-2.5 py-1 rounded-md">CASE STUDY 4: PRESSURE CONTROL PARAMETERS</span>
-                        <h4 class="text-sm md:text-base font-bold text-slate-800 mt-2">
-                            You are setting up VHI parameters for a patient ventilated in Pressure Control (PC) mode. To simulate MHI slow bag squeezing and dynamic expiratory flow bias, which configuration set is correct?
-                        </h4>
-                        
-                        <div class="mt-4 space-y-2">
-                            <button onclick="checkAnswer(3, 'A', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">A</span>
-                                <span>Decrease Respiratory Rate (RR), increase I:E ratio, slow down rise time (increase duration to target pressure), and stepwise increase pressure control within strict limit bounds (PIP &lt; 40 cmH2O).</span>
-                            </button>
-                            <button onclick="checkAnswer(3, 'B', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">B</span>
-                                <span>Increase RR to 25 breaths/min, reduce I:E ratio to 1:1, and maximize the pressure support trigger instantaneously.</span>
-                            </button>
-                            <button onclick="checkAnswer(3, 'C', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">C</span>
-                                <span>Maintain baseline parameters unchanged. Deliver rapid manual manual chest compression impulses out of phase with inhalation.</span>
-                            </button>
-                        </div>
-                        <div class="rationale-box hidden mt-4 p-4 rounded-lg text-xs leading-relaxed"></div>
-                    </div>
-
-                    <!-- Question 5 -->
-                    <div class="p-6 rounded-xl border border-slate-200 bg-slate-50/50 quiz-card" data-q="4">
-                        <span class="bg-red-100 text-ha-red font-bold text-[10px] uppercase px-2.5 py-1 rounded-md">CASE STUDY 5: CLINICAL HANDOVER</span>
-                        <h4 class="text-sm md:text-base font-bold text-slate-800 mt-2">
-                            A successful VHI session has been completed on a patient in Pressure Control mode, resulting in effective mobilization and suctioning of thick airway secretions. What is your mandatory final action?
-                        </h4>
-                        
-                        <div class="mt-4 space-y-2">
-                            <button onclick="checkAnswer(4, 'A', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">A</span>
-                                <span>Leave VHI ventilator settings active so the nursing team can continue the mobilization cycle if secretions reform.</span>
-                            </button>
-                            <button onclick="checkAnswer(4, 'B', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">B</span>
-                                <span>Return the ventilator settings immediately to original baseline parameters, countercheck all settings with the bed-side nurse, and document complete parameters and outcomes.</span>
-                            </button>
-                            <button onclick="checkAnswer(4, 'C', this)" class="w-full text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-all text-xs md:text-sm flex gap-3 items-center">
-                                <span class="font-bold text-slate-500 w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center bg-slate-50 flex-shrink-0">C</span>
-                                <span>Leave a quick bedside note on the chart and immediately proceed to your next patient to maintain clinical efficiency.</span>
-                            </button>
-                        </div>
-                        <div class="rationale-box hidden mt-4 p-4 rounded-lg text-xs leading-relaxed"></div>
-                    </div>
-
-                </div>
-
-                <!-- Final Scoring Banner -->
-                <div id="quiz-complete-banner" class="hidden mt-8 bg-emerald-50 border border-emerald-200 p-6 rounded-2xl text-center">
-                    <span class="text-5xl text-emerald-600 block mb-3"><i class="fa-solid fa-circle-check"></i></span>
-                    <h4 class="text-xl font-bold text-emerald-800">Competency Assessment Completed!</h4>
-                    <p class="text-sm text-emerald-600 mt-1">Excellent job! You have demonstrated clinical mastery of Ventilator Hyperinflation rules.</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-xs text-center">
-        <div class="max-w-7xl mx-auto px-4 space-y-2">
-            <p class="font-semibold text-slate-300">This is AI generated clinical infographic by AHNH PTD</p>
-            <p>Designed for educational training in the Hospital Authority.</p>
-            <p>This is AI generated clinical infographic summary of clinical practice guideline. Staff should refer to HA Intranet documents if in doubt.</p>
+    <div class="grid grid-2" style="margin-bottom:16px;">
+      <div class="panel" style="border-top:3px solid var(--text-dim);">
+        <span class="badge" style="background:rgba(255,255,255,.06);color:var(--text-muted);border:1px solid var(--panel-border-strong)">Manual Hyperinflation</span>
+        <h3 style="margin-top:14px;font-size:19px;">MHI — bag squeezing</h3>
+        <p style="margin-top:10px;color:var(--text-muted);font-size:14.5px;">A slow manual inspiration with a quick bag release generates an expiratory-over-inspiratory flow bias that moves secretions toward the proximal airway. Well studied and effective — but it requires <b style="color:var(--text)">disconnecting the patient from the ventilator circuit.</b></p>
+        <div style="margin-top:14px;padding:12px 14px;background:var(--red-dim);border:1px solid rgba(242,100,95,.3);border-radius:10px;font-size:13.5px;color:var(--text-muted);">
+          <svg class="icon" style="color:var(--red);width:15px;height:15px;vertical-align:-3px;margin-right:6px;"><use href="#i-alert"/></svg>
+          Circuit disconnection risks loss of PEEP and exposure to droplet / airborne pathogens.
         </div>
-    </footer>
+      </div>
+      <div class="panel" style="border-top:3px solid var(--cyan);">
+        <span class="badge cyan">Ventilator Hyperinflation</span>
+        <h3 style="margin-top:14px;font-size:19px;">VHI — the ventilator does the work</h3>
+        <p style="margin-top:10px;color:var(--text-muted);font-size:14.5px;">VHI <b style="color:var(--text)">simulates MHI by altering ventilator settings</b> rather than the circuit itself — no bag, no disconnection. A systematic review found VHI and MHI have similar effects on secretion clearance, compliance, and oxygenation.</p>
+        <div style="margin-top:14px;padding:12px 14px;background:var(--cyan-dim);border:1px solid rgba(47,217,199,.3);border-radius:10px;font-size:13.5px;color:var(--text-muted);">
+          <svg class="icon" style="color:var(--cyan);width:15px;height:15px;vertical-align:-3px;margin-right:6px;"><use href="#i-info"/></svg>
+          This guideline covers when — and how — to reach for VHI instead.
+        </div>
+      </div>
+    </div>
 
-    <!-- Interactive Client JS Logic -->
-    <script>
-        // Tab switching controller (no scroll jump, dynamic tabs)
-        function switchTab(tabId) {
-            // Hide all tab panels
-            document.querySelectorAll('.tab-content').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Show target panel
-            const activeSection = document.getElementById(tabId);
-            if (activeSection) {
-                activeSection.classList.add('active');
-            }
-            
-            // Re-render styling state on sub-nav button bars
-            document.querySelectorAll('.tab-nav-btn').forEach(btn => {
-                btn.classList.remove('border-red-700', 'text-red-700');
-                btn.classList.add('border-transparent', 'text-slate-600');
-            });
-            
-            const activeBtn = document.getElementById('tab-btn-' + tabId.replace('sec-', ''));
-            if (activeBtn) {
-                activeBtn.classList.remove('border-transparent', 'text-slate-600');
-                activeBtn.classList.add('border-red-700', 'text-red-700');
-            }
+    <div class="panel" style="background:var(--panel-2);margin-bottom:28px;">
+      <span class="section-tag" style="margin-bottom:6px;">Definition</span>
+      <p style="font-size:17px;font-family:var(--font-display);font-weight:500;line-height:1.4;">"VHI is a chest physiotherapy technique in which larger tidal volume breaths are delivered <span style="color:var(--cyan)">using the ventilator itself.</span>"</p>
+    </div>
 
-            // Scroll tab contents wrapper to view to prevent layout dislocation
-            window.scrollTo({
-                top: 240,
-                behavior: 'smooth'
-            });
-        }
+    <h3 style="font-size:16px;margin-bottom:14px;color:var(--text-muted);font-weight:600;">Aims of lung hyperinflation</h3>
+    <div class="grid grid-4" style="margin-bottom:32px;">
+      <div class="panel">
+        <svg class="icon" style="color:var(--cyan);width:22px;height:22px;"><use href="#i-wind"/></svg>
+        <h4 style="margin-top:12px;font-size:14.5px;">Mobilise secretion</h4>
+        <p style="margin-top:6px;font-size:13px;color:var(--text-dim);">Toward proximal airways by generating a flow bias where inspiratory flow &lt; 90% of expiratory flow.</p>
+      </div>
+      <div class="panel">
+        <svg class="icon" style="color:var(--amber);width:22px;height:22px;"><use href="#i-activity"/></svg>
+        <h4 style="margin-top:12px;font-size:14.5px;">Re-inflate atelectasis</h4>
+        <p style="margin-top:6px;font-size:13px;color:var(--text-dim);">Partially collapsed alveoli reopen via increased pressure or volume, held with an inspiratory pause.</p>
+      </div>
+      <div class="panel">
+        <svg class="icon" style="color:var(--green);width:22px;height:22px;"><use href="#i-droplet"/></svg>
+        <h4 style="margin-top:12px;font-size:14.5px;">Improve oxygenation</h4>
+        <p style="margin-top:6px;font-size:13px;color:var(--text-dim);">A direct downstream effect of re-recruitment and improved compliance.</p>
+      </div>
+      <div class="panel">
+        <svg class="icon" style="color:var(--violet);width:22px;height:22px;"><use href="#i-gauge"/></svg>
+        <h4 style="margin-top:12px;font-size:14.5px;">Improve V/Q matching</h4>
+        <p style="margin-top:6px;font-size:13px;color:var(--text-dim);">Better regional lung ventilation improves ventilation/perfusion matching.</p>
+      </div>
+    </div>
 
-        // Triage screen simulator engine
-        function runTriage() {
-            // Get interactive states
-            const indPeep = document.getElementById('ind-peep').checked;
-            const indFio2 = document.getElementById('ind-fio2').checked;
-            const indMdr = document.getElementById('ind-mdr').checked;
-            const indImm = document.getElementById('ind-imm').checked;
-            const indMon = document.getElementById('ind-mon').checked;
-            const indDep = document.getElementById('ind-dep').checked;
+    <h3 style="font-size:16px;margin-bottom:14px;color:var(--text-muted);font-weight:600;">Benefits of VHI over MHI — because the circuit stays closed</h3>
+    <div class="grid grid-4">
+      <div class="panel" style="text-align:center;padding:18px 14px;">
+        <svg class="icon" style="color:var(--green);margin:0 auto;"><use href="#i-check"/></svg>
+        <p style="margin-top:10px;font-size:13px;color:var(--text-muted);">Maintains PEEP — prevents alveolar de-recruitment</p>
+      </div>
+      <div class="panel" style="text-align:center;padding:18px 14px;">
+        <svg class="icon" style="color:var(--green);margin:0 auto;"><use href="#i-check"/></svg>
+        <p style="margin-top:10px;font-size:13px;color:var(--text-muted);">Prevents cross-infection of droplet / airborne pathogens</p>
+      </div>
+      <div class="panel" style="text-align:center;padding:18px 14px;">
+        <svg class="icon" style="color:var(--green);margin:0 auto;"><use href="#i-check"/></svg>
+        <p style="margin-top:10px;font-size:13px;color:var(--text-muted);">Reduces risk of ventilator-associated pneumonia (VAP)</p>
+      </div>
+      <div class="panel" style="text-align:center;padding:18px 14px;">
+        <svg class="icon" style="color:var(--green);margin:0 auto;"><use href="#i-check"/></svg>
+        <p style="margin-top:10px;font-size:13px;color:var(--text-muted);">Allows real-time, full monitoring of respiratory parameters</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            const conCystic = document.getElementById('con-cystic').checked;
-            const conPneumo = document.getElementById('con-pneumo').checked;
-            const conHemo = document.getElementById('con-hemo').checked;
-            const conPeep15 = document.getElementById('con-peep15').checked;
-            const conHemoUns = document.getElementById('con-hemo_uns').checked;
-            const conIcp = document.getElementById('con-icp').checked;
+<div class="divider"><svg viewBox="0 0 3200 100" preserveAspectRatio="none"><path d="M0,70 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40" fill="none" stroke="#54d98c" stroke-width="2"/></svg></div>
 
-            const cautArds = document.getElementById('caut-ards').checked;
-            const cautEcmo = document.getElementById('caut-ecmo').checked;
-            const cautRibs = document.getElementById('caut-ribs').checked;
+<!-- ============================= INDICATIONS ============================= -->
+<section id="indications">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag" style="color:var(--green)">// 01 — When to reach for VHI</span>
+      <h2>Indications</h2>
+      <p class="sub">Consider VHI when a patient needs secretion mobilisation or re-inflation of atelectasis, <b style="color:var(--text)">and</b> has one or more of the following:</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="panel" style="border-left:3px solid var(--green);">
+        <span class="badge green">01</span>
+        <p style="margin-top:12px;font-size:14.5px;">High PEEP level <b style="font-family:var(--font-mono);color:var(--green)">≥ 10 cmH₂O</b></p>
+      </div>
+      <div class="panel" style="border-left:3px solid var(--green);">
+        <span class="badge green">02</span>
+        <p style="margin-top:12px;font-size:14.5px;">Fraction of inspired oxygen <b style="font-family:var(--font-mono);color:var(--green)">FiO₂ ≥ 0.7</b></p>
+      </div>
+      <div class="panel" style="border-left:3px solid var(--green);">
+        <span class="badge green">03</span>
+        <p style="margin-top:12px;font-size:14.5px;">Pulmonary multi-drug resistance and/or airborne pathogens</p>
+      </div>
+      <div class="panel" style="border-left:3px solid var(--green);">
+        <span class="badge green">04</span>
+        <p style="margin-top:12px;font-size:14.5px;">Immunocompromised patient</p>
+      </div>
+      <div class="panel" style="border-left:3px solid var(--green);">
+        <span class="badge green">05</span>
+        <p style="margin-top:12px;font-size:14.5px;">Close monitoring of respiratory parameters during hyperinflation is highly desirable</p>
+      </div>
+      <div class="panel" style="border-left:3px solid var(--green);">
+        <span class="badge green">06</span>
+        <p style="margin-top:12px;font-size:14.5px;">Patient is PEEP-dependent</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            const resultPanel = document.getElementById('triage-result');
+<!-- ============================= CONTRAINDICATIONS ============================= -->
+<section id="contraindications" style="background:linear-gradient(180deg,transparent,rgba(242,100,95,.035),transparent);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag" style="color:var(--red)">// 02 — Safety gate</span>
+      <h2>Contraindications</h2>
+      <p class="sub">VHI is not without risk. Screen every patient against these three tiers before proceeding — the tier determines what you're allowed to do next.</p>
+    </div>
 
-            const hasIndication = indPeep || indFio2 || indMdr || indImm || indMon || indDep;
-            const hasAbsoluteContra = conCystic || conPneumo || conHemo || conPeep15 || conHemoUns || conIcp;
-            const hasRelativeCaution = cautArds || cautEcmo || cautRibs;
+    <div class="tabbar" role="tablist" aria-label="Contraindication tiers">
+      <button class="tabbtn active" data-tab="c-abs">🛑 Absolute (10)</button>
+      <button class="tabbtn" data-tab="c-rel">⚠️ Relative (6)</button>
+      <button class="tabbtn" data-tab="c-risk">👤 High-Risk — Consult (8)</button>
+    </div>
 
-            // Diagnostic logic evaluation
-            if (hasAbsoluteContra) {
-                resultPanel.innerHTML = `
-                    <div class="p-4 bg-red-100 text-red-700 rounded-full mb-4 text-3xl animate-bounce">
-                        <i class="fa-solid fa-circle-xmark"></i>
-                    </div>
-                    <h5 class="text-lg font-bold text-red-700">🚫 ABSOLUTELY CONTRAINDICATED</h5>
-                    <p class="text-xs text-slate-600 mt-2">
-                        Absolute contraindications detected (cystic alterations, undrained pneumothorax, extreme PEEP >15cmH2O, unstable perfusion SBP ≤ 80~mmHg, ICP > 20, or baseline PIP > 35cmH2O). 
-                        <strong class="text-red-700 block mt-2 font-black">DO NOT PROCEED with VHI.</strong> Use alternative safe sputum clearance protocols.
-                    </p>
-                `;
-                resultPanel.className = "bg-red-50 rounded-xl p-6 border-2 border-red-500 flex-grow flex flex-col justify-center items-center text-center";
-            } else if (hasRelativeCaution) {
-                resultPanel.innerHTML = `
-                    <div class="p-4 bg-amber-100 text-amber-700 rounded-full mb-4 text-3xl">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
-                    <h5 class="text-lg font-bold text-amber-700">⚠️ HIGH RISK / PHYSICIAN CONSULT REQUIRED</h5>
-                    <p class="text-xs text-slate-600 mt-2">
-                        Relative cautions/high-risk elements detected (e.g. ECMO therapy, active head injuries, ribs fracture, ARDS). 
-                        <strong class="text-amber-700 block mt-2 font-black">Obtain formal clinical advice from the primary ICU physician and Cardiothoracic Supervisor before commencing.</strong>
-                    </p>
-                `;
-                resultPanel.className = "bg-amber-50 rounded-xl p-6 border-2 border-amber-500 flex-grow flex flex-col justify-center items-center text-center";
-            } else if (hasIndication) {
-                resultPanel.innerHTML = `
-                    <div class="p-4 bg-emerald-100 text-emerald-700 rounded-full mb-4 text-3xl pulse-soft">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </div>
-                    <h5 class="text-lg font-bold text-emerald-700">✅ ELIGIBLE & INDICATED</h5>
-                    <p class="text-xs text-slate-600 mt-2">
-                        The patient displays target indicators (FiO_2 > 0.7, PEEP >10, immunosuppressed, airway pathogens) with zero active contraindications. 
-                        <strong class="text-emerald-700 block mt-2 font-black">Proceed with VHI implementation protocols.</strong>
-                    </p>
-                `;
-                resultPanel.className = "bg-emerald-50 rounded-xl p-6 border-2 border-emerald-500 flex-grow flex flex-col justify-center items-center text-center";
-            } else {
-                resultPanel.innerHTML = `
-                    <div class="p-4 bg-slate-200 rounded-full text-slate-600 mb-4 text-3xl">
-                        <i class="fa-solid fa-user-check"></i>
-                    </div>
-                    <h5 class="text-lg font-bold text-slate-700">Awaiting Selections</h5>
-                    <p class="text-xs text-slate-500 mt-2">Check checkboxes to dynamic screen patient clinical suitability for VHI.</p>
-                `;
-                resultPanel.className = "bg-slate-100 rounded-xl p-6 border-2 border-slate-300 flex-grow flex flex-col justify-center items-center text-center";
-            }
-        }
+    <div class="tabpanel active" id="c-abs">
+      <div class="panel" style="border:1px solid rgba(242,100,95,.3);background:rgba(242,100,95,.05);margin-bottom:16px;font-size:13.5px;color:var(--text-muted);">
+        <svg class="icon" style="color:var(--red);vertical-align:-3px;margin-right:6px;"><use href="#i-octagon"/></svg>
+        <b style="color:var(--red)">Do not proceed.</b> If any one of these is present, VHI is contraindicated — full stop, regardless of how strong the indication is.
+      </div>
+      <div class="grid grid-2">
+        <ul class="clist" data-c="red">
+          <li>Documented cystic lung changes (bullae/blebs) — e.g. severe COPD with large emphysematous bullae, or cavitating lung pathology</li>
+          <li>Subcutaneous emphysema</li>
+          <li>Undrained pneumothorax</li>
+          <li>Bronchopulmonary fistula</li>
+          <li>Unexplained haemoptysis</li>
+        </ul>
+        <ul class="clist" data-c="red">
+          <li>PEEP <b style="font-family:var(--font-mono)">≥ 15 cmH₂O</b></li>
+          <li>Peak airway pressure <b style="font-family:var(--font-mono)">≥ 35 cmH₂O</b></li>
+          <li>Acute bronchospasm</li>
+          <li>Unstable haemodynamics — systolic BP ≤80 mmHg, or uncontrolled arrhythmia</li>
+          <li>ICP <b style="font-family:var(--font-mono)">&gt; 20 mmHg</b></li>
+        </ul>
+      </div>
+    </div>
 
-        function resetTriage() {
-            document.querySelectorAll('.triage-input').forEach(input => input.checked = false);
-            runTriage();
-        }
+    <div class="tabpanel" id="c-rel">
+      <div class="panel" style="border:1px solid rgba(245,185,66,.3);background:rgba(245,185,66,.05);margin-bottom:16px;font-size:13.5px;color:var(--text-muted);">
+        <svg class="icon" style="color:var(--amber);vertical-align:-3px;margin-right:6px;"><use href="#i-alert"/></svg>
+        <b style="color:var(--amber)">Weigh risk vs. benefit.</b> Proceed only with clinical judgement and team discussion.
+      </div>
+      <div class="grid grid-2">
+        <ul class="clist" data-c="amber">
+          <li>Diagnosis of ARDS / fibrosis / other conditions with reduced lung compliance</li>
+          <li>Obstructing airway tumour</li>
+          <li>Acute pulmonary oedema</li>
+        </ul>
+        <ul class="clist" data-c="amber">
+          <li>Large undrained pleural effusion</li>
+          <li>PEEP <b style="font-family:var(--font-mono)">&gt; 12 cmH₂O</b></li>
+          <li>Severe ARDS with lung-protective ventilation</li>
+        </ul>
+      </div>
+    </div>
 
-        // Quiz Engine Data & Mechanics
-        const quizAnswers = {
-            0: {
-                correct: 'A',
-                rationale: '<strong>Correct Option: A.</strong> ARDS serves as a caution limit. When a patient demonstrates high baseline requirements (PEEP >10 or FiO2 >70%), clinical guidelines strictly require the junior therapist to consult with the ICU physician beforehand.'
-            },
-            1: {
-                correct: 'B',
-                rationale: '<strong>Correct Option: B.</strong> Emphysematous bullae and hyperexpanded lung areas are absolute contraindications under Section V. Delivering manual/ventilator hyperinflation risks barotrauma and tension pneumothorax.'
-            },
-            2: {
-                correct: 'B',
-                rationale: '<strong>Correct Option: B.</strong> Safety limits in the guideline require immediate cessation of VHI if airway pressures exceed 40cmH2O or hemodynamics shift. Reset ventilator configurations back to baseline immediately and alert the ICU staff.'
-            },
-            3: {
-                correct: 'A',
-                rationale: '<strong>Correct Option: A.</strong> Setting up pressure control VHI to replicate bag squeezing requires decreasing mandatory respiratory rate, extending I:E cycles, and gently lengthening pressure rise duration within bounds (PIP &lt; 40 cmH2O).'
-            },
-            4: {
-                correct: 'B',
-                rationale: '<strong>Correct Option: B.</strong> Handover procedures mandate returning the ventilator immediately to baseline configurations, verifying all values face-to-face with the bedside nurse, and documenting all clinical results.'
-            }
-        };
+    <div class="tabpanel" id="c-risk">
+      <div class="panel" style="border:1px solid rgba(245,185,66,.3);background:rgba(245,185,66,.05);margin-bottom:16px;font-size:13.5px;color:var(--text-muted);">
+        <svg class="icon" style="color:var(--amber);vertical-align:-3px;margin-right:6px;"><use href="#i-shield"/></svg>
+        <b style="color:var(--amber)">Escalate first.</b> These patient groups are high risk — get advice from the ICU physician before proceeding.
+      </div>
+      <div class="grid grid-2">
+        <ul class="clist" data-c="amber">
+          <li>Patients receiving ECMO</li>
+          <li>Severe COPD</li>
+          <li>Recent cardiac or thoracic surgery</li>
+          <li>Drained pneumothorax</li>
+        </ul>
+        <ul class="clist" data-c="amber">
+          <li>Fractured ribs / flail segment</li>
+          <li>Acute head injury</li>
+          <li>Dependent on PEEP <b style="font-family:var(--font-mono)">≥ 10 cmH₂O</b></li>
+          <li>Oxygen requirement <b style="font-family:var(--font-mono)">≥ 70%</b></li>
+        </ul>
+      </div>
+    </div>
 
-        let completedQuestionsCount = 0;
-        const quizCompleted = {};
+  </div>
+</section>
 
-        function checkAnswer(questionIndex, chosenOption, btnElement) {
-            if (quizCompleted[questionIndex]) return;
+<style>
+.clist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+.clist li{
+  position:relative;padding:12px 14px 12px 38px;border-radius:10px;font-size:14px;color:var(--text-muted);
+  background:var(--panel);border:1px solid var(--panel-border);
+}
+.clist[data-c="red"] li::before{content:'';position:absolute;left:14px;top:16px;width:9px;height:9px;border-radius:2px;background:var(--red);}
+.clist[data-c="amber"] li::before{content:'';position:absolute;left:14px;top:16px;width:9px;height:9px;border-radius:2px;background:var(--amber);}
+</style>
 
-            const qConfig = quizAnswers[questionIndex];
-            const isCorrect = chosenOption === qConfig.correct;
-            const parentCard = btnElement.closest('.quiz-card');
-            const rationaleBox = parentCard.querySelector('.rationale-box');
-            
-            // Disable buttons and show correct/incorrect state
-            parentCard.querySelectorAll('button').forEach(btn => {
-                btn.classList.add('opacity-60', 'cursor-not-allowed');
-                const letterSpan = btn.querySelector('span:first-child');
-                if (btn.innerText.trim().startsWith(qConfig.correct)) {
-                    btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-950');
-                    letterSpan.classList.add('bg-emerald-500', 'text-white', 'border-emerald-500');
-                }
-            });
+<!-- ============================= IMPLEMENTATION ============================= -->
+<section id="implementation">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">// 03 — Clinical Implementation</span>
+      <h2>The workflow, start to finish</h2>
+      <p class="sub">Six steps from the guideline, grouped into before, during, and after the procedure.</p>
+    </div>
 
-            if (!isCorrect) {
-                btnElement.classList.add('bg-red-50', 'border-red-500', 'text-red-950');
-                const letterSpan = btnElement.querySelector('span:first-child');
-                letterSpan.classList.add('bg-red-500', 'text-white', 'border-red-500');
-            }
+    <div class="grid grid-3">
+      <div class="panel" style="border-top:3px solid var(--cyan);">
+        <span class="badge cyan">Before</span>
+        <ol class="steplist">
+          <li><b>Train &amp; read.</b> Staff are trained to the agreed standard and have read this guideline carefully.</li>
+          <li><b>Communicate.</b> Liaise with the medical team and nurse-in-charge to promote mutual understanding.</li>
+          <li><b>Discuss indicated cases</b> with the physiotherapist-in-charge.</li>
+          <li><b>Discuss complicated cases</b> with both the physiotherapist-in-charge <i>and</i> the physician-in-charge.</li>
+        </ol>
+      </div>
+      <div class="panel" style="border-top:3px solid var(--amber);">
+        <span class="badge amber">Gate &amp; During</span>
+        <ol class="steplist">
+          <li><b>Go through the checklists</b> — Initial Assessment Checklist and Potential Complications &amp; Remedial Actions — before commencing.</li>
+          <li><b>Suction</b> to remove secretions using a closed suction system.</li>
+        </ol>
+        <div style="margin-top:12px;padding:10px 12px;background:var(--amber-dim);border-radius:8px;font-size:12.5px;color:var(--text-muted);">Full checklists are covered in <a href="#wrapup" style="color:var(--amber);text-decoration:underline;">Wrap-Up</a>.</div>
+      </div>
+      <div class="panel" style="border-top:3px solid var(--green);">
+        <span class="badge green">After</span>
+        <ol class="steplist">
+          <li><b>Resume original settings</b> on the ventilator.</li>
+          <li><b>Double-check with the bedside nurse</b> that settings are correctly restored.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
 
-            // Display rationale immediately
-            rationaleBox.innerHTML = qConfig.rationale;
-            rationaleBox.classList.remove('hidden');
-            if (isCorrect) {
-                rationaleBox.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
-            } else {
-                rationaleBox.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
-            }
+<style>
+.steplist{list-style:none;margin:14px 0 0;padding:0;counter-reset:step;display:flex;flex-direction:column;gap:12px;}
+.steplist li{position:relative;padding-left:30px;font-size:13.5px;color:var(--text-muted);counter-increment:step;}
+.steplist li::before{content:counter(step);position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--panel-border-strong);color:var(--text);font-family:var(--font-mono);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+.steplist b{color:var(--text);}
+</style>
 
-            quizCompleted[questionIndex] = true;
-            completedQuestionsCount++;
-            
-            document.getElementById('score-counter').innerText = `${completedQuestionsCount}/5 Completed`;
+<!-- ============================= TECHNIQUE ============================= -->
+<section id="technique" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">// 04 — Application of the Technique</span>
+      <h2>Delivering the breath</h2>
+      <p class="sub">Eight steps, applied in sequence, every time.</p>
+    </div>
 
-            if (completedQuestionsCount === 5) {
-                document.getElementById('quiz-complete-banner').classList.remove('hidden');
-            }
-        }
-    </script>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-n">1</div><div class="tl-body">Determine need for VHI and <b>check contraindications</b>.</div></div>
+      <div class="tl-item"><div class="tl-n">2</div><div class="tl-body">Note all baseline vital signs (BP, HR, SpO₂, EtCO₂) and ventilator settings.</div></div>
+      <div class="tl-item"><div class="tl-n">3</div><div class="tl-body">Ensure upper pressure limit is set at <b style="font-family:var(--font-mono);color:var(--amber)">40 cmH₂O</b>.</div></div>
+      <div class="tl-item"><div class="tl-n">4</div><div class="tl-body">Position the patient accordingly.</div></div>
+      <div class="tl-item"><div class="tl-n">5</div><div class="tl-body">Perform VHI <b>according to ventilation mode</b>.</div></div>
+      <div class="tl-item"><div class="tl-n">6</div><div class="tl-body">Apply chest physiotherapy manoeuvres in synchrony with breath cycles.</div></div>
+      <div class="tl-item"><div class="tl-n">7</div><div class="tl-body">Apply in sets from <b>6 breaths</b> up to a few minutes; reassess the need for repeated cycles.</div></div>
+      <div class="tl-item"><div class="tl-n">8</div><div class="tl-body">Return ventilator settings to baseline and check with the bedside nurse.</div></div>
+    </div>
+
+    <div style="margin-top:44px;">
+      <h3 style="font-size:16px;margin-bottom:6px;color:var(--text-muted);font-weight:600;">How to dial it in, by ventilation mode</h3>
+      <p style="font-size:13.5px;color:var(--text-dim);margin-bottom:18px;max-width:60ch;">MHI achieves its effect through slow hand inspiration, stepwise bag squeezing, an inspiratory hold, then a quick release. VHI reproduces each phase through ventilator settings — the adjustment depends on which mode the patient is in.</p>
+
+      <div class="tabbar" role="tablist" aria-label="Ventilation modes">
+        <button class="tabbtn active" data-tab="m-pressure">Pressure-targeted</button>
+        <button class="tabbtn" data-tab="m-volume">Volume-targeted</button>
+        <button class="tabbtn" data-tab="m-spont">Spontaneous</button>
+      </div>
+
+      <div class="tabpanel active" id="m-pressure">
+        <div class="paramtable">
+          <div class="prow"><div class="phase">Expiratory flow bias<span>(slow inspiration)</span></div><div class="pdesc">Consider switching to volume-targeted mode · decrease RR · increase I:E ratio · slow inspiratory flow by increasing duration to reach desired pressure</div></div>
+          <div class="prow"><div class="phase">Hyperinflation</div><div class="pdesc">Stepwise increase of pressure control, keeping PIP within the pressure limit, until target TV is reached</div></div>
+          <div class="prow dim"><div class="phase">Inspiratory hold</div><div class="pdesc">N/A</div></div>
+          <div class="prow dim"><div class="phase">Quick expiration</div><div class="pdesc">N/A</div></div>
+        </div>
+      </div>
+      <div class="tabpanel" id="m-volume">
+        <div class="paramtable">
+          <div class="prow"><div class="phase">Expiratory flow bias<span>(slow inspiration)</span></div><div class="pdesc">Decrease RR · increase I:E ratio · slow inspiratory flow by increasing duration to reach peak flow</div></div>
+          <div class="prow"><div class="phase">Hyperinflation</div><div class="pdesc">Stepwise increase of tidal volume, keeping PIP within the pressure limit, until target TV is reached or PIP reaches its limit</div></div>
+          <div class="prow"><div class="phase">Inspiratory hold</div><div class="pdesc"><b style="color:var(--cyan)">Increase pause time</b></div></div>
+          <div class="prow dim"><div class="phase">Quick expiration</div><div class="pdesc">N/A</div></div>
+        </div>
+      </div>
+      <div class="tabpanel" id="m-spont">
+        <div class="paramtable">
+          <div class="prow"><div class="phase">Expiratory flow bias<span>(slow inspiration)</span></div><div class="pdesc">Consider switching to volume-targeted mode · decrease % of peak flow that cycles into expiration · slow inspiratory flow by increasing duration to reach desired pressure</div></div>
+          <div class="prow"><div class="phase">Hyperinflation</div><div class="pdesc">Stepwise increase of pressure support, keeping PIP within the pressure limit, until target TV is reached</div></div>
+          <div class="prow dim"><div class="phase">Inspiratory hold</div><div class="pdesc">N/A</div></div>
+          <div class="prow dim"><div class="phase">Quick expiration</div><div class="pdesc">N/A</div></div>
+        </div>
+      </div>
+      <p style="margin-top:12px;font-size:12px;color:var(--text-dim);">Note: unlike MHI's sudden bag release, VHI never achieves a true "quick expiration" phase in any mode — the flow bias during inspiration is what does the work of secretion mobilisation instead.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.timeline{position:relative;display:flex;flex-direction:column;gap:0;}
+.timeline::before{content:'';position:absolute;left:15px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--cyan),var(--amber));opacity:.35;}
+.tl-item{display:flex;gap:18px;padding:12px 0;position:relative;}
+.tl-n{
+  flex-shrink:0;width:32px;height:32px;border-radius:50%;
+  background:var(--panel);border:1px solid var(--panel-border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-weight:600;font-size:13px;color:var(--cyan);
+  position:relative;z-index:1;
+}
+.tl-body{padding-top:5px;font-size:14.5px;color:var(--text-muted);}
+.tl-body b{color:var(--text);}
+
+.paramtable{display:flex;flex-direction:column;border:1px solid var(--panel-border);border-radius:var(--radius);overflow:hidden;}
+.prow{display:grid;grid-template-columns:220px 1fr;border-top:1px solid var(--panel-border);}
+.prow:first-child{border-top:none;}
+.prow .phase{padding:14px 16px;background:var(--panel-2);font-size:13px;font-weight:600;font-family:var(--font-mono);color:var(--text);border-right:1px solid var(--panel-border);}
+.prow .phase span{display:block;font-family:var(--font-body);font-weight:400;font-size:11.5px;color:var(--text-dim);margin-top:2px;}
+.prow .pdesc{padding:14px 16px;font-size:13.5px;color:var(--text-muted);background:var(--panel);}
+.prow.dim .pdesc{color:var(--text-dim);}
+@media (max-width:640px){.prow{grid-template-columns:1fr;}.prow .phase{border-right:none;border-bottom:1px solid var(--panel-border);}}
+</style>
+
+<!-- ============================= MONITORING ============================= -->
+<section id="monitoring">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">// 05 — Eyes on the monitor, throughout</span>
+      <h2>Monitoring</h2>
+      <p class="sub">Both respiratory and haemodynamic parameters need continuous attention for the full duration of VHI application.</p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="panel monitor-panel">
+        <div class="mp-head"><svg class="icon" style="color:var(--cyan);"><use href="#i-wind"/></svg>Respiratory condition</div>
+        <ul class="mlist">
+          <li>Airway pressure <b style="color:var(--amber)">&lt; 40 cmH₂O</b> and plateau pressure <b style="color:var(--cyan)">&lt; 35 cmH₂O</b> — to avoid barotrauma</li>
+          <li>Tidal volume attained <b style="color:var(--green)">&lt; 1000 mL</b></li>
+          <li>Minute volume — avoid hyper- or hypo-ventilation; match the patient's baseline</li>
+          <li>Peak expiratory and peak inspiratory flow rate</li>
+          <li>Lung compliance</li>
+          <li>Respiratory rate</li>
+          <li>Scalar of pressure, flow and volume — watch for abnormal abrupt changes</li>
+          <li>Breathing pattern — check for dyssynchrony with the ventilator</li>
+          <li>SpO₂</li>
+          <li>End-tidal carbon dioxide</li>
+        </ul>
+      </div>
+      <div class="panel monitor-panel">
+        <div class="mp-head"><svg class="icon" style="color:var(--red);"><use href="#i-heart"/></svg>Haemodynamics</div>
+        <ul class="mlist">
+          <li>Heart rate and blood pressure</li>
+          <li>Any new changes in cardiac rhythm</li>
+          <li>Intracranial pressure (if present) — kept within the range ordered by the neurosurgeon</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.monitor-panel{border-top:3px solid var(--panel-border-strong);}
+.mp-head{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:600;font-size:16px;margin-bottom:14px;}
+.mlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
+.mlist li{position:relative;padding-left:18px;font-size:13.8px;color:var(--text-muted);}
+.mlist li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--cyan);opacity:.7;}
+.mlist b{font-family:var(--font-mono);}
+</style>
+
+<!-- ============================= WRAP-UP ============================= -->
+<section id="wrapup" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">// 06 — Stopping safely &amp; charting it</span>
+      <h2>Cessation, complications &amp; documentation</h2>
+    </div>
+
+    <h3 style="font-size:15px;color:var(--text-muted);margin-bottom:12px;">When to stop</h3>
+    <div class="grid grid-2" style="margin-bottom:36px;">
+      <div class="panel" style="border-left:3px solid var(--green);">
+        <span class="badge green">Planned stop</span>
+        <p style="margin-top:10px;font-size:14px;color:var(--text-muted);">After an optimal number of sets have been applied and secretions have been cleared by suctioning.</p>
+      </div>
+      <div class="panel" style="border-left:3px solid var(--red);">
+        <span class="badge red">Safety stop</span>
+        <p style="margin-top:10px;font-size:14px;color:var(--text-muted);">If any contraindication or potential complication (below) develops during the procedure.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px;color:var(--text-muted);margin-bottom:12px;">Potential complications &amp; remedial action</h3>
+    <div class="grid grid-2" style="margin-bottom:36px;">
+      <div class="panel">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><svg class="icon" style="color:var(--red)"><use href="#i-alert"/></svg><b style="font-size:14px;">Haemodynamic or respiratory instability</b></div>
+        <p style="font-size:13.5px;color:var(--text-muted);">BP/pulse outside normal values, ICP beyond the ordered range, bronchospasm, marked change in respiratory rate, or desaturation.</p>
+        <div class="remedy"><svg class="icon" style="width:14px;height:14px;color:var(--cyan)"><use href="#i-arrow"/></svg>Resume ventilator settings to baseline. Inform the nurse-in-charge and physician-in-charge for further management.</div>
+      </div>
+      <div class="panel">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><svg class="icon" style="color:var(--red)"><use href="#i-alert"/></svg><b style="font-size:14px;">Patient agitation / non-cooperation</b></div>
+        <p style="font-size:13.5px;color:var(--text-muted);">Patient becomes agitated even after explanation, and cannot cooperate with VHI application.</p>
+        <div class="remedy"><svg class="icon" style="width:14px;height:14px;color:var(--cyan)"><use href="#i-arrow"/></svg>Cease the intervention and resume baseline ventilatory settings. Inform the nurse-in-charge for further management.</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px;color:var(--text-muted);margin-bottom:6px;">Documentation checklist</h3>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:16px;">Tick these off mentally every time you chart a VHI session.</p>
+    <div class="panel">
+      <div class="checklist" id="doc-checklist">
+        <label class="citem"><input type="checkbox"><span>Date and time of intervention</span></label>
+        <label class="citem"><input type="checkbox"><span>Original ventilator parameters</span></label>
+        <label class="citem"><input type="checkbox"><span>VHI ventilator parameters, number of breaths delivered and/or duration</span></label>
+        <label class="citem"><input type="checkbox"><span>Tidal volume achieved during VHI</span></label>
+        <label class="citem"><input type="checkbox"><span>Patient's response before/after — dynamic lung compliance, TV (PC mode) or PIP (VC mode), and SpO₂</span></label>
+        <label class="citem"><input type="checkbox"><span>Any significant vital sign changes or adverse reactions</span></label>
+        <label class="citem"><input type="checkbox"><span>Countercheck with a colleague; document that the nurse was informed</span></label>
+        <label class="citem"><input type="checkbox"><span>Signature, name and rank of the physiotherapist</span></label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.remedy{margin-top:12px;padding:10px 12px;background:var(--cyan-dim);border-radius:8px;font-size:13px;color:var(--text-muted);display:flex;gap:8px;align-items:flex-start;}
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;}
+@media (max-width:700px){.checklist{grid-template-columns:1fr;}}
+.citem{display:flex;align-items:flex-start;gap:10px;font-size:13.8px;color:var(--text-muted);cursor:pointer;padding:6px 0;}
+.citem input{margin-top:3px;width:16px;height:16px;accent-color:var(--cyan);flex-shrink:0;cursor:pointer;}
+.citem input:checked + span{color:var(--text-dim);text-decoration:line-through;}
+</style>
+
+<!-- ============================= TRAINING ============================= -->
+<section id="training">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">// 07 — Getting signed off</span>
+      <h2>Staff training pathway</h2>
+      <p class="sub">The route from reading this page to performing VHI independently at the bedside.</p>
+    </div>
+
+    <div class="ladder">
+      <div class="ladder-step">
+        <div class="ls-n">1</div>
+        <div class="ls-body"><b>Read the materials</b><span>Ventilator user manuals for models used locally, plus local hospital VHI guidelines.</span></div>
+      </div>
+      <div class="ladder-step">
+        <div class="ls-n">2</div>
+        <div class="ls-body"><b>Practice on test lungs</b><span>Apply VHI on test lungs before ever touching a patient.</span></div>
+      </div>
+      <div class="ladder-step">
+        <div class="ls-n">3</div>
+        <div class="ls-body"><b>Supervised patient practice</b><span>Apply VHI on patients under supervision and pass the competency assessment.</span></div>
+      </div>
+      <div class="ladder-step">
+        <div class="ls-n">4</div>
+        <div class="ls-body"><b>Contingency management training</b><span>Complete training specific to ventilated cases at the local hospital.</span></div>
+      </div>
+      <div class="ladder-step">
+        <div class="ls-n">5</div>
+        <div class="ls-body"><b>Local documentation</b><span>Staff training is documented locally.</span></div>
+      </div>
+      <div class="ladder-step final">
+        <div class="ls-n"><svg class="icon" style="width:16px;height:16px;color:var(--bg)"><use href="#i-check"/></svg></div>
+        <div class="ls-body"><b>Independent practice</b><span>Cleared to perform VHI without supervision.</span></div>
+      </div>
+    </div>
+
+    <details class="refs" style="margin-top:32px;">
+      <summary>View the competency assessment domains (Appendix II) ▾</summary>
+      <div style="margin-top:16px;" class="grid grid-2">
+        <div class="panel">
+          <b style="font-size:13px;color:var(--cyan);">Assessment</b>
+          <ul class="mlist" style="margin-top:10px;">
+            <li>Identify indication and contraindication for VHI</li>
+            <li>Acknowledge doctor/nurse prior to treatment, if necessary</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <b style="font-size:13px;color:var(--cyan);">Treatment delivery</b>
+          <ul class="mlist" style="margin-top:10px;">
+            <li>Explain the technique and gain verbal consent</li>
+            <li>Position the patient if indicated </li>
+            <li>Record baseline settings</li>
+            <li>Calculate the relevant data for correct delivery of breaths</li>
+            <li>Set / check alarm limits</li>
+            <li>Deliver breaths per the guideline and record adjustments</li>
+            <li>Apply shaking &amp; suctioning if indicated</li>
+            <li>Monitor cardiovascular and respiratory changes; stop if indicated</li>
+            <li>Evaluate treatment effect</li>
+            <li>Return settings to baseline</li>
+            <li>Check settings with the bedside nurse & document fully</li>
+            <li>Seek advice from PT-in-charge or doctor appropriately</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <details class="refs" style="margin-top:16px;">
+      <summary>Abbreviations glossary ▾</summary>
+      <div class="glossary">
+        <div><b>ECMO</b>Extracorporeal Membrane Oxygenation</div>
+        <div><b>I:E</b>Inspiration : Expiration</div>
+        <div><b>MHI</b>Manual Hyperinflation</div>
+        <div><b>PC</b>Pressure Control</div>
+        <div><b>PEEP</b>Positive End Expiratory Pressure</div>
+        <div><b>PIP</b>Peak Inspiratory Pressure</div>
+        <div><b>PRVC</b>Pressure-regulated Volume Control</div>
+        <div><b>RR</b>Respiratory Rate</div>
+        <div><b>SIMV</b>Synchronized Intermittent Mandatory Ventilation</div>
+        <div><b>SpO₂</b>Pulse Oximetry</div>
+        <div><b>TV</b>Tidal Volume</div>
+        <div><b>VAP</b>Ventilator Associated Pneumonia</div>
+        <div><b>VC</b>Volume Control</div>
+        <div><b>VHI</b>Ventilator Hyperinflation</div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<style>
+.ladder{display:flex;flex-direction:column;border-left:2px solid var(--panel-border-strong);margin-left:16px;}
+.ladder-step{display:flex;align-items:flex-start;gap:16px;padding:14px 0 14px 24px;position:relative;}
+.ladder-step::before{content:'';position:absolute;left:-2px;top:20px;width:2px;height:calc(100% - 20px);}
+.ls-n{
+  flex-shrink:0;width:30px;height:30px;border-radius:50%;margin-left:-31px;
+  background:var(--panel);border:2px solid var(--panel-border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-weight:700;font-size:13px;color:var(--cyan);
+}
+.ladder-step.final .ls-n{background:var(--green);border-color:var(--green);}
+.ls-body{display:flex;flex-direction:column;gap:3px;padding-top:3px;}
+.ls-body b{font-size:14.5px;}
+.ls-body span{font-size:13px;color:var(--text-dim);}
+.glossary{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media (max-width:700px){.glossary{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:460px){.glossary{grid-template-columns:1fr;}}
+.glossary div{font-size:12.5px;color:var(--text-dim);background:var(--panel);border:1px solid var(--panel-border);border-radius:8px;padding:9px 11px;}
+.glossary b{display:block;color:var(--text-muted);font-family:var(--font-mono);font-size:12px;margin-bottom:2px;}
+</style>
+
+<div class="divider"><svg viewBox="0 0 3200 100" preserveAspectRatio="none"><path d="M0,70 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40 c25,0 25,-40 50,-40 c25,0 25,40 50,40" fill="none" stroke="#f5b942" stroke-width="2"/></svg></div>
+
+<!-- ============================= QUIZ ============================= -->
+<section id="quiz" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag" style="color:var(--violet)">// 08 — Clinical Knowledge Quiz</span>
+      <h2>Five ICU cases. Test your reasoning.</h2>
+      <p class="sub">Each case is a bedside scenario, not a definition lookup. Pick the most appropriate action — the rationale appears the moment you choose.</p>
+    </div>
+
+    <div class="quiz-shell panel" id="quiz-shell">
+      <div class="quiz-progress" id="quiz-progress"></div>
+
+      <div id="quiz-active">
+        <div class="q-num" id="q-num"></div>
+        <div class="q-stem" id="q-stem"></div>
+        <div class="q-question" id="q-question"></div>
+        <div class="q-options" id="q-options"></div>
+        <div class="q-rationale" id="q-rationale" hidden></div>
+        <div class="q-nav">
+          <button id="q-next" class="btn-primary" hidden><span id="q-next-label">Next case</span> <svg class="icon" style="width:15px;height:15px"><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+
+      <div id="quiz-results" hidden>
+        <div class="res-score">
+          <div class="res-num" id="res-num">0/5</div>
+          <div class="res-msg" id="res-msg"></div>
+        </div>
+        <div class="res-breakdown" id="res-breakdown"></div>
+        <button id="q-restart" class="btn-primary" style="margin-top:22px;">Restart quiz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.quiz-shell{max-width:760px;margin:0 auto;padding:30px;}
+.quiz-progress{display:flex;gap:6px;margin-bottom:24px;}
+.quiz-progress .dot{flex:1;height:4px;border-radius:3px;background:var(--panel-border-strong);transition:.2s;}
+.quiz-progress .dot.done{background:var(--green);}
+.quiz-progress .dot.current{background:var(--cyan);}
+
+.q-num{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--violet);margin-bottom:12px;}
+.q-stem{
+  background:var(--panel-2);border:1px solid var(--panel-border);border-left:3px solid var(--violet);
+  border-radius:10px;padding:16px 18px;font-size:14px;line-height:1.6;color:var(--text-muted);
+  margin-bottom:16px;
+}
+.q-stem b{color:var(--text);}
+.q-question{font-family:var(--font-display);font-weight:600;font-size:17px;margin-bottom:18px;line-height:1.4;}
+
+.q-options{display:flex;flex-direction:column;gap:10px;}
+.opt-btn{
+  display:flex;align-items:flex-start;gap:12px;text-align:left;width:100%;
+  background:var(--panel-2);border:1px solid var(--panel-border);border-radius:10px;
+  padding:13px 15px;font-size:14px;color:var(--text-muted);transition:.15s;
+}
+.opt-btn:hover:not(.locked){border-color:var(--panel-border-strong);background:rgba(255,255,255,.03);color:var(--text);}
+.opt-letter{
+  flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;font-weight:600;
+  border:1px solid var(--panel-border-strong);
+}
+.opt-text{flex:1;padding-top:2px;}
+.opt-icon{flex-shrink:0;width:20px;height:20px;display:none;}
+.opt-btn.locked{cursor:default;}
+.opt-btn.correct-answer{border-color:rgba(84,217,140,.55);background:rgba(84,217,140,.08);color:var(--text);}
+.opt-btn.correct-answer .opt-letter{background:var(--green);border-color:var(--green);color:var(--bg);}
+.opt-btn.correct-answer .opt-icon.icon-check{display:block;color:var(--green);}
+.opt-btn.wrong-answer{border-color:rgba(242,100,95,.55);background:rgba(242,100,95,.08);color:var(--text);}
+.opt-btn.wrong-answer .opt-letter{background:var(--red);border-color:var(--red);color:#fff;}
+.opt-btn.wrong-answer .opt-icon.icon-x{display:block;color:var(--red);}
+.opt-btn.faded{opacity:.45;}
+
+.q-rationale{
+  margin-top:18px;padding:16px 18px;border-radius:10px;font-size:13.8px;line-height:1.6;
+  border:1px solid var(--panel-border-strong);background:var(--panel-2);
+}
+.q-rationale .rlabel{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:8px;}
+.q-rationale.ok{border-color:rgba(84,217,140,.4);}
+.q-rationale.ok .rlabel{color:var(--green);}
+.q-rationale.bad{border-color:rgba(242,100,95,.4);}
+.q-rationale.bad .rlabel{color:var(--red);}
+.q-rationale p{color:var(--text-muted);}
+
+.q-nav{display:flex;justify-content:flex-end;margin-top:20px;}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--cyan);color:#04201c;border:none;font-weight:600;font-size:14px;
+  padding:11px 20px;border-radius:999px;transition:.15s;
+}
+.btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);}
+
+.res-score{text-align:center;padding:20px 0 8px;}
+.res-num{font-family:var(--font-mono);font-size:52px;font-weight:700;color:var(--cyan);}
+.res-msg{margin-top:8px;font-size:15px;color:var(--text-muted);}
+.res-breakdown{margin-top:26px;display:flex;flex-direction:column;gap:8px;}
+.res-row{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--panel-2);border:1px solid var(--panel-border);border-radius:9px;font-size:13.5px;color:var(--text-muted);}
+.res-row svg{flex-shrink:0;width:17px;height:17px;}
+.res-row.pass svg{color:var(--green);}
+.res-row.fail svg{color:var(--red);}
+</style>
+
+<footer>
+  <div class="wrap">
+    <div class="grid grid-2" style="margin-bottom:8px;">
+      <div>
+        <div class="brand" style="margin-bottom:14px;"><span class="dot"></span>VHI Guide</div>
+        <p style="font-size:13px;color:var(--text-dim);max-width:42ch;">An interactive educational summary built for junior physiotherapist orientation. It does not replace the full HAHO guideline or local hospital protocols — always confirm against the source document before clinical decision-making.</p>
+      </div>
+      <div style="font-size:12.5px;color:var(--text-dim);display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);">
+        <div><b style="color:var(--text-muted)">Document No.</b> HAHO-COC-GL-PHY-011-v01</div>
+        <div><b style="color:var(--text-muted)">Custodian</b> HO Allied Health Grade Department</div>
+        <div><b style="color:var(--text-muted)">Document approved by</b> COC-Grade in Physiotherapy</div>
+        <div><b style="color:var(--text-muted)">Approval date</b> 24/07/2025</div>
+        <div><b style="color:var(--text-muted)">Portal validated by</b> Mr. Henry Chan</div>
+      </div>
+    </div>
+
+    <details class="refs">
+      <summary>View all 23 references ▾</summary>
+      <ol>
+        <li>Anderson A, Alexanders J, Sinani C, Hayes S, Fogarty M. Effects of ventilator vs manual hyperinflation in adults receiving mechanical ventilation: a systematic review of randomised clinical trials. Physiotherapy 2015; 101: 103–110.</li>
+        <li>Berney S, Denehy L. A comparison of the effects of manual and ventilator hyperinflation on static lung compliance and sputum production in intubated and ventilated intensive care patients. Physiotherapy Research International 2002; 7(2): 100-108.</li>
+        <li>Dennis D, Jacob W, Budgeon C. Ventilator versus manual hyperinflation in clearing sputum in ventilated intensive care unit patients. Anaesthesia and Intensive Care 2012; 40:142-149.</li>
+        <li>Guideline for the Use of Manual Hyperinflation as a Treatment Modality in the Mechanically Ventilated Adult. (2021). University Hospitals of Leicester NHS Trust.</li>
+        <li>Hodgson C, Denehy L, Ntoumenopoulos G, Santamaria J, Carroll S. An investigation of the early effects of manual lung hyperinflation in critically ill patients. Anaesthesia and Intensive Care 2000; 28: 255–261.</li>
+        <li>Jacob W, Dennis D, Jacques A, Marsh L, Woods P, Hebden-Todd T. Ventilator hyperinflation determined by peak airway pressure delivered: A randomized crossover trial. Nursing in Critical Care 2020; 26:14-19.</li>
+        <li>Lemes D, Zin W, Guimaraes F. Hyperinflation using pressure support ventilation improves secretion clearance and respiratory mechanics in ventilated patients with pulmonary infection: a randomised crossover trial. Australian Journal of Physiotherapy 2009; 55(4): 249-254.</li>
+        <li>Lockstone J, Love A, Chian K, Garnham K, Brumby S, Parry SM. Benefits and risks of ventilator hyperinflation in mechanically ventilated intensive care patients: A systematic review and meta-analysis. Aust Crit Care 2023; 36(6):1150-1158.</li>
+        <li>Martinez BP, Lobo LL, de Queiroz RS, et al. Effects of ventilator hyperinflation on pulmonary function and secretion clearance in adults receiving mechanical ventilation: A systematic review with meta-analysis. Heart Lung 2022; 56: 8-23.</li>
+        <li>Ntoumenopoulos G, Shannon H, Main E. Do Commonly Used Ventilator Settings for Mechanically Ventilated Adults Have the Potential to Embed Secretions or Promote Clearance? Respiratory Care 2011; 56(12): 1887–1892.</li>
+        <li>Patman S, Jenkins S, Stiller K. Manual hyperinflation—effects on respiratory parameters. Physiotherapy Research International 2000; 5(3): 157-171.</li>
+        <li>Paulus F, et al. Benefits and risks of manual hyperinflation in intubated and mechanically ventilated intensive care unit patients: a systematic review. Critical Care 2012, 16: R145.</li>
+        <li>Respiratory Physiotherapy Team (Stuart Brandom). (2016). Guidelines for the use of Ventilator Hyperinflation with adults. St George University, NHS.</li>
+        <li>Ribeiro BS, Lopes AJ, Menezes SLS, Guimarâes FS. Selecting the best ventilator hyperinflation technique based on physiologic markers: A randomized controlled crossover study. Heart and Lung 2019; 48:39-45.</li>
+        <li>Rothen H, Sporre B, Engberg G, Wegenius G, Hedenstierna G. Re-expansion of atelectasis during general anaesthesia: a computed tomography study. British Journal of Anaesthesia 1993; 71: 788–795.</li>
+        <li>Skinner EH, Pearce A, Sturgess T. Development of a Performance Standard and Assessment Tool for Ventilator Hyperinflation Competency. Journal of Pulmonary and Respiratory Medicine 2015; 5: 237.</li>
+        <li>Stiller K, Geake T, Taylor R, Hall B. Acute lobar atelectasis: a comparison of two chest physiotherapy regimens. Chest 1990; 98: 1336–1340.</li>
+        <li>Stiller K, Jenkins S, Grant R, Geake T, Taylor J, Hall B. Acute lobar atelectasis: a comparison of five physiotherapy regimens. Physiotherapy Theory and Practice 1996; 12: 197–207.</li>
+        <li>Thomas PJ. The effect of mechanical ventilator settings during ventilator hyperinflation techniques: a bench-top analysis. Anaesthesia and Intensive Care 2015; 43: 81-87.</li>
+        <li>Valer BB, Bonczynski GS, Scheffer KD, et al. Ventilator versus manual hyperinflation in adults receiving mechanical ventilation: A systematic review. Physiother Res Int 2022; 27(2): e1936.</li>
+        <li>Ventilator Hyperinflation by Physiotherapists Guideline – Bunbury Hospital. (2020). Government of Western Australia WA Country Health Service.</li>
+        <li>Volpe MS, Adams AB, Amato MBP, Marini JJ. Ventilation Patterns Influence Airway Secretion Movement. Respiratory Care 2008; 53(10): 1287–1294.</li>
+        <li>Volpe MS, Guimarães FS, Morais CCA. Airway clearance techniques for mechanically ventilated patients: insights for optimization. Respiratory Care 2020; 65(8): 1174-1188.</li>
+      </ol>
+    </details>
+
+    <p style="margin-top:34px;font-size:11.5px;color:var(--text-dim);">This page is an AI genterated summary for internal physiotherapist education only.</p>
+  </div>
+</footer>
+
+<button id="top-fab" aria-label="Back to top"><svg class="icon" style="transform:rotate(180deg)"><use href="#i-chevron"/></svg></button>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Scroll progress bar ---------- */
+  var scrollbar = document.getElementById('scrollbar');
+  var topFab = document.getElementById('top-fab');
+  function onScroll(){
+    var h = document.documentElement;
+    var scrolled = h.scrollTop;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (scrolled / max) * 100 : 0;
+    scrollbar.style.width = pct + '%';
+    if(scrolled > 500){ topFab.classList.add('show'); } else { topFab.classList.remove('show'); }
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  topFab.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+
+  /* ---------- Nav scrollspy ---------- */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navlinks a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+
+  function setActive(id){
+    navLinks.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+  }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ setActive(entry.target.id); }
+      });
+    }, {rootMargin: '-40% 0px -50% 0px', threshold: 0});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+  navLinks.forEach(function(a){
+    a.addEventListener('click', function(){ setTimeout(function(){ setActive(a.getAttribute('href').slice(1)); }, 400); });
+  });
+
+  /* ---------- Generic tabs ---------- */
+  document.querySelectorAll('.tabbar').forEach(function(bar){
+    var buttons = bar.querySelectorAll('.tabbtn');
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var target = btn.getAttribute('data-tab');
+        buttons.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        var panel = document.getElementById(target);
+        var siblings = panel.parentElement.querySelectorAll(':scope > .tabpanel');
+        siblings.forEach(function(p){ p.classList.remove('active'); });
+        panel.classList.add('active');
+      });
+    });
+  });
+
+  /* ================================================================
+     CLINICAL KNOWLEDGE QUIZ
+     ================================================================ */
+  var quizData = [
+    {
+      title: "Case 1 — Secretion clearance under airborne precautions",
+      stem: "A 58-year-old man is intubated and ventilated for severe pneumonia caused by a multi-drug-resistant organism, nursed under droplet/contact precautions. PEEP is 12 cmH₂O, FiO₂ 0.75, peak pressure 26 cmH₂O, and he is haemodynamically stable. Copious secretions are noted and re-expansion of a collapsed lower lobe is desired.",
+      question: "Which technique is most appropriate, and why?",
+      options: [
+        { text: "Manual hyperinflation (MHI) — bagging gives a more effective quick-release flow bias.", correct:false,
+          rationale: "MHI requires disconnecting the circuit. For a patient with high PEEP dependence and a multi-drug-resistant organism, that disconnection risks de-recruitment and cross-infection — exactly what the guideline flags as reasons to avoid MHI in this scenario." },
+        { text: "Ventilator hyperinflation (VHI) — the circuit stays closed, so PEEP is preserved and cross-infection risk is reduced.", correct:true,
+          rationale: "Correct. This patient meets three indications at once — PEEP ≥10 cmH₂O, FiO₂ ≥0.7, and a multi-drug-resistant/airborne pathogen. VHI's benefit over MHI is precisely that it maintains PEEP and prevents cross-infection via the circuit, while still mobilising secretions and re-inflating atelectasis." },
+        { text: "Either technique is equally suitable — the choice doesn't matter clinically.", correct:false,
+          rationale: "Not quite. The guideline explicitly lists infection risk and PEEP dependence as reasons VHI is preferred over MHI — the choice does matter here." },
+        { text: "Neither technique should be used; suctioning alone is sufficient.", correct:false,
+          rationale: "Suctioning clears what has already reached the proximal airway, but doesn't generate the flow bias needed to mobilise deeper secretions or re-inflate collapsed lung — hyperinflation is indicated first." }
+      ]
+    },
+    {
+      title: "Case 2 — Bullous lung disease",
+      stem: "A 66-year-old woman with known severe COPD and a CT report of large emphysematous bullae in the right upper lobe is ventilated post-abdominal surgery. She has thick secretions, and the covering physiotherapist is considering VHI to aid clearance.",
+      question: "What is the correct course of action?",
+      options: [
+        { text: "Proceed with VHI, using a low target tidal volume to minimise risk.", correct:false,
+          rationale: "A lower target volume does not remove the risk. Documented cystic/bullous change is an absolute contraindication regardless of the volume used — there is no 'safe' dose here." },
+        { text: "Proceed with VHI, but only after discussing with the physiotherapist-in-charge.", correct:false,
+          rationale: "Discussion is good practice for indicated or complicated cases — but it doesn't override an absolute contraindication. This isn't a judgement call to escalate; it's a stop." },
+        { text: "Do not proceed — documented cystic lung changes / large emphysematous bullae is an absolute contraindication to VHI.", correct:true,
+          rationale: "Correct. Documented cystic lung changes such as large emphysematous bullae or cavitating pathology sit at the top of the absolute contraindication list — the risk of barotrauma / bullae rupture outweighs any secretion-clearance benefit. Explore alternative secretion clearance strategies instead." },
+        { text: "Proceed with VHI but reduce PEEP to zero first.", correct:false,
+          rationale: "Removing PEEP doesn't address the underlying risk of over-distending a bulla, and abruptly dropping PEEP in a ventilated patient carries its own de-recruitment risk. This is still an absolute contraindication." }
+      ]
+    },
+    {
+      title: "Case 3 — Reading the numbers before you start",
+      stem: "Before considering VHI, you check the ventilator: PEEP 16 cmH₂O, peak airway pressure 32 cmH₂O, FiO₂ 0.6. The patient is haemodynamically stable but desaturates quickly, and the nurse reports poor secretion clearance.",
+      question: "Based on the guideline's thresholds, what should you do?",
+      options: [
+        { text: "Proceed with VHI, since the need for secretion clearance is clearly indicated.", correct:false,
+          rationale: "An indication being present doesn't override a contraindication. Indications and contraindications are screened separately — and here, one of the absolute thresholds has already been crossed." },
+        { text: "Do not proceed — PEEP ≥15 cmH₂O is an absolute contraindication, regardless of other indications.", correct:true,
+          rationale: "Correct. PEEP of 16 cmH₂O exceeds the absolute contraindication threshold of ≥15 cmH₂O. This overrides the fact that quick desaturation and poor clearance look like reasonable indications — absolute contraindications are checked first, and any single one present means VHI should not proceed." },
+        { text: "Proceed with VHI, but set the upper pressure limit to 45 cmH₂O to compensate for the high PEEP.", correct:false,
+          rationale: "The guideline fixes the upper pressure limit at 40 cmH₂O as a standard safety step for every VHI application — raising it to 'compensate' works against the barotrauma safeguard, and doesn't address the PEEP contraindication anyway." },
+        { text: "Use manual hyperinflation (MHI) instead, since it has no PEEP-related restriction.", correct:false,
+          rationale: "Switching to MHI disconnects the circuit entirely, losing PEEP altogether — for a patient this PEEP-dependent, that's a bigger physiological insult, not a safer workaround." }
+      ]
+    },
+    {
+      title: "Case 4 — Dialling in the settings",
+      stem: "A patient is ventilated in volume control (volume-targeted) mode. No contraindications are present. The physiotherapist wants to generate an expiratory-over-inspiratory flow bias to mobilise secretions toward the proximal airway, as the first phase of VHI.",
+      question: "Which ventilator adjustment matches the guideline's approach for volume-targeted modes?",
+      options: [
+        { text: "Increase the respiratory rate to shorten the respiratory cycle.", correct:false,
+          rationale: "This runs the opposite direction. The guideline calls for decreasing RR to slow the breath down, not speeding the cycle up." },
+        { text: "Decrease the respiratory rate, increase the I:E ratio, and slow the inspiratory flow by increasing the duration to reach peak flow.", correct:true,
+          rationale: "Correct. For volume-targeted modes, the guideline's flow-bias step is exactly this combination — decrease RR, increase I:E ratio, and lengthen the time taken to reach peak inspiratory flow. This recreates MHI's slow-inspiration phase without touching the circuit." },
+        { text: "Switch immediately to pressure support and increase PEEP.", correct:false,
+          rationale: "Switching modes isn't part of the volume-targeted pathway (that workaround is only suggested for pressure-targeted or spontaneous modes when needed), and increasing PEEP doesn't create an expiratory flow bias." },
+        { text: "Increase the peak inspiratory flow rate to generate a faster inspiration.", correct:false,
+          rationale: "A faster inspiration works against the flow-bias principle — hyperinflation techniques rely on a slow inspiration paired with a comparatively faster expiration, not the reverse." }
+      ]
+    },
+    {
+      title: "Case 5 — Something changes mid-treatment",
+      stem: "During VHI on a patient with a known history of paroxysmal atrial fibrillation, you notice a new irregular heart rhythm on the monitor together with SpO₂ dropping from 96% to 88%.",
+      question: "What is the most appropriate immediate action?",
+      options: [
+        { text: "Continue for the full set of breaths before reassessing — brief desaturation is expected.", correct:false,
+          rationale: "A new arrhythmia plus a meaningful SpO₂ drop is not an 'expected blip' to push through — it's exactly the pattern the guideline defines as a reason to stop." },
+        { text: "Increase the delivered tidal volume to try to improve oxygenation.", correct:false,
+          rationale: "Escalating the treatment in the face of new instability moves in the wrong direction — the correct response to instability is to step back to baseline, not intensify the technique." },
+        { text: "Stop VHI immediately, return the ventilator to baseline settings, and inform the nurse-in-charge and physician-in-charge.", correct:true,
+          rationale: "Correct. A new cardiac rhythm change and marked desaturation are both listed as triggers to cease the technique. The remedial action is to resume baseline ventilator settings and escalate to the nursing and medical team for further management." },
+        { text: "Switch to manual hyperinflation to troubleshoot the desaturation.", correct:false,
+          rationale: "Swapping techniques mid-complication adds a circuit disconnection on top of an already unstable patient — the guideline's remedial action is to stop and return to baseline, not to try a different hyperinflation method." }
+      ]
+    }
+  ];
+
+  var qIndex = 0, score = 0, answered = false, userLog = [];
+
+  var elProgress = document.getElementById('quiz-progress');
+  var elNum = document.getElementById('q-num');
+  var elStem = document.getElementById('q-stem');
+  var elQuestion = document.getElementById('q-question');
+  var elOptions = document.getElementById('q-options');
+  var elRationale = document.getElementById('q-rationale');
+  var elNext = document.getElementById('q-next');
+  var elActive = document.getElementById('quiz-active');
+  var elResults = document.getElementById('quiz-results');
+
+  function buildProgress(){
+    elProgress.innerHTML = '';
+    quizData.forEach(function(_, i){
+      var d = document.createElement('div');
+      d.className = 'dot' + (i < qIndex ? ' done' : (i === qIndex ? ' current' : ''));
+      elProgress.appendChild(d);
+    });
+  }
+
+  function renderQuestion(){
+    answered = false;
+    var q = quizData[qIndex];
+    buildProgress();
+    elNum.textContent = q.title + ' · Case ' + (qIndex+1) + ' of ' + quizData.length;
+    elStem.innerHTML = '<b>Clinical vignette —</b> ' + q.stem;
+    elQuestion.textContent = q.question;
+    elOptions.innerHTML = '';
+    elRationale.hidden = true;
+    elRationale.className = 'q-rationale';
+    elNext.hidden = true;
+
+    var letters = ['A','B','C','D'];
+    q.options.forEach(function(opt, i){
+      var btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.innerHTML =
+        '<span class="opt-letter">' + letters[i] + '</span>' +
+        '<span class="opt-text">' + opt.text + '</span>' +
+        '<svg class="icon opt-icon icon-check"><use href="#i-check"/></svg>' +
+        '<svg class="icon opt-icon icon-x"><use href="#i-x"/></svg>';
+      btn.addEventListener('click', function(){ selectOption(i); });
+      elOptions.appendChild(btn);
+    });
+  }
+
+  function selectOption(i){
+    if(answered) return;
+    answered = true;
+    var q = quizData[qIndex];
+    var chosen = q.options[i];
+    var buttons = elOptions.querySelectorAll('.opt-btn');
+
+    buttons.forEach(function(btn, idx){
+      btn.classList.add('locked');
+      if(idx === i && !q.options[idx].correct){ btn.classList.add('wrong-answer'); }
+      if(q.options[idx].correct){ btn.classList.add('correct-answer'); }
+      if(idx !== i && !q.options[idx].correct){ btn.classList.add('faded'); }
+    });
+
+    elRationale.hidden = false;
+    elRationale.className = 'q-rationale ' + (chosen.correct ? 'ok' : 'bad');
+    var label = chosen.correct
+      ? '<svg class="icon" style="width:15px;height:15px"><use href="#i-check"/></svg> Correct'
+      : '<svg class="icon" style="width:15px;height:15px"><use href="#i-x"/></svg> Not quite';
+    elRationale.innerHTML = '<div class="rlabel">' + label + '</div><p>' + chosen.rationale + '</p>';
+
+    if(chosen.correct) score++;
+    userLog.push({ title: q.title, correct: chosen.correct });
+
+    elNext.hidden = false;
+    document.getElementById('q-next-label').textContent = (qIndex < quizData.length - 1) ? 'Next case' : 'See results';
+  }
+
+  elNext.addEventListener('click', function(){
+    if(qIndex < quizData.length - 1){
+      qIndex++;
+      renderQuestion();
+      elActive.scrollIntoView({behavior:'smooth', block:'start'});
+    } else {
+      showResults();
+    }
+  });
+
+  function showResults(){
+    buildProgress();
+    Array.prototype.forEach.call(elProgress.children, function(d){ d.classList.add('done'); d.classList.remove('current'); });
+    elActive.hidden = true;
+    elResults.hidden = false;
+    document.getElementById('res-num').textContent = score + '/' + quizData.length;
+    var msg;
+    if(score === 5){ msg = "Excellent — textbook clinical reasoning across the board."; }
+    else if(score >= 3){ msg = "Solid grasp of the guideline — worth reviewing the missed case(s) below."; }
+    else { msg = "Worth another pass through the guideline before applying VHI independently."; }
+    document.getElementById('res-msg').textContent = msg;
+
+    var breakdown = document.getElementById('res-breakdown');
+    breakdown.innerHTML = '';
+    userLog.forEach(function(r){
+      var row = document.createElement('div');
+      row.className = 'res-row ' + (r.correct ? 'pass' : 'fail');
+      row.innerHTML = (r.correct
+        ? '<svg class="icon"><use href="#i-check"/></svg>'
+        : '<svg class="icon"><use href="#i-x"/></svg>') + '<span>' + r.title + '</span>';
+      breakdown.appendChild(row);
+    });
+  }
+
+  document.getElementById('q-restart').addEventListener('click', function(){
+    qIndex = 0; score = 0; userLog = [];
+    elActive.hidden = false;
+    elResults.hidden = true;
+    renderQuestion();
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  renderQuestion();
+
+})();
+</script>
+
 </body>
 </html>
