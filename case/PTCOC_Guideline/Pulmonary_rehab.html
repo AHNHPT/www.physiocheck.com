@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pulmonary Rehabilitation — Physiotherapy Guideline Monitor</title>
+<title>Pulmonary Rehabilitation — Physiotherapy Guideline Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -324,6 +324,35 @@ header.nav{
   .flow-step{max-width:none;}
   .flow-arrow{transform:rotate(90deg);margin:2px auto;}
 }
+
+/* ============================= PHOTO PLACEHOLDER SPACE ============================= */
+.photo-space{
+  margin-top:26px;min-height:340px;border-radius:var(--radius);
+  border:2px dashed var(--line);background:
+    repeating-linear-gradient(135deg, rgba(28,122,131,.04) 0 14px, transparent 14px 28px),
+    var(--card);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+}
+.photo-space-inner{color:var(--text-mute);padding:24px;}
+.photo-space-inner svg{margin:0 auto 12px;color:var(--grey);}
+.photo-space .ps-title{font-family:var(--display);font-weight:700;font-size:1.05rem;color:var(--text);}
+.photo-space .ps-sub{font-size:.86rem;margin-top:6px;max-width:34ch;margin-left:auto;margin-right:auto;}
+.pathway-photo{
+  margin-top:26px;width:100%;height:auto;border-radius:var(--radius);
+  border:1px solid var(--line);box-shadow:var(--shadow);
+}
+.pathway-diagram{
+  margin-top:18px;width:100%;border-radius:var(--radius);
+  border:1px solid var(--line);box-shadow:var(--shadow);
+  background:var(--card);padding:20px;overflow-x:auto;
+}
+.pathway-diagram svg{display:block;margin:0 auto;min-width:1000px;}
+.pathway-diagram .pw-box{fill:var(--card);stroke:var(--line);stroke-width:1.5;}
+.pathway-diagram .pw-box-hub{fill:var(--teal-pale);stroke:var(--teal-deep);stroke-width:1.5;}
+.pathway-diagram .pw-lbl{font-family:var(--body);font-size:14px;font-weight:600;fill:var(--text);text-anchor:middle;}
+.pathway-diagram .pw-lbl-hub{font-family:var(--body);font-size:14px;font-weight:700;fill:var(--teal-deep);text-anchor:middle;}
+.pathway-diagram .pw-arrow{stroke:var(--teal);stroke-width:1.5;fill:none;}
+.pathway-diagram .pw-note{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-mute);margin-top:12px;text-align:center;}
 
 /* ============================= TABS for management sub-areas ============================= */
 .tabbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
@@ -658,8 +687,8 @@ footer .doc{font-family:var(--mono);font-size:.74rem;color:#8fd6cf;}
     </div>
 
     <div class="grid cols-4 reveal">
-      <div class="card"><h4>Inpatient</h4><p>For patients still admitted, incl. post-exacerbation.</p></div>
-      <div class="card"><h4>Day-patient</h4><p>Centre-based, ambulatory attendance.</p></div>
+      <div class="card"><h4>Inpatient</h4><p>In- hospital PR improves functional exercise capacity, QOL, and lower limb strength without prolonging the hospital length of stay.</p></div>
+      <div class="card"><h4>Day-patient</h4><p>Prioritizing endurance training prior to discharge demonstrated the most favorable outcomes in both readmission rates and exercise capacity.</p></div>
       <div class="card"><h4>Home-based</h4><p>Delivered where access to centre-based care is limited.</p></div>
       <div class="card"><h4>Tele-rehabilitation</h4><p>Alternative for those declining centre-based PR — watch for internet access, digital literacy and acceptance barriers.</p></div>
     </div>
@@ -670,16 +699,109 @@ footer .doc{font-family:var(--mono);font-size:.74rem;color:#8fd6cf;}
       <div class="card"><span class="lead teal">3</span><h4 style="margin-top:10px;">Programme variants</h4><p><b>Partial</b> (frail / low motivation) · <b>Refresher</b> (declined after prior PRP within 1 yr) · <b>Brief NAHC-led</b> (mild disease, refusing comprehensive PRP).</p></div>
     </div>
 
-    <h3 style="margin-top:44px;font-size:1.02rem;" class="reveal">Simplified service delivery pathway</h3>
-    <div class="flow reveal">
-      <div class="flow-step">Referral (inpatient / outpatient / NAHC)</div><span class="flow-arrow">→</span>
-      <div class="flow-step">PR team screens eligibility</div><span class="flow-arrow">→</span>
-      <div class="flow-step">PR conference</div><span class="flow-arrow">→</span>
-      <div class="flow-step">Enrol + pre-PR outcome assessment</div><span class="flow-arrow">→</span>
-      <div class="flow-step">Programme delivery (review in conference if needed)</div><span class="flow-arrow">→</span>
-      <div class="flow-step">Post-PR outcome assessment</div><span class="flow-arrow">→</span>
-      <div class="flow-step">Discharge with home exercise plan</div><span class="flow-arrow">→</span>
-      <div class="flow-step">Follow-up</div>
+    <h3 style="margin-top:44px;font-size:1.02rem;" class="reveal">Service delivery pathway</h3>
+    <div class="pathway-diagram reveal" role="img" aria-label="Service delivery pathway: inpatient, NAHC and outpatient referral routes converge at PR conference, then flow through programme entry, outcome assessment, discharge and follow-up">
+      <svg viewBox="0 0 2200 640" width="2200" height="350" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="pwArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10Z" fill="var(--teal)"/>
+          </marker>
+        </defs>
+
+        <!-- Top lane: Inpatient -->
+        <rect class="pw-box" x="40" y="80" width="170" height="60" rx="8"/>
+        <text class="pw-lbl" x="125" y="115">Inpatient referrals</text>
+
+        <rect class="pw-box" x="260" y="50" width="210" height="120" rx="8"/>
+        <text class="pw-lbl" x="365" y="94">
+          <tspan x="365" dy="0">Identify and refer</tspan>
+          <tspan x="365" dy="18">potential candidates</tspan>
+          <tspan x="365" dy="18">for PRP through early</tspan>
+          <tspan x="365" dy="18">assessment and</tspan>
+          <tspan x="365" dy="18">intervention</tspan>
+        </text>
+
+        <rect class="pw-box" x="520" y="65" width="200" height="90" rx="8"/>
+        <text class="pw-lbl" x="620" y="101">
+          <tspan x="620" dy="0">Assess patients'</tspan>
+          <tspan x="620" dy="18">eligibility by PR</tspan>
+          <tspan x="620" dy="18">team</tspan>
+        </text>
+
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M210 110 L258 110"/>
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M470 110 L518 110"/>
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M720 112 L776 315"/>
+
+        <!-- Middle lane: NAHC -->
+        <rect class="pw-box" x="260" y="250" width="260" height="140" rx="8"/>
+        <text class="pw-lbl" x="390" y="292">
+          <tspan x="390" dy="0">Identify and refer</tspan>
+          <tspan x="390" dy="18">potential candidates</tspan>
+          <tspan x="390" dy="18">for PRP through early</tspan>
+          <tspan x="390" dy="18">assessment and</tspan>
+          <tspan x="390" dy="18">intervention in NAHC</tspan>
+        </text>
+
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M520 320 L776 320"/>
+
+        <!-- Convergence: PR conference -->
+        <rect class="pw-box-hub" x="780" y="290" width="170" height="60" rx="8"/>
+        <text class="pw-lbl-hub" x="865" y="325">PR conference #</text>
+
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M950 320 L996 320"/>
+
+        <!-- Main horizontal chain -->
+        <rect class="pw-box" x="1000" y="255" width="240" height="130" rx="8"/>
+        <text class="pw-lbl" x="1120" y="292">
+          <tspan x="1120" dy="0">Enter suitable</tspan>
+          <tspan x="1120" dy="18">programs according to</tspan>
+          <tspan x="1120" dy="18">patients' ability &amp;</tspan>
+          <tspan x="1120" dy="18">condition. Pre-PR</tspan>
+          <tspan x="1120" dy="18">outcome assessment</tspan>
+        </text>
+
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M1240 320 L1286 320"/>
+
+        <rect class="pw-box" x="1290" y="285" width="210" height="70" rx="8"/>
+        <text class="pw-lbl" x="1395" y="312">
+          <tspan x="1395" dy="0">Review in PR</tspan>
+          <tspan x="1395" dy="18">conference if needed</tspan>
+        </text>
+
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M1500 320 L1546 320"/>
+
+        <rect class="pw-box" x="1550" y="285" width="200" height="70" rx="8"/>
+        <text class="pw-lbl" x="1650" y="312">
+          <tspan x="1650" dy="0">Post-PR outcome</tspan>
+          <tspan x="1650" dy="18">assessment</tspan>
+        </text>
+
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M1750 320 L1796 320"/>
+
+        <rect class="pw-box" x="1800" y="290" width="160" height="60" rx="8"/>
+        <text class="pw-lbl" x="1880" y="325">D/C with home ex</text>
+
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M1960 320 L2006 320"/>
+
+        <rect class="pw-box" x="2010" y="290" width="150" height="60" rx="8"/>
+        <text class="pw-lbl" x="2085" y="325">Follow up</text>
+
+        <!-- Bottom lane: Outpatient -->
+        <rect class="pw-box" x="40" y="495" width="180" height="70" rx="8"/>
+        <text class="pw-lbl" x="130" y="524">
+          <tspan x="130" dy="0">Outpatient referrals</tspan>
+          <tspan x="130" dy="18">for PRP</tspan>
+        </text>
+
+        <rect class="pw-box" x="260" y="495" width="200" height="70" rx="8"/>
+        <text class="pw-lbl" x="360" y="524">
+          <tspan x="360" dy="0">Assessed by resp.</tspan>
+          <tspan x="360" dy="18">specialist / PR team</tspan>
+        </text>
+
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M220 530 L258 530"/>
+        <path class="pw-arrow" marker-end="url(#pwArrow)" d="M460 528 L996 388"/>
+      </svg>
     </div>
   </div>
 </section>
@@ -701,6 +823,7 @@ footer .doc{font-family:var(--mono);font-size:.74rem;color:#8fd6cf;}
       <button class="tabbtn" data-tab="t-adjunct">Hard-to-train adjuncts</button>
       <button class="tabbtn" data-tab="t-o2">O₂ &amp; flight</button>
       <button class="tabbtn" data-tab="t-whole">Whole-person care</button>
+      <button class="tabbtn" data-tab="t-postprp">Post-PRP &amp; discharge</button>
     </div>
 
     <!-- Assessment -->
@@ -727,7 +850,7 @@ footer .doc{font-family:var(--mono);font-size:.74rem;color:#8fd6cf;}
         <div class="tech-card"><span class="lead o2">FAN</span><div><h4>Fan therapy</h4><p>Cool airflow to the face stimulates trigeminal afferents; may ↓ breathlessness and ↑ exercise time.</p></div></div>
         <div class="tech-card"><span class="lead amber">TENS</span><div><h4>Acupuncture / Acu-TENS / acupressure</h4><p>Adjunctive; heterogeneous evidence but a recognised option for breathlessness.</p></div></div>
         <div class="tech-card"><span class="lead mint">MBR</span><div><h4>Mind-body &amp; relaxation</h4><p>Tai Chi, Yoga, progressive muscle relaxation — targets the anxiety/distress component of dyspnoea.</p></div></div>
-        <div class="tech-card"><span class="lead grey">REC</span><div><h4>Recovery breathing sequence</h4><p>Stop → recovery position → fan → prolonged exhale → relax shoulders → resume, then rest a further minute.</p></div></div>
+        <div class="tech-card"><span class="lead grey">REC</span><div><h4>Recovery breathing</h4><p>Recovery position → blowing out onto the fan → narrowing your mouth → prolonged exhale → relax shoulders → abdominal breathing → then rest a further minute.</p></div></div>
       </div>
     </div>
 
@@ -763,8 +886,8 @@ footer .doc{font-family:var(--mono);font-size:.74rem;color:#8fd6cf;}
         <div class="tech-card"><span class="lead o2">NIV</span><div><h4>Non-invasive ventilation</h4><p>Rests/unloads respiratory muscles so a higher workload can be tolerated — most benefit in severe COPD / CHRF.</p></div></div>
         <div class="tech-card"><span class="lead o2">O₂</span><div><h4>Supplemental oxygen during exercise</h4><p>Mandatory for severe exercise-induced hypoxaemia; may aid high-intensity training even without hypoxaemia.</p></div></div>
         <div class="tech-card"><span class="lead o2">HFOT</span><div><h4>High-flow oxygen therapy</h4><p>↓ respiratory rate &amp; work of breathing; may ↑ 6MWT time — evidence still emerging.</p></div></div>
-        <div class="tech-card"><span class="lead mint">NMES</span><div><h4>Neuromuscular electrical stimulation</h4><p>For patients unable to do volitional training (acute exacerbation, profound dyspnoea, low BMI + quadriceps weakness). No dyspnoea, minimal cardio-circulatory demand.</p></div></div>
-        <div class="tech-card"><span class="lead amber">WBV</span><div><h4>Whole body vibration</h4><p>Adjunct to resistance/squat work — improves 6MWT and FTSTS beyond resistance training alone.</p></div></div>
+        <div class="tech-card"><span class="lead mint">NMES</span><div><h4>Neuromuscular electrical stimulation</h4><p>For patients unable to do volitional training. No dyspnoea, minimal cardio-circulatory demand.<br>Dosage: 200-700µs, 50-120Hz, 2–10s on, 4–50s off</p></div></div>
+        <div class="tech-card"><span class="lead amber">WBV</span><div><h4>Whole body vibration</h4><p>Adjunct to resistance/squat work — improves 6MWT and FTSTS beyond resistance training alone.<br>Dosage: 20-30Hz, ≥4mm amplitude, ½-2 minutes for 2-4 sets</p></div></div>
         <div class="tech-card"><span class="lead teal">ECC</span><div><h4>Eccentric exercise / downhill walking</h4><p>Greater strength gains for lower ventilatory demand — useful when dyspnoea is the limiting factor.</p></div></div>
         <div class="tech-card"><span class="lead o2">HYD</span><div><h4>Hydrotherapy</h4><p>Hydrostatic pressure eases expiration &amp; air trapping; buoyancy protects arthritic joints.</p></div></div>
       </div>
@@ -782,10 +905,21 @@ footer .doc{font-family:var(--mono);font-size:.74rem;color:#8fd6cf;}
     <!-- Whole person -->
     <div class="tabpanel" id="t-whole">
       <div class="grid cols-4">
-        <div class="card"><h4>Smoking cessation</h4><p>Reinforce at every session; refer to the Smoking Counselling &amp; Cessation Centre.</p></div>
+        <div class="card"><h4>Smoking cessation</h4><p>Reinforce using quick advice; refer to the Smoking Counselling &amp; Cessation Centre.</p></div>
         <div class="card"><h4>Comorbidity management</h4><p>Modify the exercise regimen for cardiac disease, diabetes, hypertension, arrhythmia etc.</p></div>
         <div class="card"><h4>Psychosocial support</h4><p>Reinforce relaxation &amp; dyspnoea coping skills; refer to Clinical Psychology / MSW as indicated.</p></div>
         <div class="card"><h4>Nutrition</h4><p>Collaborate with dietitians on weight management to support training capacity.</p></div>
+      </div>
+    </div>
+
+    <!-- Post-PRP assessment and pre-discharge management -->
+    <div class="tabpanel" id="t-postprp">
+      <div class="grid cols-2">
+        <div class="card"><span class="lead teal">Outcomes</span><h4 style="margin-top:10px;">Review outcomes</h4><p>Repeat outcome measures against the pre-PRP baseline to confirm and document the change achieved.</p></div>
+        <div class="card"><span class="lead teal">Self-management</span><h4 style="margin-top:10px;">Empower self-management</h4><p>Dyspnoea and stress management, bronchial hygiene techniques, recognising risk factors, knowing when to seek help, and decision-making during exacerbations.</p></div>
+        <div class="card"><span class="lead teal">Long-term</span><h4 style="margin-top:10px;">Sustain activity beyond the programme</h4><p>Reinforce long-term exercise adherence and physical activity via a home exercise plan, audio-visual materials, HA Go, education booklets and exercise apps — supporting an active lifestyle and behavioural change.</p></div>
+        <div class="card"><span class="lead teal">Carer</span><h4 style="margin-top:10px;">Carer training</h4><p>Provide carer training as indicated, so support continues safely at home.</p></div>
+        <div class="card"><span class="lead teal">Community</span><h4 style="margin-top:10px;">Community hand-off</h4><p>Refer to community care provided by HA, or another appropriate community pathway, if appropriate.</p></div>
       </div>
     </div>
   </div>
@@ -797,7 +931,8 @@ footer .doc{font-family:var(--mono);font-size:.74rem;color:#8fd6cf;}
     <div class="section-head reveal">
       <span class="eyebrow">Chapter 06</span>
       <h2 class="section-title">Outcome measures &amp; the MCID that matters</h2>
-      <p class="section-lede">Minimum outcome set = at least one test from each of these five domains, so a change can be interpreted as clinically meaningful (MCID), not just statistically different.<br> MCID = Minimum Clinically Important Difference</p>
+      <p class="section-lede">Minimum outcome set = at least one test from each of these five domains, so a change can be interpreted as clinically meaningful (MCID), not just statistically different.<br>
+      MCID = Minimal Clinically Important Difference</p>
     </div>
     <div class="otable-scroll reveal">
       <table class="otable">

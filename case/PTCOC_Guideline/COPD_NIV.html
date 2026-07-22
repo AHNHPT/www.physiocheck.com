@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIV in COPD — Physiotherapy Field Guide</title>
+<title>NIV in COPD — Physiotherapy Learning Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@
     background:var(--paper);
     color:var(--ink);
     font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-    line-height:1.55;
+    line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3,h4{
@@ -165,26 +165,27 @@
     border:1px solid var(--teal);border-radius:99px;padding:3px 11px;flex-shrink:0;
   }
   .sec-head h2{font-size:clamp(26px,4vw,42px);color:var(--teal-dark);}
-  .sec-lead{max-width:760px;color:#33514F;font-size:15.5px;margin-bottom:30px;}
+  .sec-lead{max-width:760px;color:#33514F;font-size:15.5px;line-height:1.65;margin-bottom:32px;}
   .sec-lead b{color:var(--ink);}
 
-  .grid{display:grid;gap:16px;}
+  .grid{display:grid;gap:18px;}
   .grid-2{grid-template-columns:repeat(2,1fr);}
   .grid-3{grid-template-columns:repeat(3,1fr);}
   .grid-4{grid-template-columns:repeat(4,1fr);}
-  @media(max-width:860px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+  @media(max-width:960px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:640px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
 
   .card{
     background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
-    padding:20px 22px;box-shadow:var(--shadow);
+    padding:22px 24px;box-shadow:var(--shadow);
   }
   .card h3{
-    font-family:'Inter';text-transform:none;font-weight:700;font-size:15.5px;
-    letter-spacing:0;margin-bottom:8px;color:var(--ink);
+    font-family:'Inter';text-transform:none;font-weight:700;font-size:16px;
+    letter-spacing:0;margin-bottom:9px;color:var(--ink);
   }
-  .card p{margin:0 0 8px;font-size:14px;color:#354b49;}
-  .card ul{margin:8px 0 0;padding-left:18px;font-size:13.8px;color:#354b49;}
-  .card ul li{margin-bottom:5px;}
+  .card p{margin:0 0 10px;font-size:14.5px;line-height:1.65;color:#33514F;}
+  .card ul{margin:9px 0 0;padding-left:19px;font-size:14.2px;line-height:1.6;color:#33514F;}
+  .card ul li{margin-bottom:7px;}
 
   .tag{
     display:inline-block;font-family:'IBM Plex Mono';font-size:10.5px;font-weight:600;
@@ -197,11 +198,11 @@
   .tag-info{background:#DEEAF0;color:var(--sky);}
   .tag-teal{background:#DCEEEB;color:var(--teal-dark);}
 
-  .callout{border-radius:var(--radius);padding:18px 20px;border:1px solid;margin-bottom:16px;}
-  .callout h4{font-family:'Inter';text-transform:none;font-weight:700;font-size:14px;margin-bottom:6px;}
-  .callout p,.callout ul{font-size:13.8px;margin:0;}
-  .callout ul{padding-left:18px;}
-  .callout ul li{margin-bottom:4px;}
+  .callout{border-radius:var(--radius);padding:19px 21px;border:1px solid;margin-bottom:16px;}
+  .callout h4{font-family:'Inter';text-transform:none;font-weight:700;font-size:14.5px;margin-bottom:8px;}
+  .callout p,.callout ul{font-size:14.2px;line-height:1.6;margin:0;}
+  .callout ul{padding-left:19px;}
+  .callout ul li{margin-bottom:6px;}
   .c-danger{background:#FBEEEA;border-color:#EBC4B8;color:#6E2A1A;}
   .c-danger h4{color:var(--brick);}
   .c-warn{background:#FBF3E4;border-color:#EBD3A0;color:#5C400C;}
@@ -228,12 +229,12 @@
 
   /* tables */
   .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);}
-  table{border-collapse:collapse;width:100%;font-size:13.6px;min-width:480px;}
+  table{border-collapse:collapse;width:100%;font-size:14.2px;line-height:1.55;min-width:480px;}
   thead th{
-    background:var(--teal-dark);color:#fff;text-align:left;padding:12px 16px;
+    background:var(--teal-dark);color:#fff;text-align:left;padding:13px 16px;
     font-family:'IBM Plex Mono';font-weight:500;font-size:12px;letter-spacing:.02em;
   }
-  tbody td{padding:12px 16px;border-top:1px solid var(--line);vertical-align:top;color:#33514F;}
+  tbody td{padding:14px 16px;border-top:1px solid var(--line);vertical-align:top;color:#33514F;}
   tbody tr:nth-child(even){background:var(--paper-dim);}
 
   /* tabs */
@@ -265,8 +266,8 @@
   /* steps */
   .steps{list-style:none;margin:0;padding:0;counter-reset:step;}
   .steps li{
-    counter-increment:step;position:relative;padding:0 0 20px 44px;
-    border-left:2px solid var(--line);margin-left:15px;font-size:14px;color:#33514F;
+    counter-increment:step;position:relative;padding:0 0 22px 44px;
+    border-left:2px solid var(--line);margin-left:15px;font-size:14.3px;line-height:1.6;color:#33514F;
   }
   .steps li:last-child{border-color:transparent;padding-bottom:0;}
   .steps li::before{
@@ -279,22 +280,48 @@
   .divider-wave{height:34px;overflow:hidden;opacity:.5;margin:8px 0 32px;}
   .divider-wave svg{width:100%;height:100%;}
 
-  .footnote{font-size:12.5px;color:#5A7370;margin-top:10px;}
+  .footnote{font-size:13px;color:#4C6360;margin-top:10px;line-height:1.55;}
+
+  /* photo placeholder slot — default = wide (for multi-point diagrams) */
+  .photo-slot{
+    border:1.5px dashed #B9CCC7;border-radius:10px;
+    background:repeating-linear-gradient(135deg, rgba(15,122,117,.05) 0 10px, rgba(15,122,117,0) 10px 20px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    padding:16px 14px;text-align:center;color:#4C6360;margin:10px 0;min-height:104px;
+  }
+  .photo-slot svg{width:24px;height:24px;opacity:.6;color:var(--teal);}
+  .photo-slot .ph-label{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.05em;color:var(--teal-dark);font-weight:600;}
+  .photo-slot .ph-desc{font-size:11.5px;color:#66807C;max-width:230px;line-height:1.45;}
+
+  /* square 100x100 variant — for interface / device product photos */
+  .photo-slot.photo-sq{
+    width:100px;height:100px;flex:0 0 100px;min-height:0;margin:0;
+    padding:6px;gap:3px;
+  }
+  .photo-slot.photo-sq svg{width:18px;height:18px;}
+  .photo-slot.photo-sq .ph-label{font-size:8px;line-height:1.3;}
+  img.photo-slot.photo-sq{object-fit:cover;border-style:solid;background:none;padding:0;}
+
+  .card-media{display:flex;gap:14px;align-items:flex-start;margin-bottom:12px;}
+  .card-media .card-media-text{flex:1;min-width:0;}
+  .card-media .card-media-text h3{margin-top:3px;}
+  .device-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:9px;}
+  .device-card p{margin:0;}
 
   /* quiz */
   .quiz-card{
     background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
-    padding:26px;margin-bottom:22px;box-shadow:var(--shadow);
+    padding:28px;margin-bottom:24px;box-shadow:var(--shadow);
   }
-  .quiz-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  .quiz-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
   .quiz-num{font-family:'IBM Plex Mono';font-size:12px;color:var(--teal);background:#DCEEEB;padding:4px 11px;border-radius:99px;}
-  .quiz-status{font-family:'IBM Plex Mono';font-size:12px;color:#5A7370;}
-  .quiz-stem{font-size:15.5px;color:var(--ink);margin-bottom:18px;line-height:1.6;}
-  .quiz-options{display:flex;flex-direction:column;gap:10px;}
+  .quiz-status{font-family:'IBM Plex Mono';font-size:12px;color:#4C6360;}
+  .quiz-stem{font-size:16px;color:var(--ink);margin-bottom:20px;line-height:1.65;}
+  .quiz-options{display:flex;flex-direction:column;gap:11px;}
   .opt{
     display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
     border:1px solid var(--line);background:var(--paper);border-radius:10px;
-    padding:13px 16px;cursor:pointer;font-family:'Inter';font-size:14px;color:var(--ink);transition:.15s;
+    padding:14px 17px;cursor:pointer;font-family:'Inter';font-size:14.5px;line-height:1.55;color:var(--ink);transition:.15s;
   }
   .opt:hover:not(:disabled){border-color:var(--teal);}
   .opt .letter{
@@ -309,8 +336,8 @@
   .opt.incorrect .letter{background:var(--brick);color:#fff;border-color:var(--brick);}
   .opt.dim{opacity:.55;}
   .rationale{
-    margin-top:16px;padding:16px 18px;border-radius:10px;background:var(--paper-dim);
-    border-left:3px solid var(--teal);font-size:13.8px;color:#33514F;display:none;
+    margin-top:18px;padding:18px 20px;border-radius:10px;background:var(--paper-dim);
+    border-left:3px solid var(--teal);font-size:14.3px;line-height:1.62;color:#33514F;display:none;
   }
   .rationale.show{display:block;}
   .rationale b{color:var(--ink);}
@@ -398,7 +425,7 @@
 <section class="sec" id="indications">
   <div class="container">
     <div class="sec-head"><span class="sec-num">01</span><h2>Deciding to start NIV</h2></div>
-    <p class="sec-lead">NIV is indicated in <b>acute hypercapnic respiratory acidosis</b> that persists or develops despite optimal medical therapy — but only once you've screened out reasons it may do more harm than good.</p>
+    <p class="sec-lead">NIV is indicated in <b>acute hypercapnic respiratory acidosis</b> that persists or develops despite optimal medical therapy — but only once you've screened out reasons it may do more harm than good. Successful NIV makes intubation avoidable.</p>
 
     <div class="grid grid-2" style="margin-bottom:16px;">
       <div class="callout c-good">
@@ -485,7 +512,7 @@
       <div class="callout c-info">
         <h4>Room requirements</h4>
         <ul>
-          <li><b>No known infection:</b> adequate ventilation, ≥6 air changes/hour (ACH); local exhaust suction if unavailable</li>
+          <li><b>No known infection:</b> adequate ventilation, ≥6 air changes/hour (ACH); local exhaust suction allowed if 6 ACH room unavailable</li>
           <li><b>Transmissible respiratory infection:</b> isolation room ≥12 ACH via negative pressure, exhausted outside or HEPA-filtered</li>
           <li>If unavailable: well-ventilated single room with en-suite, doors closed — <b>never</b> a positive-pressure single room</li>
           <li>No separate room? Cohort patients sharing the same confirmed pathogen</li>
@@ -544,8 +571,22 @@
       <div class="tab-panel" data-panel="rare">
         <div class="grid grid-2">
           <div class="card"><h3>Proportional Assist Ventilation (PAV)</h3><p>Responds rapidly to the patient's own ventilatory effort; adjusting the gain on flow/volume signals selects what proportion of the work of breathing is assisted.</p></div>
-          <div class="card"><h3>Neurally-Adjusted Ventilatory Assist (NAVA)</h3><p>Uses a diaphragmatic EMG signal (via a specialised naso-gastric catheter) to control breath delivery, proportional to the patient's own effort — effective for synchrony via oro-nasal/helmet interfaces, though observational data show no clear difference vs. standard NIV-pressure support.</p></div>
+          <div class="card"><h3>Neurally-Adjusted Ventilatory Assist (NAVA)</h3><p>Uses a diaphragmatic EMG signal (via a specialised naso-gastric catheter with electrodes placed adjunct to the diaphragm) to control breath delivery, proportional to the patient's own effort — effective for synchrony via oro-nasal/helmet interfaces, though observational data show no clear difference vs. standard NIV-pressure support.</p></div>
         </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:22px;">
+      <h3>Choosing an NIV model <span class="tag tag-info" style="margin-left:6px;vertical-align:2px;">Section 1.7</span></h3>
+      <div class="grid grid-2">
+        <ul>
+          <li><b>Auto-Trak Sensitivity:</b> recognises and compensates for unintentional leaks, automatically adjusting trigger/cycling algorithms. Improves patient–ventilator synchrony, but isn't ideal for patients with weak triggering ability, who often trigger better on devices that allow fine manual adjustment of trigger sensitivity.</li>
+          <li><b>Flow rate:</b> in general, the higher a model's maximum flow rate (&gt;200 L/min), the wider the variety of patients it can serve.</li>
+        </ul>
+        <ul>
+          <li><b>Battery:</b> check for internal <i>and</i> external battery if treatment will involve mobility training with the NIV, or outdoor use.</li>
+          <li><b>Other factors:</b> availability of the device and matching interfaces; financial considerations; physician/clinician/patient preference; and the trade-off between mask comfort and effectiveness.</li>
+        </ul>
       </div>
     </div>
 
@@ -568,12 +609,14 @@
       <div class="readout">
         <h4>Titration &amp; monitoring</h4>
         <div class="readout-grid">
-          <div class="readout-item"><div class="num">+2–3</div><div class="lbl">cmH₂O IPAP steps, q10–30min, max 20–30, target TV 5–7 mL/kg</div></div>
-          <div class="readout-item sky"><div class="num">+1–2</div><div class="lbl">cmH₂O EPAP steps, max 8 — caution in OSA / obesity-hypoventilation / cardiogenic oedema / ARDS</div></div>
+          <div class="readout-item"><div class="num">+2–3cmH₂O</div><div class="lbl"> IPAP steps, 10–30min, max 20–30cmH₂O, target TV 5–7 mL/kg</div></div>
+          <div class="readout-item sky"><div class="num">+1–2cmH₂O</div><div class="lbl"> EPAP steps, max 8cmH₂O — caution in OSA / obesity-hypoventilation / cardiogenic oedema / ARDS</div></div>
           <div class="readout-item"><div class="num">1 hr</div><div class="lbl">check ABG after start &amp; after every setting change</div></div>
           <div class="readout-item"><div class="num">4–6 hr</div><div class="lbl">no PaCO₂/pH improvement → escalate (e.g. early intubation)</div></div>
         </div>
-        <p style="font-size:12px;color:#B6D9D2;margin-top:14px;">Optimise NIV settings before raising FiO₂ further. IPAP &gt;30 cmH₂O → get specialist input.</p>
+        <p style="font-size:12px;color:#B6D9D2;margin-top:14px;">⚠️Optimise NIV settings before raising FiO₂ further.If IPAP &gt;30 cmH₂O is indicated → get specialist input.</p>
+        <p style="font-size:12px;color:#B6D9D2;margin-top:14px;">⚠️Observe for change in RR, TV and sign of respiratory distress.</p>
+        <p style="font-size:12px;color:#B6D9D2;margin-top:14px;">⚠️Institute alternative management plan if ABGs worsen after 1-2 hrs of NIV fitted.</p>
       </div>
     </div>
   </div>
@@ -586,22 +629,48 @@
     <p class="sec-lead">The full-face (oro-nasal) mask is the default at the start of acute NIV — mouth leaks and dislodgement make nasal interfaces less effective until the patient stabilises.</p>
 
     <div class="grid grid-3" style="margin-bottom:18px;">
-      <div class="card"><span class="tag tag-info">Comfort-first</span><h3>Nasal pillow / prongs</h3><p><b>Pros:</b> minimal deadspace, well tolerated in claustrophobia, allows speech, expectoration &amp; glasses.<br><b>Cons:</b> uncomfortable, poor with nasal congestion or mouth-breathing.</p></div>
-      <div class="card"><span class="tag tag-info">Comfort-first</span><h3>Nasal mask</h3><p><b>Pros:</b> less deadspace, tolerated in claustrophobia, lower aspiration risk if vomiting.<br><b>Cons:</b> nasal bridge pressure, more leak, limited if nasal deformity/blockage.</p></div>
-      <div class="card" style="border-color:var(--teal);"><span class="tag tag-good">Start here — acute default</span><h3>Full face (oro-nasal) mask</h3><p><b>Pros:</b> handles mouth leak, suits edentulous or mouth-breathing patients, better general ventilation, suited to higher illness severity.<br><b>Cons:</b> interferes with speech/eating, higher aspiration/rebreathing &amp; claustrophobia risk.</p></div>
-      <div class="card"><span class="tag tag-warn">Skin-sparing alternative</span><h3>Total face mask</h3><p><b>Pros:</b> good option when a seal can't be achieved with a nasal mask, or skin breakdown develops.<br><b>Cons:</b> interferes with speech/eating/expectoration, eye dryness.</p></div>
-      <div class="card"><span class="tag tag-warn">Prolonged / hypoxaemic failure</span><h3>Helmet</h3><p><b>Pros:</b> suited to hypoxaemic acute failure needing many days of continuous ventilation.<br><b>Cons:</b> higher claustrophobic reaction risk.</p></div>
+      <div class="card">
+        <div class="card-media">
+          <div class="photo-slot photo-sq" role="img" aria-label="Insert photo of a nasal pillow / prongs interface"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+          <div class="card-media-text"><span class="tag tag-info">Comfort-first</span><h3>Nasal pillow / prongs</h3></div>
+        </div>
+        <p><b>Pros:</b> minimal deadspace, well tolerated in claustrophobia, allows speech, expectoration &amp; glasses.<br><b>Cons:</b> uncomfortable, poor with nasal congestion or mouth-breathing.</p></div>
+      <div class="card">
+        <div class="card-media">
+          <div class="photo-slot photo-sq" role="img" aria-label="Insert photo of a nasal mask interface"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+          <div class="card-media-text"><span class="tag tag-info">Comfort-first</span><h3>Nasal mask</h3></div>
+        </div>
+        <p><b>Pros:</b> less deadspace, tolerated in claustrophobia, lower aspiration risk if vomiting, allows speech and eating, fit for less severe cases.<br><b>Cons:</b> nasal bridge pressure, more leak, limited if nasal deformity/blockage.</p></div>
+      <div class="card" style="border-color:var(--teal);">
+        <div class="card-media">
+          <div class="photo-slot photo-sq" role="img" aria-label="Insert photo of a full face (oro-nasal) mask interface"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+          <div class="card-media-text"><span class="tag tag-good">Start here — acute default</span><h3>Full face (oro-nasal) mask</h3></div>
+        </div>
+        <p><b>Pros:</b> handles mouth leak, suits edentulous or mouth-breathing patients, better general ventilation, suited to higher illness severity.<br><b>Cons:</b> interferes with speech/eating, higher aspiration/rebreathing &amp; claustrophobia risk, mouth opening worsens upper airway obstruction.</p></div>
+      <div class="card">
+        <div class="card-media">
+          <div class="photo-slot photo-sq" role="img" aria-label="Insert photo of a total face mask interface"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+          <div class="card-media-text"><span class="tag tag-warn">Skin-sparing alternative</span><h3>Total face mask</h3></div>
+        </div>
+        <p><b>Pros:</b> good option when a seal can't be achieved with a nasal mask, or skin breakdown develops.<br><b>Cons:</b> interferes with speech/eating/expectoration, eye dryness &  claustrophobia risk, mouth opening worsens upper airway obstruction.</p></div>
+      <div class="card">
+        <div class="card-media">
+          <div class="photo-slot photo-sq" role="img" aria-label="Insert photo of a helmet interface"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+          <div class="card-media-text"><span class="tag tag-warn">Prolonged / hypoxaemic failure</span><h3>Helmet</h3></div>
+        </div>
+        <p><b>Pros:</b> suited to hypoxaemic acute failure needing many days of continuous ventilation.<br><b>Cons:</b> higher claustrophobic reaction risk.</p></div>
       <div class="card"><span class="tag tag-teal">Strategy</span><h3>Mask rotation</h3><p>During acute 24-hour NIV: oro-nasal by day, total face at night — relieves the nasal bridge. As the patient improves, switch to a nasal mask and train nasal breathing.</p></div>
     </div>
 
     <div class="grid grid-2">
       <div class="card">
-        <h3>Fitting basics</h3>
+        <h3>Fitting basics <span class="tag tag-info" style="margin-left:6px;vertical-align:2px;">1.10</span></h3>
         <ul>
           <li>Strap tight enough to prevent leak, loose enough for 1–2 fingers to slide underneath</li>
           <li>Size using the manufacturer's sizing gauge against facial landmarks (sides of nostrils, nasal bridge zone, below nose/above lip — or around the mouth for a full-face mask)</li>
           <li>Check pressure points at the nasal bridge/forehead, cheeks, chin and ears before and after treatment</li>
           <li>Humidification isn't routine — consider heated humidification for mucosal dryness or thick secretions (avoid if infection risk is present)</li>
+          <li>Sometimes leakage may be intentional. Some devices allow leakage to wash out CO2. The allowed leakage value, please refer to the manufacturer's manual.</li>
         </ul>
       </div>
       <div class="table-wrap">
@@ -614,6 +683,50 @@
             <tr><td>Air leak to mouth + forehead/nose-bridge sore</td><td>Selector too low / top strap too tight — click up, loosen top strap</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:16px;">
+      <div class="card">
+        <h3>Sizing the mask</h3>
+        <div class="photo-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO PLACEHOLDER</span><span class="ph-desc">Insert diagram: facial landmarks — sides of nostrils, nasal bridge zone, below the nose tip and above the lip</span></div>
+        <ul>
+          <li><b>Nasal mask:</b> place the sizing gauge over the patient's nose; choose the smallest size that is wide enough to extend beyond the nostrils but does not obstruct normal nasal breathing.</li>
+          <li><b>Full face mask:</b> place the sizing gauge over the nose and mouth with the mouth slightly opened; choose the smallest cushion size that is wider than the mouth and long enough to extend beyond the lower lip.</li>
+        </ul>
+        <div class="photo-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO PLACEHOLDER</span><span class="ph-desc">Insert photo: sizing gauge held against the patient's face (nasal &amp; full face versions)</span></div>
+      </div>
+      <div class="card">
+        <h3>Fitting the mask</h3>
+        <ul>
+          <li><b>Nasal mask:</b> top of the mask just above the junction of the nasal bone and cartilage (dorsum of the nasal bridge); don't pinch the nose at the sides; bottom of the mask just above the upper lip; check the patient's comfort.</li>
+          <li><b>Full face mask:</b> top of the mask just above the junction of the nasal bone and cartilage; don't pinch the nose at the sides; bottom of the mask below the lower lip while the mouth is slightly open; check the patient's comfort.</li>
+        </ul>
+        <div class="photo-slot photo-sq" role="img" aria-label="Insert photo: correctly fitted nasal mask and full face mask, side view" style="margin:0 auto 10px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+        <div class="photo-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO PLACEHOLDER</span><span class="ph-desc">Insert diagram: pressure points — nasal bridge &amp; forehead, cheeks, chin, ears, mask straps</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <h3>Exhalation devices <span class="tag tag-info" style="margin-left:6px;vertical-align:2px;">Section 1.9</span></h3>
+      <p>An open single-limb NIV circuit needs an exhalation port — either a vented mask with a built-in port, or a non-vented mask paired with an extra port in the circuit — to wash out CO₂ and prevent rebreathing. Never let tape, clothing or sputum occlude it. Infection risk varies by port type: avoid masks with built-in exhalation ports during acute respiratory failure with possible infection, and always fit a bacterial filter before attaching a disposable exhalation port.</p>
+      <div class="grid grid-4" style="margin-top:14px;">
+        <div class="device-card">
+          <div class="photo-slot photo-sq" role="img" aria-label="Insert photo: one-hole built-in exhalation port"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+          <p style="font-size:13.3px;"><b>Built-in exhalation port</b> — moulded into the mask itself.</p>
+        </div>
+        <div class="device-card">
+          <div class="photo-slot photo-sq" role="img" aria-label="Insert photo: disposable exhalation port"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+          <p style="font-size:13.3px;"><b>Disposable exhalation port</b> — connects a mask that has no built-in port.</p>
+        </div>
+        <div class="device-card">
+          <div class="photo-slot photo-sq" role="img" aria-label="Insert photo: plateau expiratory valve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+          <p style="font-size:13.3px;"><b>Plateau expiratory valve</b> — a variable hole giving a near-constant leak flow across a wide range of operating pressures.</p>
+        </div>
+        <div class="device-card">
+          <div class="photo-slot photo-sq" role="img" aria-label="Insert photo: Whisper Swivel II exhalation valve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.12 0L3 21"/></svg><span class="ph-label">PHOTO</span></div>
+          <p style="font-size:13.3px;"><b>Whisper Swivel II valve</b> — directs exhaled air out quietly; the swivel stops the hose kinking. Avoid pairing with an oro-nasal mask when infection precautions apply (see Infection control).</p>
+        </div>
       </div>
     </div>
   </div>
@@ -683,6 +796,31 @@
     <div class="sec-head"><span class="sec-num">07</span><h2>Physiotherapy assessment &amp; intervention</h2></div>
     <p class="sec-lead">Aims shift with the blood gas picture: stabilise and clear first, then rebuild function once compensated.</p>
 
+    <h3 style="font-family:'Inter';text-transform:none;font-weight:700;font-size:16px;margin-bottom:10px;">Objectives</h3>
+    <div class="grid grid-2" style="margin-bottom:22px;">
+      <div class="callout c-info">
+        <h4>In-patient (2.1.1)</h4>
+        <ul>
+          <li>Reduce work of breathing and improve ventilation efficiency</li>
+          <li>Facilitate weaning and enhance post-extubation support</li>
+          <li>Provide intensive chest physiotherapy and early mobilisation for indicated cases</li>
+          <li>Improve exercise tolerance and functional capacity</li>
+          <li>Enhance pre- and post-discharge support for patients needing home O₂, NIV or a ventilator — including home visits to check compliance with home ventilatory devices</li>
+        </ul>
+      </div>
+      <div class="callout c-info">
+        <h4>Community (2.1.2)</h4>
+        <ul>
+          <li>Improve NIV compliance at home</li>
+          <li>Empower the patient and care-giver in self-management of NIV</li>
+          <li>Prevent complications associated with NIV</li>
+          <li>Monitor signs and symptoms so timely, appropriate management can be given during acute deterioration</li>
+          <li>Empower patients in self-management through breathing control and bronchial hygiene techniques when symptoms and signs worsen</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Inter';text-transform:none;font-weight:700;font-size:16px;margin-bottom:10px;">Aims by blood-gas phase</h3>
     <div class="grid grid-2" style="margin-bottom:20px;">
       <div class="callout c-warn"><h4>Aims — decompensated (pH &lt;7.35)</h4><ul><li>Optimise V/Q matching</li><li>Reduce work of breathing</li><li>Improve ventilation efficiency</li><li>Facilitate airway clearance</li><li>Prevent complications</li></ul></div>
       <div class="callout c-good"><h4>Aims — compensated (pH ≥7.35)</h4><ul><li>Facilitate the weaning process</li><li>Improve functional ability around the bedside</li><li>Improve exercise tolerance</li></ul></div>
@@ -694,7 +832,7 @@
         <ul><li>History &amp; premorbid mobility</li><li>Conscious level &amp; subjective complaint</li></ul>
         <ul><li>Vitals: T, BP, HR, ECG, RR, SpO₂, TcCO₂</li><li>Breathing pattern, accessory muscles, auscultation, cough, sputum</li></ul>
         <ul><li>Limbs: oedema, ROM, power, mobility</li><li>CXR, ABGs, CBP, NPA/culture</li></ul>
-        <ul><li>NIV: mode/settings, O₂, mask fit/leak, TV/MV, synchrony, pressure sores, compliance, airway protection, gastric distension</li><li>DNACPR / advance directives</li></ul>
+        <ul><li>NIV: mode/settings, O₂, mask fit/leak, TV/MV, synchrony, pressure sores, compliance, airway protection, gastric distension</li><li>DNACPR / advance directives/ EoL</li></ul>
       </div>
     </div>
 
@@ -739,11 +877,11 @@
         <h4>Titrating NIV around a treatment session</h4>
         <div class="readout-grid">
           <div class="readout-item"><div class="num">88–92%</div><div class="lbl">titrate O₂ to this SpO₂ target</div></div>
-          <div class="readout-item"><div class="num">+2–3</div><div class="lbl">cmH₂O IPAP as tolerated for adequate TV/SpO₂</div></div>
-          <div class="readout-item sky"><div class="num">+1–2</div><div class="lbl">cmH₂O EPAP (max 8) to aid triggering</div></div>
+          <div class="readout-item"><div class="num">+2–3cmH₂O</div><div class="lbl"> IPAP as tolerated for adequate TV/SpO₂</div></div>
+          <div class="readout-item sky"><div class="num">+1–2cmH₂O</div><div class="lbl">EPAP (max 8cmH₂O) to aid triggering</div></div>
           <div class="readout-item"><div class="num">↺</div><div class="lbl">resume initial settings once treatment ends</div></div>
         </div>
-        <p style="font-size:12px;color:#B6D9D2;margin-top:14px;">Monitor throughout and after: HR/ECG, SpO₂, RR, BP (prn), breathing pattern/accessory muscle use, auscultation, conscious level, perceived dyspnoea, patient–ventilator synchrony, air leak, expired TV, TcCO₂. If settings still need adjustment after treatment, notify nursing/medical staff.</p>
+        <p style="font-size:12px;color:#B6D9D2;margin-top:14px;">⚠️Monitor throughout and after: HR/ECG, SpO₂, RR, BP (prn), breathing pattern/accessory muscle use, auscultation, conscious level, perceived dyspnoea, patient–ventilator synchrony, air leak, expired TV, TcCO₂. If settings still need adjustment after treatment, notify nursing/medical staff.</p>
       </div>
     </div>
   </div>
@@ -786,7 +924,17 @@
     </div>
 
     <div class="callout c-good" style="margin-top:20px;">
-      <h4>Home NIV — who benefits</h4>
+      <h4>🔼NIV compliance enhancement</h4>
+      <ul>
+        <li>Check for proper mask fitting before and after physiotherapy</li>
+        <li>Observe for any associated complications such as facial pressure sore, nasal congestion, nasal/oral dryness, eye irritation and gastric insufflation</li>
+        <li>Teach breathing control to facilitate synchrony with machine</li>
+      </ul>
+    </div>
+
+
+    <div class="callout c-good" style="margin-top:20px;">
+      <h4>🏠Home NIV — who benefits</h4>
       <ul>
         <li>Reduces hospitalisations and exacerbations, improves quality of life</li>
         <li>Titrate to normalise/reduce PaCO₂; fixed pressure-support mode is the first-choice ventilator mode</li>
@@ -813,14 +961,19 @@
       </div>
     </div>
 
+        <div class="card">
+      <h3>Telemonitoring Parameter</h3>
+      <p>Total study time (TST), timing of NIV utilization, extent of leakage, TV, RR, IPAP, EPAP and the O2 saturation are the common data that can be retrieved from most telemonitoring system.</p>
+    </div>
+
     <div class="grid grid-3" style="margin-bottom:20px;">
       <div class="callout c-warn"><h4>Poor application</h4><p>Poor mask fitting or missing accessories → excessive leak.</p></div>
-      <div class="callout c-warn"><h4>Poor compliance</h4><p>Short total study time — check for discomfort (dry mouth, nasal bleeding, alarm noise), poor insight, or claustrophobia.</p></div>
+      <div class="callout c-warn"><h4>Poor compliance</h4><p>Short total study time — check for discomfort (dry mouth, nasal bleeding, alarm noise), poor insight, claustrophobia or machine mal-function.</p></div>
       <div class="callout c-warn"><h4>Sub-optimal therapy</h4><p>Low TV (&lt;8–10 mL/kg), sub-optimal pressure support or insufficient triggered RR — check for chest deterioration, asynchrony, mouth-breathing, or circuit fault.</p></div>
     </div>
 
     <div class="readout" style="margin-bottom:20px;">
-      <h4>Abnormal SpO₂ flag in COPD</h4>
+      <h4>Abnormal SpO₂ in COPD</h4>
       <div class="readout-grid">
         <div class="readout-item"><div class="num">&lt;90%</div><div class="lbl">for ≥5 min, nadir ≤85%</div></div>
         <div class="readout-item"><div class="num">≥30%</div><div class="lbl">of total recording time with SpO₂ &lt;90%</div></div>
@@ -854,7 +1007,7 @@
 
 <footer>
   <div class="container">
-    <p><b>Educational summary only</b> — adapted for teaching purposes from <span class="mono">HAHO-COC-GL-PHY-003-v04</span> (4th edition, issued 25/09/2025, HA Cardiopulmonary Physiotherapy Specialty Group). This page is a learning aid, not a substitute for the full guideline, your unit's protocols, or physician orders — always check the current electronic version before acting on it clinically.</p>
+   <p>This page is an AI genterated summary for internal physiotherapist education only. Always refer to the complete HA guideline and local departmental policy for full clinical detail before making patient-care decisions.<br>Portal validated by: Mr. Henry Chan</p>
   </div>
 </footer>
 
