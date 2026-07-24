@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orthopaedic Physiotherapy Competency Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1d3156;
+    --slate:#496894;
+    --mist:#a4b5d1;
+    --sky:#b0cbe6;
+    --peach:#fed6ce;
+    --correct:#2f8f5b;
+    --correct-tint:#e3f3ea;
+    --incorrect:#c1443a;
+    --incorrect-tint:#fbe4e1;
+    --paper:#f7f9fc;
+    --white:#ffffff;
+    --ink:#182338;
+    --radius:14px;
+    --shadow: 0 10px 30px -12px rgba(29,49,86,0.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 100% -10%, var(--sky) 0%, transparent 55%),
+      radial-gradient(900px 500px at -10% 110%, var(--peach) 0%, transparent 45%),
+      var(--paper);
+    background-attachment:fixed;
+    color:var(--ink);
+    min-height:100vh;
+    line-height:1.55;
+  }
+  h1,h2,h3,.display{font-family:'Fraunces',serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;letter-spacing:0.02em;}
+  .wrap{max-width:880px;margin:0 auto;padding:28px 20px 80px;}
+  a{color:inherit;}
+
+  /* ---------- shared components ---------- */
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--slate);
+    background:var(--white);
+    border:1px solid var(--mist);
+    padding:6px 12px;border-radius:999px;
+  }
+  .card{
+    background:var(--white);
+    border-radius:var(--radius);
+    border:1px solid #e4e9f2;
+    box-shadow:var(--shadow);
+  }
+  .btn{
+    font-family:'Inter',sans-serif;
+    font-weight:600;font-size:15px;
+    border:none;border-radius:10px;
+    padding:13px 22px;cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease, background .15s ease;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn:focus-visible{outline:3px solid var(--sky); outline-offset:2px;}
+  .btn-primary{background:var(--navy);color:#fff;}
+  .btn-primary:hover{background:#152645;}
+  .btn-ghost{background:transparent;color:var(--navy);border:1.5px solid var(--mist);}
+  .btn-ghost:hover{background:var(--white);border-color:var(--slate);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+
+  /* ---------- goniometer mark (signature motif) ---------- */
+  .goni-tick{position:relative;}
+
+  /* ================= INTRO SCREEN ================= */
+  #screen-intro .hero{
+    padding:44px 36px 36px;
+    text-align:left;
+  }
+  #screen-intro h1{
+    font-size:clamp(28px,4.4vw,40px);
+    font-weight:700;color:var(--navy);
+    margin:18px 0 10px;letter-spacing:-0.01em;
+  }
+  #screen-intro .lede{
+    color:#3c4a63;font-size:16px;max-width:60ch;margin:0 0 26px;
+  }
+  .chip-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;}
+  .chip{
+    background:var(--paper);border:1px solid var(--mist);
+    border-radius:10px;padding:12px 16px;min-width:120px;
+    flex:1 1 140px;
+  }
+  .chip .num{font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--navy);display:block;}
+  .chip .lab{font-size:12px;color:var(--slate);text-transform:uppercase;letter-spacing:.05em;}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,#e4e9f2,transparent);margin:30px 0;}
+  #screen-intro .instructions{padding:0 36px 8px;}
+  #screen-intro .instructions ol{padding-left:20px;margin:0;color:#33415c;}
+  #screen-intro .instructions li{margin-bottom:10px;}
+  .name-field{padding:30px 36px 8px;}
+  .name-field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px;}
+  .name-field input{
+    width:100%;padding:12px 14px;border-radius:10px;
+    border:1.5px solid var(--mist);font-size:15px;font-family:'Inter',sans-serif;
+    background:var(--paper);
+  }
+  .name-field input:focus{outline:2.5px solid var(--slate);outline-offset:1px;border-color:var(--slate);}
+  .intro-footer{padding:26px 36px 36px;display:flex;justify-content:flex-end;}
+
+  /* ================= QUIZ SCREEN ================= */
+  #screen-quiz{display:none;}
+  .quiz-topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;margin-bottom:18px;flex-wrap:wrap;
+  }
+  .qcount{font-family:'Fraunces',serif;font-weight:600;color:var(--navy);font-size:17px;}
+  .timer{
+    font-family:'IBM Plex Mono',monospace;background:var(--navy);color:#fff;
+    padding:8px 14px;border-radius:8px;font-size:14px;letter-spacing:.04em;
+  }
+  .progress-track{height:6px;background:#e4e9f2;border-radius:999px;overflow:hidden;margin-bottom:18px;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--slate),var(--navy));width:0%;transition:width .25s ease;}
+
+  .rail{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px;}
+  .rail button{
+    width:32px;height:32px;border-radius:8px;border:1.5px solid var(--mist);
+    background:var(--white);color:var(--slate);font-family:'IBM Plex Mono',monospace;
+    font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:all .12s ease;
+  }
+  .rail button.answered{background:var(--sky);border-color:var(--slate);color:var(--navy);}
+  .rail button.current{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .rail button:focus-visible{outline:3px solid var(--slate);outline-offset:1px;}
+
+  .qcard{padding:32px 34px;}
+  .qtag-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .tag{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    padding:5px 10px;border-radius:999px;font-weight:600;
+  }
+  .tag-knowledge{background:var(--sky);color:var(--navy);}
+  .tag-case{background:var(--peach);color:#7a3b2e;}
+  .tag-select{background:var(--paper);color:var(--slate);border:1px solid var(--mist);}
+
+  .stem{font-size:18px;color:var(--ink);margin:0 0 24px;line-height:1.6;font-weight:500;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    display:flex;align-items:flex-start;gap:12px;
+    padding:14px 16px;border:1.5px solid #e4e9f2;border-radius:10px;
+    cursor:pointer;background:var(--white);transition:all .12s ease;
+  }
+  .opt:hover{border-color:var(--slate);background:var(--paper);}
+  .opt.selected{border-color:var(--navy);background:#eef2fa;}
+  .opt .mark{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    border:1.5px solid var(--mist);display:flex;align-items:center;justify-content:center;
+    margin-top:1px;font-size:12px;color:transparent;
+  }
+  .opt.multi .mark{border-radius:6px;}
+  .opt.selected .mark{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .opt .otext{font-size:15px;color:#26314a;}
+
+  .qnav{display:flex;justify-content:space-between;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .qnav .right-group{display:flex;gap:10px;}
+
+  /* ================= RESULTS SCREEN ================= */
+  #screen-results{display:none;}
+  .result-banner{
+    padding:38px 34px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;
+  }
+  .result-banner.pass{background:var(--correct-tint);}
+  .result-banner.fail{background:var(--incorrect-tint);}
+  .gauge-wrap{flex:0 0 auto;}
+  .result-copy{flex:1 1 240px;}
+  .result-status{
+    font-family:'Fraunces',serif;font-weight:700;font-size:30px;margin:0 0 6px;
+  }
+  .result-status.pass{color:var(--correct);}
+  .result-status.fail{color:var(--incorrect);}
+  .result-sub{color:#3c4a63;font-size:15px;margin:0;}
+
+  .stat-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:#e4e9f2;border-top:1px solid #e4e9f2;
+  }
+  .stat{background:var(--white);padding:20px;text-align:center;}
+  .stat .val{font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--navy);display:block;}
+  .stat .lab{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--slate);}
+
+  .sheet-section{padding:30px 34px;}
+  .sheet-section h3{margin:0 0 4px;color:var(--navy);font-size:17px;}
+  .sheet-section .hint{font-size:13px;color:#5c6b85;margin:0 0 16px;}
+  .sheet-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;}
+  .sheet-cell{
+    aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;cursor:pointer;
+    border:none;color:#fff;
+  }
+  .sheet-cell.correct{background:var(--correct);}
+  .sheet-cell.incorrect{background:var(--incorrect);}
+  .sheet-cell:focus-visible{outline:3px solid var(--navy);outline-offset:2px;}
+
+  .review-section{padding:6px 34px 10px;}
+  .review-item{border-top:1px solid #e4e9f2;padding:26px 0;}
+  .review-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .review-num{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;
+    padding:4px 9px;border-radius:6px;color:#fff;
+  }
+  .review-num.correct{background:var(--correct);}
+  .review-num.incorrect{background:var(--incorrect);}
+  .review-stem{font-size:16px;font-weight:500;margin:0 0 14px;color:var(--ink);}
+  .review-opt{
+    display:flex;gap:10px;padding:9px 12px;border-radius:8px;font-size:14px;margin-bottom:6px;
+    border:1px solid #e4e9f2;color:#3c4a63;
+  }
+  .review-opt.is-correct{background:var(--correct-tint);border-color:var(--correct);color:#1f5c3d;font-weight:600;}
+  .review-opt.is-wrong-pick{background:var(--incorrect-tint);border-color:var(--incorrect);color:#8c2f27;font-weight:600;}
+  .review-explain{
+    margin-top:12px;background:var(--paper);border-left:3px solid var(--slate);
+    padding:12px 16px;border-radius:0 8px 8px 0;font-size:14px;color:#33415c;
+  }
+  .review-explain b{color:var(--navy);}
+
+  .results-footer{padding:30px 34px 40px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+
+  footer.note{text-align:center;color:#7c8aa3;font-size:12px;margin-top:26px;}
+
+  @media (max-width:640px){
+    .wrap{padding:16px 12px 60px;}
+    #screen-intro .hero,#screen-intro .instructions,.name-field,.intro-footer,.qcard,.sheet-section,.review-section,.results-footer{padding-left:20px;padding-right:20px;}
+    .stat-grid{grid-template-columns:repeat(2,1fr);}
+    .sheet-grid{grid-template-columns:repeat(6,1fr);}
+    .result-banner{flex-direction:column;text-align:center;}
+    .qnav{flex-direction:column;}
+    .qnav .right-group{width:100%;justify-content:space-between;}
+    .qnav .right-group .btn{flex:1;}
+  }
+
+  @media print{
+    .rail,.timer,.qnav,#screen-quiz,.results-footer,.intro-footer,#screen-intro{display:none !important;}
+    body{background:#fff;}
+    .card{box-shadow:none;border:1px solid #ccc;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ================= INTRO SCREEN ================= -->
+  <section id="screen-intro">
+    <div class="card hero">
+      <span class="eyebrow">ORTHO&#8209;COMP&#8209;CHECK &middot; Staff Competency Set</span>
+      <h1>Orthopaedic Physiotherapy Competency Check</h1>
+      <p class="lede">A 30-item written assessment for junior physiotherapy staff, covering core orthopaedic knowledge&mdash;special tests, red flags, and clinical reasoning&mdash;alongside patient-case scenarios drawn from everyday ward and outpatient practice.</p>
+
+      <div class="chip-row">
+        <div class="chip"><span class="num">30</span><span class="lab">Questions</span></div>
+        <div class="chip"><span class="num">15 / 15</span><span class="lab">Knowledge / Case</span></div>
+        <div class="chip"><span class="num">~35</span><span class="lab">Minutes (suggested)</span></div>
+        <div class="chip"><span class="num">60%</span><span class="lab">Pass mark (18/30)</span></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card instructions">
+      <h3 style="color:var(--navy);margin-top:0;">Before you begin</h3>
+      <ol>
+        <li>Each question has <b>five options</b>. Most items require you to select <b>one</b> answer; items marked <b>&ldquo;Select 2&rdquo;</b> require exactly two.</li>
+        <li>You may move freely between questions using the number rail or the Previous / Next buttons before submitting.</li>
+        <li>Once you submit, you'll see your score, a marked answer sheet, and a full explanation for every question.</li>
+        <li>This set is for internal training purposes and does not replace clinical judgement or local departmental protocols.</li>
+      </ol>
+    </div>
+
+    <div class="card" style="margin-top:0;">
+      <div class="name-field">
+        <label for="staffName">Staff name (optional, shown on your results)</label>
+        <input type="text" id="staffName" placeholder="e.g. PT, Orthopaedic Rotation">
+      </div>
+      <div class="intro-footer">
+        <button class="btn btn-primary" id="beginBtn">Begin assessment &rarr;</button>
+      </div>
+    </div>
+    <footer class="note">Question set for internal HA physiotherapy training use only &middot; not an official examination</footer>
+  </section>
+
+  <!-- ================= QUIZ SCREEN ================= -->
+  <section id="screen-quiz">
+    <div class="quiz-topbar">
+      <span class="qcount" id="qcount">Question 1 of 30</span>
+      <span class="timer mono" id="timer">00:00</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="rail" id="rail"></div>
+
+    <div class="card qcard">
+      <div class="qtag-row" id="qtagRow"></div>
+      <p class="stem" id="qstem"></p>
+      <div class="options" id="qoptions"></div>
+
+      <div class="qnav">
+        <button class="btn btn-ghost" id="prevBtn">&larr; Previous</button>
+        <div class="right-group">
+          <button class="btn btn-ghost" id="nextBtn">Next &rarr;</button>
+          <button class="btn btn-primary" id="submitBtn" style="display:none;">Submit test</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESULTS SCREEN ================= -->
+  <section id="screen-results">
+    <div class="card">
+      <div class="result-banner" id="resultBanner">
+        <div class="gauge-wrap">
+          <svg id="gaugeSvg" width="180" height="110" viewBox="0 0 180 110"></svg>
+        </div>
+        <div class="result-copy">
+          <p class="result-status" id="resultStatus">&mdash;</p>
+          <p class="result-sub" id="resultSub">&mdash;</p>
+        </div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><span class="val" id="statCorrect">0</span><span class="lab">Correct</span></div>
+        <div class="stat"><span class="val" id="statIncorrect">0</span><span class="lab">Incorrect</span></div>
+        <div class="stat"><span class="val" id="statTime">00:00</span><span class="lab">Time taken</span></div>
+        <div class="stat"><span class="val" id="statStaff">&mdash;</span><span class="lab">Staff</span></div>
+      </div>
+
+      <div class="sheet-section">
+        <h3>Marked answer sheet</h3>
+        <p class="hint">Click a cell to jump to that question's review below.</p>
+        <div class="sheet-grid" id="sheetGrid"></div>
+      </div>
+
+      <div class="divider" style="margin:0 34px;"></div>
+
+      <div class="review-section" id="reviewSection">
+        <h3 style="color:var(--navy);padding-top:24px;">Question-by-question review</h3>
+      </div>
+
+      <div class="results-footer">
+        <button class="btn btn-ghost" id="retakeBtn">Retake this set</button>
+        <button class="btn btn-primary" id="printBtn">Print / save results</button>
+      </div>
+    </div>
+    <footer class="note">Question set adapted for internal training use only &middot; not an official examination</footer>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   QUESTION DATA
+   type: 'knowledge' | 'case'
+   select: 1 or 2 (number of correct answers required)
+   correct: array of correct option indices (0-based)
+   ============================================================ */
+const QUESTIONS = [
+{ type:'knowledge', select:1,
+  stem:"According to the Ottawa Ankle Rules, which finding indicates that an ankle X-ray is required?",
+  options:["Any bruising over the lateral malleolus","Pain on palpation of the anterior talofibular ligament only","Bone tenderness at the posterior edge or tip of the lateral or medial malleolus","Swelling that developed more than 24 hours after injury","A positive anterior drawer test"],
+  correct:[2],
+  explain:"The Ottawa Ankle Rules indicate X-ray if there is bone tenderness at the posterior edge/tip of either malleolus (6 cm zone), or inability to bear weight for four steps both immediately after injury and at assessment. Soft-tissue bruising and ligament laxity tests are not part of the decision rule." },
+
+{ type:'case', select:1,
+  stem:"A 45-year-old office worker reports lateral elbow pain that worsens with gripping and lifting a kettle. On examination there is tenderness over the lateral epicondyle, and pain is reproduced with resisted wrist extension. Which special test would most appropriately help confirm the suspected diagnosis of lateral epicondylalgia (tennis elbow)?",
+  options:["Tinel's sign at the elbow","Cozen's test","Phalen's test","Finkelstein's test","Valgus stress test"],
+  correct:[1],
+  explain:"Cozen's test reproduces pain at the lateral epicondyle during resisted wrist extension with the elbow stabilised, supporting a diagnosis of lateral epicondylalgia. Tinel's/Phalen's screen for nerve entrapment, Finkelstein's is for De Quervain's, and valgus stress tests the medial (ulnar) collateral ligament." },
+
+{ type:'knowledge', select:1,
+  stem:"The McMurray's test primarily assesses for which structure?",
+  options:["ACL integrity","Meniscal tear","MCL laxity","Patellar tracking","Popliteus tendinopathy"],
+  correct:[1],
+  explain:"McMurray's test combines knee flexion with rotation and varus/valgus stress while palpating the joint line; a palpable/audible click with pain suggests a meniscal tear." },
+
+{ type:'case', select:1,
+  stem:"A 68-year-old woman falls at home. She presents with severe hip pain, and the affected leg appears shortened and externally rotated. She is unable to weight bear. This presentation is most consistent with which injury, and what is the appropriate immediate physiotherapy action?",
+  options:["Anterior cruciate ligament tear; begin quadriceps strengthening","Femoral neck / hip fracture; do not mobilise, refer urgently for medical and orthopaedic assessment with imaging","Lumbar disc herniation; commence McKenzie extension exercises","Greater trochanteric bursitis; apply ice and continue weight bearing as tolerated","Sacroiliac joint dysfunction; perform manual mobilisation"],
+  correct:[1],
+  explain:"A shortened, externally rotated limb with inability to weight bear after a fall in an older adult is classic for a hip (femoral neck) fracture. The patient should not be mobilised; urgent medical assessment and imaging are required before any weight-bearing or exercise intervention." },
+
+{ type:'knowledge', select:1,
+  stem:"Which special test is performed by passively flexing the shoulder to 90&deg; and then internally rotating the arm, and is used to screen for subacromial impingement?",
+  options:["Neer's test","Hawkins-Kennedy test","Empty can test","Speed's test","Apprehension test"],
+  correct:[1],
+  explain:"The Hawkins-Kennedy test involves 90&deg; shoulder flexion followed by internal rotation, compressing the supraspinatus tendon under the coracoacromial arch. Neer's test instead uses forced passive overhead flexion with the scapula stabilised." },
+
+{ type:'case', select:1,
+  stem:"A 30-year-old recreational basketball player feels a pop in his knee while pivoting, followed by rapid swelling within a few hours. On examination, Lachman's test is positive. This clinical picture is most consistent with an acute ACL rupture. What is the most appropriate immediate physiotherapy management focus in the first 1&ndash;2 weeks?",
+  options:["Aggressive open-chain resisted knee extension to strengthen quadriceps","Immediate return to pivoting sports with a knee brace","Reducing swelling and pain (PRICE principles), restoring full passive extension, and early quadriceps activation","High-velocity knee thrust manipulation","Complete immobilisation in full extension for 6 weeks"],
+  correct:[2],
+  explain:"Early management of an acute ACL injury prioritises effusion and pain control, regaining full knee extension (to prevent arthrofibrosis), and gentle quadriceps activation, rather than aggressive loading, immobilisation, or premature return to sport." },
+
+{ type:'knowledge', select:1,
+  stem:"The empty can (Jobe's) test is most specific for assessing which muscle/tendon?",
+  options:["Infraspinatus","Subscapularis","Supraspinatus","Teres minor","Long head of biceps"],
+  correct:[2],
+  explain:"The empty can test positions the shoulder in abduction, forward flexion and internal rotation (as if emptying a can), isolating the supraspinatus against resistance." },
+
+{ type:'case', select:1,
+  stem:"A 55-year-old woman reports progressively worsening shoulder stiffness over four months. She now has a global loss of both active and passive range of motion, and her resting pain has largely settled. This presentation is most consistent with which phase of adhesive capsulitis, and what is the appropriate management emphasis?",
+  options:["Freezing (painful) phase; emphasise pain relief and gentle active-assisted range of motion, avoid aggressive stretching","Frozen (stiffening) phase; emphasise sustained end-range stretching and joint mobilisation as tolerated","Thawing (resolution) phase; emphasise high-load resistance training only","Acute rotator cuff tear; emphasise complete rest and immobilisation","Calcific tendinitis; emphasise ultrasound-guided needling referral only"],
+  correct:[1],
+  explain:"With pain settling but stiffness dominant and global loss of both active and passive range, this fits the frozen (stiffening/plateau) phase, where sustained stretching and mobilisation techniques are generally better tolerated and more appropriate than in the acutely painful freezing phase." },
+
+{ type:'knowledge', select:2,
+  stem:"Which TWO of the following are recognised red-flag features of cauda equina syndrome requiring urgent same-day referral?",
+  options:["Saddle anaesthesia","Unilateral calf pain worse with dorsiflexion","New-onset bladder retention or incontinence","Morning stiffness lasting under 30 minutes","Pain that improves with rest"],
+  correct:[0,2],
+  explain:"Saddle anaesthesia and new bladder/bowel dysfunction (retention or incontinence) are core red flags for cauda equina syndrome and warrant emergency referral for imaging and possible surgical decompression." },
+
+{ type:'case', select:1,
+  stem:"A 25-year-old man presents with acute low back pain radiating into both legs, saddle anaesthesia, and new-onset urinary retention. These findings are red flags for cauda equina syndrome. What is the appropriate physiotherapy action?",
+  options:["Proceed with routine lumbar spine assessment and issue home exercises","Refer for urgent same-day medical/surgical assessment (emergency department) for possible MRI and decompression","Trial spinal traction before referring","Advise the patient to monitor symptoms for one week and return if worsening","Perform a high-velocity lumbar manipulation to relieve nerve compression"],
+  correct:[1],
+  explain:"Suspected cauda equina syndrome is a medical emergency. The patient must be referred immediately for urgent assessment and MRI, as delayed decompression risks permanent neurological deficit; routine treatment or manipulation is inappropriate and unsafe." },
+
+{ type:'knowledge', select:1,
+  stem:"A post-operative order states 'toe-touch weight bearing (TTWB)'. This means the patient should:",
+  options:["Bear full body weight through the operated limb at all times","Avoid placing the operated foot on the ground entirely","Use the foot only for balance, with minimal to no weight transferred through it","Bear approximately 50% of body weight through the limb","Progress to full weight bearing within 48 hours regardless of surgeon order"],
+  correct:[2],
+  explain:"Toe-touch weight bearing allows the foot to contact the ground for balance and proprioception only, with essentially no load transferred through the limb &ndash; distinct from partial (a set percentage of body weight) or full weight bearing." },
+
+{ type:'case', select:1,
+  stem:"A 60-year-old woman is two days post total knee replacement. She has moderate pain and swelling, and has achieved knee range of 0&ndash;70&deg; with therapy. What is the most appropriate physiotherapy priority for this patient on post-operative day 2?",
+  options:["Discharge home immediately with no further input, as goals are already met","Prioritise achieving full knee extension and progressing flexion, pain management, safe mobility/transfers, and early weight bearing as per surgeon protocol","Avoid any knee movement until day 10 to protect the wound","Begin high-impact plyometric training to accelerate recovery","Focus solely on upper limb strengthening"],
+  correct:[1],
+  explain:"Early post-TKR rehabilitation focuses on achieving full extension (critical for normal gait), progressing flexion, effective pain and swelling management, and safe functional mobility, guided by the surgical protocol &ndash; not prolonged immobility or high-impact loading." },
+
+{ type:'knowledge', select:1,
+  stem:"A Colles' fracture (distal radius fracture with dorsal displacement/angulation) classically produces which deformity?",
+  options:["Garden spade deformity","Dinner fork deformity","Boutonni&egrave;re deformity","Swan neck deformity","Bayonet deformity, seen only in children"],
+  correct:[1],
+  explain:"The dorsal displacement and angulation of a Colles' fracture produces the characteristic 'dinner fork' deformity when viewed from the side." },
+
+{ type:'case', select:1,
+  stem:"A 40-year-old construction worker sustains an inversion ankle injury. He is unable to take more than a couple of steps and is tender to palpation over the tip of the lateral malleolus. Applying the Ottawa Ankle Rules to this presentation, what is the appropriate next step?",
+  options:["No imaging required; proceed directly with functional rehabilitation","Refer for an ankle X-ray, as he meets criteria (bone tenderness at the malleolar tip and inability to bear weight)","Refer for an MRI as first-line imaging","Apply a below-knee cast without imaging","Reassure and discharge with no follow-up"],
+  correct:[1],
+  explain:"He meets two Ottawa Ankle Rule criteria &ndash; bone tenderness at the malleolar tip and inability to bear weight for four steps &ndash; so an X-ray is indicated before proceeding with rehabilitation." },
+
+{ type:'knowledge', select:1,
+  stem:"Following a posterior-approach total hip replacement, which movement combination should be avoided in the early post-operative phase?",
+  options:["Hip flexion beyond 90&deg; combined with adduction and internal rotation","Hip extension combined with abduction","Knee flexion in isolation","Ankle dorsiflexion combined with hip flexion","Shoulder flexion during transfers"],
+  correct:[0],
+  explain:"After a posterior approach THR, the combination of hip flexion beyond 90&deg;, adduction, and internal rotation is the classic dislocation-risk position and should be avoided during early rehabilitation." },
+
+{ type:'case', select:1,
+  stem:"A patient is three weeks post total hip replacement (posterior approach). While bending forward to pick something off the floor, she feels a sudden sharp groin pain; the leg is now shortened and internally rotated, and she is unable to weight bear. This presentation is concerning for which complication, and what is the appropriate action?",
+  options:["Normal post-operative stiffness; continue exercises as planned","Possible hip dislocation; stop weight bearing/movement, keep the limb supported, and refer urgently for medical assessment","Deep vein thrombosis; elevate the leg and continue mobilising","Superficial wound infection; apply a dressing and continue therapy","Sciatic nerve irritation; proceed with nerve gliding exercises"],
+  correct:[1],
+  explain:"Sudden pain with limb shortening and rotation after a precaution-violating movement (forward flexion/adduction/internal rotation) is concerning for a posterior hip dislocation. The patient should not be moved or mobilised further; urgent medical assessment for reduction is required." },
+
+{ type:'knowledge', select:1,
+  stem:"A Grade II ligament sprain is best described as:",
+  options:["Microscopic tearing with no loss of structural integrity and minimal swelling","A partial tear with some laxity but the ligament remains grossly intact","A complete rupture with gross joint instability","An avulsion fracture at the ligament insertion","A chronic overuse tendinopathy"],
+  correct:[1],
+  explain:"Grade I = microscopic/mild stretch with minimal laxity; Grade II = partial tear with some laxity but continuity maintained; Grade III = complete rupture with gross instability." },
+
+{ type:'case', select:1,
+  stem:"A competitive cyclist reports numbness and tingling in the ring and little finger after long rides gripping the handlebars, with a positive Tinel's sign at the elbow. This distribution and aggravating factor is most suggestive of which condition?",
+  options:["Carpal tunnel syndrome (median nerve at the wrist)","Cubital tunnel syndrome (ulnar nerve at the elbow) or handlebar-related ulnar nerve compression","De Quervain's tenosynovitis","C6 cervical radiculopathy","Radial tunnel syndrome"],
+  correct:[1],
+  explain:"Numbness in the ulnar nerve distribution (ring and little finger), aggravated by prolonged elbow flexion or wrist extension/compression at the handlebars, with a positive Tinel's at the elbow, points to ulnar nerve compression (cubital tunnel or handlebar palsy) rather than median nerve pathology." },
+
+{ type:'knowledge', select:1,
+  stem:"In Maitland's peripheral joint mobilisation grading, a Grade IV mobilisation is best described as:",
+  options:["A small amplitude movement performed at the beginning of range","A small amplitude movement performed at the very end of available range, into resistance","A large amplitude movement performed within the mid-range, not reaching the limit","A large amplitude movement performed up to the limit of range","A high-velocity thrust technique beyond anatomical range"],
+  correct:[1],
+  explain:"Grade IV is a small-amplitude oscillation performed at the very end of available range, into tissue resistance &ndash; typically used to address stiffness. Grades I&ndash;II are large amplitude in early/mid range (used mainly for pain), Grade III is large amplitude up to the limit." },
+
+{ type:'case', select:1,
+  stem:"A 70-year-old woman with known osteoporosis develops sudden mid-back pain after minor bending, and imaging confirms a T12 vertebral compression fracture. In the early rehabilitation of this patient, which exercise approach is most appropriate?",
+  options:["Trunk flexion exercises such as sit-ups to strengthen the abdominals","Gentle postural re-education and extension-biased exercises, avoiding combined flexion and rotation","High-repetition spinal rotation with resistance bands","Immediate return to unrestricted high-impact aerobic exercise","Complete bed rest for six weeks with no mobilisation"],
+  correct:[1],
+  explain:"For osteoporotic vertebral compression fractures, flexion-based and combined flexion-rotation movements increase fracture risk and are avoided; gentle postural extension exercises and early safe mobilisation are favoured over prolonged bed rest." },
+
+{ type:'knowledge', select:2,
+  stem:"Which TWO clinical findings should raise suspicion of a deep vein thrombosis (DVT) in a lower limb following prolonged immobilisation?",
+  options:["Unilateral calf swelling with warmth","Bilateral symmetrical ankle oedema present since birth","Localised calf tenderness with a palpable cord","Reduced deep tendon reflexes","Painless pitting oedema in both feet at end of day"],
+  correct:[0,2],
+  explain:"Unilateral calf swelling with warmth, and localised tenderness with a palpable venous cord, are classic features raising suspicion of DVT and warrant urgent medical assessment (e.g. Doppler ultrasound) rather than continued exercise." },
+
+{ type:'case', select:1,
+  stem:"A patient remains in a leg cast for a tibial fracture. Ten days post-injury she reports increasing unilateral calf pain, swelling, and warmth. Given the risk of DVT in this scenario, what is the appropriate physiotherapy action?",
+  options:["Continue with the planned exercise session and reassess in a week","Withhold exercise, avoid massaging or vigorously moving the limb, and refer urgently for medical assessment (e.g. Doppler ultrasound)","Apply deep tissue massage to the calf to relieve the swelling","Encourage the patient to increase ambulation to 'work through' the swelling","Apply heat therapy directly to the calf to reduce discomfort"],
+  correct:[1],
+  explain:"New unilateral calf swelling, warmth and pain after immobilisation are red flags for DVT. Exercise, massage and heat should be withheld, and the patient referred urgently for medical assessment, as mobilising a clot can precipitate pulmonary embolism." },
+
+{ type:'knowledge', select:2,
+  stem:"A patient presents six hours after a tibial fracture with severe leg pain out of proportion to the injury. Which TWO findings are early warning signs of acute compartment syndrome?",
+  options:["Pain on passive stretch of the muscles within the compartment","Absent pedal pulses (a late and unreliable early sign)","Disproportionate, escalating pain unrelieved by analgesia","Warm, well-perfused skin with normal sensation","Slow capillary refill only"],
+  correct:[0,2],
+  explain:"Early compartment syndrome presents with pain disproportionate to the injury that is unrelieved by usual analgesia, and pain on passive stretch of the affected compartment's muscles. Pulselessness and pallor are late, unreliable signs and should not be awaited before escalating concern." },
+
+{ type:'case', select:1,
+  stem:"A runner presents with gradual-onset anterior knee pain, worse on stairs and after prolonged sitting. There is a positive patellar grind test, but no swelling or instability. This presentation is most consistent with patellofemoral pain syndrome. Which management approach is most appropriate?",
+  options:["Complete rest from all activity for three months","Hip and quadriceps strengthening (including gluteal/hip abductor work), activity modification, and gradual load progression","Immediate surgical referral for patellar realignment","Aggressive deep friction massage over the patellar tendon only","Long-term rigid knee bracing as the sole intervention"],
+  correct:[1],
+  explain:"Current evidence supports a combined hip and quadriceps strengthening programme, activity/load modification, and gradual progression as first-line management for patellofemoral pain syndrome, rather than prolonged rest, surgery, or passive-only treatments." },
+
+{ type:'knowledge', select:1,
+  stem:"The FABER (Patrick's) test &ndash; Flexion, Abduction, External Rotation of the hip &ndash; is used to screen for pathology at which joint(s)?",
+  options:["Knee and ankle","Hip joint and sacroiliac joint","Lumbar facet joints only","Shoulder joint","Elbow joint"],
+  correct:[1],
+  explain:"The FABER/Patrick's test positions the hip into flexion, abduction and external rotation, stressing both the hip joint and the sacroiliac joint; pain location helps differentiate the source." },
+
+{ type:'case', select:1,
+  stem:"A diabetic patient reports plantar heel pain that is worst with the first steps in the morning, eases slightly with activity, then worsens again later in the day. This presentation is classic for plantar fasciitis. Which initial management strategy is most appropriate?",
+  options:["Immediate surgical release","Stretching of the plantar fascia and Achilles tendon, activity modification, appropriate footwear/orthotic support, and gradual loading","Strict non-weight bearing for six weeks","High-dose corticosteroid injection as first-line therapy by the physiotherapist","Avoid all stretching and rely solely on rest"],
+  correct:[1],
+  explain:"First-line management of plantar fasciitis is conservative: plantar fascia and calf/Achilles stretching, footwear or orthotic support, activity modification, and gradual reloading &ndash; surgery and injections are reserved for refractory cases and are not physiotherapy first-line or within scope to initiate." },
+
+{ type:'knowledge', select:1,
+  stem:"The Lachman test, performed with the knee flexed to approximately 20&ndash;30&deg;, is considered more sensitive than the anterior drawer test for detecting:",
+  options:["Posterior cruciate ligament tear","Anterior cruciate ligament tear","Medial meniscus tear","Lateral collateral ligament tear","Patellar instability"],
+  correct:[1],
+  explain:"The Lachman test is widely regarded as the most sensitive clinical test for ACL rupture, as the slight knee flexion reduces hamstring guarding compared with the anterior drawer test performed at 90&deg;." },
+
+{ type:'case', select:1,
+  stem:"A patient presents two days after a rear-end motor vehicle collision with neck pain, stiffness, headache and dizziness. There is no neurological deficit and imaging excludes fracture. This presentation is consistent with Whiplash-Associated Disorder (WAD). Based on current evidence, which management approach is most appropriate?",
+  options:["Prolonged rigid cervical collar immobilisation for six weeks","Early active range-of-motion exercises, reassurance, and encouragement to remain active, avoiding prolonged immobilisation","Complete bed rest until all symptoms resolve","Immediate high-velocity cervical manipulation","Avoid all neck movement indefinitely to prevent further injury"],
+  correct:[1],
+  explain:"Evidence-based WAD management favours early active mobilisation, reassurance, and maintaining usual activity, as this is associated with better outcomes than prolonged collar immobilisation or rest, which can promote chronicity and fear-avoidance." },
+
+{ type:'knowledge', select:2,
+  stem:"When prescribing exercise for a patient with osteoporosis and a history of vertebral compression fracture, which TWO of the following should generally be avoided?",
+  options:["Weight-bearing walking","Combined spinal flexion with rotation (e.g. toe-touches with a twist)","High-impact activities such as jumping in a deconditioned patient","Gentle postural extension exercises","Isometric abdominal bracing"],
+  correct:[1,2],
+  explain:"Combined spinal flexion with rotation, and high-impact/jumping activities in a deconditioned osteoporotic patient, both increase vertebral fracture risk and are generally avoided; weight-bearing walking and postural extension work are typically encouraged." },
+
+{ type:'case', select:1,
+  stem:"A 58-year-old woman presents with symmetrical swelling and pain in the MCP and PIP joints of both hands, morning stiffness lasting over an hour, and generalised fatigue. This presentation is more consistent with rheumatoid arthritis than osteoarthritis. Which feature most helps differentiate the two?",
+  options:["Joint pain that worsens with activity and improves with rest","Prolonged morning stiffness (over one hour) with symmetrical small-joint (MCP/PIP) involvement","Presence of Heberden's and Bouchard's nodes","Pain confined to a single weight-bearing joint","Crepitus on joint movement"],
+  correct:[1],
+  explain:"Prolonged morning stiffness (typically >1 hour) with symmetrical small-joint involvement is characteristic of an inflammatory arthropathy such as rheumatoid arthritis, whereas OA more typically shows brief stiffness, asymmetry, Heberden's/Bouchard's nodes and mechanical, activity-related pain." }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let current = 0;
+const answers = new Array(QUESTIONS.length).fill(null); // arrays of selected indices
+let startTime = null, timerInterval = null, elapsedSeconds = 0;
+
+const railEl = document.getElementById('rail');
+const qcountEl = document.getElementById('qcount');
+const progressFill = document.getElementById('progressFill');
+const qtagRow = document.getElementById('qtagRow');
+const qstemEl = document.getElementById('qstem');
+const qoptionsEl = document.getElementById('qoptions');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+const timerEl = document.getElementById('timer');
+
+/* ---------- build number rail ---------- */
+function buildRail(){
+  railEl.innerHTML = '';
+  QUESTIONS.forEach((q,i)=>{
+    const b = document.createElement('button');
+    b.textContent = i+1;
+    b.addEventListener('click', ()=>{ current = i; render(); });
+    railEl.appendChild(b);
+  });
+}
+
+function updateRail(){
+  [...railEl.children].forEach((b,i)=>{
+    b.classList.toggle('answered', !!(answers[i] && answers[i].length));
+    b.classList.toggle('current', i===current);
+  });
+}
+
+/* ---------- render current question ---------- */
+function render(){
+  const q = QUESTIONS[current];
+  qcountEl.textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  progressFill.style.width = `${((current+1)/QUESTIONS.length)*100}%`;
+
+  qtagRow.innerHTML = '';
+  const t1 = document.createElement('span');
+  t1.className = 'tag ' + (q.type==='knowledge' ? 'tag-knowledge' : 'tag-case');
+  t1.textContent = q.type==='knowledge' ? 'Knowledge' : 'Case-based';
+  qtagRow.appendChild(t1);
+  const t2 = document.createElement('span');
+  t2.className = 'tag tag-select';
+  t2.textContent = q.select===2 ? 'Select 2' : 'Select 1';
+  qtagRow.appendChild(t2);
+
+  qstemEl.innerHTML = q.stem;
+
+  qoptionsEl.innerHTML = '';
+  const picked = answers[current] || [];
+  q.options.forEach((optText, idx)=>{
+    const row = document.createElement('div');
+    row.className = 'opt' + (q.select===2 ? ' multi' : '') + (picked.includes(idx) ? ' selected' : '');
+    row.tabIndex = 0;
+    row.setAttribute('role','button');
+    row.innerHTML = `<span class="mark">${picked.includes(idx) ? '&#10003;' : ''}</span><span class="otext">${optText}</span>`;
+    row.addEventListener('click', ()=> toggleOption(idx));
+    row.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleOption(idx);} });
+    qoptionsEl.appendChild(row);
+  });
+
+  prevBtn.disabled = current===0;
+  nextBtn.style.display = current===QUESTIONS.length-1 ? 'none' : 'inline-flex';
+  submitBtn.style.display = current===QUESTIONS.length-1 ? 'inline-flex' : 'none';
+
+  updateRail();
+}
+
+function toggleOption(idx){
+  const q = QUESTIONS[current];
+  let picked = answers[current] ? [...answers[current]] : [];
+  if(q.select===1){
+    picked = picked.includes(idx) ? [] : [idx];
+  } else {
+    if(picked.includes(idx)){
+      picked = picked.filter(i=>i!==idx);
+    } else {
+      picked.push(idx);
+      if(picked.length > q.select) picked.shift();
+    }
+  }
+  answers[current] = picked;
+  render();
+}
+
+prevBtn.addEventListener('click', ()=>{ if(current>0){ current--; render(); } });
+nextBtn.addEventListener('click', ()=>{ if(current<QUESTIONS.length-1){ current++; render(); } });
+submitBtn.addEventListener('click', submitTest);
+
+/* ---------- timer ---------- */
+function startTimer(){
+  startTime = Date.now();
+  timerInterval = setInterval(()=>{
+    elapsedSeconds = Math.floor((Date.now()-startTime)/1000);
+    timerEl.textContent = fmtTime(elapsedSeconds);
+  },1000);
+}
+function stopTimer(){ clearInterval(timerInterval); }
+function fmtTime(sec){
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+/* ---------- begin ---------- */
+document.getElementById('beginBtn').addEventListener('click', ()=>{
+  document.getElementById('screen-intro').style.display='none';
+  document.getElementById('screen-quiz').style.display='block';
+  buildRail();
+  current = 0;
+  render();
+  startTimer();
+});
+
+/* ---------- scoring helpers ---------- */
+function isCorrect(qIndex){
+  const q = QUESTIONS[qIndex];
+  const picked = (answers[qIndex]||[]).slice().sort();
+  const correct = q.correct.slice().sort();
+  if(picked.length !== correct.length) return false;
+  return picked.every((v,i)=>v===correct[i]);
+}
+
+/* ---------- submit ---------- */
+function submitTest(){
+  stopTimer();
+  const total = QUESTIONS.length;
+  let correctCount = 0;
+  QUESTIONS.forEach((q,i)=>{ if(isCorrect(i)) correctCount++; });
+  const incorrectCount = total - correctCount;
+  const pct = Math.round((correctCount/total)*100);
+  const pass = pct >= 60;
+
+  document.getElementById('screen-quiz').style.display='none';
+  document.getElementById('screen-results').style.display='block';
+
+  const banner = document.getElementById('resultBanner');
+  banner.className = 'result-banner ' + (pass ? 'pass' : 'fail');
+  const statusEl = document.getElementById('resultStatus');
+  statusEl.className = 'result-status ' + (pass ? 'pass' : 'fail');
+  statusEl.textContent = pass ? 'Pass' : 'Not yet passed';
+  document.getElementById('resultSub').textContent = `${correctCount} / ${total} correct (${pct}%) &middot; pass mark is 60%`.replace('&middot;','\u00B7');
+
+  document.getElementById('statCorrect').textContent = correctCount;
+  document.getElementById('statIncorrect').textContent = incorrectCount;
+  document.getElementById('statTime').textContent = fmtTime(elapsedSeconds);
+  const staffName = document.getElementById('staffName').value.trim();
+  document.getElementById('statStaff').textContent = staffName || '\u2014';
+
+  drawGauge(pct, pass);
+  buildSheet();
+  buildReview();
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------- goniometer-style score gauge ---------- */
+function drawGauge(pct, pass){
+  const svg = document.getElementById('gaugeSvg');
+  const cx=90, cy=95, r=75;
+  const angleFor = (p)=> Math.PI - (p/100)*Math.PI; // 180deg (0%) -> 0deg (100%)
+  const pt = (ang)=> [cx + r*Math.cos(ang), cy - r*Math.sin(ang)];
+  const [sx,sy] = pt(Math.PI);
+  const [ex,ey] = pt(0);
+  const [mx,my] = pt(angleFor(pct));
+  const color = pass ? getComputedStyle(document.documentElement).getPropertyValue('--correct').trim()
+                      : getComputedStyle(document.documentElement).getPropertyValue('--incorrect').trim();
+  const largeArc = pct > 50 ? 1 : 0;
+
+  svg.innerHTML = `
+    <path d="M ${sx} ${sy} A ${r} ${r} 0 1 1 ${ex} ${ey}" fill="none" stroke="#dfe6f0" stroke-width="12" stroke-linecap="round"/>
+    <path d="M ${sx} ${sy} A ${r} ${r} 0 ${largeArc} 1 ${mx} ${my}" fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round"/>
+    <line x1="${cx}" y1="${cy}" x2="${mx}" y2="${my}" stroke="#1d3156" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="6" fill="#1d3156"/>
+    <text x="${cx}" y="${cy-14}" text-anchor="middle" font-family="Fraunces, serif" font-weight="700" font-size="26" fill="#1d3156">${pct}%</text>
+  `;
+}
+
+/* ---------- marked answer sheet ---------- */
+function buildSheet(){
+  const grid = document.getElementById('sheetGrid');
+  grid.innerHTML = '';
+  QUESTIONS.forEach((q,i)=>{
+    const ok = isCorrect(i);
+    const cell = document.createElement('button');
+    cell.className = 'sheet-cell ' + (ok ? 'correct' : 'incorrect');
+    cell.textContent = i+1;
+    cell.title = `Question ${i+1}: ${ok ? 'Correct' : 'Incorrect'}`;
+    cell.addEventListener('click', ()=>{
+      document.getElementById('review-'+i).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    grid.appendChild(cell);
+  });
+}
+
+/* ---------- full review ---------- */
+function buildReview(){
+  const section = document.getElementById('reviewSection');
+  section.querySelectorAll('.review-item').forEach(n=>n.remove());
+  QUESTIONS.forEach((q,i)=>{
+    const ok = isCorrect(i);
+    const picked = answers[i] || [];
+    const item = document.createElement('div');
+    item.className = 'review-item';
+    item.id = 'review-'+i;
+
+    let optsHtml = '';
+    q.options.forEach((opt, idx)=>{
+      const isCorrectOpt = q.correct.includes(idx);
+      const wasPicked = picked.includes(idx);
+      let cls = '';
+      if(isCorrectOpt) cls = 'is-correct';
+      else if(wasPicked && !isCorrectOpt) cls = 'is-wrong-pick';
+      const marker = isCorrectOpt ? '&#10003; ' : (wasPicked ? '&#10007; ' : '');
+      optsHtml += `<div class="review-opt ${cls}">${marker}${opt}</div>`;
+    });
+
+    item.innerHTML = `
+      <div class="review-head">
+        <span class="review-num ${ok?'correct':'incorrect'}">Q${(i+1).toString().padStart(2,'0')} &middot; ${ok?'Correct':'Incorrect'}</span>
+        <span class="tag ${q.type==='knowledge'?'tag-knowledge':'tag-case'}">${q.type==='knowledge'?'Knowledge':'Case-based'}</span>
+      </div>
+      <p class="review-stem">${q.stem}</p>
+      <div class="review-opts">${optsHtml}</div>
+      <div class="review-explain"><b>Explanation:</b> ${q.explain}</div>
+    `;
+    section.appendChild(item);
+  });
+}
+
+/* ---------- retake / print ---------- */
+document.getElementById('retakeBtn').addEventListener('click', ()=>{
+  answers.fill(null);
+  current = 0;
+  elapsedSeconds = 0;
+  document.getElementById('screen-results').style.display='none';
+  document.getElementById('screen-intro').style.display='block';
+  window.scrollTo({top:0});
+});
+document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+</script>
+</body>
+</html>
