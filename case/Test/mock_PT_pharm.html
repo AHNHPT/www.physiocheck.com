@@ -458,12 +458,12 @@
 
 <script>
 const QUESTIONS = [
-{topic:"Painkiller side effects",type:"Knowledge",q:"Which of the following is a recognised adverse effect of long-term NSAID (e.g. ibuprofen, diclofenac) use that a physiotherapist should watch for in patients undergoing rehabilitation?",
- options:["Improved wound healing","Gastrointestinal bleeding / peptic ulceration","Increased bone density","Enhanced muscle strength"],correct:1,
+{topic:"Painkiller",type:"Knowledge",q:"Which of the following is a recognised adverse effect of long-term NSAID (e.g. ibuprofen, diclofenac) use that a physiotherapist should watch for in patients undergoing rehabilitation?",
+ options:["Worsen wound healing","Gastrointestinal bleeding / peptic ulceration","Decrease bone density","Induce muscle weakness"],correct:1,
  explain:"NSAIDs inhibit COX enzymes, reducing protective gastric prostaglandins, which increases the risk of GI irritation, ulceration and bleeding. Renal impairment and cardiovascular risk (fluid retention, hypertension) are also concerns, especially with long-term use in elderly patients."},
 
-{topic:"Painkiller side effects",type:"Case-based",q:"A 68-year-old on regular diclofenac for chronic knee osteoarthritis reports epigastric pain and passing dark, tarry stools before today's physiotherapy session. What is the most appropriate action?",
- options:["Proceed with the planned strengthening exercises as scheduled","Advise the patient to take an extra dose of diclofenac to control the pain first","Withhold exercise and refer promptly for medical review (possible GI bleed)","Ask the patient to increase oral fluid intake and continue as normal"],correct:2,
+{topic:"Painkiller",type:"Case-based",q:"A 68-year-old on regular diclofenac for chronic knee osteoarthritis reports epigastric pain and passing dark, tarry stools before today's physiotherapy session. What is the most appropriate action?",
+ options:["Proceed with the planned strengthening exercises as scheduled","Advise the patient to take an extra dose of diclofenac to control the pain first","Withhold exercise and refer promptly for medical review","Ask the patient to increase oral fluid intake and continue as normal"],correct:2,
  explain:"Dark, tarry stools (melena) with epigastric pain suggest a possible upper GI bleed, a recognised NSAID complication. This warrants urgent medical referral rather than continuing routine physiotherapy."},
 
 {topic:"Analgesic ladder",type:"Knowledge",q:"According to the WHO analgesic ladder, what is the recommended stepwise approach to pain management?",
@@ -471,31 +471,31 @@ const QUESTIONS = [
  explain:"The WHO ladder starts with non-opioids (e.g. paracetamol, NSAIDs) ± adjuvants for mild pain, steps up to weak opioids (e.g. codeine, tramadol) for moderate pain, and finally strong opioids (e.g. morphine) for severe pain, with non-opioids typically continued throughout."},
 
 {topic:"Analgesic ladder",type:"Case-based",q:"A patient with cancer-related low back pain, currently controlled on paracetamol alone, reports the pain has worsened and is no longer adequately controlled. Following the WHO analgesic ladder, what change would you expect the medical team to consider next?",
- options:["Stopping all analgesia and relying on physiotherapy alone","Adding a weak opioid such as codeine or tramadol to the paracetamol","Immediately starting a strong opioid such as morphine, skipping intermediate steps","Switching to a topical NSAID only"],correct:1,
+ options:["Stopping all analgesia and relying on physiotherapy alone","Adding a weak opioid such as codeine or tramadol to the paracetamol","Immediately starting a strong opioid such as morphine, skipping intermediate steps","Switching to a topical NSAID"],correct:1,
  explain:"When Step 1 (non-opioid) no longer controls pain, the next step is a weak opioid added to — not replacing — the non-opioid, before progressing to strong opioids if pain remains uncontrolled."},
 
-{topic:"COPD inhalers",type:"Knowledge",q:"Which class of inhaled medication is used for quick relief of acute breathlessness in COPD, e.g. salbutamol?",
+{topic:"Puff",type:"Knowledge",q:"Which class of inhaled medication is used for quick relief of acute breathlessness in COPD, e.g. salbutamol?",
  options:["Long-acting muscarinic antagonist (LAMA)","Inhaled corticosteroid (ICS)","Short-acting beta-2 agonist (SABA)","Leukotriene receptor antagonist"],correct:2,
  explain:"SABAs such as salbutamol act quickly (within minutes) to relax airway smooth muscle and are used as 'reliever' inhalers, distinct from long-acting bronchodilators (LABA/LAMA) or ICS used for maintenance/anti-inflammatory control."},
 
-{topic:"COPD inhalers",type:"Case-based",q:"During pulmonary rehabilitation, a COPD patient takes a dose of salbutamol MDI as a pre-exercise reliever. Shortly after, they report a fine hand tremor and feel their heart racing. What is the most likely explanation?",
- options:["An allergic reaction requiring emergency treatment","A common, expected beta-2 agonist side effect (tremor/tachycardia)","Signs of an acute exacerbation requiring hospital admission","Overdose requiring naloxone"],correct:1,
+{topic:"Puff",type:"Case-based",q:"During pulmonary rehabilitation, a COPD patient takes a dose of salbutamol MDI as a pre-exercise reliever. Shortly after, they report a fine hand tremor and feel their heart racing. What is the most likely explanation?",
+ options:["An allergic reaction requiring emergency treatment","A common, expected beta-2 agonist side effect","Signs of an acute exacerbation requiring hospital admission","Overdose requiring naloxone"],correct:1,
  explain:"Tremor and tachycardia are common, dose-related side effects of beta-2 agonists like salbutamol due to systemic beta receptor stimulation. They are usually mild and self-limiting, though the patient should still be monitored."},
 
-{topic:"Puff technique education",type:"Knowledge",q:"What is the correct general sequence for using a standard pressurised metered-dose inhaler (MDI) without a spacer?",
- options:["Inhale rapidly and forcefully immediately after actuation, then breathe out fast","Shake, exhale fully, actuate while beginning a slow deep inhalation, then hold breath ~10 seconds","Actuate the inhaler, then inhale through the nose","Hold breath first, then actuate and inhale"],correct:1,
+{topic:"Puff",type:"Knowledge",q:"What is the correct general sequence for using a standard pressurised metered-dose inhaler (MDI) without a spacer?",
+ options:["Inhale rapidly and forcefully immediately after actuation, then breathe out fast","Shake, exhale fully, actuate while beginning a slow deep inhalation, then hold breath ~5 seconds","Actuate the inhaler, then inhale through the nose","Hold breath first, then actuate and inhale"],correct:1,
  explain:"Correct technique: shake the inhaler, exhale fully away from the device, actuate at the start of a slow, deep inhalation, then hold the breath for about 10 seconds to allow drug deposition in the airways."},
 
-{topic:"Puff technique education",type:"Case-based",q:"An elderly patient with poor hand-breath coordination inhales too quickly right after pressing the MDI canister and does not hold their breath, resulting in poor symptom control. What would you recommend?",
+{topic:"Puff",type:"Case-based",q:"An elderly patient with poor hand-breath coordination inhales too quickly right after pressing the MDI canister and does not hold their breath, resulting in poor symptom control. What would you recommend?",
  options:["Switch to a faster inhalation technique","Use of a spacer device with the MDI","Double the prescribed dose to compensate","Stop using the inhaler altogether"],correct:1,
  explain:"A spacer device reduces the need for precise hand-breath coordination, slows particle velocity, and improves lung deposition — particularly useful for patients who struggle with MDI technique."},
 
 {topic:"DM drugs",type:"Knowledge",q:"Which of the following is a recognised side effect of sulfonylurea drugs (e.g. gliclazide) used in type 2 diabetes?",
- options:["Hyperglycaemia","Hypoglycaemia","Hair growth","Hypertension"],correct:1,
+ options:["Hyperglycaemia","Hypoglycaemia","Increase risk of UTI","Hypertension"],correct:1,
  explain:"Sulfonylureas stimulate insulin release regardless of blood glucose level, so hypoglycaemia is a key risk — especially if a meal is delayed or missed relative to dosing, which is relevant when timing exercise sessions."},
 
-{topic:"DM drugs",type:"Case-based",q:"During a physiotherapy exercise session, a diabetic patient on insulin becomes sweaty, shaky and mildly confused. What is the most appropriate immediate action?",
- options:["Continue exercise, as sweating is a normal training response","Increase exercise intensity to burn off the excess glucose","Stop exercise, and if a hypo is suspected, give fast-acting carbohydrate and monitor","Administer an extra dose of insulin"],correct:2,
+{topic:"DM drugs",type:"Case-based",q:"During a physiotherapy exercise session, a diabetic patient (DM) on insulin becomes sweaty, shaky and mildly confused. What is the most appropriate immediate action?",
+ options:["Continue exercise, as sweating is a normal training response in DM patient","Increase exercise intensity to burn off the excess glucose","Stop exercise, and check Hstix, give fast-acting carbohydrate if needed","Administer an extra dose of insulin"],correct:2,
  explain:"These are classic signs of hypoglycaemia. Exercise should stop immediately; fast-acting carbohydrate should be given per local protocol, and the patient monitored until symptoms resolve. More insulin would worsen hypoglycaemia."},
 
 {topic:"HT drugs",type:"Knowledge",q:"A dry, persistent cough is a well-known side effect of which class of antihypertensive medication?",
@@ -503,80 +503,80 @@ const QUESTIONS = [
  explain:"ACE inhibitors (e.g. enalapril, ramipril) can cause a dry cough due to bradykinin accumulation. ARBs are often substituted when this occurs, as they do not typically cause this side effect."},
 
 {topic:"HT drugs",type:"Case-based",q:"A patient on antihypertensive medication reports dizziness and lightheadedness when standing up quickly from the plinth during a treatment session. What is this most likely due to?",
- options:["Vestibular migraine","Orthostatic (postural) hypotension related to their antihypertensive medication","Normal response unrelated to medication","Hyperglycaemia"],correct:1,
+ options:["Vestibular migraine","Orthostatic (postural) hypotension","Normal response in elderly","Hyperglycaemia"],correct:1,
  explain:"Many antihypertensives (e.g. diuretics, alpha-blockers, some vasodilators) can cause orthostatic hypotension. Physiotherapists should encourage slow position changes and monitor blood pressure/symptoms when relevant."},
 
-{topic:"Parkinsonism drugs",type:"Knowledge",q:"Which of the following is a recognised long-term side effect of levodopa therapy in Parkinson's disease?",
- options:["Improved bone density","Dyskinesia and motor fluctuations (\"on-off\" phenomenon)","Increased visual acuity","Bradycardia only"],correct:1,
+{topic:"Parkinsonism",type:"Knowledge",q:"Which of the following is a recognised long-term side effect of levodopa therapy in Parkinson's disease?",
+ options:["Decrease bone density","Dyskinesia and motor fluctuations (\"on-off\" phenomenon)","Decrease visual acuity","Bradycardia"],correct:1,
  explain:"With long-term use, levodopa can cause dyskinesias (involuntary movements) and unpredictable 'on-off' fluctuations in motor control, alongside other effects such as nausea and orthostatic hypotension."},
 
-{topic:"Parkinsonism drugs",type:"Case-based",q:"When scheduling a physiotherapy gait training session for a patient with Parkinson's disease on levodopa, what timing consideration is most appropriate?",
- options:["Timing is irrelevant; medication does not affect motor performance","Schedule sessions during the patient's \"off\" period for a greater training challenge","Schedule sessions during the patient's \"on\" period, when medication effect and mobility are optimal","Always schedule immediately before the next dose is due"],correct:2,
+{topic:"Parkinsonism",type:"Case-based",q:"When scheduling a physiotherapy gait training session for a patient with Parkinson's disease on levodopa, what timing consideration is most appropriate?",
+ options:["Timing is irrelevant; medication does not affect motor performance","Schedule sessions during the patient's \"off\" period to stimulate dopamine production","Schedule sessions during the patient's \"on\" period","Always schedule immediately before the next dose is due"],correct:2,
  explain:"Motor performance fluctuates with levodopa dosing cycles. Training during the 'on' period, when the drug is most effective, allows the patient to practise movements with better quality and safety."},
 
 {topic:"NOAC",type:"Knowledge",q:"Compared with warfarin, a key practical feature of novel/direct oral anticoagulants (NOACs, e.g. dabigatran, rivaroxaban, apixaban) is that they:",
- options:["Require regular INR monitoring","Generally do not require routine coagulation monitoring","Are reversed by vitamin K","Have no bleeding risk"],correct:1,
+ options:["Require regular INR monitoring","Generally do not require routine coagulation monitoring","Are reversed by vitamin K","Need diet adjustment"],correct:1,
  explain:"NOACs have more predictable pharmacokinetics than warfarin and generally do not require routine INR monitoring, although bleeding risk still exists and must be considered clinically."},
 
 {topic:"NOAC",type:"Case-based",q:"A patient on a NOAC for atrial fibrillation sustains a fall during gait re-education, resulting in a bruise to the forearm with no other apparent injury. What is the most appropriate physiotherapy consideration?",
- options:["No special precaution is needed as NOACs carry no bleeding risk","Monitor closely for signs of expanding bruising/bleeding and report per protocol, given increased bleeding risk on anticoagulation","Ask the patient to stop taking the NOAC before the next session","Apply deep friction massage to disperse the bruise immediately"],correct:1,
+ options:["No special precaution is needed as NOACs carry no bleeding risk","Monitor closely for signs of expanding bruising/bleeding and report","Ask the patient to stop taking the NOAC before the next session","Apply deep friction massage to disperse the bruise immediately"],correct:1,
  explain:"Patients on anticoagulants, including NOACs, have increased bleeding risk after trauma. Even minor injuries should be monitored for signs of worsening bruising, swelling, or bleeding, with appropriate reporting/escalation per local protocol."},
 
 {topic:"Aspirin side effects",type:"Knowledge",q:"Aspirin, commonly used at low dose for cardiovascular prophylaxis, exerts its antiplatelet effect and carries which key risk?",
- options:["Increased risk of bleeding, including gastrointestinal bleeding","Increased clotting risk","Guaranteed improvement in bone density","No effect on the gastrointestinal tract"],correct:0,
+ options:["Increased risk of gastrointestinal bleeding","Increased clotting risk","Decrease bone density","Polyuria"],correct:0,
  explain:"Aspirin irreversibly inhibits platelet cyclooxygenase, reducing clot formation but increasing bleeding risk, particularly gastrointestinal bleeding, especially in combination with other medications like NSAIDs."},
 
 {topic:"Aspirin side effects",type:"Case-based",q:"A patient on long-term low-dose aspirin for cardiac prophylaxis develops mild bruising on the limbs after resistance training. What is the most appropriate interpretation?",
  options:["This is an emergency requiring immediate cessation of aspirin","This is a relatively common, expected finding given aspirin's antiplatelet effect; monitor and adjust exercise loading as needed","It indicates the exercise programme should be stopped entirely and never resumed","It confirms an allergic reaction to aspirin"],correct:1,
  explain:"Mild bruising with exercise is a recognised, generally benign finding in patients on antiplatelet therapy. It should be monitored, and training loads/techniques adjusted if bruising is excessive, but this alone does not usually require stopping the medication."},
 
-{topic:"Warfarin",type:"Knowledge",q:"Warfarin therapy is monitored using which laboratory measure, with a typical therapeutic target range of approximately 2-3 for most indications?",
+{topic:"Warfarin",type:"Knowledge",q:"Warfarin therapy is monitored using which laboratory measure, which of the following will be tested?",
  options:["HbA1c","International Normalised Ratio (INR)","Blood glucose","Serum creatinine"],correct:1,
  explain:"Warfarin's anticoagulant effect is monitored via INR, which reflects clotting time relative to normal. Vitamin K intake, illness, and interacting medications can all affect INR stability."},
 
-{topic:"Warfarin",type:"Case-based",q:"You are about to perform manual therapy on a patient whose most recent INR result is significantly above the therapeutic range (supratherapeutic). What is the most appropriate approach?",
- options:["Proceed with vigorous deep tissue techniques as planned","Exercise caution, consider modifying or avoiding vigorous manual techniques, and liaise with the medical team given elevated bleeding risk","Ignore the INR value as it is not relevant to physiotherapy","Increase pressure to compensate for reduced treatment time"],correct:1,
+{topic:"Warfarin",type:"Case-based",q:"You are about to perform manual therapy on a patient whose most recent INR result is 5. What is the most appropriate approach?",
+ options:["Proceed with vigorous deep tissue techniques","Avoiding vigorous manual techniques and consider gental exercise only","Inform medical team for clotting risk.","Increase pressure to compensate for reduced treatment time"],correct:1,
  explain:"A supratherapeutic INR indicates increased bleeding risk. Vigorous manual techniques should be modified or deferred, and communication with the medical team is appropriate before proceeding."},
 
 {topic:"Opioid side effects",type:"Knowledge",q:"Which of the following is a common side effect of opioid analgesics (e.g. morphine, oxycodone) relevant to physiotherapy practice?",
- options:["Constipation and sedation","Improved alertness","Increased urination only","Hair loss"],correct:0,
+ options:["Constipation and sedation","Sleeplessness","Increased urination","Weight gain"],correct:0,
  explain:"Opioids commonly cause constipation (due to reduced gut motility), sedation, nausea, and in higher doses, respiratory depression — all relevant when planning exercise and mobility sessions."},
 
 {topic:"Opioid side effects",type:"Case-based",q:"A patient on regular opioid analgesia for pain appears drowsy and unsteady during ambulation practice. What is the most appropriate response?",
- options:["Proceed with independent ambulation as normal to build confidence","Increase gait speed to test balance further","Provide closer supervision/assistance and re-assess the safety of ambulation given sedation and fall risk","Withhold all pain medication immediately without medical input"],correct:2,
+ options:["Suspend walking, measure SpO2 and give prophylactic oxygen","Increase gait speed to test balance further","Provide closer supervision/assistance and re-assess the safety of ambulation given sedation and fall risk","Withhold all pain medication immediately without medical input"],correct:2,
  explain:"Opioid-induced sedation increases fall risk. The physiotherapist should provide closer supervision, use appropriate gait aids/assistance, and communicate concerns to the team rather than proceeding as usual or unilaterally stopping medication."},
 
-{topic:"Sedative side effects",type:"Knowledge",q:"Which of the following is a recognised side effect of benzodiazepine sedatives (e.g. diazepam, lorazepam), particularly in elderly patients?",
- options:["Increased muscle tone and alertness","Sedation, ataxia, and increased falls risk","Improved balance and coordination","No effect on cognition"],correct:1,
+{topic:"Medication side effects",type:"Knowledge",q:"Which of the following is a recognised side effect of benzodiazepine sedatives (e.g. diazepam, lorazepam), particularly in elderly patients?",
+ options:["Increase urinary output","Sedation, ataxia, and increased falls risk","Induce cough","Improves cognition"],correct:1,
  explain:"Benzodiazepines cause sedation, muscle relaxation, and impaired coordination, all of which increase falls risk, particularly in older adults — an important consideration for rehabilitation timing and supervision."},
 
-{topic:"Sedative side effects",type:"Case-based",q:"An elderly inpatient who received a night-time sedative appears groggy and unsteady during early morning mobilisation. What should the physiotherapist do?",
- options:["Proceed with standard unsupervised mobilisation","Provide extra supervision, use a gait aid if appropriate, and consider delaying strenuous activity until residual sedation subsides","Ignore grogginess as it is unrelated to medication","Encourage the patient to mobilise faster to \"wake up\""],correct:1,
- explain:"Residual sedative effects increase fall risk during early morning mobilisation. Extra supervision, appropriate aids, and possibly timing adjustments help ensure safety."},
+{topic:"Medication side effects",type:"Case-based",q:"An elderly inpatient who received a serotonin receptor antagonists and reuptake inhibitor (e.g. Trazodone) appears groggy and unsteady during early morning mobilisation. What should the physiotherapist do?",
+ options:["Change Trazodone timing to morning","Provide extra supervision, use a gait aid if appropriate, and consider medical advice on medication adjustments","Advise the patient to stop all medications immediately","Encourage the patient to mobilise faster to \"wake up\""],correct:1,
+ explain:"Residual sedative effects increase fall risk during early morning mobilisation. Extra supervision, appropriate aids, and possibly timing adjustment (i.e. early evening) help ensure safety."},
 
-{topic:"Polypharmacy",type:"Knowledge",q:"Polypharmacy, commonly defined as the concurrent use of multiple (often ≥5) medications, is particularly relevant in elderly patients because it is associated with:",
- options:["Reduced falls risk","Increased risk of drug interactions, side effects, and falls","Guaranteed improved symptom control with no downside","No impact on rehabilitation planning"],correct:1,
+{topic:"Polypharmacy",type:"Knowledge",q:"Polypharmacy, commonly defined as the concurrent use of multiple medications, is particularly relevant in elderly patients because it is associated with:",
+ options:["Affect metabolism of medications and lead to gout","Increased risk of drug interactions, side effects, and falls","Causing delusion and cognitive decline","No impact on rehabilitation planning"],correct:1,
  explain:"Polypharmacy increases the risk of drug-drug interactions, cumulative side effects (e.g. sedation, hypotension), and falls, making medication awareness important in physiotherapy assessment and planning."},
 
-{topic:"Polypharmacy",type:"Case-based",q:"An elderly patient taking eight different medications presents with unexplained dizziness and recurrent falls, with no other clear cause identified. What is an appropriate physiotherapy consideration?",
- options:["Assume the falls are solely due to muscle weakness and proceed with strength training only","Consider polypharmacy as a possible contributing factor and refer/liaise for medication review","Advise the patient to stop all medications immediately","Disregard medication history as it is outside physiotherapy scope"],correct:1,
- explain:"While physiotherapists don't alter medications themselves, recognising polypharmacy as a possible contributor to falls and appropriately referring for medication review reflects holistic, safe practice."},
+{topic:"Polypharmacy",type:"Knowledge",q:"Polypharmacy, commonly defined as the concurrent use of how many medications?",
+ options:["≥3","≥5","≥7","≥9"],correct:1,
+ explain:"One drug can slow down how the body breaks down another drug, effectively raising the dose in the bloodstream to toxic or overly sedating levels. Polypharmacy is commonly defined as the concurrent use of multiple medications, often ≥5, and is particularly relevant in elderly patients due to increased risk of interactions and side effects."},
 
-{topic:"Steroid-induced osteoporosis",type:"Knowledge",q:"Long-term use of oral corticosteroids (e.g. prednisolone) is associated with which musculoskeletal risk relevant to exercise prescription?",
- options:["Increased bone density and reduced fracture risk","Steroid-induced osteoporosis and increased fracture risk","No effect on bone health","Increased muscle mass with no other effects"],correct:1,
- explain:"Long-term corticosteroid use suppresses bone formation and increases resorption, leading to osteoporosis and increased fracture risk — important when selecting exercise type and intensity."},
+{topic:"Medication",type:"Knowledge",q:"Long-term use of oral corticosteroids (e.g. prednisolone) is associated with which risk relevant to exercise prescription?",
+ options:["Increased bone density and cause atypical fractures","Causing cushing syndrome and lead to fall","Increase risk of tumor and related pathological fractures","Causing a cathartic effect and lead to fall"],correct:1,
+ explain:"Long-term use of synthetic corticosteroid medications causes exogenous (iatrogenic) Cushing's syndrome by flooding the body with artificial glucocorticoids that mimic natural cortisol. Cushing's syndrome causes an increased risk of falls due to muscle weakness (especially in the hips and thighs), bone loss/osteoporosis leading to fractures, and high blood pressure or dizziness."},
 
-{topic:"Steroid-induced osteoporosis",type:"Case-based",q:"A patient on long-term oral prednisolone for COPD is referred for an exercise programme. What is an important consideration given their medication history?",
- options:["High-impact plyometric training should be prioritised regardless of bone health","Consider fracture risk from possible steroid-induced osteoporosis and select appropriately modified, safe weight-bearing exercise","Steroids have no relevance to exercise prescription","Avoid all weight-bearing exercise permanently"],correct:1,
+{topic:"Medication",type:"Case-based",q:"A patient on long-term oral prednisolone for COPD is referred for an exercise programme. What is an important consideration given their medication history?",
+ options:["High-impact plyometric training should be prioritised to improve bone health","Avoid all weight-bearing exercise","Prednisolone increase bleeding tendency, resistant training should be avoided.","Select appropriately modified, safe weight-bearing exercise"],correct:3,
  explain:"Given the fracture risk from long-term steroid use, exercise should be tailored — safe, appropriately loaded weight-bearing exercise is generally beneficial, while high-impact or high-risk activities may need modification, ideally alongside bone health assessment."},
 
-{topic:"Beta-blocker induced bronchospasm",type:"Knowledge",q:"Non-selective beta-blockers (e.g. propranolol) should be used cautiously, or are often avoided, in patients with asthma or COPD because they can cause:",
- options:["Bronchodilation and improved airflow","Bronchospasm due to beta-2 receptor blockade in the airways","Increased heart rate only","No respiratory effects"],correct:1,
+{topic:"Medication",type:"Knowledge",q:"Propranolol should be used cautiously in patients with asthma or COPD because they can cause:",
+ options:["Bronchodilation and causing hyperinflation of lung","Increased heart rate and may cause palpitations","Causing bronchospasm in the airways","Causing more airway secretion"],correct:2,
  explain:"Non-selective beta-blockers block beta-2 receptors in bronchial smooth muscle as well as beta-1 receptors in the heart, which can precipitate bronchospasm in patients with reactive airway disease."},
 
-{topic:"Beta-blocker induced bronchospasm",type:"Case-based",q:"A COPD patient taking a non-selective beta-blocker for a cardiac condition develops audible wheeze and increased breathlessness during an exercise session. What should the physiotherapist do, in addition to standard breathlessness management?",
- options:["Continue exercise at the same intensity, as wheeze is expected in COPD","Stop/modify the session as needed, manage symptoms per protocol, and consider that beta-blocker-induced bronchospasm may be contributing; escalate to the medical team","Increase intensity to \"push through\" the wheeze","Advise the patient to double their beta-blocker dose"],correct:1,
- explain:"New or worsening wheeze in a COPD patient on a non-selective beta-blocker should raise suspicion of medication-related bronchospasm. The session should be managed safely and the finding communicated to the medical team, who may consider a cardioselective alternative."}
+{topic:"Medication",type:"Case-based",q:"A COPD patient taking Zestril(lisinopril), Norvasc (amlodipine), Inderal (propranolol), Lipitor (atorvastatin) and Eliquis (apixaban) for a cardiac condition develops audible wheeze and increased breathlessness during an exercise session. Which medication is most likely to be contributing to these symptoms?",
+ options:["Zestril (lisinopril)","Norvasc (amlodipine)","Inderal (propranolol)","Lipitor (atorvastatin)"],correct:2,
+ explain:"New or worsening wheeze in a COPD patient on a non-selective beta-blocker should raise suspicion of medication-related bronchospasm. The session should be managed safely and the finding communicated to the medical team, who may consider a cardioselective alternative(ie. Concor)."}
 ];
 
 const TOTAL = QUESTIONS.length;
