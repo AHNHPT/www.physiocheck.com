@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stroke Rehabilitation Physiotherapy — Junior Physiotherapist Education</title>
+<style>
+  :root {
+    /* ---- design tokens ---- */
+    --color-bg: #F4F6F8;
+    --color-surface: #FFFFFF;
+    --color-surface-alt: #EEF2F4;
+    --color-ink: #13253A;
+    --color-ink-muted: #52697D;
+    --color-primary: #8C1D40;
+    --color-primary-dark: #641531;
+    --color-primary-bg: #F8EBEF;
+    --color-primary-ink: #FFFFFF;
+    --color-accent: #0E7C86;
+    --color-accent-bg: #E5F2F3;
+    --color-gold: #A8752A;
+    --color-gold-bg: #F7EEDE;
+    --color-danger: #B3261E;
+    --color-danger-bg: #FBEAE9;
+    --color-success: #1E7A46;
+    --color-success-bg: #E9F5EE;
+    --color-caution: #8A5A00;
+    --color-caution-bg: #FDF3DC;
+    --color-border: #DCE4EA;
+
+    --font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+    --radius: 10px;
+    --shadow: 0 1px 2px rgba(19,37,58,0.06), 0 4px 16px rgba(19,37,58,0.07);
+    --maxw: 980px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.25; margin: 0 0 0.5em; color: var(--color-ink); }
+  h3 { font-size: 1.08rem; }
+  h4 { font-size: 0.98rem; margin-bottom: 0.35em; }
+  p { margin: 0 0 0.9em; }
+  ul, ol { margin: 0 0 0.9em; padding-left: 1.25em; }
+  li { margin-bottom: 0.3em; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0; padding: 0; margin: -1px;
+  }
+  a, button { font-family: inherit; }
+  :focus-visible { outline: 3px solid var(--color-gold); outline-offset: 2px; }
+  small.src { display: block; color: var(--color-ink-muted); font-size: 0.78rem; margin-top: -0.4em; margin-bottom: 0.9em; }
+
+  /* ---- hero ---- */
+  .hero {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: #fff;
+    padding: 2.4rem 1.25rem 2rem;
+  }
+  .hero-inner { max-width: var(--maxw); margin: 0 auto; }
+  .hero-eyebrow {
+    text-transform: uppercase; letter-spacing: 0.09em; font-size: 0.72rem;
+    color: rgba(255,255,255,0.72); margin-bottom: 0.6rem; font-weight: 700;
+  }
+  .hero h1 { font-size: clamp(1.5rem, 3.6vw, 2.15rem); color: #fff; margin-bottom: 0.4em; }
+  .hero p { color: rgba(255,255,255,0.86); max-width: 68ch; margin-bottom: 0.3rem; font-size: 0.97rem; }
+  .hero-meta {
+    margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem;
+    font-size: 0.78rem; color: rgba(255,255,255,0.75);
+  }
+  .hero-meta strong { color: #fff; }
+
+  /* ---- tab navigation ---- */
+  .tabbar-wrap { position: sticky; top: 0; z-index: 10; background: var(--color-bg); border-bottom: 1px solid var(--color-border); }
+  .tabbar {
+    max-width: var(--maxw); margin: 0 auto; display: flex; gap: 0.3rem;
+    overflow-x: auto; padding: 0.6rem 1rem; -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+  }
+  .tab {
+    flex: 0 0 auto; background: transparent; border: 1px solid transparent;
+    color: var(--color-ink-muted); padding: 0.5rem 0.85rem; border-radius: 999px;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+  }
+  .tab[aria-selected="true"] { background: var(--color-primary); color: #fff; }
+  .tab:hover:not([aria-selected="true"]) { background: var(--color-surface); border-color: var(--color-border); }
+  .progress-track { max-width: var(--maxw); margin: 0 auto; padding: 0 1rem 0.6rem; }
+  .progress-bar { height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--color-accent); transition: width 0.25s ease; }
+
+  /* ---- main / panels ---- */
+  main { max-width: var(--maxw); margin: 0 auto; padding: 1.75rem 1.25rem 4rem; }
+  .panel[hidden] { display: none; }
+  .panel-intro { color: var(--color-ink-muted); font-size: 0.95rem; margin-top: -0.3rem; }
+  .panel h2 { font-size: clamp(1.25rem, 2.6vw, 1.6rem); }
+  .card {
+    background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.2rem 1.25rem; margin-bottom: 1rem;
+  }
+  .card > h3:first-child, .card > h4:first-child { margin-top: 0; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  @media (min-width: 640px) { .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3 { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .grid-3 { grid-template-columns: 1fr 1fr 1fr; } }
+  .grid-2 .card, .grid-3 .card { margin-bottom: 0; }
+
+  .callout {
+    border-left: 4px solid var(--color-danger); background: var(--color-danger-bg);
+    border-radius: 0 var(--radius) var(--radius) 0; padding: 0.85rem 1.05rem; margin: 1rem 0; font-size: 0.94rem;
+  }
+  .callout strong { color: var(--color-danger); }
+  .callout.callout-caution { border-left-color: var(--color-caution); background: var(--color-caution-bg); }
+  .callout.callout-caution strong { color: var(--color-caution); }
+  .callout.callout-ok { border-left-color: var(--color-success); background: var(--color-success-bg); }
+  .callout.callout-ok strong { color: var(--color-success); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em;
+    text-transform: uppercase; color: var(--color-primary); border: 1px solid var(--color-primary);
+    border-radius: 999px; padding: 0.15rem 0.6rem; margin: 0 0.35rem 0.6rem 0;
+  }
+  .tag.tag-accent { color: var(--color-accent); border-color: var(--color-accent); }
+
+  /* evidence badges — colour encodes strength of evidence per the manual's own grading */
+  .ev { display: inline-block; font-size: 0.68rem; font-weight: 700; border-radius: 5px; padding: 0.12rem 0.5rem; margin: 0 0.3rem 0.3rem 0; white-space: nowrap; }
+  .ev-1a { background: var(--color-accent); color: #fff; }
+  .ev-1b { background: var(--color-accent-bg); color: var(--color-accent); border: 1px solid var(--color-accent); }
+  .ev-2  { background: var(--color-gold-bg); color: var(--color-gold); border: 1px solid var(--color-gold); }
+  .ev-3  { background: var(--color-surface-alt); color: var(--color-ink-muted); border: 1px solid var(--color-border); }
+  .ev-4  { background: var(--color-caution-bg); color: var(--color-caution); border: 1px solid var(--color-caution); }
+
+  .legend-row { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; align-items: center; font-size: 0.85rem; margin-top: 0.4rem; }
+  .legend-row .ev { margin: 0; }
+
+  /* stat cards */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 0.5rem 0 0.3rem; }
+  .stat-card { text-align: center; padding: 0.9rem 0.6rem; background: var(--color-primary-bg); border-radius: var(--radius); }
+  .stat-number { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--color-primary); line-height: 1.1; }
+  .stat-label { font-size: 0.76rem; color: var(--color-ink-muted); margin-top: 0.25rem; }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; margin: 0.8rem 0 1rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.87rem; min-width: 420px; }
+  th, td { padding: 0.55rem 0.7rem; border: 1px solid var(--color-border); text-align: left; vertical-align: top; }
+  thead th { background: var(--color-surface-alt); color: var(--color-ink); font-family: var(--font-display); }
+  tbody tr:nth-child(even) { background: rgba(19,37,58,0.02); }
+
+  /* pathway strip (care pathway overview) */
+  .pathway { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0.8rem 0; }
+  .pathway-step {
+    background: var(--color-accent-bg); color: var(--color-accent); border: 1px solid var(--color-accent);
+    border-radius: 8px; padding: 0.5rem 0.8rem; font-size: 0.85rem; font-weight: 600;
+  }
+  .pathway-arrow { color: var(--color-ink-muted); font-size: 1.1rem; }
+
+  /* domain chip grid for assessment items */
+  .domain-grid { display: grid; grid-template-columns: 1fr; gap: 0.9rem; }
+  @media (min-width: 640px) { .domain-grid { grid-template-columns: 1fr 1fr; } }
+  .domain-chip { background: var(--color-surface-alt); border-radius: 8px; padding: 0.85rem 1rem; }
+  .domain-chip h4 { color: var(--color-primary); }
+  .domain-chip ul { padding-left: 1.1em; margin-bottom: 0; font-size: 0.9rem; }
+
+  /* flowchart */
+  .flow { display: flex; flex-direction: column; align-items: center; margin: 1.2rem 0; }
+  .flow-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-muted); font-weight: 700; margin: 0.9rem 0 0.4rem; }
+  .flow-step {
+    background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: 8px;
+    padding: 0.6rem 1rem; text-align: center; max-width: 460px; width: 100%; font-size: 0.88rem; box-shadow: var(--shadow);
+  }
+  .flow-step.decision { border-color: var(--color-accent); background: var(--color-accent-bg); font-weight: 600; }
+  .flow-step.action { border-left: 5px solid var(--color-primary); }
+  .flow-step.endpoint { background: var(--color-surface-alt); border-color: var(--color-ink-muted); color: var(--color-ink-muted); font-style: italic; }
+  .flow-step.warn { border-color: var(--color-danger); background: var(--color-danger-bg); }
+  .flow-arrow { color: var(--color-ink-muted); font-size: 1.3rem; line-height: 1; margin: 0.1rem 0; }
+  .flow-branch { display: grid; grid-template-columns: 1fr; gap: 1rem; width: 100%; max-width: 780px; margin: 0.1rem 0; }
+  @media (min-width: 640px) { .flow-branch { grid-template-columns: 1fr 1fr; } }
+  .flow-col { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .flow-col-label { font-size: 0.76rem; font-weight: 700; color: var(--color-primary); margin-bottom: 0.4rem; text-align: center; }
+
+  /* quiz */
+  .quiz-summary { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; font-weight: 600; color: var(--color-ink-muted); flex-wrap: wrap; gap: 0.4rem; }
+  .quiz-summary strong { color: var(--color-ink); font-size: 1.1rem; }
+  .question-card { padding: 1.3rem 1.25rem; }
+  .question-stem { font-weight: 600; margin-bottom: 1rem; }
+  .question-stem .qnum { display: block; font-family: var(--font-display); font-size: 0.82rem; color: var(--color-primary); margin-bottom: 0.35rem; font-weight: 700; }
+  .options { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55rem; }
+  .option {
+    display: block; width: 100%; text-align: left; background: var(--color-bg);
+    border: 1px solid var(--color-border); border-radius: 8px; padding: 0.7rem 0.9rem;
+    cursor: pointer; font-size: 0.93rem; color: var(--color-ink);
+  }
+  .option:hover:not([disabled]) { border-color: var(--color-primary); }
+  .option[disabled] { cursor: default; }
+  .option.correct { background: var(--color-success-bg); border-color: var(--color-success); }
+  .option.incorrect { background: var(--color-danger-bg); border-color: var(--color-danger); }
+  .rationale { margin-top: 0.4rem; padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.87rem; background: rgba(0,0,0,0.03); }
+  .rationale.correct { color: var(--color-success); }
+  .rationale.incorrect { color: var(--color-danger); }
+  .quiz-final { display: none; text-align: center; padding: 1.5rem; }
+  .quiz-final.show { display: block; }
+
+  footer {
+    max-width: var(--maxw); margin: 0 auto; padding: 1.25rem 1.25rem 3rem;
+    font-size: 0.8rem; color: var(--color-ink-muted); border-top: 1px solid var(--color-border);
+  }
+  footer p { margin-bottom: 0.6em; }
+
+  @media (min-width: 640px) { .options { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Junior Physiotherapist Education · Hospital Authority</div>
+    <h1>Manual on Physiotherapy Management in Stroke Rehabilitation</h1>
+    <p>A working summary of the HA manual for orientation and self-study — covering the stroke care pathway, assessment, motor recovery, complication prevention, discharge planning and outcome measures, finishing with a case-study quiz.</p>
+    <div class="hero-meta">
+      <span><strong>Source:</strong> HA Head Office, Specialty Group on Neurological &amp; Gerontology</span>
+      <span><strong>Version 2.0</strong> · Effective 16/12/2025</span>
+      <span><strong>Review due:</strong> 16/12/2028</span>
+    </div>
+  </div>
+</div>
+
+<div class="tabbar-wrap">
+  <div class="tabbar" role="tablist" aria-label="Section navigation" id="tabbar"></div>
+  <div class="progress-track">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<main id="panels">
+
+  <!-- ============ PANEL 0 — OVERVIEW ============ -->
+  <section class="panel" id="panel-0" role="tabpanel" aria-labelledby="tab-0" tabindex="0">
+    <h2>Overview</h2>
+    <p class="panel-intro">Why stroke rehabilitation matters in Hong Kong, the hospital-to-community care pathway, and how to read the evidence grading used throughout this manual and this summary.</p>
+
+    <div class="card">
+      <h3>Scope</h3>
+      <p>Stroke (cerebrovascular accident, CVA) is an acute disturbance of focal or global cerebral function lasting &gt;24 hours or leading to death, presumably of vascular origin (WHO, 1989). The manual applies to physiotherapy management of stroke patients across the full HA care pathway — acute hospital care through to community reintegration.</p>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-number">4th</div><div class="stat-label">leading cause of death in Hong Kong, after cancer, pneumonia &amp; ischaemic heart disease</div></div>
+        <div class="stat-card"><div class="stat-number">&gt;3,000</div><div class="stat-label">deaths per year in Hong Kong from stroke (CHP, 2023)</div></div>
+        <div class="stat-card"><div class="stat-number">~24,000</div><div class="stat-label">stroke patients admitted to HA hospitals annually (HA Statistical Report, 2016/17)</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Care pathway</h3>
+      <p>Physiotherapy spans the full journey from hospital to community. Telehealth rehabilitation is offered whenever indicated at any stage.</p>
+      <div class="pathway">
+        <span class="pathway-step">Stroke Patient</span>
+        <span class="pathway-arrow">→</span>
+        <span class="pathway-step">Acute Care</span>
+        <span class="pathway-arrow">→</span>
+        <span class="pathway-step">Extended Care</span>
+        <span class="pathway-arrow">→</span>
+        <span class="pathway-step">Home / Institution</span>
+        <span class="pathway-arrow">→</span>
+        <span class="pathway-step">Day Rehab / OPD / Community Services</span>
+      </div>
+      <div class="callout">
+        <strong>Timing standard:</strong>
+        <p>Per the Acute Ischaemic Stroke Care Guideline (HAHO, 2017), physiotherapists should assess stroke patients within <strong>one working day</strong> of admission and provide supportive treatment in an Acute Stroke Unit. During this initial phase, the priority is stabilisation of the patient's medical/neurological condition and prevention of secondary complications such as limb contracture and chest complications.</p>
+      </div>
+      <p>Once medically stable, the physiotherapist identifies and prioritises problems across six domains: <strong>motor impairment, sensory &amp; perceptual impairment, psychological impairment, cognitive impairment, communication impairment</strong>, and <strong>risk of developing other complications</strong> — with the sensori-motor, mobility and functional domains generally given the most emphasis.</p>
+    </div>
+
+    <div class="card">
+      <h3>How to read the evidence grading</h3>
+      <p>Recommendations throughout the manual (and this summary) are tagged with the level of evidence adopted from Teasell et al. (2012), based on AHCPR grading. Colour is used consistently below to encode strength of evidence — not as decoration.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Badge</th><th>Level</th><th>Definition</th></tr></thead>
+          <tbody>
+            <tr><td><span class="ev ev-1a">1a Strong</span></td><td>Strong</td><td>Supported by a meta-analysis (when available) or ≥2 randomised controlled trials (RCTs) of at least "fair" quality.</td></tr>
+            <tr><td><span class="ev ev-1b">1b Moderate</span></td><td>Moderate</td><td>Supported by a single RCT of at least "fair" quality.</td></tr>
+            <tr><td><span class="ev ev-2">2 Limited</span></td><td>Limited</td><td>Supported by at least one controlled trial with a minimum of 10 subjects per arm.</td></tr>
+            <tr><td><span class="ev ev-3">3 Consensus</span></td><td>Consensus</td><td>Expert agreement in the absence of evidence — the lowest form of evidence, arguably not evidence at all.</td></tr>
+            <tr><td><span class="ev ev-4">4 Conflicting</span></td><td>Conflicting</td><td>Disagreement between the findings of ≥2 RCTs (majority view prevails unless the conflicting study is of higher quality).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 1 — ASSESSMENT ============ -->
+  <section class="panel" id="panel-1" role="tabpanel" aria-labelledby="tab-1" tabindex="0" hidden>
+    <h2>Assessment</h2>
+    <p class="panel-intro">A comprehensive, holistic subjective and objective assessment, repeated on a set schedule to track response to treatment.</p>
+
+    <div class="card">
+      <h3>Reassessment frequency</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Setting</th><th>Recommended frequency</th></tr></thead>
+          <tbody>
+            <tr><td>Hospital care</td><td>Weekly, OR before discharge, OR if indicated</td></tr>
+            <tr><td>Community care</td><td>Biweekly to monthly, OR at least 50% of attendances, OR before discharge, OR if indicated</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Subjective examination</h3>
+      <div class="domain-grid">
+        <div class="domain-chip">
+          <h4>History of present illness</h4>
+          <ul><li>Date of onset &amp; course of the insult</li><li>Neuroimaging &amp; other relevant investigations</li><li>IV thrombolysis or endovascular thrombectomy, if any</li><li>Neurosurgery record, if any</li></ul>
+        </div>
+        <div class="domain-chip">
+          <h4>Past medical history</h4>
+          <ul><li>Date of previous stroke, if any</li><li>Systemic disorders &amp; previous major surgery</li><li>Past impairments requiring precautions</li><li>Risk factors</li></ul>
+        </div>
+        <div class="domain-chip">
+          <h4>Social background</h4>
+          <ul><li>Caregiver availability, family support, financial condition</li><li>Home accessibility (lift-landing vs stairs, physical barriers)</li><li>Outdoor slope/stairs/traffic lights</li><li>Pre-morbid walking ability, ADL, occupation, hobbies, social role</li></ul>
+        </div>
+        <div class="domain-chip">
+          <h4>Patient's complaint</h4>
+          <ul><li>Motor deficits &amp; functional impairment</li><li>Pain</li><li>Cough / sputum</li><li>Choking</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Objective examination</h3>
+      <div class="domain-grid">
+        <div class="domain-chip"><h4>1. Conscious level &amp; mental state</h4><ul><li>Conscious level; orientation to time/place/person</li><li>Psychological state; cognitive function</li></ul></div>
+        <div class="domain-chip"><h4>2. Communication ability</h4><ul><li>Follows verbal instruction; dialect speaking</li><li>Use of non-verbal instruction</li></ul></div>
+        <div class="domain-chip"><h4>3. Sensory &amp; perceptual</h4><ul><li>Tactile sensation, proprioception</li><li>Visuospatial perception (midline/left-right orientation)</li><li>Visual deficit (e.g. hemianopia); hearing impairment</li></ul></div>
+        <div class="domain-chip"><h4>4. Co-ordination</h4><ul><li>Finger-to-nose, heel-shin</li><li>Dysdiadochokinesia, foot tapping</li></ul></div>
+        <div class="domain-chip"><h4>5. Motor control</h4><ul><li>Active control — isolated joint vs mass pattern; passive ROM</li><li>Muscle strength, contracture/deformity</li><li>Tone (Modified Ashworth Scale)</li><li>Hand function/grip, gross &amp; fine hand control</li><li>Shoulder subluxation and/or pain</li></ul></div>
+        <div class="domain-chip"><h4>6. Functional mobility</h4><ul><li>Bed mobility (rolling, bridging, shifting)</li><li>Transfers (lying-sitting-standing, bed-chair)</li><li>Ambulation — independence, aids, stability</li><li>Stair climbing — handrail use, assistance level, method, tolerance</li></ul></div>
+        <div class="domain-chip"><h4>7. Balance ability</h4><ul><li>Postural control across positions</li><li>Sitting &amp; standing balance — static and dynamic</li></ul></div>
+        <div class="domain-chip"><h4>8. Fall risk assessment</h4><ul><li>Stratified fall risk assessment, or</li><li>Falls Risk Assessment Tool (FRAT)</li></ul></div>
+        <div class="domain-chip"><h4>9. Chest assessment</h4><ul><li>Breath sound, added sounds</li><li>Coughing effort (on instruction / stimulation)</li><li>Radiological/lab results; swallowing ability</li></ul></div>
+        <div class="domain-chip"><h4>10. Other associated problems</h4><ul><li>Facial palsy</li><li>Signs of deep vein thrombosis (DVT)</li><li>Pressure sore</li></ul></div>
+      </div>
+      <div class="callout callout-caution">
+        <strong>Vital signs &amp; labs:</strong>
+        <p>Physiotherapists should monitor vital signs and laboratory results, since these affect physical performance and guide precautions during intervention.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Emerging assistive technologies noted in the manual</h3>
+      <p>Body weight-supported treadmill training (BWSTT), passive gait simulators, robotic-assisted therapy, computerised balance training with force sensors, virtual reality, and non-invasive brain stimulation (tDCS, rTMS) may target more than one impairment domain at once. Clinical judgement is needed for their application across different rehabilitation settings, taking resource availability into account.</p>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 2 — MOTOR RECOVERY: PRINCIPLES ============ -->
+  <section class="panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2" tabindex="0" hidden>
+    <h2>Motor Recovery: Principles</h2>
+    <p class="panel-intro">The rationale behind training design, and the prognostic indicators that shape expectations for upper-limb recovery.</p>
+
+    <div class="card">
+      <h3>Why training is designed the way it is</h3>
+      <p>Motor recovery relates to neuroplasticity — dendrite sprouting, new synapse formation and alteration of existing synapses. Most rehabilitation protocols are therefore grounded in motor learning theory: functional gain is greater when training is <strong>meaningful, repetitive and intensive</strong>, and different combinations of treatment approach can produce similar functional gains. Two design principles follow from this:</p>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;">
+          <h4>Task-specific training <span class="ev ev-1a">1a</span></h4>
+          <p>A meta-analysis of neuroimaging studies found task-specific training produced functional gain accompanied by neural changes in the sensorimotor cortex of the affected hemisphere. <span class="ev ev-1b">1b</span><span class="ev ev-2">2</span> Repetitive task-specific training is also effective for lower-limb motor performance, sit-to-stand performance and gait.</p>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>Enriched environment</h4>
+          <p>An environment offering greater opportunity for physical activity and motivation. Animal studies show training in an enriched environment produces greater motor recovery with enhanced neural plasticity.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Upper limb recovery — prognostic indicators</h3>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-number">~80%</div><div class="stat-label">of stroke patients report significant hemiplegic UL impairment</div></div>
+        <div class="stat-card"><div class="stat-number">&lt;15%</div><div class="stat-label">of post-stroke patients restore normal UL function in daily activities</div></div>
+        <div class="stat-card"><div class="stat-number">60%</div><div class="stat-label">with active finger extension within 72h regain full UL function (ARAT) at 6 months</div></div>
+      </div>
+      <ul>
+        <li><strong>Active finger extension</strong> is a strong predictor of short, medium and long-term recovery.</li>
+        <li><strong>Minimal shoulder abduction and proximal (upper) motor control</strong> at admission gives a reasonable chance of regaining hand capacity; patients <em>without</em> proximal arm control have a poor prognosis for regaining hand capacity — shoulder abduction control is therefore another useful early indicator.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Constraint-induced movement therapy (CIMT) — know the candidacy criteria</h3>
+      <p><span class="ev ev-1a">1a</span> A meta-analysis found CIMT, EMG biofeedback and robotic therapy show potential effect on hemiplegic arm recovery. CIMT's effect is relatively robust, but <strong>applicability is limited</strong> — traditional CIMT targets patients with <strong>limited arm impairment</strong> who can tolerate prolonged constraint:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Protocol</th><th>Non-paretic limb constraint</th><th>Task-oriented training</th></tr></thead>
+          <tbody>
+            <tr><td>Traditional CIMT</td><td>Up to 90% of waking hours, for 2–3 weeks</td><td>Up to 6 hours/day</td></tr>
+            <tr><td>Low-intensity CIMT <span class="ev ev-1a">1a</span></td><td>&lt;90% of waking hours</td><td>&lt;3 hours/day</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">Low-intensity CIMT: meta-analysis of 23 RCTs, 627 subjects, positive effect on arm-hand activities (Veerbeek et al., 2014).</p>
+      <div class="callout callout-ok">
+        <strong>Moderate-quality evidence bundle (Cochrane overview):</strong>
+        <p>CIMT, mental practice, mirror therapy, interventions for sensory impairment, virtual reality, and a relatively high dose of repetitive task practice all show a beneficial effect on upper limb function after stroke.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Mobility &amp; balance training — dosage and evidence</h3>
+      <ul>
+        <li><span class="ev ev-1a">1a</span> Early balance training — <strong>at least 20–60 minutes, 3–4 times a week, for 6–12 weeks</strong> after stroke.</li>
+        <li><span class="ev ev-1a">1a</span> Repetitive task-oriented training improves sit-to-stand performance (7 trials, 346 participants), and walking speed, functional ambulation and walking distance (Cochrane review, 14 trials, 658 participants).</li>
+        <li><span class="ev ev-1a">1a</span> Gait-oriented physical training (3 systematic reviews) improves gait speed and endurance, and reduces the level of assistance needed during walking.</li>
+        <li><span class="ev ev-1a">1a</span> Force-plate biofeedback for standing balance (4 trials, 161 participants).</li>
+        <li><span class="ev ev-1b">1b</span> Stair gait training with proprioceptive neuromuscular facilitation (30 min); gait trainer with partial body-weight support plus overground gait training; walking exercise on stairs enhances balance.</li>
+        <li><span class="ev ev-1b">1b</span> Individual trials also support hydrotherapy, the Bobath approach, and Tai Chi.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 3 — MOTOR RECOVERY: INTERVENTIONS ============ -->
+  <section class="panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3" tabindex="0" hidden>
+    <h2>Motor Recovery: Interventions</h2>
+    <p class="panel-intro">Technology-assisted and adjunct modalities for motor recovery, with the strength and limits of the current evidence.</p>
+
+    <div class="card">
+      <span class="tag">Robotic training</span>
+      <p>Robot-assisted therapy (RAT) delivers precise, repetitive, task-specific, high-dosage training while reducing manpower burden.</p>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;">
+          <h4>Upper limb <span class="ev ev-1a">1</span></h4>
+          <p>Common devices: ArmeoPower, MIT-Manus, Hand of Hope. A 2025 review of 16 meta-analyses (396 RCTs, 19,280 patients) found RAT significantly enhances UL motor function and strength, standalone or alongside conventional therapy at the same intensity, consistently across patient groups, devices and treatment duration.</p>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>Gait <span class="ev ev-1a">1</span></h4>
+          <p>Exoskeletons (e.g. Lokomat, EksoGT, ReWalk) and end-effector robots (e.g. G-EO System, Gait Trainer) show comparable effects in subacute patients (13 RCTs, 673 participants). Robot-assisted gait training (RAGT) + conventional therapy beats either alone; earlier initiation gives better recovery. Evidence for biomechanical effects (gait speed, step length, asymmetry) remains very low quality.</p>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>Balance <span class="ev ev-1a">1</span></h4>
+          <p>Exoskeleton RAT gave significantly greater Berg Balance Scale gains than conventional therapy in <strong>acute/subacute</strong> stroke (13 RCTs, 517 participants) — but no significant benefit over conventional therapy was shown in <strong>chronic</strong> stroke.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag">Electrical stimulation</span>
+      <p><strong>Functional electrical stimulation (FES)</strong> replaces/assists voluntary contraction during a functional task; <strong>cyclical stimulation</strong> targets a muscle repeatedly for strengthening. <span class="ev ev-3">3</span> Effectiveness depends heavily on target muscles, stroke severity, timing post-stroke, and treatment dose/duration/mode.</p>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;">
+          <h4>Upper limb <span class="ev ev-1a">1</span></h4>
+          <p>FES-based rehabilitation (25 studies) significantly improved Fugl-Meyer (FMA) and Action Research Arm Test (ARAT) scores. EMG-controlled closed-loop FES gave the largest effect (FMA mean difference up to <strong>14.14 points</strong>, ARAT mean difference <strong>11.9 points</strong>, p&lt;0.001).</p>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>Lower limb / gait — chronic-phase dosing</h4>
+          <p><span class="ev ev-1a">1</span> FES alone did not significantly improve gait speed but did improve ankle dorsiflexion, balance and functional mobility; FES + supervised exercise gave greater gait-speed gains. NMES appears <strong>more effective in the chronic phase</strong>, and <strong>shorter sessions of ~20–30 minutes</strong> gave better outcomes than longer sessions, which may raise the neural excitability threshold and cause adaptation.</p>
+        </div>
+      </div>
+      <p><span class="ev ev-1a">1</span> Cyclical electrical stimulation (16 studies) increases muscle strength and activity performance with carryover effect, but is not shown to be better than other strengthening interventions, and optimal dosage remains unclear.</p>
+    </div>
+
+    <div class="card">
+      <span class="tag">Acupuncture</span>
+      <p>An HA operational guideline for physiotherapists on acupuncture practice has been in place since 2009, reviewed every three years.</p>
+      <ul>
+        <li><span class="ev ev-2">2</span> Additional acupuncture on top of conventional treatment gives extra motor-recovery benefit in sub-acute stroke; electroacupuncture enhances corticospinal tract integrity (similar motor gains between groups but greater plasticity, reduced degeneration).</li>
+        <li><span class="ev ev-1a">1</span> A review of 88 studies (6,431 participants) found acupuncture + conventional rehab reduces post-stroke spasticity, with benefit increasing at higher treatment frequency.</li>
+        <li><span class="ev ev-1a">1</span> A meta-analysis of 40 trials (2,554 patients) found acupuncture + rehabilitation outperformed rehabilitation alone for hemiplegic shoulder pain, motor function, ADL and shoulder ROM, with no significant adverse effects.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="tag">Virtual reality (VR)</span>
+      <p>Immersive VR (head-mounted display/large projection) gives a stronger sense of presence; non-immersive VR (standard screens) is more accessible for clinical use.</p>
+      <ul>
+        <li>VR training is more effective than conventional therapy for upper-limb function; combining haptic gloves + VR with conventional therapy gives significantly greater gains than conventional therapy alone.</li>
+        <li>VR offers superior balance recovery vs conventional therapy — more effective in the <strong>chronic</strong> phase than the acute phase — and significantly enhances walking speed and cadence.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="tag">Non-invasive brain stimulation</span>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;">
+          <h4>rTMS</h4>
+          <p>Based on the interhemispheric inhibition model: <strong>high-frequency (&gt;1Hz)</strong> rTMS boosts excitability in the lesioned hemisphere; <strong>low-frequency (≤1Hz)</strong> rTMS suppresses the overactive contralesional hemisphere. Clinical results are inconsistent overall, but rTMS may be particularly effective in patients with a motor-evoked potential (MEP) response, subcortical lesions, mild paresis and preserved baseline function.</p>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>tDCS</h4>
+          <p>A weak constant current (typically 1–2 mA) via scalp electrodes; anodal stimulation generally increases cortical excitability, cathodal decreases it. Evidence is heterogeneous, but tDCS may promote adaptive plasticity with positive pre-/post-motor rehabilitation effects, and anodal tDCS may help paretic UL motor function in chronic stroke.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 4 — SENSORY, COGNITIVE & MOOD ============ -->
+  <section class="panel" id="panel-4" role="tabpanel" aria-labelledby="tab-4" tabindex="0" hidden>
+    <h2>Sensory, Cognitive &amp; Mood</h2>
+    <p class="panel-intro">Non-motor impairments that shape how — and whether — a patient can engage with training, and the physiotherapist's role in each.</p>
+
+    <div class="card">
+      <h3>Sensory impairment</h3>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-number">up to 85%</div><div class="stat-label">of stroke survivors have some somatic sensory deficit</div></div>
+        <div class="stat-card"><div class="stat-number">94% / 89%</div><div class="stat-label">report loss of touch / loss of proprioception</div></div>
+        <div class="stat-card"><div class="stat-number">64%</div><div class="stat-label">also have sensory deficits in the <em>ipsilesional</em> upper limb</div></div>
+      </div>
+      <p>Bilateral proprioceptive deficits (including at the ankle) are significant predictors of balance dysfunction. High-quality trial evidence is lacking overall (meta-analysis not possible), but individual studies and reviews support repetitive thermal stimulation, mirror therapy, perceptual-learning based sensory discrimination programmes, and multisensory integration (MSI) as low-risk, plausibly effective approaches — evidence quality is generally low-to-moderate.</p>
+    </div>
+
+    <div class="card">
+      <h3>Perceptual impairment — unilateral neglect</h3>
+      <p>Estimated prevalence of spatial neglect after unilateral stroke is <strong>approximately 30%</strong>, higher after right brain damage. There is no systematic review or meta-analysis supporting a specific treatment approach, but individual trials show positive effects for electrical stimulation, vibration therapy, task-based/magnified mirror therapy, and multisensory integration. <strong>Prism adaptation treatment (PAT)</strong> is a promising intervention — more sessions predict greater improvement and may reduce in-hospital falls in patients with neglect. A recent Cochrane review found insufficient evidence to support or refute interventions for perceptual disorders overall — more high-quality trials are needed.</p>
+    </div>
+
+    <div class="card">
+      <h3>Psychological impairment</h3>
+      <p>Diagnosis is difficult, particularly with speech disturbance. <span class="ev ev-1a">1a</span> A meta-analysis of 10 RCTs (432 CBT patients vs 385 controls) showed cognitive behavioural therapy (CBT) significantly improves depression severity and quality of life, with no significant difference in cognitive function.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Intervention</th><th>Evidence summary</th><th>Conclusion</th></tr></thead>
+          <tbody>
+            <tr><td>Psychosocial (CBT etc.)</td><td>Decreased depressive symptoms in 23 RCTs; evidence quality low</td><td>Likely to be effective</td></tr>
+            <tr><td>Exercise</td><td>Many general benefits; role in treating post-stroke depression (PSD) uncertain</td><td>Include in a comprehensive programme; effect on PSD unclear</td></tr>
+            <tr><td>Acupuncture / herbal / hyperbaric</td><td>Lack of consistent evidence</td><td>Not currently supported</td></tr>
+            <tr><td>Pharmacological</td><td>Antidepressants reduce PSD but with greater adverse-effect risk</td><td>Consider as in general population; watch interactions</td></tr>
+            <tr><td>Neuromodulation (rTMS/tDCS)</td><td>Limited data</td><td>No compelling evidence</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>PT role:</strong> general psychological support to patient and caregivers (information about the illness, support and encouragement) and referral to doctor / clinical psychologist / support groups as needed.</p>
+    </div>
+
+    <div class="card">
+      <h3>Communication impairment</h3>
+      <p>Dysarthria, apraxia and aphasia may follow motor or cognitive impairment. Strategies to enhance treatment effect:</p>
+      <ul>
+        <li>Eliminate background noise; ensure the patient's attention before communicating</li>
+        <li>Encourage all modes of communication — speech, writing, drawing, yes/no responses</li>
+        <li>Allow reasonable time to respond; accept all communication attempts</li>
+        <li>Use simple, adult communication; simplify sentence structure and reduce speech rate</li>
+        <li>Emphasise key words; augment speech with gesture and visual aids; repeat when necessary</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Cognitive impairment</h3>
+      <p>Neglect, inattention, apraxia/dyspraxia, and difficulties with attention, memory and executive function may co-occur and adversely affect participation in therapy and ADL. Little is known about prevalence, but it is associated with slower rehabilitation progress.</p>
+      <p><strong>PT role:</strong> screen for cognitive impairment as soon as practicable, explain impact to patient/caregivers/staff, and refer to neuropsychological expertise when appropriate. Address safety risk from persisting cognitive impairment during discharge planning.</p>
+      <ul>
+        <li>Improve motivation to engage in rehabilitation</li>
+        <li>Minimise attentional demand — shortened intervals, rest breaks, a less distracting environment</li>
+        <li>Use internal/external strategies via verbal, visual or tactile input routes</li>
+        <li>Use compensatory techniques, e.g. checklists, to support daily performance</li>
+        <li>Discuss findings with patient, family, staff and others involved</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 5 — MOBILITY AIDS ============ -->
+  <section class="panel" id="panel-5" role="tabpanel" aria-labelledby="tab-5" tabindex="0" hidden>
+    <h2>Mobility Aids</h2>
+    <p class="panel-intro">Prescribing walking aids and wheelchairs — fitting, training and the evidence behind common choices.</p>
+
+    <div class="card">
+      <h3>Walking aids</h3>
+      <p>Common aids: walking stick, quadripod, walking frame, rollator, and newer one-arm motorised gait devices. Choice depends on the patient's ability and walking environment.</p>
+      <ul>
+        <li>Quad canes may decrease postural sway more effectively than standard canes during stance in moderate hemiparesis.</li>
+        <li>Cane length fitted at the <strong>greater trochanter</strong> may give more normal gait of the affected limb than wrist-crease fitting — evidence suggests greater-trochanter fitting may be preferable.</li>
+        <li>Cane use improves walking speed only <em>while walking with the cane</em> — benefits are not maintained when walking without it.</li>
+        <li>One-arm motorised gait devices may be more effective than parallel bars/hemi-walkers for chronic hemiplegic stroke survivors.</li>
+        <li>Walking aids do not correct the asymmetrical weight-bearing pattern characteristic of hemiparesis.</li>
+        <li>Incorrect use of walking frames is common and associated with reduced stability — guidance to patients needs to address environmental constraints.</li>
+        <li>Exercise-based fall-prevention interventions may reduce fall rate; evidence for other interventions is limited.</li>
+      </ul>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;">
+          <h4>Preparation</h4>
+          <ul><li>Assess sensorimotor function for potential walking ability</li><li>Train with the proper aid across different walking environments</li><li>Caregiver training if assisted walking is required</li><li>Fall-prevention education</li><li>Provide aid maintenance information</li></ul>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>Measurement</h4>
+          <p>Height measured to the <strong>wrist crease or greater trochanter</strong> — evidence suggests greater-trochanter fitting may be preferable. Practice walking with the aid to fine-tune the height.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Wheelchair prescription</h3>
+      <p>Recommended when a patient cannot walk due to motor impairment, cognitive impairment or decline in physical function. Common types: standard, transit, one-arm-drive (self-propulsion); electric wheelchair when necessary.</p>
+      <div class="grid-3">
+        <div class="card" style="margin-bottom:0;">
+          <h4>Preparation</h4>
+          <ul><li>Assess needs &amp; accessibility (indoor/outdoor)</li><li>Caregiver training on manipulation across environments</li><li>Self-propelling users should have no major cognitive/spatial deficits</li><li>Educate transfer technique &amp; pressure-relief</li><li>Supply maintenance instructions</li></ul>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>Measurement</h4>
+          <ul><li>Seat width</li><li>Seat depth</li><li>Seat height</li><li>Armrest height</li><li>Seat-back height</li></ul>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>Selection</h4>
+          <ul><li>Wheel type (solid/air)</li><li>Footrest (fixed/detachable)</li><li>Armrest (full/desk length; fixed/removable-flip-back)</li><li>Accessories per patient need</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 6 — COMPLICATIONS MANAGEMENT ============ -->
+  <section class="panel" id="panel-6" role="tabpanel" aria-labelledby="tab-6" tabindex="0" hidden>
+    <h2>Complications</h2>
+    <p class="panel-intro">Complications reduce survival, hinder rehabilitation potential and lengthen hospitalisation. Patients at risk: low consciousness, multiple comorbidities, severe mobility impairment.</p>
+    <div class="callout callout-caution">
+      <strong>Common complications:</strong>
+      <p>Falls, pressure sore, urinary tract infection, chest infection, depression, hemiplegic shoulder pain/subluxation, deep vein thrombosis, limb oedema, limb contracture, and pulmonary embolism.</p>
+    </div>
+
+    <div class="card">
+      <h3>Fall prevention</h3>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-number">&gt;50%</div><div class="stat-label">of patients report a fall within 6 months of stroke</div></div>
+        <div class="stat-card"><div class="stat-number">25–73%</div><div class="stat-label">fall incidence range across different stroke stages</div></div>
+        <div class="stat-card"><div class="stat-number">~7%</div><div class="stat-label">fall in the first week, acute stage</div></div>
+      </div>
+      <ul>
+        <li>Falls most commonly occur during <strong>transfer from sitting to standing, or the reverse</strong>.</li>
+        <li>A patient's <strong>first fall</strong> is significantly associated with <strong>visuospatial neglect</strong>; <strong>repeated falls</strong> are related to <strong>age &gt;65</strong>.</li>
+        <li>Balance and motion-related measures are the most common and significant fall risk factors — use these to guide fall-risk assessment.</li>
+        <li>Exercise appears to reduce the <em>rate</em> of falls, but not the <em>number of people</em> who fall post-stroke. Dual-task training was shown locally to be more effective in improving dual-task mobility and reducing falls/fall-related injuries in ambulatory patients with chronic stroke.</li>
+      </ul>
+      <div class="callout callout-caution">
+        <strong>Honest evidence gap:</strong>
+        <p>No single programme has currently been shown to be effective in reducing falls in people post-stroke — combine risk-factor identification with individualised balance and dual-task training rather than relying on one standard protocol.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Chest complications</h3>
+      <p>Common in patients with low conscious level and poor mobility. Weakening of cough reflex and impaired swallowing are linked to aspiration pneumonia; a strong cough is protective and can help predict pneumonia risk. Chest physiotherapy — combining chest mobilisation with breathing exercises — improves respiratory muscle mobility and endurance, stabilises the trunk, and enhances balance and weight transfer.</p>
+    </div>
+
+    <div class="card">
+      <h3>Pressure sore</h3>
+      <p>Risk: comatose, severely paralysed, obese, incontinent, or spastic patients; most common sites are the buttock and heels. Per SIGN (2010): pressure sores should not develop due to immobility after stroke if resources and expertise are adequate.</p>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;"><h4>Preventive measures</h4><ul><li>Identify high-risk patients</li><li>Evaluate skin at regular intervals</li><li>Appropriate bed/chair equipment</li><li>Change position regularly</li><li>Ensure mobility</li></ul></div>
+        <div class="card" style="margin-bottom:0;"><h4>Interventions</h4><ul><li>Early mobilisation</li><li>Positioning</li><li>Neuromuscular electrical stimulation (NMES)</li></ul></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Limb oedema &amp; deep vein thrombosis (DVT)</h3>
+      <p>Common with decreased mobility. Early mobilisation is effective for prevention.</p>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;"><h4>Preventive measures</h4><ul><li>Assess for signs of DVT</li><li>Early mobilisation — active and passive</li><li>Educate caregivers on limb mobilisation</li><li>Intermittent pneumatic compression therapy</li></ul></div>
+        <div class="card" style="margin-bottom:0;"><h4>Intervention</h4><p>Compression stockings to prevent post-thrombotic syndrome in patients with proximal DVT, after anticoagulation therapy.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Limb spasticity &amp; contracture</h3>
+      <p>Spasticity — velocity-dependent hyperexcitability to stretch, with exaggerated tendon reflex, increased resistance to passive movement and hypertonia — is an independent risk factor for post-stroke pain; stretching a spastic contracted muscle can disrupt muscle fibres and excite nociceptors, producing nociceptive pain. Untreated spasticity predisposes to contracture, which impedes further rehabilitation.</p>
+      <div class="callout">
+        <strong>Not recommended:</strong>
+        <p>Splinting is not recommended (SIGN, 2010) — existing RCTs show no additional benefit.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;"><h4>Preventive measures</h4><ul><li>Proper positioning</li><li>Limb mobilisation</li><li>Stretching programme</li><li>Caregiver education</li><li>Passive standing (tilt-table / standing wheelchair)</li></ul></div>
+        <div class="card" style="margin-bottom:0;"><h4>Interventions</h4><p>TENS, ultrasound and paraffin therapy give equal benefit for spasticity management. Same measures as prevention, with precaution on the joint's available range of motion.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Hemiplegic shoulder</h3>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-number">24%</div><div class="stat-label">prevalence of shoulder pain, up to 16 months post-stroke</div></div>
+      </div>
+      <p>Caused by spasticity, subluxation, poor positioning, or underlying joint disorder such as adhesive capsulitis. Early detection and prompt intervention prevent loss of shoulder range and shoulder-hand syndrome.</p>
+
+      <h4>Assessment &amp; management algorithm (SIGN, 2010; adapted)</h4>
+      <div class="flow">
+        <div class="flow-label">Prevention pathway</div>
+        <div class="flow-step decision">High-risk patient? (upper limb weakness, spasticity, or pre-existing shoulder problem)</div>
+        <div class="flow-arrow">↓ Yes</div>
+        <div class="flow-step action">Physiotherapy</div>
+        <div class="flow-arrow">↓ No pain</div>
+        <div class="flow-step endpoint">Monitor</div>
+
+        <div class="flow-label">Treatment pathway</div>
+        <div class="flow-step warn">Shoulder pain reported</div>
+        <div class="flow-arrow">↓ Possible injury suspected</div>
+        <div class="flow-step action">Consider X-ray and orthopaedic opinion</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step action">Trial analgesic</div>
+        <div class="flow-arrow">↓ Persistent symptoms</div>
+        <div class="flow-step decision">Consider referral to appropriate specialist</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-branch">
+          <div class="flow-col">
+            <div class="flow-col-label">Spasticity / limited external rotation, subluxation, capsulitis, or rotator cuff tear</div>
+            <div class="flow-step action">Physiotherapy + orthopaedic opinion</div>
+          </div>
+          <div class="flow-col">
+            <div class="flow-col-label">Neuropathic component</div>
+            <div class="flow-step action">Treat as neuropathic pain</div>
+          </div>
+        </div>
+        <div class="flow-arrow">↓ Persistent symptoms</div>
+        <div class="flow-step warn">Refer for further investigation (e.g. MRI) and management</div>
+      </div>
+
+      <h4>Preventive positioning &amp; handling</h4>
+      <p>Careful positioning in the early phase minimises subluxation and later contracture, and promotes motor recovery. Release the hemiplegic arm's uninhibited pattern (adducted, internally rotated shoulder; flexed elbow; pronated forearm; flexed wrist/fingers) by retraining scapular elevation/retraction, shoulder abduction/external rotation, elbow extension, forearm supination and wrist/finger extension. Change position every <strong>2–3 hours</strong> to prevent complications of prolonged immobilisation.</p>
+      <div class="callout">
+        <strong>Caution:</strong>
+        <p>Avoid horizontal adduction of the hemiplegic shoulder when side-lying on the unaffected side — it can traction the supra-scapular structures and cause pain.</p>
+      </div>
+      <p><span class="ev ev-1b">1b</span> A 30-minute positioning programme in maximal comfortable shoulder external rotation and 90° flexion significantly reduced the development of contracture.</p>
+      <p><span class="ev ev-1a">1a</span> Electrical stimulation to the hemiplegic supraspinatus and deltoid can help restore alignment of the humeral head to the glenoid fossa. Kinesio Taping is a plausible option for realigning trunk/scapula/shoulder position but lacks clinical trial evidence <span class="ev ev-3">3</span>.</p>
+      <div class="callout">
+        <strong>Not recommended:</strong>
+        <p>Current evidence does not support the use of strapping or a shoulder sling for managing hemiplegic shoulder pain.</p>
+      </div>
+      <p><strong>Intervention:</strong> Bobath-based techniques to restore scapular/glenohumeral alignment; manual and electrical therapies (ultrasound, cryotherapy, massage) are also recommended.</p>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 7 — PREVENTION & SPECIAL GROUPS ============ -->
+  <section class="panel" id="panel-7" role="tabpanel" aria-labelledby="tab-7" tabindex="0" hidden>
+    <h2>Prevention &amp; Special Groups</h2>
+    <p class="panel-intro">Secondary stroke prevention, vocational rehabilitation, young stroke, and telehealth delivery.</p>
+
+    <div class="card">
+      <h3>Secondary stroke prevention</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Time since first stroke</th><th>Recurrence rate</th></tr></thead>
+          <tbody>
+            <tr><td>3 months</td><td>7.7%</td></tr>
+            <tr><td>1 year</td><td>10.4%</td></tr>
+            <tr><td>5 years</td><td>14.8%</td></tr>
+            <tr><td>12 years</td><td>39.7%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">Systematic review of 37 studies, &gt;1 million patients; rates vary by age, region and stroke subtype, with time since initial stroke the strongest predictor (Lin et al., 2021).</p>
+      <p>Combining medications, exercise and lifestyle modification can achieve a cumulative relative-risk reduction of <strong>80%</strong>. Diet advice: reduce dietary salt, increase potassium intake, reduce saturated fat, increase fruit/vegetables, reduce smoking and alcohol, and control weight.</p>
+      <div class="callout callout-ok">
+        <strong>Exercise target:</strong>
+        <p>At least <strong>150 minutes of moderate-intensity aerobic exercise per week</strong> — even short walks or stretching sessions count. Regular physical activity is associated with a 25–30% reduction in stroke risk (evidence largely extrapolated from non-stroke populations, as direct secondary-stroke exercise trials remain limited).</p>
+      </div>
+      <p>Barriers to exercise participation include lack of interest/motivation, depression, fatigue, joint pain, and doubt about effectiveness — tailor prescription to the individual.</p>
+    </div>
+
+    <div class="card">
+      <h3>Vocational rehabilitation</h3>
+      <p>Defined as overcoming the barriers an individual faces when accessing, remaining in, or returning to work. Up to <strong>25%</strong> of stroke survivors are of working age. A systematic review of 6 clinical trials found return-to-work rates up to <strong>49%</strong>. Recommended steps:</p>
+      <ol>
+        <li>Access information about vocational activities early in the rehabilitation pathway</li>
+        <li>Assess return-to-work potential during daily practice</li>
+        <li>Discuss with the patient and set vocational rehabilitation goals</li>
+        <li>Identify the need for job modification</li>
+        <li>Provide skill-specific training (e.g. use of tools)</li>
+        <li>Assess skill/ability and match to job demand</li>
+        <li>Arrange functional capacity evaluation</li>
+        <li>Provide a work-site visit when necessary</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>Young stroke rehabilitation</h3>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-number">+30%</div><div class="stat-label">rise in young stroke incidence in Hong Kong, 2001 → 2021</div></div>
+        <div class="stat-card"><div class="stat-number">2,028</div><div class="stat-label">young stroke cases admitted to public hospitals in 2021 (up from 1,531 in 2001)</div></div>
+        <div class="stat-card"><div class="stat-number">~27%</div><div class="stat-label">of young stroke patients experience post-stroke depression</div></div>
+      </div>
+      <p>Younger patients generally have greater rehabilitation potential and demand. Suggested triage to a more intensive inpatient programme (4–6 weeks):</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Stroke severity (FIM score)</th><th>Age</th><th>Recommendation</th></tr></thead>
+          <tbody>
+            <tr><td>Severe (FIM &lt;40)</td><td>&lt;55 years</td><td>Comprehensive, intensive inpatient rehabilitation even if severe</td></tr>
+            <tr><td>Moderate (FIM 40–60)</td><td>&lt;75 years</td><td>Triage to more intensive inpatient programme, 4–6 weeks</td></tr>
+            <tr><td>Severe (FIM &lt;40)</td><td>&lt;55 years</td><td>Triage to more intensive inpatient programme, 4–6 weeks</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Because younger patients face a longer lifespan of post-stroke disability, community rehabilitation after early supported discharge (ESD) is important and cost-effective for mild/moderate stroke, reducing length of stay and long-term dependency. Young patients value peer support — encourage participation in community support organisations. Vocational return-to-work rate ranges 20–75% (most series ~50%), driven by factors beyond disability alone: nature of work, age, cognitive/memory impairment, and presence of apraxia.</p>
+    </div>
+
+    <div class="card">
+      <h3>Telehealth rehabilitation</h3>
+      <p>A promising alternative for patients facing mobility, geographic or financial barriers — improving motor function, balance and daily activities, with high patient satisfaction and reduced disability, though methodological variability limits broad conclusions. Delivery tools include video calls, apps, wearables and virtual reality. Priority requirements for acceptance: user safety, user-friendliness, minimal technical maintenance, and minimal home reorganisation/investment. A <strong>hybrid model</strong> combining in-person and tele-care is now widely adopted.</p>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 8 — DISCHARGE & COMMUNITY ============ -->
+  <section class="panel" id="panel-8" role="tabpanel" aria-labelledby="tab-8" tabindex="0" hidden>
+    <h2>Discharge &amp; Community</h2>
+    <p class="panel-intro">Preparing the patient, home and caregiver for the transition out of hospital-based care.</p>
+
+    <div class="card">
+      <h3>Home environment evaluation</h3>
+      <p><span class="ev ev-1a">1a</span> A pre-discharge home visit provides professional advice on environment modification to support ADL and minimise hazards.</p>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;">
+          <h4>Goals</h4>
+          <ul><li>Identify potential hazards at home</li><li>Rehearse the patient's routine and ADL</li><li>Assess accessibility of community facilities (recreational areas, shops, bus stops)</li></ul>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>Criteria for a home visit</h4>
+          <ul><li>Potential fall risk from environmental hazards</li><li>Caring problems due to environmental reasons</li><li>Need to establish the real environmental situation</li></ul>
+        </div>
+      </div>
+      <p>Assessment covers indoor items (lighting, entrance threshold, floor obstacles/slip risk, chair/bed/toilet height, mattress firmness, bathroom/kitchen safety, alarm/phone accessibility) and outdoor items (lift availability, stairs, distance to stairs/lift and to recreational areas). Liaise with Medical Social Worker or Housing Authority as needed.</p>
+    </div>
+
+    <div class="card">
+      <h3>Home exercise prescription</h3>
+      <p>Exercise difficulty should match the patient's ability, with safety the primary concern for unsupervised practice. Home exercise can be practised alone or with caregiver support. Physiotherapists can prescribe home exercise through the Patient Rehab App inside <strong>HA Go</strong>, allowing the therapist to monitor compliance.</p>
+    </div>
+
+    <div class="card">
+      <h3>Caregiver education</h3>
+      <p><span class="ev ev-1a">1a</span> Providing information reduces patient depression scores and enhances satisfaction. <span class="ev ev-1b">1b</span> Caregiver education has been shown to enhance quality of life and mood, and reduce caregiver stress, at both 3 and 12 months. Education should be tailored and delivered at appropriate time points across rehabilitation phases as needs change.</p>
+      <ul>
+        <li>Enhance caregivers' knowledge, skills and competency for subsequent social integration</li>
+        <li>Empower proper, safe handling and caring technique</li>
+        <li>Support transition to a home-based rehabilitation programme with active caregiver participation</li>
+        <li>Provide a home exercise programme</li>
+        <li>Educate on disease process, rehabilitation and physiotherapy management</li>
+        <li>Offer information on community resources such as self-help groups</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Discharge criteria by setting</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Setting</th><th>Discharge criteria</th></tr></thead>
+          <tbody>
+            <tr><td>Acute care / extended care</td><td>Treatment goals reasonably achieved; caregiver trained in caring skills; safe place of residence identified; continued services arranged if indicated (extended rehab hospital, GDH, DPT, OPD); assistive devices recommended; home modification arranged if required</td></tr>
+            <tr><td>Geriatric Day Hospital / Ambulatory Day Care Centre</td><td>Treatment goals reasonably achieved; suitable community/follow-up support arranged (e.g. day-care centre); caregiver trained; home modification arranged — <em>or</em> poor patient compliance</td></tr>
+            <tr><td>Domiciliary physiotherapy</td><td>Treatment goals mostly fulfilled; progression has plateaued; home exercises prescribed for maintenance; home modification for safety recommended</td></tr>
+            <tr><td>Physiotherapy Outpatient Service (OPD)</td><td>Treatment goals reasonably achieved; progression has plateaued; caregiver trained in caring skills; walking aids and home exercises prescribed</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 9 — OUTCOME MEASURES ============ -->
+  <section class="panel" id="panel-9" role="tabpanel" aria-labelledby="tab-9" tabindex="0" hidden>
+    <h2>Outcome Measures</h2>
+    <p class="panel-intro">Standardised tools used to track impairment and functional performance and guide ongoing rehabilitation strategy.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h4>Fugl-Meyer Assessment — Upper Extremity (FMA-UE)</h4>
+        <p>33 items, maximum score 66. Scores volitional movement with/without synergies, coordination and reflex action of shoulder, elbow, forearm, wrist and hand on a 3-point scale (0 = unable, 1 = partial, 2 = full). Functional tasks are not included. Reliable and valid for motor impairment.</p>
+      </div>
+      <div class="card">
+        <h4>Timed Up and Go (TUG)</h4>
+        <p>Patient sits with back against the backrest and arms on armrests, stands, walks 3 metres as quickly as possible, turns around a floor marker, walks back and sits again. Time to complete is recorded. High reliability in people with neurological disorders.</p>
+      </div>
+      <div class="card">
+        <h4>Berg Balance Scale</h4>
+        <p>14 items, each scored 0–4 (0 = unable, 4 = independent), maximum 56. Assesses static and dynamic balance across positions of progressively narrowing base of support, from sitting to standing to single-leg stance. Reliable and valid in neurological populations.</p>
+      </div>
+      <div class="card">
+        <h4>Elderly Mobility Scale (EMS)</h4>
+        <p>7 functional activities (transfers, ambulation, balance) plus sit-to-stand and walking speed. Score range 0–20.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Score</th><th>Interpretation</th></tr></thead>
+            <tbody>
+              <tr><td>&lt;10</td><td>Dependent in mobility and basic ADL — long-term/home care package required</td></tr>
+              <tr><td>10–13</td><td>Borderline for safe mobility and basic ADL — needs some help</td></tr>
+              <tr><td>≥14</td><td>Able to mobilise alone and safely, independent in basic ADL</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>EMS and its functional-reach component are significantly associated with fall risk.</p>
+      </div>
+      <div class="card">
+        <h4>Modified Functional Ambulatory Category (MFAC)</h4>
+        <p>Developed by HA's Coordinating Committee in Physiotherapy (2007). 7 categories from MFAC I (most dependent) to MFAC VII (independent outdoor walker), rated at the patient's most independent level regardless of assistive device use (sit-to-stand ability excluded). High interrater reliability and concurrent validity.</p>
+      </div>
+      <div class="card">
+        <h4>Modified Barthel Index</h4>
+        <p>10-item tool evaluating baseline activities of daily living. High reliability as a standard assessment in people with stroke.</p>
+      </div>
+      <div class="card">
+        <h4>Modified Rivermead Mobility Index</h4>
+        <p>8 items, each scored 0–5: 0 = no active participation, 1 = assistance of two people, 2 = assistance of one person, 3 = supervision/verbal instruction only, 4 = with aid or appliance, 5 = independent. Good reliability.</p>
+      </div>
+      <div class="card">
+        <h4>Activities-specific Balance Confidence (ABC) Scale</h4>
+        <p>16 items covering indoor and outdoor activities requiring varying balance demands. Patient rates confidence 0–100% for each. Validated for Chinese populations (ABC-C).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 10 — CLINICAL KNOWLEDGE QUIZ ============ -->
+  <section class="panel" id="panel-10" role="tabpanel" aria-labelledby="tab-10" tabindex="0" hidden>
+    <h2>Clinical Knowledge Quiz</h2>
+    <div class="quiz-summary">
+      <span>Case-study questions — click an option to see the rationale immediately.</span>
+      <span><strong id="quizAnswered">0</strong>/<span id="quizTotal">5</span> answered</span>
+    </div>
+    <div id="quizList"></div>
+    <div class="card quiz-final" id="quizFinal">
+      <h3>Quiz complete</h3>
+      <p id="quizFinalScore"></p>
+      <p style="color:var(--color-ink-muted); font-size:0.88rem;">Review any missed rationale above, and cross-check against the full manual before applying to patient care.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Source:</strong> Manual on Physiotherapy Management in Stroke Rehabilitation, Version 2.0 (Effective 16/12/2025, Review Date 16/12/2028) — Hospital Authority Head Office, authored by the Specialty Group on Neurological &amp; Gerontology, custodian HO Allied Health Grade Department, approved/endorsed by COC‑Grade in Physiotherapy. The source manual is marked for internal HA reference; information is provided as reference only and further deliberation is required before it is treated as HA‑endorsed practice.</p>
+  <p>This page is an educational summary produced for junior physiotherapist orientation and self-study. It is not a substitute for the full manual — always refer to the complete source document and current departmental protocol for clinical decision-making, and verify anything used in patient care against the primary reference.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- Tab / panel controller (ARIA tabs pattern, keyboard-accessible) ---------------- */
+
+  var tabbar = document.getElementById('tabbar');
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var tabs = [];
+
+  panels.forEach(function (panel, i) {
+    var label = panel.querySelector('h2') ? panel.querySelector('h2').textContent : 'Section ' + (i + 1);
+    var tab = document.createElement('button');
+    tab.className = 'tab';
+    tab.id = 'tab-' + i;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-controls', 'panel-' + i);
+    tab.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    tab.setAttribute('tabindex', i === 0 ? '0' : '-1');
+    tab.textContent = label;
+    tab.addEventListener('click', function () { selectTab(i); });
+    tabbar.appendChild(tab);
+    tabs.push(tab);
+  });
+
+  tabbar.addEventListener('keydown', function (e) {
+    var current = tabs.findIndex(function (t) { return t.getAttribute('aria-selected') === 'true'; });
+    var next = null;
+    if (e.key === 'ArrowRight') next = (current + 1) % tabs.length;
+    if (e.key === 'ArrowLeft') next = (current - 1 + tabs.length) % tabs.length;
+    if (e.key === 'Home') next = 0;
+    if (e.key === 'End') next = tabs.length - 1;
+    if (next !== null) {
+      e.preventDefault();
+      selectTab(next);
+      tabs[next].focus();
+    }
+  });
+
+  function selectTab(index) {
+    tabs.forEach(function (tab, i) {
+      var selected = i === index;
+      tab.setAttribute('aria-selected', String(selected));
+      tab.setAttribute('tabindex', selected ? '0' : '-1');
+      panels[i].hidden = !selected;
+    });
+    document.getElementById('progressFill').style.width = (((index + 1) / tabs.length) * 100) + '%';
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  selectTab(0);
+
+  /* ---------------- Quiz engine ---------------- */
+
+  var QUIZ_DATA = [
+    {
+      stem: "A 74-year-old woman is 10 days post-ischaemic stroke. Her first fall occurred while " +
+            "transferring unassisted from bed to chair. Nursing staff also note she consistently leaves food " +
+            "on the left side of her plate and bumps her wheelchair into the left doorframe. Which statement " +
+            "best reflects the guideline's reasoning for her fall-risk management?",
+      options: [
+        { text: "Her age alone explains the fall; patients over 65 commonly fall and no specific action beyond routine supervision is required.", correct: false,
+          rationale: "Age greater than 65 is specifically linked to REPEATED falls, not the first fall, and it doesn't explain her left-sided inattention — routine supervision alone misses the actual risk factor here." },
+        { text: "Sit-to-stand/transfer is the most common circumstance for post-stroke falls, and her left-sided inattention suggests visuospatial neglect — which the guideline specifically links to a patient's first fall. Balance assessment and neglect-directed intervention should be prioritised.", correct: true,
+          rationale: "Correct — the guideline states falls commonly occur during transfer from sitting to standing (or the reverse), and that a first fall is significantly associated with visuospatial neglect, while repeated falls relate to age over 65. Her presentation (missing left-sided food, bumping the left doorframe) is classic neglect, and balance/motion-related measures are the guideline's recommended basis for fall-risk assessment." },
+        { text: "Since exercise reduces falls after stroke, a standard strengthening programme is the guideline-recommended first step regardless of her presentation.", correct: false,
+          rationale: "The guideline notes exercise appears to reduce the RATE of falls but not the NUMBER of people who fall post-stroke — and a generic strengthening programme ignores the visuospatial neglect that is actually driving her risk." },
+        { text: "Because no fall-prevention programme has been proven fully effective post-stroke, no formal fall-risk intervention is warranted.", correct: false,
+          rationale: "The guideline acknowledges no single programme is proven fully effective at reducing falls overall — but that is a reason to individualise care around her identified risk factors (balance, neglect), not to withhold intervention." }
+      ]
+    },
+    {
+      stem: "A 66-year-old man is 3 weeks post-stroke with a flaccid left upper limb. He develops new-onset " +
+            "left shoulder pain after a transfer in which his arm was pulled overhead by an assisting staff " +
+            "member, and now has reduced passive external rotation. Following the guideline's assessment " +
+            "and management algorithm for new-onset post-stroke shoulder pain, what is the most appropriate " +
+            "next step?",
+      options: [
+        { text: "Begin Bobath-based repositioning and manual therapy immediately, without further work-up.", correct: false,
+          rationale: "The algorithm branches on whether a possible injury is suspected before routine physiotherapy management proceeds — the traction mechanism here should trigger that branch first." },
+        { text: "Because the mechanism suggests a possible injury, consider X-ray and orthopaedic opinion before proceeding with routine physiotherapy pain management.", correct: true,
+          rationale: "Correct — the guideline's algorithm routes 'possible injury' presentations to consider X-ray and orthopaedic opinion. Only once that is addressed (or excluded) does the pathway move to a trial of analgesia and, if symptoms persist, referral for the specific contributing factor (e.g. spasticity, subluxation, capsulitis, rotator cuff tear, or a neuropathic component)." },
+        { text: "Apply a shoulder strapping or sling for protection while awaiting physiotherapy review.", correct: false,
+          rationale: "Current evidence does not support strapping or a shoulder sling for managing hemiplegic shoulder pain, per the guideline." },
+        { text: "Reassure the patient and defer any assessment for two weeks to allow natural resolution.", correct: false,
+          rationale: "Early detection and prompt intervention are emphasised specifically to prevent loss of shoulder range and the development of shoulder-hand syndrome — deferring assessment contradicts this." }
+      ]
+    },
+    {
+      stem: "Three weeks post-stroke, a patient has minimal-to-absent active shoulder abduction and no active " +
+            "finger extension on the affected side. His family has read about constraint-induced movement " +
+            "therapy (CIMT) online and ask whether he is a good candidate. Which response best reflects the " +
+            "guideline's evidence?",
+      options: [
+        { text: "\"Yes — traditional CIMT is ideal for him, since it simply requires several hours of daily training regardless of how severe his impairment currently is.\"", correct: false,
+          rationale: "Traditional CIMT mainly suits patients with LIMITED arm impairment who can tolerate prolonged constraint — not patients with his degree of severe impairment." },
+        { text: "\"Traditional CIMT mainly targets patients with limited arm impairment who can tolerate prolonged constraint of the unaffected arm and intensive daily training. Given his current absence of active finger extension and shoulder control, he isn't a typical candidate yet — low-intensity CIMT or approaches such as EMG biofeedback or robotic therapy may be more appropriate for now, with reassessment as his motor control improves.\"", correct: true,
+          rationale: "Correct — the guideline notes traditional CIMT's applicability is limited to patients with limited arm impairment able to tolerate immobilisation of the non-paretic limb up to 90% of waking hours for 2–3 weeks and up to 6 hours/day of training. It also identifies active finger extension and shoulder abduction/proximal control as key prognostic indicators — their absence here signals a different approach for now, not exclusion from all UL-focused therapy." },
+        { text: "\"CIMT has no evidence base in stroke rehabilitation, so it should never be offered to any patient.\"", correct: false,
+          rationale: "The guideline cites strong (Level 1a) meta-analysis evidence for CIMT's effect on hemiplegic arm function — the issue here is patient selection, not a lack of evidence altogether." },
+        { text: "\"His current finger extension status is irrelevant to prognosis, so CIMT can start immediately regardless of presentation.\"", correct: false,
+          rationale: "Active finger extension within 72 hours of stroke onset is described as a strong predictor of recovery — it is directly relevant to selecting and timing upper-limb interventions, not irrelevant." }
+      ]
+    },
+    {
+      stem: "A patient is 8 months post-stroke (chronic phase) with reduced ankle dorsiflexion and slow gait. " +
+            "The team is considering neuromuscular electrical stimulation (NMES) to the lower limb as an " +
+            "adjunct to gait training. Based on the guideline's synthesis of recent evidence, which statement " +
+            "should guide session dosing and expectations?",
+      options: [
+        { text: "Sessions should run at least 60 minutes to maximise neural excitability and treatment effect.", correct: false,
+          rationale: "The guideline reports the opposite: longer NMES sessions may increase the neural excitability threshold and lead to adaptation, reducing benefit — shorter sessions performed better." },
+        { text: "In the chronic phase, shorter NMES sessions of around 20–30 minutes may improve gait speed, cadence, step length and ankle dorsiflexion, even though standard composite gait assessment scores may not significantly change.", correct: true,
+          rationale: "Correct — recent evidence in the guideline found NMES did not significantly improve standard gait assessments overall, but did improve gait speed, cadence, step length, ankle dorsiflexion and functional mobility, was more effective in the chronic phase, and that shorter sessions (~20–30 minutes) gave better outcomes than longer ones." },
+        { text: "NMES has been shown to be ineffective in chronic stroke and should be reserved for the acute phase only.", correct: false,
+          rationale: "The guideline suggests the opposite — NMES/electrical stimulation evidence points toward it being more effective in the chronic phase, not the acute phase." },
+        { text: "Electrical stimulation dosing is now fully standardised across the literature, so no individual titration is needed.", correct: false,
+          rationale: "The guideline repeatedly highlights heterogeneity in study designs and a lack of standardised protocols for electrical stimulation — dosing still requires individual clinical judgement." }
+      ]
+    },
+    {
+      stem: "A patient attending Physiotherapy Outpatient Service has plateaued in progress. He mobilises " +
+            "safely at home with a stick, and his caregiver was trained in transfer assistance earlier in his " +
+            "care. What should discharge planning from the Outpatient Service include, per the guideline's " +
+            "discharge criteria?",
+      options: [
+        { text: "Discharge abruptly with no further instructions, since his goals were 'reasonably achieved'.", correct: false,
+          rationale: "The guideline's OPD discharge criteria specifically include prescribing walking aids and home exercises, not a silent discharge with no instructions." },
+        { text: "Continue indefinite weekly outpatient sessions until he returns to full pre-stroke function, since a plateau is not on its own a valid reason for discharge.", correct: false,
+          rationale: "'Patients' progression become plateau' is explicitly listed as one of the guideline's discharge criteria for Physiotherapy Outpatient Service — it is a valid trigger for discharge, not a reason to continue indefinitely." },
+        { text: "Discharge is appropriate once treatment goals are reasonably achieved and progression has plateaued, provided the caregiver has received training in caring skills and walking aids/home exercises have been prescribed.", correct: true,
+          rationale: "Correct — this matches the guideline's stated discharge criteria for Physiotherapy Outpatient Service: goals reasonably achieved, progression plateaued, caregiver trained in caring skills, and walking aids and home exercises prescribed." },
+        { text: "Refer for repeat neuroimaging to confirm maximal recovery before considering discharge.", correct: false,
+          rationale: "Imaging is not part of the discharge criteria and is not needed to confirm clinical recovery when the patient is functioning safely at his current baseline." }
+      ]
+    }
+  ];
+
+  var quizList = document.getElementById('quizList');
+  var answeredCount = 0;
+  var correctCount = 0;
+
+  document.getElementById('quizTotal').textContent = QUIZ_DATA.length;
+
+  QUIZ_DATA.forEach(function (q, qi) {
+    var card = document.createElement('div');
+    card.className = 'card question-card';
+
+    var stem = document.createElement('div');
+    stem.className = 'question-stem';
+    var qnum = document.createElement('span');
+    qnum.className = 'qnum';
+    qnum.textContent = 'Question ' + (qi + 1) + ' of ' + QUIZ_DATA.length;
+    stem.appendChild(qnum);
+    stem.appendChild(document.createTextNode(q.stem));
+    card.appendChild(stem);
+
+    var list = document.createElement('ul');
+    list.className = 'options';
+
+    q.options.forEach(function (opt, oi) {
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'option';
+      btn.textContent = opt.text;
+      btn.addEventListener('click', function () { handleOptionClick(qi, oi, btn, list, q); });
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+
+    card.appendChild(list);
+    quizList.appendChild(card);
+  });
+
+  function handleOptionClick(qi, oi, btn, list, q) {
+    if (list.dataset.locked === 'true') return; // question already answered — ignore further clicks
+    list.dataset.locked = 'true';
+
+    var chosen = q.options[oi];
+    answeredCount++;
+    if (chosen.correct) correctCount++;
+
+    Array.prototype.forEach.call(list.querySelectorAll('.option'), function (optBtn, i) {
+      optBtn.disabled = true;
+      var opt = q.options[i];
+      if (i === oi) {
+        optBtn.classList.add(opt.correct ? 'correct' : 'incorrect');
+        var r = document.createElement('div');
+        r.className = 'rationale ' + (opt.correct ? 'correct' : 'incorrect');
+        r.textContent = (opt.correct ? 'Correct — ' : 'Not quite — ') + opt.rationale;
+        optBtn.insertAdjacentElement('afterend', r);
+      } else if (opt.correct && !chosen.correct) {
+        // reveal the correct answer too, so the learner sees the right reasoning
+        optBtn.classList.add('correct');
+        var r2 = document.createElement('div');
+        r2.className = 'rationale correct';
+        r2.textContent = 'Correct answer — ' + opt.rationale;
+        optBtn.insertAdjacentElement('afterend', r2);
+      }
+    });
+
+    document.getElementById('quizAnswered').textContent = answeredCount;
+
+    if (answeredCount === QUIZ_DATA.length) {
+      var final = document.getElementById('quizFinal');
+      final.classList.add('show');
+      document.getElementById('quizFinalScore').textContent =
+        'You scored ' + correctCount + ' out of ' + QUIZ_DATA.length + '.';
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
