@@ -721,8 +721,12 @@ ul.bullets li::before{content:"–";color:var(--ink-faint);flex:none;}
         <div class="vital tone-teal"><div class="num">⅓<small></small></div><div class="cap">develop post-thrombotic syndrome within 5 years</div></div>
         <div class="vital tone-maroon"><div class="num">9.0<small>%</small></div><div class="cap">30-day mortality, DVT</div></div>
         <div class="vital tone-maroon"><div class="num">17.4<small>%</small></div><div class="cap">30-day mortality, PE alone</div></div>
+        <div class="vital tone-maroon"><div class="num">13.3<small>%</small></div><div class="cap">30-day mortality, PE + DVT</div></div>
+        <div class="vital tone-teal"><div class="num">0.2<small>%</small></div><div class="cap">Postoperative annual incidence, DVT alone</div></div>
+        <div class="vital tone-teal"><div class="num">0.08<small>%</small></div><div class="cap">Postoperative annual incidence, PE alone</div></div>
+        <div class="vital tone-teal"><div class="num">0.04<small>%</small></div><div class="cap">Postoperative annual incidence, DVT + PE</div></div>
       </div>
-      <p class="monitor-foot">Postoperative annual incidence: DVT 0.20% · PE alone 0.08% · PE with DVT 0.04%. Both conditions are highly preventable and treatable with early detection.</p>
+      <p class="monitor-foot">👍DVT and PE are highly preventable and treatable with early detection.</p>
     </div>
   </div>
 </section>
@@ -736,13 +740,47 @@ ul.bullets li::before{content:"–";color:var(--ink-faint);flex:none;}
       <p class="lede">Risk stratification starts before you touch the patient — from the chart — then continues through subjective and objective assessment.</p>
     </div>
 
-    <div class="grid cols-3 reveal">
+    <div class="reveal">
+      <h3 class="subhead" style="font-size:1.2rem;">Recognise the presentation first</h3>
+      <p class="body-txt">DVT and PE announce themselves differently — know both pictures before you screen for risk factors.</p>
+      <div class="grid cols-2 mt-24">
+        <div class="card" style="border-left:3px solid var(--maroon);">
+          <span class="chip maroon">DVT — the leg</span>
+          <h4 class="mt-24">Signs &amp; symptoms</h4>
+          <ul class="bullets mt-24">
+            <li>Deep pain in the affected leg</li>
+            <li>Swelling</li>
+            <li>Erythema (redness of the skin)</li>
+            <li>Skin changes</li>
+            <li>Occasionally, ulceration</li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:3px solid var(--amber);">
+          <span class="chip amber">PE — chest &amp; lungs</span>
+          <h4 class="mt-24">Signs &amp; symptoms</h4>
+          <ul class="bullets mt-24">
+            <li>Chest discomfort or chest pain</li>
+            <li>Shortness of breath (breathlessness)</li>
+            <li>Desaturation</li>
+            <li>Haemoptysis</li>
+            <li>Syncope</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout maroon mt-24">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 18a1.6 1.6 0 001.4 2.4h15.8a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/></svg>
+        <div><b>Both are treatable early, dangerous late</b><p>Either presentation can be fatal in severe cases — but both are highly preventable and treatable with early detection and early intervention. Roughly one third of patients who suffer a DVT go on to develop post-thrombotic syndrome within five years, which is another reason not to miss the early signs.</p></div>
+      </div>
+    </div>
+
+    <h3 class="subhead mt-32" style="font-size:1.2rem;">Who's at risk</h3>
+    <div class="grid cols-3 reveal mt-24">
       <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.4 7.4H22l-6.2 4.6 2.4 7.4L12 16.8 5.8 21.4l2.4-7.4L2 9.4h7.6z"/></svg><div class="txt"><b>Recent major surgery</b><span>Within the last 12 weeks</span></div></div>
       <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><div class="txt"><b>Active cancer</b><span>On treatment, within 6 months, or palliative</span></div></div>
       <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M4 12a4 4 0 018 0M4 12a4 4 0 008 0"/></svg><div class="txt"><b>Prolonged immobilisation</b><span>Bedrest ≥3 days, paralysis, post-stroke</span></div></div>
       <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h18M12 3v18"/></svg><div class="txt"><b>History of DVT/PE</b><span>Prior documented episode</span></div></div>
       <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><div class="txt"><b>Pregnancy / postpartum</b><span>Up to 6 weeks postpartum</span></div></div>
-      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg><div class="txt"><b>Acute medical illness</b><span>Heart failure, sepsis, COVID-19, IBD</span></div></div>
+      <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg><div class="txt"><b>Acute medical illness</b><span>Heart failure, sepsis, COVID-19, Inflammatory bowel disease</span></div></div>
       <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="8" width="16" height="10" rx="2"/><path d="M8 8V6a4 4 0 018 0v2"/></svg><div class="txt"><b>Indwelling devices</b><span>Central venous catheter, pacemaker</span></div></div>
       <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3v18M18 3v18M6 12h12"/></svg><div class="txt"><b>Venous insufficiency</b><span>Chronic impaired venous return</span></div></div>
       <div class="riskcard"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/></svg><div class="txt"><b>Obesity</b><span>Independent risk factor</span></div></div>
@@ -763,7 +801,7 @@ ul.bullets li::before{content:"–";color:var(--ink-faint);flex:none;}
       </div>
       <div>
         <h3 class="subhead">On assessment for PE</h3>
-        <p class="body-txt">Chest discomfort with tachycardia and tachypnoea forms part of essential screening for PE alongside DVT signs — don't examine the leg in isolation from the chest.</p>
+        <p class="body-txt">Chest discomfort with tachycardia and tachypnoea forms part of essential screening for PE alongside DVT signs — don't examine the leg in isolation from the chest.<br><br>Palpitations and observation of patient's leg gives are useful screening for potential DVT. None of the physical exam is diagnostic on its own. Always perform a comprehensive assessment for eluvation of DVT risk if indicated.</p>
         <div class="chip amber mt-24">Chest + leg together, always</div>
       </div>
     </div>
@@ -897,7 +935,7 @@ ul.bullets li::before{content:"–";color:var(--ink-faint);flex:none;}
           <ul class="iclist contra mt-24">
             <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Massive oedema, gangrenous limb, recent graft</li>
             <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Arteriosclerosis, cardiac failure</li>
-            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Severe PAD with ABPI &lt; 0.8</li>
+            <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Severe peripheral arterial disease with ankle-brachial pressure index &lt; 0.8</li>
             <li><svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Limb deformity / out-of-size limb, severe peripheral neuropathy</li>
           </ul>
         </div>
@@ -1126,7 +1164,7 @@ ul.bullets li::before{content:"–";color:var(--ink-faint);flex:none;}
 <footer>
   <div class="wrap fwrap">
     <p><b>Educational summary</b> — adapted for bedside teaching from HAHO-COC-GL-PHY-016-v01, "Physiotherapy Guidelines on Management of Deep Vein Thrombosis and Pulmonary Embolism in Acute Care Inpatient Setting" (effective 13/05/2026, review due 13/05/2029).</p>
-    <p>This page is a training aid for junior physiotherapists and is not a substitute for the controlled guideline document or individual clinical judgement. Always confirm anticoagulation status and mobility orders with the case physician, and refer to the current electronic version of the HA guideline when in doubt.</p>
+    <p>This page is an AI genterated summary for internal physiotherapist education only. Always refer to the complete HA guideline and local departmental policy for full clinical detail before making patient-care decisions. <br><br>Portal validation by: Mr. Henry Chan</p>
   </div>
 </footer>
 
@@ -1366,6 +1404,27 @@ ul.bullets li::before{content:"–";color:var(--ink-faint);flex:none;}
 
     var optsWrap = card.querySelector('.opts');
 
+    var nextWrap = document.createElement('div');
+    nextWrap.className = 'next-wrap';
+    nextWrap.style.cssText = 'display:none;margin-top:20px;';
+    var isLast = (idx === quizData.length - 1);
+    var nextBtn = document.createElement('button');
+    nextBtn.className = 'btn';
+    nextBtn.innerHTML = (isLast ? 'See results' : 'Next question') +
+      ' <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    nextWrap.appendChild(nextBtn);
+
+    nextBtn.addEventListener('click', function(){
+      currentQ += 1;
+      if(currentQ < quizData.length){
+        updateProgress();
+        renderQuestion(currentQ);
+      } else {
+        updateProgress();
+        showResults();
+      }
+    });
+
     q.options.forEach(function(opt, i){
       var optBtn = document.createElement('button');
       optBtn.className = 'opt';
@@ -1394,16 +1453,10 @@ ul.bullets li::before{content:"–";color:var(--ink-faint);flex:none;}
         rationale.classList.add('show');
         scorePill.textContent = 'Score: ' + score + ' / ' + quizData.length;
 
-        setTimeout(function(){
-          currentQ += 1;
-          if(currentQ < quizData.length){
-            updateProgress();
-            renderQuestion(currentQ);
-          } else {
-            updateProgress();
-            showResults();
-          }
-        }, 450);
+        nextWrap.style.display = 'block';
+        requestAnimationFrame(function(){
+          nextWrap.scrollIntoView({behavior:'smooth', block:'nearest'});
+        });
       });
 
       var pair = document.createElement('div');
@@ -1412,6 +1465,8 @@ ul.bullets li::before{content:"–";color:var(--ink-faint);flex:none;}
       optBtn.nextRationale = rationale;
       optsWrap.appendChild(pair);
     });
+
+    card.appendChild(nextWrap);
 
     quizMount.innerHTML = '';
     quizMount.appendChild(card);
