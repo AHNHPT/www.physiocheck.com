@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psychiatric Physiotherapy Competency Check</title>
+<style>
+  :root{
+    --paper:#FFF1D3;
+    --paper-dim:#FAE4BE;
+    --card:#FFFBF2;
+    --ink:#5D1C6A;
+    --ink-soft:#7A4380;
+    --ink-faint:#A9679B;
+    --line:#EBC9A3;
+    --line-soft:#F3DFC0;
+    --accent:#CA5995;
+    --accent-dark:#8C2E77;
+    --accent-tint:#FBE6F0;
+    --gold:#B85A2E;
+    --gold-tint:#FFE9DD;
+    --danger:#B23A2B;
+    --danger-tint:#F8DFDA;
+    --correct:#3F8F5F;
+    --correct-tint:#E4F3E8;
+    --radius:10px;
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px);
+    background-size: 100% 42px;
+    opacity:.35;
+    pointer-events:none;
+    z-index:0;
+  }
+  .wrap{position:relative; z-index:1; max-width:840px; margin:0 auto; padding:0 20px 80px;}
+
+  a{color:inherit;}
+  button{font-family:inherit;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 20px;
+    max-width:840px; margin:0 auto;
+    position:relative; z-index:2;
+  }
+  .brand{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .brand b{color:var(--ink);}
+  .pill{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    padding:5px 10px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    color:var(--ink-soft);
+    background:var(--card);
+  }
+
+  /* ---------- Cover ---------- */
+  .cover-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:44px 40px 40px;
+    margin-top:6px;
+  }
+  .exam-code{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-faint);
+    letter-spacing:.1em;
+    margin-bottom:18px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(28px,4.4vw,40px);
+    line-height:1.15;
+    margin:0 0 10px;
+    letter-spacing:-.01em;
+    color:var(--ink);
+  }
+  .subtitle{
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:58ch;
+    margin:0 0 28px;
+  }
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-bottom:32px;
+  }
+  .meta-chip{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 14px;
+    flex:1 1 140px;
+    min-width:130px;
+    background:var(--card);
+  }
+  .meta-chip .num{
+    font-family:var(--mono);
+    font-size:20px;
+    color:var(--accent-dark);
+    display:block;
+  }
+  .meta-chip .lbl{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink-faint);
+  }
+
+  .instructions{
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:28px;
+    background:var(--paper-dim);
+  }
+  .instructions h2{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:17px;
+    margin:0 0 12px;
+    color:var(--ink);
+  }
+  .instructions ol{
+    margin:0 0 18px; padding-left:20px;
+    font-size:14px; color:var(--ink-soft);
+  }
+  .instructions li{margin-bottom:7px;}
+  .instructions li b{color:var(--ink);}
+
+  .marksheet-demo{
+    display:flex; gap:28px; flex-wrap:wrap;
+    padding-top:14px; border-top:1px dashed var(--line);
+  }
+  .demo-block{font-size:12px; color:var(--ink-soft);}
+  .demo-block .demo-title{
+    font-family:var(--mono); font-size:11px; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--ink-faint); margin-bottom:8px;
+  }
+  .demo-bubbles{display:flex; gap:6px;}
+  .demo-bubble{
+    width:22px; height:22px; border:1.5px solid var(--ink-soft);
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:11px; color:var(--ink-soft);
+  }
+  .demo-bubble.filled{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .demo-bubble.sq{ border-radius:5px; }
+
+  .name-field{margin-bottom:26px;}
+  .name-field label{
+    display:block; font-size:11px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--ink-faint); margin-bottom:6px;
+  }
+  .name-field input{
+    width:100%; max-width:340px;
+    font-family:var(--sans); font-size:15px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:#fff; color:var(--ink);
+  }
+  .name-field input:focus{outline:2px solid var(--accent); outline-offset:1px;}
+
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    font-family:var(--sans); font-weight:600; font-size:14px;
+    letter-spacing:.02em;
+    padding:14px 26px;
+    border-radius:8px;
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .btn:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .btn-primary{
+    background:var(--ink); color:#fff;
+  }
+  .btn-primary:hover{background:var(--accent-dark);}
+  .btn-primary:active{transform:translateY(1px);}
+  .btn-ghost{
+    background:transparent; color:var(--ink); border:1px solid var(--line);
+  }
+  .btn-ghost:hover{border-color:var(--ink);}
+  .btn-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+  .btn[disabled]{opacity:.4; cursor:not-allowed;}
+
+  /* ---------- Quiz ---------- */
+  #quiz-screen{display:none;}
+  .quiz-head{
+    position:sticky; top:0; z-index:5;
+    background:var(--paper);
+    padding-top:10px; padding-bottom:12px;
+    margin-bottom:10px;
+  }
+  .quiz-head::after{
+    content:""; display:block; height:1px; background:var(--line);
+    margin-top:12px;
+  }
+  .progress-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .progress-row .timer{color:var(--ink-faint);}
+  .progress-track{
+    height:4px; background:var(--line-soft); width:100%; overflow:hidden;
+    border-radius:4px;
+  }
+  .progress-fill{
+    height:100%; background:var(--accent); width:0%;
+    transition:width .25s ease;
+  }
+  .chip-rail{
+    display:flex; gap:6px; overflow-x:auto;
+    padding:12px 2px 4px;
+    scrollbar-width:thin;
+  }
+  .chip{
+    flex:0 0 auto;
+    width:30px; height:30px;
+    border:1px solid var(--line);
+    border-radius:7px;
+    background:#fff;
+    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .chip:hover{border-color:var(--ink);}
+  .chip.answered{background:var(--accent-tint); border-color:var(--accent); color:var(--accent-dark);}
+  .chip.current{outline:2px solid var(--ink); outline-offset:1px;}
+  .chip:focus-visible{outline:2px solid var(--gold);}
+
+  .q-card{
+    background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px 32px 28px;
+  }
+  .q-eyebrow{
+    display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  }
+  .q-index{
+    font-family:var(--mono); font-size:13px; color:var(--ink-faint);
+  }
+  .q-domain{
+    font-family:var(--mono); font-size:11px; letter-spacing:.05em;
+    padding:3px 9px; border-radius:20px; border:1px solid var(--line);
+    color:var(--ink-soft); background:var(--paper-dim);
+    text-transform:uppercase;
+  }
+  .select-badge{
+    font-family:var(--mono); font-size:11px; letter-spacing:.05em;
+    padding:3px 9px; border-radius:20px; border:1px solid var(--gold); color:var(--gold);
+    background:var(--gold-tint);
+  }
+  .q-stem{
+    font-family:var(--serif);
+    font-size:19px; line-height:1.5;
+    white-space:pre-line;
+    margin:0 0 26px;
+    color:var(--ink);
+  }
+  .options{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .option{
+    display:flex; align-items:flex-start; gap:14px;
+    padding:13px 16px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    cursor:pointer;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .option:hover{border-color:var(--ink-soft);}
+  .option.selected{border-color:var(--accent); background:var(--accent-tint);}
+  .option:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+  .bubble{
+    flex:0 0 auto;
+    width:26px; height:26px;
+    border:1.5px solid var(--ink-soft);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+    background:#fff;
+  }
+  .option.selected .bubble{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .options.multi .bubble{border-radius:6px;}
+  .option-text{font-size:15px; padding-top:3px; color:var(--ink);}
+
+  .nav-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:26px; gap:12px; flex-wrap:wrap;
+  }
+  .nav-row .right-group{display:flex; gap:10px;}
+
+  /* ---------- Results ---------- */
+  #results-screen{display:none;}
+  .result-hero{
+    background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:40px 36px; text-align:center; position:relative; overflow:hidden;
+    margin-top:6px;
+  }
+  .stamp{
+    display:inline-block;
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    padding:10px 26px;
+    border:3px solid var(--accent);
+    border-radius:6px;
+    color:var(--accent-dark);
+    transform:rotate(-4deg);
+    margin-bottom:18px;
+  }
+  .stamp.fail{border-color:var(--danger); color:var(--danger);}
+  .score-big{
+    font-family:var(--mono);
+    font-size:56px;
+    color:var(--ink);
+    margin:6px 0 2px;
+  }
+  .score-sub{color:var(--ink-soft); font-size:14px; margin-bottom:22px;}
+  .stat-row{
+    display:flex; justify-content:center; gap:26px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+    padding-top:18px; border-top:1px dashed var(--line);
+  }
+  .stat-row .stat b{display:block; color:var(--ink); font-size:16px;}
+
+  .sheet-title{
+    font-family:var(--mono); font-size:11px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--ink-faint);
+    margin:34px 0 10px;
+  }
+  .answer-grid{
+    display:grid; grid-template-columns:repeat(15,1fr); gap:5px;
+  }
+  .grid-cell{
+    aspect-ratio:1; border:1px solid var(--line);
+    border-radius:5px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:10px; color:#fff;
+    cursor:pointer;
+  }
+  .grid-cell.correct{background:var(--correct);}
+  .grid-cell.wrong{background:var(--danger);}
+  .grid-cell:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+
+  .review-list{margin-top:36px; border-radius:var(--radius); overflow:hidden;}
+  .review-item{
+    border:1px solid var(--line); border-top:none;
+    padding:0;
+  }
+  .review-item:first-child{border-top:1px solid var(--line); border-radius:var(--radius) var(--radius) 0 0;}
+  .review-item:last-child{border-radius:0 0 var(--radius) var(--radius);}
+  .review-summary{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 18px; cursor:pointer;
+    background:#fff;
+  }
+  .review-summary:hover{background:var(--paper-dim);}
+  .r-mark{
+    flex:0 0 auto; width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:12px; color:#fff;
+  }
+  .r-mark.correct{background:var(--correct);}
+  .r-mark.wrong{background:var(--danger);}
+  .r-stem-short{
+    font-size:14px; color:var(--ink);
+    flex:1;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .r-num{font-family:var(--mono); font-size:12px; color:var(--ink-faint);}
+  .r-caret{font-family:var(--mono); color:var(--ink-faint); transition:transform .15s ease;}
+  .review-item.open .r-caret{transform:rotate(90deg);}
+  .review-detail{
+    display:none;
+    padding:6px 18px 22px 52px;
+    border-top:1px solid var(--line-soft);
+    background:var(--paper-dim);
+  }
+  .review-item.open .review-detail{display:block;}
+  .review-detail .q-stem-full{
+    font-family:var(--serif); font-size:15px; margin:14px 0 12px; white-space:pre-line;
+  }
+  .review-opts{list-style:none; margin:0 0 14px; padding:0; font-size:13.5px;}
+  .review-opts li{
+    padding:7px 10px; margin-bottom:5px; border:1px solid var(--line-soft);
+    border-radius:6px;
+    display:flex; gap:8px; align-items:flex-start;
+    background:#fff;
+  }
+  .review-opts li.is-correct{border-color:var(--correct); background:var(--correct-tint);}
+  .review-opts li.is-user-wrong{border-color:var(--danger); background:var(--danger-tint);}
+  .tag{
+    font-family:var(--mono); font-size:10px; padding:1px 6px; border-radius:4px;
+    flex:0 0 auto;
+  }
+  .tag.correct-tag{background:var(--correct); color:#fff;}
+  .tag.wrong-tag{background:var(--danger); color:#fff;}
+  .explain{
+    font-size:13.5px; color:var(--ink-soft);
+    border-left:2px solid var(--ink-soft); padding-left:12px;
+  }
+  .explain b{color:var(--ink);}
+
+  .footer-actions{
+    display:flex; gap:12px; justify-content:center; margin-top:36px; flex-wrap:wrap;
+  }
+  .warn-banner{
+    background:var(--gold-tint); border:1px solid var(--gold); color:var(--ink);
+    border-radius:8px;
+    padding:10px 14px; font-size:13px; margin-bottom:14px; display:none;
+  }
+
+  footer.pagefoot{
+    text-align:center; font-family:var(--mono); font-size:11px; color:var(--ink-faint);
+    padding:34px 20px 10px;
+  }
+
+  @media (max-width:600px){
+    .cover-card{padding:30px 20px;}
+    .q-card{padding:24px 18px;}
+    .instructions{padding:18px;}
+    .answer-grid{grid-template-columns:repeat(10,1fr);}
+    .result-hero{padding:30px 18px;}
+    .score-big{font-size:44px;}
+    .nav-row{flex-direction:column; align-items:stretch;}
+    .nav-row .btn-row{width:100%; justify-content:space-between;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important; animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">PSY&#8209;PT&#8209;COMP&#8209;CHECK &middot; <b>Staff Competency Set</b></div>
+  <div class="pill" id="modePill">30Q &middot; Pass 60%</div>
+</div>
+
+<div class="wrap">
+
+  <!-- ===================== COVER ===================== -->
+  <section id="cover-screen">
+    <div class="cover-card">
+      <div class="exam-code">STAFF TRAINING SET &middot; PSYCHIATRY &middot; CLINICAL SELF-ASSESSMENT</div>
+      <h1>Psychiatric Physiotherapy Competency Check</h1>
+      <p class="subtitle">A 30-item self-assessment for junior physiotherapy staff, covering core
+      psychiatric knowledge and case-based clinical reasoning relevant to day-to-day practice on
+      psychiatric wards &mdash; medication side effects, risk recognition, safe handling, professional
+      boundaries, and person-centred care.</p>
+
+      <div class="meta-row">
+        <div class="meta-chip"><span class="num">30</span><span class="lbl">Questions</span></div>
+        <div class="meta-chip"><span class="num">15+15</span><span class="lbl">Knowledge + case items</span></div>
+        <div class="meta-chip"><span class="num">~40</span><span class="lbl">Minutes (suggested)</span></div>
+        <div class="meta-chip"><span class="num">60%</span><span class="lbl">Pass mark (18/30)</span></div>
+      </div>
+
+      <div class="instructions">
+        <h2>Before you begin</h2>
+        <ol>
+          <li>Each question has <b>five options (1&ndash;5)</b>. Most questions require you to select
+            <b>one</b> answer; questions marked <b>&ldquo;Select 2&rdquo;</b> require exactly two.</li>
+          <li>Selecting the wrong number of answers on a &ldquo;Select 2&rdquo; item will be marked
+            as incorrect for that item.</li>
+          <li>Questions alternate between <b>knowledge</b> items (definitions, facts, principles) and
+            <b>case-based</b> items (a short clinical vignette followed by a question).</li>
+          <li>You may move freely between questions using the number rail or the Previous/Next
+            buttons before submitting.</li>
+          <li>Once you submit, you'll see your score, a marked answer sheet, and a full explanation
+            for every question.</li>
+        </ol>
+        <div class="marksheet-demo">
+          <div class="demo-block">
+            <div class="demo-title">Example &middot; Select 1</div>
+            <div class="demo-bubbles">
+              <div class="demo-bubble filled">1</div>
+              <div class="demo-bubble">2</div>
+              <div class="demo-bubble">3</div>
+            </div>
+          </div>
+          <div class="demo-block">
+            <div class="demo-title">Example &middot; Select 2</div>
+            <div class="demo-bubbles">
+              <div class="demo-bubble sq filled">1</div>
+              <div class="demo-bubble sq">2</div>
+              <div class="demo-bubble sq filled">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="name-field">
+        <label for="staffName">Staff name (optional, shown on your results)</label>
+        <input type="text" id="staffName" placeholder="e.g. Chan Tai Man">
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="startBtn">Begin assessment &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="quiz-screen">
+    <div class="quiz-head">
+      <div class="progress-row">
+        <span id="progressLabel">Question 1 of 30</span>
+        <span class="timer" id="timerLabel">00:00</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="chip-rail" id="chipRail"></div>
+    </div>
+
+    <div class="warn-banner" id="warnBanner"></div>
+
+    <div class="q-card">
+      <div class="q-eyebrow">
+        <span class="q-index" id="qIndex">Q01</span>
+        <span class="q-domain" id="qDomain">Knowledge</span>
+        <span class="select-badge" id="selectBadge">Select 1</span>
+      </div>
+      <p class="q-stem" id="qStem"></p>
+      <ul class="options" id="optionsList"></ul>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" id="prevBtn">&larr; Previous</button>
+      <div class="right-group">
+        <button class="btn btn-ghost" id="nextBtn">Next &rarr;</button>
+        <button class="btn btn-primary" id="submitBtn" style="display:none;">Submit test</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RESULTS ===================== -->
+  <section id="results-screen">
+    <div class="result-hero">
+      <div class="stamp" id="stampEl">Pass</div>
+      <div class="score-big" id="scoreBig">0 / 30</div>
+      <div class="score-sub" id="scoreSub">0% &middot; pass mark is 60%</div>
+      <div class="stat-row">
+        <div class="stat"><b id="statCorrect">0</b>Correct</div>
+        <div class="stat"><b id="statIncorrect">0</b>Incorrect</div>
+        <div class="stat"><b id="statTime">00:00</b>Time taken</div>
+        <div class="stat"><b id="statName">&mdash;</b>Staff</div>
+      </div>
+    </div>
+
+    <div class="sheet-title">Marked answer sheet &middot; click a cell to jump to that question below</div>
+    <div class="answer-grid" id="answerGrid"></div>
+
+    <div class="sheet-title">Question-by-question review</div>
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="footer-actions">
+      <button class="btn btn-ghost" id="retakeBtn">Retake this set</button>
+      <button class="btn btn-primary" id="printBtn">Print / save results</button>
+    </div>
+  </section>
+
+  <footer class="pagefoot">Question set created for internal training use only &middot; not an official examination</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var QUESTIONS = [
+    {
+      domain:"Knowledge",
+      stem:"Under Hong Kong's Mental Health Ordinance (Cap. 136), an application for a patient's compulsory admission under Section 31 requires that the patient has been examined by a registered medical practitioner within how many days before the application is made?",
+      options:["24 hours","3 days","7 days","14 days","28 days"],
+      correct:[3],
+      explain:"Section 31 of the Mental Health Ordinance requires the applying medical practitioner to have personally examined the patient within the 7 days immediately preceding the application."
+    },
+    {
+      domain:"Case-based",
+      stem:"A 34-year-old man with schizophrenia, recently started on a high dose of haloperidol, is attending a supervised group exercise session. Over 20 minutes he becomes increasingly rigid, his temperature rises to 39.2\u00B0C, his pulse becomes rapid and irregular, and he becomes drowsy and less responsive.\n\nWhat is the most appropriate immediate action?",
+      options:["Encourage him to keep exercising to help lower his temperature","Apply ice packs and continue the session at a reduced pace","Stop the session immediately and escalate for urgent medical assessment","Give him extra water and reassess in 30 minutes","Ask him to rest sitting down and resume the same exercises once his breathing settles"],
+      correct:[3],
+      explain:"This presentation \u2014 rigidity, hyperthermia, autonomic instability and reduced consciousness following recent antipsychotic initiation or dose increase \u2014 is concerning for neuroleptic malignant syndrome, a medical emergency. The session should be stopped immediately and urgent medical review arranged, not continued or self-managed on the ward."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which extrapyramidal side effect of antipsychotic medication is characterised by an inner sense of restlessness with an inability to sit or stand still?",
+      options:["Acute dystonia","Akathisia","Tardive dyskinesia","Drug-induced parkinsonism","Neuroleptic malignant syndrome"],
+      correct:[2],
+      explain:"Akathisia is a subjective feeling of inner restlessness, usually manifesting as an inability to remain still, fidgeting, or pacing \u2014 distinct from the involuntary movements of dystonia and dyskinesia or the rigidity and tremor of parkinsonism."
+    },
+    {
+      domain:"Case-based",
+      stem:"A 76-year-old woman, two days post hip fracture surgery, is more confused than yesterday. Her attention wanders during conversation; she was calm this morning but became agitated and disoriented this evening, and she does not recognise where she is.\n\nWhich physiotherapy approach is most appropriate at this stage?",
+      options:["Proceed with the full standard post-op rehabilitation protocol regardless of her presentation","Postpone all physiotherapy until her cognitive test score returns to baseline","Provide simple reorientation, keep instructions short and consistent, and mobilise cautiously with extra supervision while alerting the team to the change","Physically restrain her hands to prevent her removing lines before starting exercises","Assume this is an expected feature of her age and continue therapy unchanged"],
+      correct:[3],
+      explain:"The acute onset, fluctuating course and inattention described are typical of delirium, which is common post-operatively in older adults. Physiotherapy can usually continue in a modified, safety-focused way \u2014 simple reorientation, short consistent instructions, and closer supervision \u2014 while flagging the change for medical review to identify and treat the underlying cause."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which combination of clinical features is most characteristic of neuroleptic malignant syndrome (NMS)?",
+      options:["Fine resting tremor, weight gain, sedation","Hyperthermia, muscle rigidity, autonomic instability, and altered consciousness","Orofacial dyskinesia, lip smacking, tongue protrusion","Sustained abnormal posturing of the neck and trunk","Symmetrical resting tremor with cogwheel rigidity and shuffling gait"],
+      correct:[2],
+      explain:"NMS classically presents with hyperthermia, severe muscle rigidity, autonomic instability (labile blood pressure, tachycardia, diaphoresis) and altered consciousness, usually with markedly elevated creatine kinase. It is a medical emergency requiring immediate cessation of activity and urgent medical review."
+    },
+    {
+      domain:"Case-based",
+      stem:"A patient with a manic episode becomes increasingly loud and irritable partway through a physiotherapy session, stands up abruptly, and says he wants to leave immediately.\n\nWhich response is most appropriate?",
+      options:["Firmly instruct him to sit back down and finish the exercises as planned","Physically block the doorway so he cannot leave the room","Calmly acknowledge his wish to stop, give him space, and inform the nursing/medical team of the change in behaviour","Ignore the behaviour and continue speaking about the exercise programme","Raise your voice to match his so he takes the instruction seriously"],
+      correct:[3],
+      explain:"Calmly acknowledging the patient's wishes, avoiding confrontation or physical blocking, and promptly informing the ward team allows the situation to be managed safely without escalating his agitation."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Regular blood monitoring is mandatory for patients on clozapine primarily to screen for which potentially life-threatening adverse effect?",
+      options:["Hepatotoxicity","Agranulocytosis","Nephrotoxicity","Thrombocytosis","Hypothyroidism"],
+      correct:[2],
+      explain:"Clozapine carries a risk of agranulocytosis, a severe drop in neutrophils that increases susceptibility to serious infection. Regular full blood count monitoring (frequent initially, then less often once stable) is mandatory throughout treatment."
+    },
+    {
+      domain:"Case-based",
+      stem:"A patient with major depressive disorder repeatedly says exercise 'won't make any difference' and shows little interest in starting a rehabilitation programme.\n\nWhich approach is most likely to support engagement?",
+      options:["Telling the patient they must complete the full programme regardless of how they feel","Cancelling physiotherapy until the psychiatric team confirms the depression has improved","Exploring the patient's own goals and concerns collaboratively, and starting with small, achievable tasks","Focusing sessions only on education, since exercise is not appropriate in depression","Setting an intensive daily exercise target from the outset to demonstrate commitment"],
+      correct:[3],
+      explain:"A collaborative, motivational approach \u2014 exploring the patient's own goals and starting with small, achievable steps to build early success \u2014 supports engagement far more than an unmodified prescriptive target, withholding therapy, or omitting exercise altogether."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which finding in a patient established on lithium therapy should most urgently prompt a check of serum lithium level and medical review?",
+      options:["Mild fine hand tremor present since starting treatment","Occasional mild thirst","A new coarse tremor with unsteady gait and slurred speech","Slight weight gain over several months","Mild nausea after the morning dose"],
+      correct:[3],
+      explain:"A coarse tremor, ataxia and dysarthria are signs suggestive of emerging lithium toxicity and warrant urgent medical assessment and a lithium level check, in contrast to the mild fine tremor and GI symptoms often seen at therapeutic levels."
+    },
+    {
+      domain:"Case-based",
+      stem:"A patient with anorexia nervosa and a low BMI, medically unstable and early in nutritional rehabilitation, asks the physiotherapist for an intensive daily gym programme to 'get fit'.\n\nWhich two considerations should most influence the physiotherapist's decision at this stage? Select 2.",
+      options:["The patient's request and enthusiasm for the programme","Current cardiovascular and electrolyte stability, as confirmed with the medical team","Whether the gym equipment is available at the requested time","The multidisciplinary team's agreed activity plan for her current stage of refeeding","How many calories the programme would burn per session"],
+      correct:[2,4],
+      explain:"Decisions about activity level in medically unstable, malnourished patients should be guided by confirmed cardiovascular/electrolyte stability and the multidisciplinary team's agreed plan for her stage of refeeding \u2014 not by patient enthusiasm, equipment availability, or calorie expenditure, which risk reinforcing unsafe or disordered exercise patterns."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which two of the following are extrapyramidal side effects of antipsychotic medication, resulting from dopamine blockade? Select 2.",
+      options:["Agranulocytosis","Acute dystonia","Tardive dyskinesia","Hyponatraemia","Hepatotoxicity"],
+      correct:[2,3],
+      explain:"Acute dystonia and tardive dyskinesia are both extrapyramidal side effects of antipsychotic medication, arising from dopamine blockade in the nigrostriatal pathway. Agranulocytosis, hyponatraemia and hepatotoxicity are non-extrapyramidal adverse effects associated with other psychotropic medications."
+    },
+    {
+      domain:"Case-based",
+      stem:"A 58-year-old man who has taken a typical antipsychotic for several years presents with a shuffling gait, reduced arm swing, mask-like facial expression and a resting tremor. Symptoms began a few months after his current medication was started.\n\nWhat does this presentation most likely represent?",
+      options:["Idiopathic Parkinson's disease unrelated to his medication","Tardive dyskinesia","Drug-induced parkinsonism secondary to his antipsychotic","Catatonic stupor","Guillain-Barr\u00E9 syndrome"],
+      correct:[3],
+      explain:"Parkinsonian features (shuffling gait, reduced arm swing, hypomimia, resting tremor) appearing after starting or increasing a dopamine-blocking antipsychotic are typical of drug-induced parkinsonism, which may improve with dose adjustment or a change of agent, unlike idiopathic Parkinson's disease."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which of the following is classified as a negative symptom of schizophrenia?",
+      options:["Auditory hallucinations","Persecutory delusions","Avolition","Thought insertion","Disorganised speech"],
+      correct:[3],
+      explain:"Negative symptoms reflect a reduction or loss of normal function \u2014 avolition (reduced motivation to initiate purposeful activity) is a classic example. Hallucinations, delusions, thought insertion and disorganised speech are positive symptoms."
+    },
+    {
+      domain:"Case-based",
+      stem:"A young man is given his first dose of haloperidol in the emergency department. Within hours he develops sudden, sustained twisting of his neck to one side that he cannot voluntarily correct, and looks distressed.\n\nWhat is the most appropriate immediate step?",
+      options:["Reassure him this will resolve on its own within a few days without treatment","Begin gentle passive neck stretching to correct the position","Alert the medical team promptly, as this is likely acute dystonia requiring prompt pharmacological treatment","Apply ice to the neck and reassess in the morning","Encourage active neck range-of-motion exercises against the spasm"],
+      correct:[3],
+      explain:"Sudden, sustained abnormal muscle contraction shortly after starting an antipsychotic is characteristic of acute dystonia, which usually responds quickly to an anticholinergic or antihistaminergic medication. It should be escalated promptly rather than managed with stretching or exercise alone."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which feature most reliably distinguishes delirium from dementia?",
+      options:["Presence of memory impairment","Older age of the patient","Acute onset with fluctuating consciousness and attention","Gradual decline over several years","Difficulty with activities of daily living"],
+      correct:[3],
+      explain:"Delirium is characterised by an acute onset and a fluctuating course, with impaired attention and level of consciousness \u2014 features not typical of dementia, which develops gradually and usually without clouding of consciousness."
+    },
+    {
+      domain:"Case-based",
+      stem:"A patient established on long-term lithium therapy develops a coarse tremor, unsteady gait and slurred speech partway through a physiotherapy session that were not present at the start.\n\nWhat should the physiotherapist do?",
+      options:["Continue the session but reduce the exercise intensity","Attribute this to fatigue and let the patient rest before resuming","Stop the session and refer promptly for medical assessment, as this may indicate lithium toxicity","Encourage the patient to drink more water and carry on","Document the finding and review again at the next scheduled session"],
+      correct:[3],
+      explain:"A new coarse tremor with ataxia and dysarthria in a patient on lithium raises concern for toxicity, which can progress to serious neurological and cardiac complications. The session should stop and prompt medical assessment (including a lithium level) should be arranged rather than continuing or waiting."
+    },
+    {
+      domain:"Knowledge",
+      stem:"In a severely malnourished patient with anorexia nervosa beginning nutritional rehabilitation, which electrolyte disturbance is the hallmark of refeeding syndrome?",
+      options:["Hypercalcaemia","Hyperkalaemia","Hypophosphataemia","Hypernatraemia","Hyperglycaemia"],
+      correct:[3],
+      explain:"Refeeding syndrome is driven primarily by a sharp fall in serum phosphate as carbohydrate reintroduction triggers an insulin surge and a shift of phosphate into cells, which can precipitate cardiac and respiratory complications."
+    },
+    {
+      domain:"Case-based",
+      stem:"During assessment, a patient remains silent and motionless. When the physiotherapist gently repositions her arm, it stays fixed in the new position for a prolonged period before slowly returning, and she does not resist or assist the movement.\n\nWhich physiotherapy approach is most appropriate given this presentation?",
+      options:["Ignore the finding and proceed with active resistance training as planned","Recognise this as a possible sign of catatonia, avoid forcing movement, and alert the medical team promptly","Assume she is being uncooperative and end the session","Ask her to perform maximal voluntary effort testing to confirm weakness","Reassure her the symptoms are not real and continue as normal"],
+      correct:[2],
+      explain:"Waxy flexibility with mutism and immobility suggests catatonia, a condition requiring prompt medical/psychiatric assessment as it can respond well to specific treatment. Physiotherapy should avoid forcing active participation and instead flag the finding to the team rather than labelling it as poor cooperation."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which clinical sign is characteristic of catatonia?",
+      options:["Pill-rolling resting tremor","Waxy flexibility, where a limb held in a posture resists movement then slowly yields","Symmetrical proximal muscle weakness","Cogwheel rigidity that eases with movement repetition","Intention tremor that worsens near the target"],
+      correct:[2],
+      explain:"Waxy flexibility \u2014 a limb maintaining an externally imposed posture with slow, wax-like resistance to repositioning \u2014 is a classic catatonic sign, along with mutism, posturing, and stupor."
+    },
+    {
+      domain:"Case-based",
+      stem:"An older patient on the psychogeriatric ward has moderate dementia, has fallen twice in the past month, and has limited awareness of her own physical limitations.\n\nWhich two of the following are appropriate falls-prevention strategies for this patient? Select 2.",
+      options:["Complete bed rest until her cognition improves","Use of a validated falls-risk assessment tool to guide her care plan","Relying solely on verbal reminders to stay seated","Environmental modification such as a low-low bed and clutter-free floor space","Encouraging fully independent mobility to preserve her function"],
+      correct:[2,4],
+      explain:"A validated falls-risk assessment tool and environmental modifications such as a low-low bed and clear floor space are appropriate, evidence-based strategies for a patient with impaired safety awareness. Bed rest causes deconditioning, verbal reminders alone are unreliable in dementia, and encouraging full independence ignores her documented fall risk."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Before mobilising a psychiatric inpatient recently started on a sedating antipsychotic, which precaution is most important given the medication's common cardiovascular side effect?",
+      options:["Checking lying and standing blood pressure before starting","Restricting fluid intake before the session","Avoiding all mobilisation until the medication is stopped","Using a firm gait belt regardless of the patient's balance","Scheduling the session immediately after the medication is given"],
+      correct:[1],
+      explain:"Many antipsychotics cause orthostatic hypotension. Checking lying and standing blood pressure before mobilising helps identify patients at risk of a postural drop and possible falls, allowing the session to be adapted accordingly."
+    },
+    {
+      domain:"Case-based",
+      stem:"While assessing range of motion, a physiotherapist notices healed linear scars on a patient's forearm, and the patient becomes visibly upset and looks away.\n\nWhat is the most appropriate response?",
+      options:["Point out the scars directly and ask her to explain what happened","Say nothing about the scars, complete the assessment respectfully, and mention the observation to the treating team if clinically relevant","Avoid touching that arm for the rest of her admission without explanation","Reassure her that 'everyone has scars' to minimise the topic","Ask other staff in front of her whether they noticed the scars too"],
+      correct:[2],
+      explain:"A calm, respectful approach that does not press the patient for an explanation in the moment, while passing on clinically relevant observations to the team, respects the patient's dignity and keeps the focus of the physiotherapy encounter appropriate to the physiotherapist's role."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which action best reflects good practice when verbally de-escalating an agitated patient during a physiotherapy session?",
+      options:["Standing directly in front of the patient at close range to maintain control","Speaking in a calm, low, even tone while keeping a respectful distance","Raising your voice slightly to be heard over the patient","Continuing the planned exercise programme to maintain routine","Making direct, unbroken eye contact to assert authority"],
+      correct:[2],
+      explain:"De-escalation is supported by a calm, low, even tone, a non-confrontational stance, and maintaining a respectful physical distance \u2014 reducing perceived threat rather than asserting control through proximity, volume, or continued task demands."
+    },
+    {
+      domain:"Case-based",
+      stem:"A patient with a history of PTSD flinches and becomes tearful when the physiotherapist places a hand on her shoulder without warning to guide a stretch.\n\nWhat should the physiotherapist do differently going forward?",
+      options:["Continue using hands-on techniques as normal, since this is standard practice","Explain each hands-on technique beforehand and ask permission before touching her","Avoid physical contact permanently for all future sessions without discussion","Tell her that reacting this way is not helpful for her rehabilitation","Proceed more quickly through hands-on techniques so she has less time to react"],
+      correct:[2],
+      explain:"Trauma-informed practice involves explaining what will happen and gaining explicit consent before touch, giving the patient a sense of control and predictability \u2014 rather than continuing unchanged, permanently avoiding all contact without discussion, or minimising her reaction."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which two of the following reflect appropriate practice for protecting a psychiatric patient's confidentiality? Select 2.",
+      options:["Discussing relevant clinical details with the treating multidisciplinary team","Leaving the patient's case notes open on an unattended desk","Sharing only clinically necessary details with the family after checking consent","Posting an anonymised but locatable case summary in a private social media group for therapists","Telling curious visitors on the ward general information about the patient's diagnosis"],
+      correct:[1,3],
+      explain:"Discussing relevant details within the treating multidisciplinary team, and sharing information with family only after checking consent and limiting it to what's clinically necessary, are both appropriate. Leaving notes unattended, posting case details externally, or disclosing diagnoses to visitors all breach confidentiality."
+    },
+    {
+      domain:"Case-based",
+      stem:"A patient with a diagnosis of borderline personality disorder asks the physiotherapist for their personal mobile number so she can message for exercise reminders and support between sessions.\n\nWhat is the most appropriate response?",
+      options:["Give the number, since it may improve exercise adherence","Decline politely, explain the professional boundary, and offer an appropriate alternative such as a written home programme or official department contact","Give the number but ask her to only message during office hours","Ignore the request and change the subject","Report the request to security as an incident"],
+      correct:[2],
+      explain:"Maintaining clear professional boundaries while still supporting the patient \u2014 for example, offering a written home programme or the department's official contact channel \u2014 is appropriate and consistent with good practice, rather than sharing personal contact details."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Based on current evidence, which exercise prescription is most appropriate as an adjunct for managing mild-to-moderate depression?",
+      options:["A single maximal-intensity session, as more intensity always produces greater benefit","Moderate-intensity aerobic exercise most days of the week, built up gradually","Strict bed rest until mood symptoms fully resolve","Exercise only once symptoms have completely remitted","High-intensity interval training performed daily regardless of tolerance"],
+      correct:[2],
+      explain:"Guidelines generally support regular moderate-intensity aerobic exercise, introduced gradually and most days of the week, as an effective adjunct for mild-to-moderate depression \u2014 rather than a single intense bout, enforced rest, or delaying exercise until symptoms resolve."
+    },
+    {
+      domain:"Case-based",
+      stem:"During a session, a patient suddenly becomes verbally threatening, clenches his fists and steps toward the physiotherapist.\n\nWhat is the physiotherapist's first priority?",
+      options:["Continue the exercise instructions calmly to de-escalate through routine","Stand your ground to avoid appearing intimidated","Ensure personal safety \u2014 create distance, move toward the exit, and call for assistance","Attempt to physically restrain the patient alone","Try to reason with him about why his behaviour is inappropriate before withdrawing"],
+      correct:[3],
+      explain:"When a patient becomes physically threatening, the immediate priority is personal safety \u2014 creating distance, moving toward an exit, and summoning help \u2014 rather than continuing therapy, standing ground, attempting solo restraint, or delaying withdrawal to reason with the patient."
+    },
+    {
+      domain:"Knowledge",
+      stem:"Which factor is generally regarded as the single strongest predictor of future suicide risk?",
+      options:["Male sex","A previous suicide attempt","Living alone","Older age","Unemployment"],
+      correct:[2],
+      explain:"A previous suicide attempt is consistently identified as the strongest single predictor of future suicide risk, ahead of other contributing demographic and social factors."
+    },
+    {
+      domain:"Case-based",
+      stem:"The ward team is considering physical restraint for an agitated, cognitively impaired elderly patient who keeps trying to climb out of bed unsupervised.\n\nWhat is the most appropriate contribution from the physiotherapist to this discussion?",
+      options:["Support restraint as the first-line option to guarantee safety","Suggest exploring least-restrictive alternatives first \u2014 such as addressing pain or toileting needs, environmental modification, low-low beds, or increased supervision \u2014 reserving restraint for when these are insufficient","Recommend restraint be used continuously until the patient is discharged","Stay silent, since restraint decisions are entirely outside the physiotherapist's scope","Suggest sedating medication as a substitute for restraint without further assessment"],
+      correct:[2],
+      explain:"Good multidisciplinary practice favours identifying and addressing underlying causes of the behaviour and trying least-restrictive alternatives first, with physical restraint reserved as a last resort when safety cannot otherwise be assured. Physiotherapists can meaningfully contribute to this discussion, including advice on mobility, environment and equipment."
+    }
+  ];
+
+  QUESTIONS.forEach(function(q,i){
+    q.id = i;
+    q.numAnswers = q.correct.length;
+  });
+
+  var TOTAL = QUESTIONS.length;
+  var PASS_PCT = 60;
+  var current = 0;
+  var answers = {}; // id -> array of selected option numbers (1-based)
+  var startTime = null;
+  var timerInterval = null;
+  var elapsedSeconds = 0;
+
+  // ---------- element refs ----------
+  var coverScreen = document.getElementById('cover-screen');
+  var quizScreen = document.getElementById('quiz-screen');
+  var resultsScreen = document.getElementById('results-screen');
+  var startBtn = document.getElementById('startBtn');
+  var staffNameInput = document.getElementById('staffName');
+
+  var progressLabel = document.getElementById('progressLabel');
+  var timerLabel = document.getElementById('timerLabel');
+  var progressFill = document.getElementById('progressFill');
+  var chipRail = document.getElementById('chipRail');
+  var qIndex = document.getElementById('qIndex');
+  var qDomain = document.getElementById('qDomain');
+  var selectBadge = document.getElementById('selectBadge');
+  var qStem = document.getElementById('qStem');
+  var optionsList = document.getElementById('optionsList');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var submitBtn = document.getElementById('submitBtn');
+  var warnBanner = document.getElementById('warnBanner');
+
+  function pad(n){ return n<10 ? '0'+n : ''+n; }
+  function fmtTime(sec){
+    var m = Math.floor(sec/60), s = sec%60;
+    return pad(m)+':'+pad(s);
+  }
+
+  // ---------- build chip rail ----------
+  QUESTIONS.forEach(function(q,i){
+    var chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.type = 'button';
+    chip.textContent = (i+1);
+    chip.setAttribute('aria-label','Go to question '+(i+1));
+    chip.addEventListener('click', function(){ goTo(i); });
+    chipRail.appendChild(chip);
+  });
+
+  function refreshChips(){
+    var chips = chipRail.children;
+    for (var i=0;i<chips.length;i++){
+      var c = chips[i];
+      c.classList.toggle('answered', !!(answers[i] && answers[i].length));
+      c.classList.toggle('current', i===current);
+    }
+  }
+
+  function renderQuestion(){
+    var q = QUESTIONS[current];
+    qIndex.textContent = 'Q' + pad(current+1);
+    qDomain.textContent = q.domain;
+    selectBadge.textContent = q.numAnswers > 1 ? ('Select ' + q.numAnswers) : 'Select 1';
+    qStem.textContent = q.stem;
+    progressLabel.textContent = 'Question ' + (current+1) + ' of ' + TOTAL;
+    progressFill.style.width = (((current)/(TOTAL-1)) * 100) + '%';
+
+    optionsList.innerHTML = '';
+    optionsList.className = 'options' + (q.numAnswers > 1 ? ' multi' : '');
+    var selected = answers[q.id] || [];
+
+    q.options.forEach(function(text, idx){
+      var num = idx+1;
+      var li = document.createElement('li');
+      li.className = 'option' + (selected.indexOf(num) > -1 ? ' selected' : '');
+      li.tabIndex = 0;
+      li.setAttribute('role', q.numAnswers>1 ? 'checkbox' : 'radio');
+      li.setAttribute('aria-checked', selected.indexOf(num) > -1 ? 'true':'false');
+
+      var bubble = document.createElement('span');
+      bubble.className = 'bubble';
+      bubble.textContent = num;
+
+      var span = document.createElement('span');
+      span.className = 'option-text';
+      span.textContent = text;
+
+      li.appendChild(bubble);
+      li.appendChild(span);
+      li.addEventListener('click', function(){ toggleOption(q, num); });
+      li.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleOption(q, num); }
+      });
+      optionsList.appendChild(li);
+    });
+
+    prevBtn.disabled = (current === 0);
+    var isLast = (current === TOTAL-1);
+    nextBtn.style.display = isLast ? 'none' : 'inline-block';
+    submitBtn.style.display = isLast ? 'inline-block' : 'none';
+    warnBanner.style.display = 'none';
+
+    refreshChips();
+  }
+
+  function toggleOption(q, num){
+    var sel = answers[q.id] ? answers[q.id].slice() : [];
+    var pos = sel.indexOf(num);
+    if (q.numAnswers === 1){
+      sel = (pos > -1) ? [] : [num];
+    } else {
+      if (pos > -1){
+        sel.splice(pos,1);
+      } else {
+        sel.push(num);
+        if (sel.length > q.numAnswers){ sel.shift(); }
+      }
+    }
+    answers[q.id] = sel;
+    renderQuestion();
+  }
+
+  function goTo(i){
+    current = Math.max(0, Math.min(TOTAL-1, i));
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current-1); });
+  nextBtn.addEventListener('click', function(){ goTo(current+1); });
+
+  submitBtn.addEventListener('click', function(){
+    var unanswered = [];
+    QUESTIONS.forEach(function(q,i){
+      if (!answers[q.id] || answers[q.id].length === 0) unanswered.push(i+1);
+    });
+    if (unanswered.length){
+      warnBanner.style.display = 'block';
+      warnBanner.textContent = 'You still have ' + unanswered.length + ' unanswered question' +
+        (unanswered.length>1?'s':'') + ' (Q' + unanswered.join(', Q') + '). Submit anyway, or use the number rail to go back.';
+      var again = document.createElement('div');
+      again.style.marginTop = '8px';
+      var b = document.createElement('button');
+      b.className = 'btn btn-ghost';
+      b.style.padding = '8px 16px';
+      b.style.fontSize = '12px';
+      b.textContent = 'Submit anyway';
+      b.addEventListener('click', finishQuiz);
+      warnBanner.appendChild(again);
+      again.appendChild(b);
+      return;
+    }
+    finishQuiz();
+  });
+
+  function startTimer(){
+    startTime = Date.now();
+    timerInterval = setInterval(function(){
+      elapsedSeconds = Math.floor((Date.now()-startTime)/1000);
+      timerLabel.textContent = fmtTime(elapsedSeconds);
+    }, 1000);
+  }
+  function stopTimer(){
+    if (timerInterval) clearInterval(timerInterval);
+  }
+
+  startBtn.addEventListener('click', function(){
+    coverScreen.style.display = 'none';
+    quizScreen.style.display = 'block';
+    current = 0;
+    renderQuestion();
+    startTimer();
+    window.scrollTo({top:0});
+  });
+
+  function arraysEqualAsSets(a,b){
+    if (a.length !== b.length) return false;
+    var sa = a.slice().sort();
+    var sb = b.slice().sort();
+    for (var i=0;i<sa.length;i++){ if (sa[i]!==sb[i]) return false; }
+    return true;
+  }
+
+  function finishQuiz(){
+    stopTimer();
+    quizScreen.style.display = 'none';
+    resultsScreen.style.display = 'block';
+    window.scrollTo({top:0});
+
+    var correctCount = 0;
+    QUESTIONS.forEach(function(q){
+      var sel = answers[q.id] || [];
+      if (arraysEqualAsSets(sel, q.correct)) correctCount++;
+    });
+
+    var pct = Math.round((correctCount/TOTAL)*100);
+    var pass = pct >= PASS_PCT;
+
+    document.getElementById('stampEl').textContent = pass ? 'Pass' : 'Not yet';
+    document.getElementById('stampEl').className = 'stamp' + (pass ? '' : ' fail');
+    document.getElementById('scoreBig').textContent = correctCount + ' / ' + TOTAL;
+    document.getElementById('scoreSub').textContent = pct + '% \u00B7 pass mark is ' + PASS_PCT + '%';
+    document.getElementById('statCorrect').textContent = correctCount;
+    document.getElementById('statIncorrect').textContent = (TOTAL-correctCount);
+    document.getElementById('statTime').textContent = fmtTime(elapsedSeconds);
+    document.getElementById('statName').textContent = staffNameInput.value.trim() || '\u2014';
+
+    buildAnswerGrid();
+    buildReview();
+  }
+
+  function buildAnswerGrid(){
+    var grid = document.getElementById('answerGrid');
+    grid.innerHTML = '';
+    QUESTIONS.forEach(function(q,i){
+      var sel = answers[q.id] || [];
+      var ok = arraysEqualAsSets(sel, q.correct);
+      var cell = document.createElement('div');
+      cell.className = 'grid-cell ' + (ok ? 'correct' : 'wrong');
+      cell.textContent = (i+1);
+      cell.tabIndex = 0;
+      cell.addEventListener('click', function(){
+        var target = document.querySelector('.review-item[data-idx="'+i+'"]');
+        if (target){
+          target.classList.add('open');
+          target.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      });
+      grid.appendChild(cell);
+    });
+  }
+
+  function buildReview(){
+    var list = document.getElementById('reviewList');
+    list.innerHTML = '';
+    QUESTIONS.forEach(function(q,i){
+      var sel = answers[q.id] || [];
+      var ok = arraysEqualAsSets(sel, q.correct);
+
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.setAttribute('data-idx', i);
+
+      var summary = document.createElement('div');
+      summary.className = 'review-summary';
+      summary.innerHTML =
+        '<span class="r-mark ' + (ok?'correct':'wrong') + '">' + (ok?'\u2713':'\u2717') + '</span>' +
+        '<span class="r-num">Q' + pad(i+1) + '</span>' +
+        '<span class="r-stem-short">' + escapeHtml(q.stem.split('\n')[0]) + '</span>' +
+        '<span class="r-caret">&#8250;</span>';
+      summary.addEventListener('click', function(){ item.classList.toggle('open'); });
+
+      var detail = document.createElement('div');
+      detail.className = 'review-detail';
+
+      var stemFull = document.createElement('div');
+      stemFull.className = 'q-stem-full';
+      stemFull.textContent = q.stem;
+      detail.appendChild(stemFull);
+
+      var optsUl = document.createElement('ul');
+      optsUl.className = 'review-opts';
+      q.options.forEach(function(text, idx){
+        var num = idx+1;
+        var isCorrect = q.correct.indexOf(num) > -1;
+        var wasSelected = sel.indexOf(num) > -1;
+        var li = document.createElement('li');
+        var cls = '';
+        if (isCorrect) cls = 'is-correct';
+        else if (wasSelected && !isCorrect) cls = 'is-user-wrong';
+        li.className = cls;
+
+        var tagHtml = '';
+        if (isCorrect) tagHtml = '<span class="tag correct-tag">Correct</span>';
+        else if (wasSelected) tagHtml = '<span class="tag wrong-tag">Your pick</span>';
+
+        li.innerHTML = '<span>' + num + '.</span><span style="flex:1;">' + escapeHtml(text) + '</span>' + tagHtml;
+        optsUl.appendChild(li);
+      });
+      detail.appendChild(optsUl);
+
+      var explain = document.createElement('div');
+      explain.className = 'explain';
+      explain.innerHTML = '<b>Why:</b> ' + escapeHtml(q.explain);
+      detail.appendChild(explain);
+
+      item.appendChild(summary);
+      item.appendChild(detail);
+      list.appendChild(item);
+    });
+  }
+
+  function escapeHtml(s){
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  document.getElementById('retakeBtn').addEventListener('click', function(){
+    answers = {};
+    current = 0;
+    elapsedSeconds = 0;
+    resultsScreen.style.display = 'none';
+    coverScreen.style.display = 'block';
+    window.scrollTo({top:0});
+  });
+
+  document.getElementById('printBtn').addEventListener('click', function(){
+    window.print();
+  });
+
+})();
+</script>
+</body>
+</html>
