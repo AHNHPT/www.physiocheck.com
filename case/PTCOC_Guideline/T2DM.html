@@ -119,6 +119,19 @@ a{ color:var(--teal-deep); }
 .chip-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
 .chip{ font-family:var(--mono); font-size:.74rem; background:var(--paper); border:1px solid var(--line); padding:4px 9px; border-radius:7px; color:var(--ink); }
 
+/* ============================= CLASSIFICATION ============================= */
+.class-split{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px 24px; margin-bottom:22px; }
+.class-bar{ display:flex; height:16px; border-radius:8px; overflow:hidden; background:var(--paper); }
+.class-bar-labels{ display:flex; flex-wrap:wrap; gap:18px; margin-top:12px; font-size:.85rem; color:var(--ink-soft); }
+.class-bar-labels span{ display:inline-flex; align-items:center; gap:7px; }
+.dm-type-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.dm-type-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); border-top:4px solid var(--teal); }
+.dm-type-card.t1{ border-top-color:var(--amber); }
+.dm-type-card.gdm{ border-top-color:var(--teal-deep); }
+.dm-type-card .badge{ display:inline-block; font-family:var(--mono); font-size:.7rem; font-weight:700; letter-spacing:.04em; padding:4px 10px; border-radius:7px; background:var(--paper); color:var(--teal-deep); margin-bottom:10px; }
+.dm-type-card h4{ font-size:1.02rem; margin-bottom:.35em; }
+.dm-type-card p{ font-size:.88rem; margin-bottom:0; }
+
 /* ============================= BENEFIT CARDS ============================= */
 .mode-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
 .mode-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px; transition:transform .25s ease, box-shadow .25s ease; }
@@ -288,6 +301,7 @@ table.rpe-table{ width:100%; border-collapse:collapse; font-size:.86rem; min-wid
   .hero-grid{ grid-template-columns:1fr; }
   .hero-figure{ order:-1; max-width:280px; margin:0 auto; }
   .glance-grid{ grid-template-columns:1fr; }
+  .dm-type-grid{ grid-template-columns:1fr; }
   .mode-grid{ grid-template-columns:repeat(2,1fr); }
   .stat-row{ grid-template-columns:repeat(2,1fr); }
   .flow-grid{ grid-template-columns:1fr; gap:36px; }
@@ -319,6 +333,7 @@ table.rpe-table{ width:100%; border-collapse:collapse; font-size:.86rem; min-wid
     <div class="brand"><span class="brand-mark">HA</span> T2DM &amp; PT</div>
     <div class="navlinks" id="navlinks">
       <a href="#overview">Overview</a>
+      <a href="#classification">Classification</a>
       <a href="#benefits">Benefits</a>
       <a href="#screening">Screening</a>
       <a href="#glucose">Glucose Safety</a>
@@ -351,12 +366,52 @@ table.rpe-table{ width:100%; border-collapse:collapse; font-size:.86rem; min-wid
     <div class="hero-figure">
       <div class="dial-mini">
         <div class="label">Pre-exercise check</div>
-        <div class="big">5.0–13.9</div>
+        <div class="big">5.6–13.9</div>
         <div class="sub">mmol/L — the optimal glucose window before starting a session. Scroll to the safety dial ↓</div>
       </div>
     </div>
   </div>
 </header>
+
+<!-- ============================= CLASSIFICATION ============================= -->
+<section class="section" id="classification">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Foundations</div>
+      <h2>Classification of diabetes mellitus</h2>
+      <p>Three clinically distinct types share the name "diabetes" — knowing which one is in front of you shapes the whole risk conversation before you even reach exercise prescription. This manual is built specifically around the first.</p>
+    </div>
+
+    <div class="class-split reveal">
+      <div class="class-bar">
+        <div style="width:92.5%;background:var(--teal)"></div>
+        <div style="width:7.5%;background:var(--amber)"></div>
+      </div>
+      <div class="class-bar-labels">
+        <span><span class="dot-lbl" style="background:var(--teal)"></span> Type 2 (T2DM) — 90–95% of cases</span>
+        <span><span class="dot-lbl" style="background:var(--amber)"></span> Type 1 (T1DM) — 5–10% of cases</span>
+      </div>
+    </div>
+
+    <div class="dm-type-grid">
+      <div class="dm-type-card reveal">
+        <span class="badge">90–95% of cases</span>
+        <h4>Type 2 Diabetes Mellitus (T2DM)</h4>
+        <p>Results from insulin-resistant skeletal muscle, adipose tissue and liver, combined with a progressive insulin secretory defect. The most frequent form of diabetes among Hong Kong adults, and the focus of this manual.</p>
+      </div>
+      <div class="dm-type-card t1 reveal">
+        <span class="badge" style="color:#c9852a">5–10% of cases</span>
+        <h4>Type 1 Diabetes Mellitus (T1DM)</h4>
+        <p>Results from cell-mediated autoimmune destruction of the pancreatic β-cells, producing insulin deficiency. Some cases are idiopathic in origin. Not the population this manual's exercise pathway is written for.</p>
+      </div>
+      <div class="dm-type-card gdm reveal">
+        <span class="badge" style="color:#0b5457">Pregnancy-specific</span>
+        <h4>Gestational Diabetes Mellitus</h4>
+        <p>Screening typically occurs at 24–28 weeks of gestation, in pregnant women not previously known to have diabetes.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============================= AT A GLANCE ============================= -->
 <section class="section">
@@ -364,7 +419,7 @@ table.rpe-table{ width:100%; border-collapse:collapse; font-size:.86rem; min-wid
     <div class="section-head reveal">
       <div class="eyebrow">At a glance</div>
       <h2>What this programme is for</h2>
-      <p>Before prescribing, know who the programme serves, what it's trying to achieve, and when to stop and reconsider.</p>
+      <p>Weight management including dietary control and exercise education are fundamental in T2DM management. For diabetes population, every 100 minutes of physical activity per week was associated with an average reduction of 2.75mg/dl of fasting glucose and 0.14% of HbA1c according to a recent quantitative meta-analysis.</p>
     </div>
     <div class="glance-grid">
       <div class="glance-card reveal">
@@ -769,8 +824,8 @@ table.rpe-table{ width:100%; border-collapse:collapse; font-size:.86rem; min-wid
     { key:'low', label:'< 3.9 mmol/L', color:'#d1483f', tag:'Do not exercise', title:'Relative contraindication',
       body:'An acute bout of exercise is relatively contraindicated. Treat the low reading first and re-check before considering any session.' },
     { key:'caution-low', label:'3.9 – 4.9 mmol/L', color:'#e8a33d', tag:'Caution', title:'Top up before starting',
-      body:'If the patient is on insulin and/or an insulin secretagogue (e.g. glyburide, glipizide, glimepiride, nateglinide, repaglinide), have them ingest added carbohydrate — for example, one slice of plain bread — before exercising, since the optimal pre-exercise range is 5.0–13.9 mmol/L.' },
-    { key:'optimal', label:'5.0 – 13.9 mmol/L', color:'#2f8f5b', tag:'Proceed', title:'Optimal pre-exercise range',
+      body:'If the patient is on insulin and/or an insulin secretagogue (e.g. glyburide, glipizide, glimepiride, nateglinide, repaglinide), have them ingest added carbohydrate — for example, one slice of plain bread — before exercising, since the optimal pre-exercise range is 5.6–13.9 mmol/L.' },
+    { key:'optimal', label:'5.6 – 13.9 mmol/L', color:'#2f8f5b', tag:'Proceed', title:'Optimal pre-exercise range',
       body:'This is the recommended window for starting a session. No specific glucose action needed — proceed with the planned programme and standard monitoring.' },
     { key:'caution-high', label:'13.9 – 16.7 mmol/L', color:'#e8a33d', tag:'Proceed with care', title:'Elevated — check for symptoms',
       body:'Most T2DM patients are not profoundly insulin-deficient, so exercise doesn\'t need to be postponed for this range as long as the patient feels well and is adequately hydrated. Watch for polyuria, fatigue, weakness, thirst or acetone breath.' },
@@ -803,7 +858,7 @@ table.rpe-table{ width:100%; border-collapse:collapse; font-size:.86rem; min-wid
   var step = (endAngle - startAngle) / zones.length;
   var svgNS = 'http://www.w3.org/2000/svg';
 
-  var boundaryTicks = ['3.9', '5.0', '13.9', '16.7'];
+  var boundaryTicks = ['3.9', '5.6', '13.9', '16.7'];
 
   zones.forEach(function(z, i){
     var a0 = startAngle + step * i;
@@ -901,12 +956,12 @@ table.rpe-table{ width:100%; border-collapse:collapse; font-size:.86rem; min-wid
       question: "What should you advise before this session?",
       options: [
         { text: "Proceed immediately — 4.6 mmol/L is a safe range for anyone.", correct: false },
-        { text: "Have him ingest added carbohydrate (e.g. one slice of plain bread) first, since he's on a sulfonylurea and his glucose is below 5.0 mmol/L.", correct: true },
+        { text: "Have him ingest added carbohydrate (e.g. one slice of plain bread) first, since he's on a sulfonylurea and his glucose is below 5.6 mmol/L.", correct: true },
         { text: "Cancel the session outright — any reading below 5.6 mmol/L is an absolute contraindication.", correct: false },
         { text: "Give him a dose of rapid-acting insulin to correct the reading before exercising.", correct: false }
       ],
-      rationaleCorrect: "Sulfonylureas like glimepiride can precipitate exercise-induced hypoglycemia. For patients on insulin or insulin secretagogues, added carbohydrate is advised when pre-exercise glucose is below 5.0 mmol/L (optimal range is 5.0–13.9 mmol/L). Only glucose under 3.9 mmol/L is a relative contraindication to an acute bout of exercise — 4.6 mmol/L doesn't warrant cancelling, but does need a carbohydrate top-up given his medication.",
-      rationaleIncorrect: "4.6 mmol/L sits below the optimal 5.0–13.9 mmol/L window, and he's on a medication that can cause exercise-induced hypoglycemia. The correct move is a carbohydrate top-up before starting — not cancelling outright (that threshold is under 3.9 mmol/L) and not correcting with insulin (that's for hyperglycemia, not this scenario)."
+      rationaleCorrect: "Sulfonylureas like glimepiride can precipitate exercise-induced hypoglycemia. For patients on insulin or insulin secretagogues, added carbohydrate is advised when pre-exercise glucose is below 5.6 mmol/L (optimal range is 5.6–13.9 mmol/L). Only glucose under 3.9 mmol/L is a relative contraindication to an acute bout of exercise — 4.6 mmol/L doesn't warrant cancelling, but does need a carbohydrate top-up given his medication.",
+      rationaleIncorrect: "4.6 mmol/L sits below the optimal 5.6–13.9 mmol/L window, and he's on a medication that can cause exercise-induced hypoglycemia. The correct move is a carbohydrate top-up before starting — not cancelling outright (that threshold is under 3.9 mmol/L) and not correcting with insulin (that's for hyperglycemia, not this scenario)."
     },
     {
       vignette: "Ms. Wong, 55, T2DM on metformin only, checks in for resistance training. Her glucose is <strong>18.2 mmol/L</strong>. She feels well, is adequately hydrated, and denies polyuria, excessive thirst, or acetone breath.",
