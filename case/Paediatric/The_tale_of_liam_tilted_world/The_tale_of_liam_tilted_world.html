@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Tale of Liam's Tilted World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+.case-img.placeholder{
+  border:1.5px dashed var(--line);
+  border-radius:10px;
+  padding:22px 14px;
+  color:var(--muted);
+  font-size:13px;
+  background:#FAFCFC;
+}
+.case-img.placeholder .ph-label{
+  font-weight:600;
+  color:var(--teal-dark);
+  display:block;
+  margin-bottom:4px;
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:bold;
+  color:var(--muted);
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+.feedback{
+  font-size:13.5px;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  border-radius:8px;
+  margin:-4px 0 9px 2px;
+}
+.feedback:empty{ display:none; }
+.feedback:not(:empty){ padding:10px 14px; }
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+.btn[disabled]{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+.ok{ color:var(--good); font-weight:700; }
+.no{ color:var(--bad); font-weight:700; }
+
+/* ---------- Field table (e.g. AROM/PROM comparison) ---------- */
+.field-table th{ text-align:left; }
+.field-table td{ text-align:left; vertical-align:top; }
+.field-table td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:bold;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="eyebrow">🩺 Physiotherapy Case — Paediatrics</div>
+  <h1>The Tale of Liam's Tilted World</h1>
+  <p class="role">A 2-Month-Old with a Head Tilt — Muscular Torticollis, or Something Else?</p>
+  <div class="tags" style="justify-content:center;">
+    <span class="tag ref">Specialty: Paediatrics</span>
+    <span class="tag diag">Difficulty: ★★★</span>
+  </div>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Assessment</span>
+  <span>Management</span>
+</div>
+
+<!-- ================= CASE NOTE ================= -->
+<div class="box">
+  <p>Liam, a 2-month-old baby boy, was referred by the Maternal Child Health Centre for OPD Physio. 
+  <br><br>This is his 1st OPD Physio session. Liam is brought by his parents and the domestic helper.</p>
+
+  <div class="tags">
+    <span class="tag ref">Referral: "head tilted to right"</span>
+  </div>
+
+  <div class="field-group">
+    <h4>Birth history:</h4>
+    <ul>
+      <li>Born at 39 weeks via vacuum-assisted delivery following a prolonged second stage of labor</li>
+      <li>Birth weight: 3.5 kg</li>
+      <li>Antenatal: uneventful</li>
+      <li>No immediate post-natal complications</li>
+    </ul>
+  </div>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <ul>
+      <li>First child in the family</li>
+      <li>Lives with parents (both work full-time as clerical work), the domestic helper</li>
+      <li>Main carer: the domestic helper, mother (during maternity leave), maternal and paternal grandparents will visit and help take care of the baby sometimes</li>
+      <li>No FHx of torticollis</li>
+    </ul>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <p>Mother noticed around week 3 that Liam prefers to rotate his head to the right, no matter he is awake or sleeping.<br>
+    She feels frustrated especially during breastfeeding — the baby latches well on the left breast but struggles, fusses, and frequently loses suction when on the right breast.<br>
+    She also noticed a flat spot developing on the back-right side of his skull.<br>
+    Liam also struggles and hates tummy time.</p>
+  </div>
+
+
+  <div class="field-group">
+    <h4>P/E</h4>
+    <p>Resting posture in supine:</p>
+    <ul>
+      <li>Liam's head is in 45 degrees left side flexion and 70 degrees right rotation</li>
+      <li>Right plagiocephaly</li>
+    </ul>
+      <div class="case-img placeholder">
+    <span class="ph-label"><img src="patient.png" alt="Liam's resting posture"></span>
+    Liam's resting posture
+      </div>
+  </div>
+
+  <div class="field-group">
+    <h4>Palpation:</h4>
+    <p>A small, non-tender, olive-shaped mass (approximately 1.5 cm) is palpable within the lower third of the left Sternocleidomastoid (SCM) muscle belly.</p>
+  </div>
+
+  <div class="field-group">
+    <h4>Neck AROM / PROM:</h4>
+    <p style="color:var(--muted); font-size:13px; margin-top:-4px;">(Confirmed with mother, the last milk feeding time of the baby was 1.5 hrs ago)</p>
+    <table class="field-table">
+      <thead>
+        <tr><th></th><th>Right</th><th>Left</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Side flexion</td><td>Unable / 20°, tight end feel</td><td>Unable / 45°, soft end feel</td></tr>
+        <tr><td>Rotation</td><td>90° / 100°, soft end feel</td><td>To midline only / 45°, tight end feel</td></tr>
+        <tr><td>Combined movement<br>(side flexion + rotation)</td><td>Full ROM, soft end feel</td><td>1/2 ROM, tight end feel</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="field-group">
+    <h4>Developmental assessment:</h4>
+    <ul>
+      <li>Smiles socially</li>
+      <li>Brings hands to his mouth</li>
+      <li>Prefers using his right hand to explore</li>
+      <li>Pull to sit: mild head lag</li>
+      <li>Prone on forearm with neck extended briefly</li>
+    </ul>
+  </div>
+
+  <p class="prompt-line">You are the physiotherapist seeing Liam for his 1st OPD Physio session.</p>
+</div>
+
+<!-- ================= QUESTION 1 ================= -->
+<div class="box" id="question1">
+  <h3><span class="num">1</span> What investigation / PE would you like to perform?</h3>
+  <p class="subhint">Tap each option to see what it would show.</p>
+  <div id="q1-list"></div>
+  <button class="btn" id="q1-btn" onclick="proceedToQ2()">➡️ Proceed to Management</button>
+</div>
+
+<!-- ================= QUESTION 2 ================= -->
+<div class="box" id="question2" style="display:none;">
+  <h3><span class="num">2</span> Select all management options you would like to provide:</h3>
+  <div id="q2-list"></div>
+  <button class="btn" id="q2-btn" onclick="submitCase()">✅ Submit and Show Result</button>
+</div>
+
+<!-- ================= RESULT ================= -->
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score &amp; Response Chart</h3>
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr>
+    </thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+
+  <div class="learning">
+    <h4>🧪 Key Points</h4>
+    <div class="key-points">
+      <ul>
+        <li>Early physiotherapy intervention has good evidence for congenital muscular torticollis (CMT) — improving cervical ROM, reducing muscle tightness, correcting head posture, and improving functional outcomes (Desai et al. 2024).</li>
+        <li>Before reaching for the torticollis toolbox, red-flag screening is a <b>MANDATORY</b> — to confirm the baby really has <strong>congenital MUSCULAR torticollis</strong> that physio can help with, and not something else needing medical attention.</li>
+        <li><b>"<b>"<b>"Bony end-feel vs muscular end-feel"</b>"</b>"</b> is a key discriminator: CMT typically restricts rotation and side flexion only, with a firm, springy muscular end-feel — structural causes (e.g. Klippel-Feil syndrome) show a hard, bony restriction across multiple planes.</li>
+        <li>Liam's vacuum-assisted delivery and prolonged second stage of labour are shared risk factors for both birth trauma (Moro reflex asymmetry) and <b>Developmental Dysplasia of the Hip</b> — the same "intrauterine packaging" forces can affect both the neck and the hips.</li>
+        <li>Management should target the actual short/tight structure — for Liam, the LEFT SCM — through positioning, active facilitation of the opposing weak muscles, and manual stretching that is gentle, never forced, and paired with play.</li>
+      </ul>
+    </div>
+
+    <h4>Explanation of each option</h4>
+    <div id="qa-list"></div>
+
+    <p class="ref">References: Desai, S., Sharath, H. V., &amp; HV, S. (2024). Effect of pediatric physical therapy interventions on congenital muscular torticollis: a systematic review. Cureus, 16(9). &nbsp;|&nbsp; Wang, S., Li, J., Lü, G., Wang, B., &amp; Wang, X. (2018). Cervical hemivertebra resection and torticollis correction: report on two cases and literature review. European Spine Journal, 27(Suppl 3), 501–509. &nbsp;|&nbsp; Toyoshima, M., Maegaki, Y., Yuasa, I., &amp; Ohno, K. (2006). Monozygotic twins discordant for Klippel-Feil syndrome. Pediatric Neurology, 34(1), 76–78. &nbsp;|&nbsp; Bangalore Shoulder Institute (2019). Sprengel's Deformity of the Shoulder [Photograph]. &nbsp;|&nbsp; Shackleford, P., Roy, V., Cameron, A., Ortego, L., Marks, T., Dunnehoo, A., ... &amp; Akhmatova, N. (2017). Flood Trauma Survival and Recovery Using MNRI Reflex Neuro-Integration Therapy. Int J Phys Med Rehabil, 5(439), 2.</p>
+  </div>
+
+  <p class="creator">Case creator: [Your name], Hospital Authority Hong Kong</p>
+  <button class="btn ghost" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+
+<script>
+// ---------- Data ----------
+const q1 = [
+  { text: "Check spine and scapula", cor: true, reveal: "Result: −ve bony anomalies; symmetrical bilateral scapula.",
+    exp: "This is routine red-flag screening for every first-visit torticollis referral. Structural bony anomalies can mimic muscular torticollis.<br><br><b>Cervical hemivertebra</b> : a rare congenital spinal anomaly where one half of a vertebra fails to form, leaving a wedge-shaped bone that forces the spine to tilt and rotate as it grows. As the neck tries to keep the eyes level, compensation posture will be resulted with shoulder asymmetry. Although it needs to be confirmed with XR which is not routinely done for babies, <b>palpation</b> on neck abnormalities can be done for screening and refer to doctor if in doubt.<br><img src='hemivertebra.png' alt='hemivertebra' style='max-width:80%;border-radius:5px;'><br><br><b>Klippel-Feil Syndrome</b> refers to congenital fusion of any two or more of the cervical vertebrae. It presents with a <b>classic triad</b> of a short neck, a low posterior hairline, and restricted neck mobility. Another tip is '<b>Bony end-feel vs muscular end-feel</b>'. When testing passive ROM of the neck, Klippel-Feil Syndrome will present with a hard, bony restriction in multiple planes of motion, while CMT typically only restricts rotation and side flexion and has a firm, springy muscular end-feel. In addition, up to 60% of patients with Klippel-Feil Syndrome also develop <b>scoliosis or kyphosis curves</b> elsewhere in the spine. Assessing the entire spine down to the sacrum helps identify these concurrent structural curves, which do not happen as a primary result of early-stage CMT.<br><img src='Klippel-Feil.png' alt='Klippel-Feil' style='max-width:80%;border-radius:5px;'><br><br><b>Sprengel︎’s deformity:</b> Approximately 25% to 35% of children with Klippel-Feil Syndrome also have Sprengel’s deformity, which is a congenital failure of the scapula to descend properly during fetal development. What to look for: One shoulder blade will sit significantly higher than the other (<b>undescended scapula</b>), and it is often hypoplastic (smaller and poorly formed). Movement Restrictions: This structural anomaly significantly limits the infant's passive and <b>active ipsilateral shoulder flexion and abduction.</b><br><img src='Sprengel.png' alt='Sprengel' style='max-width:80%;border-radius:5px;'><br><br><b>Clinical Pearl:</b><br>If Liam is presenting any one of the above, stretching him could be ineﬀective or even dangerous. These are immediate red flags that require spinal X-rays before any physiotherapy intervention begins. Referring back to the doctor for further assessment and management is necessary." },
+  { text: "Check Moro reflex", cor: true, reveal: "Result: symmetrical upper-limb and lower-limb movements.",
+    exp: "In a typical CMT baby, the Moro reflex must be completely <b>symmetrical</b>. <br><img src='moro.png' alt='moro' style='max-width:80%;border-radius:5px;'><br><br>When triggering the Moro reflex, a healthy 2-month-old infant should demonstrate a symmetrical, bilateral response: both arms should abduct and extend, followed by adduction and flexion (like a hug), with crying or a startled expression. If an infant has unilateral neurological damage, the Moro reflex will be asymmetrical. The unaffected arm will react perfectly, while the hemiplegic side will show a delayed, weak, or completely absent response. The hand on the affected side might also remain tightly fisted rather than opening wide during the extension phase.<br><br>If there is an asymmetrical Moro reflex, does it directly jump into neurological hemiplegia? Of course not - we need to differentiate <b>neurological VS orthopedic asymmetry</b>.<br><br>Neurological (Hemiplegia / Brain Injury):<br>Look for associated signs like persistent unilateral fistings, asymmetrical legs kicking, or hypertonia (spas?city) throughout the entire side of the body.<br><br>Peripheral Nerve Injury (Brachial Plexus Injury / Erb's Palsy):<br>A baby with a brachial plexus injury from a difficult delivery (like Liam's vacuum extraction) will also have an asymmetrical Moro reflex. However, this is a lower motor neurone injury, so the arm will appear floppy (flaccid) rather than stiff.<br><br>Orthopedic (Clavicle or Humeral Fracture):<br>A baby with a clavicle or humeral fracture from birth trauma will inhibit their own Moro reflex on that side due to intense pain.<br><br>Clinical Pearl:<br>Liam has a history of a vacuum-assisted delivery and a prolonged second stage of labour—both of which are high risk factors for birth trauma or hypoxic events. If his Moro reflex is asymmetrical, stretching his neck needs to be suspended until the doctor rules out neurological issues or structural fractures." },
+  { text: "Check visual and auditory tracking", cor: true, reveal: "Result: smooth tracking of the rattle.",
+    exp: "It helps answer a critical clinical question: Is this baby tilting their head because of a tight muscle, or because they are trying to see or hear better?<br><br>This echoes our question at the very beginning: if the baby is really having congenital MUSCULAR torticollis that physio can help with or any other things else which need medical attention.<br><br>Infants are driven entirely by sensory input. If their eyes or ears aren't working symmetrically, it can mimic or even worsen torticollis.<br><br><b>Checking Visual Tracking: Ocular Torticollis</b><br><b>The Compensatory Tilt</b><br>If an infant has a vision issue—such as congenital strabismus, nystagmus, or a cranial nerve palsy— they will instinctively tilt or rotate their head to eliminate double vision and keep their gaze steady.<br><br><b>The 'Disappearing' Tilt Test</b><br>Check the head tilt when Liam's eyes are opened versus when they are closed. If the head tilt completely disappears when he closes his eyes, it is a massive red flag for an ocular cause rather than a muscular one <br><br><b>Fixation and Tracking</b><br>At 2 months old, Liam should be able to fixate on a face or a brightly coloured object and track it smoothly across the midline.<br><br>If he cannot track past midline, is it because his neck muscle physically blocks him, or because his eyes physically cannot look that way?<br><br><b>Checking Auditory Tracking: Environmental Preference vs. Hearing Asymmetry</b><br>Babies will always turn their heads toward interesting sounds, especially their mother's voice. If an infant has congenital hearing impairment in one ear, they will chronically rotate their head to position their 'good ear' towards the sound source.<br><br>Over time, keeping the head turned to one side can actually cause the SCM muscle on the opposite side to shorten and become tight.<br><br><b>Clinical Pearl:</b>In a true CMT, the infant wants to track the toy or sound visually and auditorily, but you will see them hitting a physical 'wall' (the tight SCM) where they get frustrated or have to arch their back to see further. In ocular or auditory torticollis, The head posture is a choice made by the brain to optimize sight or sound.<br><br>If Liam shows abnormal eye alignment, asymmetric pupils, or fails to respond to sound cues entirely, stretching the neck won't fix the root problem. Referring to a doctor for further assessment and management is required." },
+  { text: "Barlow test", cor: true, reveal: "Result: −ve.",
+    exp: "While it might seem odd to check the hips when the problem is in the neck, there is a known clinical association between CMT and <b>Developmental Dysplasia of the Hip</b> (DDH) - a condition where the hip joint hasn't formed properly, leaving the femoral head prone to slipping out of its socket.<br><br>The 'packaging' effect of intrauterine crowding:<br>Both conditions are heavily rooted in how the baby was packaged in the womb during the third trimester. If a baby is in a restrictive position (like a breech position, or in Liam's case, a prolonged labour where space was tight), the mechanical forces that squish and tilt the neck are the exact same forces that can push the immature hip bones out of alignment.<br><br>The Barlow Maneuver (Testing for Dislocatability)<br>The therapist adducts the hip (brings the knee across the midline) and gently presses backward. If the hip is unstable, the femoral head will slide out of the socket. The therapist will feel a distinct clunk as it dislocates.<br><br>The Ortolani Maneuver (Testing for Relocation)<br>This is performed on a hip that is already dislocated. The therapist abducts the hip (opens the legs wide like a frog) while lying the thigh upward. If positive, the femoral head will pop back into the acetabulum with a palpable clunk.<br><br>Early screening is everything. <br>At 2 months old (Liam's age), the bones and ligaments are still highly malleable. If identified early, a simple, non-invasive Pavlik harness can help guide the hip's development. If missed and only noticed when the child starts walking (presenting with a painless limp or asymmetric leg length), it frequently requires invasive surgical reconstruction.<br><br>The Complete Hip Screen<br>in addition to Barlow and Ortolani manoeuvres, observe<br>- Asymmetrical Thigh Creases<br>- Galeazzi Sign: Lay the baby supine with knees bent and feet flat on the bed. Look to see if one knee sits lower than the other.<br>- Limited Abduction: When opening the baby's legs to change a diaper, does one hip feel tight and resist opening fully?<br><br>Clinical Pearl<br>Never skip the hips. Liam’s vacuum delivery and prolonged birth are classic strain factors. Even if his neck is the reason they brought him in, a positive hip clunk means further doctor assessment (eg USG hip) is needed." }
+];
+
+const q2 = [
+  { text: "Positioning", cor: true,
+    exp: "Positioning is the foundation of early intervention because it leverages the infant's natural sensory drive (looking at lights, faces and toys) to create a prolonged, low-load stretch throughout the day. <br><br>For Liam, everything in his environment needs to be shifted to his LEFT side to force him out of his right-sided comfort zone.<br><br>In the Crib/Changing Table: Place Liam so that the room's doorway, toys are on his left. To see anything interesting, he will be forced to actively rotate his head to the left, stretching the tight left SCM.<br><img src='shift.png' alt='shift' style='max-width:80%;border-radius:5px;'><br><br>Hugging<br><img src='hugging.png' alt='hugging' style='max-width:80%;border-radius:5px;'>" },
+  { text: "Active facilitation exercises", cor: true,
+    exp: "Stretching a tight muscle is only half the battle, we need to strengthen the opposing muscles so Liam can maintain a straight head on his own. Because Liam’s left SCM is short and dominant, his right SCM and left deep neck rotators are elongated and weak. <br><br>Visual Tracking Therapy<br>Use a high-contrast toy or mirror to catch Liam's gaze at midline, then slowly move it to his left. Facilitate a smooth, active turn of his chin all the way to the left shoulder. This actively contracts his right SCM.<br><br>Modified Tummy Time<br>Since Liam hates and struggles in tummy time, facilitate active extension using a chest-to-chest position on the parent, or prop a rolled towel under his chest. Use auditory cues (voice, rattles) on his left side to encourage him to liY and rotate his head left while weight-bearing." },
+  { text: "Manual passive stretching of Right SCM", cor: false,
+    exp: "Looking into the anatomy again, Liam is having a tight left SCM resulting in left neck side flexion and right neck rotation. <br><br>We need to target his left SCM for targeted manual therapy.<br><br>Past a Warning that manual stretching must never be forced. We need to look for infant stress signals (flared nostrils, colour changes, crying, or breath-holding). Also, it should be paired immediately with a fun, active game (Option B) so Liam associates head movement with play rather than pain." },
+  { text: "Manual passive stretching of Left SCM", cor: true,
+    exp: "Same as option 3" }
+];
+
+// ---------- Render checklists ----------
+// Q1: checking an option immediately reveals the exam/investigation finding underneath it.
+function renderQ1(data, prefix, containerId){
+  const container = document.getElementById(containerId);
+  data.forEach((item, i) => {
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.innerHTML = `<input type="checkbox" id="${prefix}-${i}"><span>${item.text}</span>`;
+    const fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.id = `${prefix}-fb-${i}`;
+    container.appendChild(label);
+    container.appendChild(fb);
+    label.querySelector('input').addEventListener('change', function(){
+      fb.innerHTML = this.checked ? (item.reveal || item.exp) : '';
+    });
+  });
+}
+
+// Q2: plain checklist, no reveal on click — explanations only appear in the results section.
+function renderList(data, prefix, containerId){
+  const container = document.getElementById(containerId);
+  data.forEach((item, i) => {
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.innerHTML = `<input type="checkbox" id="${prefix}-${i}"><span>${item.text}</span>`;
+    container.appendChild(label);
+  });
+}
+renderQ1(q1, 'q1', 'q1-list');
+renderList(q2, 'q2', 'q2-list');
+
+// ---------- Navigation ----------
+function proceedToQ2(){
+  document.getElementById('question2').style.display = 'block';
+  document.getElementById('seg1').classList.add('done');
+  document.getElementById('seg1').classList.remove('active');
+  document.getElementById('seg2').classList.add('active');
+  document.getElementById('question2').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ---------- Scoring ----------
+function submitCase(){
+  let score = 0;
+  const maxScore = q1.length + q2.length;
+  const tbody = document.getElementById('result-table-body');
+  const qaList = document.getElementById('qa-list');
+  tbody.innerHTML = '';
+  qaList.innerHTML = '';
+
+  function processQuestion(data, prefix, qNum){
+    data.forEach((item, i) => {
+      const checked = document.getElementById(`${prefix}-${i}`).checked;
+      const correct = (checked === item.cor);
+      if (correct) score++;
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${qNum}</td>
+        <td>${item.text}</td>
+        <td>${item.cor ? '<span class="ok">✔</span>' : '<span class="no">✘</span>'}</td>
+        <td>${checked ? '<span class="ok">✔</span>' : '<span class="no">✘</span>'}</td>
+      `;
+      tbody.appendChild(row);
+
+      const qa = document.createElement('div');
+      qa.className = 'qa';
+      qa.innerHTML = `<div class="opt-title">Q${qNum} — ${item.text}</div><p>${item.exp}</p>`;
+      qaList.appendChild(qa);
+    });
+  }
+
+  processQuestion(q1, 'q1', 1);
+  processQuestion(q2, 'q2', 2);
+
+  document.getElementById('final-score').innerHTML = score + ' / ' + maxScore;
+  const pct = Math.ceil((score / maxScore) * 100);
+  document.getElementById('final-pct').innerHTML = pct + '%';
+
+  const banner = document.getElementById('score-banner');
+  if (pct < 60) { banner.classList.add('low'); } else { banner.classList.remove('low'); }
+
+  document.getElementById('seg2').classList.add('done');
+  document.getElementById('seg2').classList.remove('active');
+
+  document.getElementById('question2').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+
+</body>
+</html>
