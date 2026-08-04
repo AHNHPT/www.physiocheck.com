@@ -442,6 +442,101 @@ details.acc .acc-body p{ margin-bottom:10px; }
 .path-body .plan-list li{ margin-bottom:4px; }
 
 /* ============================================================
+   FLOWCHART (recreated from the original PDF checklist form)
+   ============================================================ */
+.flowchart{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius);
+  padding:28px 20px 34px; overflow-x:auto;
+}
+.fc-title-row{
+  display:flex; flex-wrap:wrap; gap:12px; align-items:stretch; justify-content:center; margin-bottom:22px;
+}
+.fc-titlebox{
+  flex:1 1 460px; max-width:620px; background:var(--bg-alt); border:1px solid var(--panel-border); border-radius:8px;
+  padding:12px 16px; font-family:var(--display); font-weight:600; font-size:14px; color:var(--ink);
+}
+.fc-titlebox .fc-fields{ margin-top:6px; font-family:var(--mono); font-weight:400; font-size:12px; color:var(--ink-dim); }
+.fc-label{
+  flex:0 0 180px; display:flex; align-items:center; justify-content:center; text-align:center;
+  border:1px dashed var(--panel-border); border-radius:8px; font-size:11.5px; color:var(--ink-faint);
+  padding:12px;
+}
+.fc-col-mid{ display:flex; flex-direction:column; align-items:center; }
+.fc-box{
+  background:var(--bg-alt); border:1px solid var(--panel-border); border-radius:8px;
+  padding:10px 16px; font-size:13px; text-align:center; color:var(--ink); min-width:220px;
+}
+.fc-box.wide{ min-width:340px; }
+.fc-arrow{ width:2px; height:20px; background:var(--panel-border); position:relative; }
+.fc-arrow::after{
+  content:""; position:absolute; left:50%; bottom:-1px; transform:translateX(-50%);
+  border-left:5px solid transparent; border-right:5px solid transparent; border-top:6px solid var(--panel-border);
+}
+.fc-split{ display:flex; gap:28px; justify-content:center; width:100%; flex-wrap:wrap; }
+.fc-branch{ display:flex; flex-direction:column; align-items:center; }
+.fc-branch-title{
+  font-family:var(--mono); font-size:11.5px; font-weight:600; letter-spacing:.03em;
+  padding:8px 14px; border-radius:999px; margin-bottom:14px;
+}
+.fc-branch.new .fc-branch-title{ background:var(--blue-soft); color:var(--blue); }
+.fc-branch.old .fc-branch-title{ background:var(--amber-soft); color:var(--amber); }
+.fc-leaf-row{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+.fc-leaf{
+  font-family:var(--mono); font-weight:600; font-size:12.5px; border-radius:7px; padding:9px 13px;
+  text-align:center; min-width:130px; border:1px solid;
+}
+.fc-leaf.spine{ background:var(--green-soft); color:var(--green); border-color:#2a4a3a; }
+.fc-leaf.wb{ background:var(--blue-soft); color:var(--blue); border-color:#1f3d4f; }
+.fc-leaf.old{ background:var(--amber-soft); color:var(--amber); border-color:#4a3a1f; }
+
+/* pathway flow (per-branch decision tree) */
+.flow-detail{ display:flex; flex-direction:column; gap:26px; margin-top:26px; }
+.flow-card{ background:var(--bg-alt); border:1px solid var(--panel-border); border-radius:var(--radius); padding:20px 22px 24px;}
+.flow-card-head{ display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+.flow-card-head .code{ font-family:var(--mono); font-weight:700; font-size:14px; }
+.flow-card-head .name{ font-family:var(--display); font-weight:600; font-size:15px; color:var(--ink); }
+.flow-card.spine .code{ color:var(--green); }
+.flow-card.wb .code{ color:var(--blue); }
+.flow-card.old .code{ color:var(--amber); }
+.flow-seq{ display:flex; flex-direction:column; align-items:center; gap:0; }
+.flow-node{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:8px;
+  padding:12px 18px; font-size:13px; color:var(--ink-dim); text-align:left; max-width:520px; width:100%;
+}
+.flow-node b{ color:var(--ink); }
+.flow-node ul{ margin:6px 0 0; padding-left:18px; }
+.flow-node li{ margin-bottom:3px; }
+.flow-diamond{
+  background:var(--blue-soft); border:1px solid #1f3d4f; color:var(--blue);
+  border-radius:8px; padding:10px 18px; font-size:13px; font-weight:600; text-align:center; max-width:420px;
+}
+.flow-yn{ display:flex; gap:18px; width:100%; max-width:640px; justify-content:center; margin-top:2px; }
+.flow-yn-col{ display:flex; flex-direction:column; align-items:center; flex:1; }
+.flow-yn-tag{ font-family:var(--mono); font-size:11px; font-weight:700; color:var(--ink-faint); margin-bottom:2px; }
+.flow-yn-tag.yes{ color:var(--red); }
+.flow-yn-tag.no{ color:var(--green); }
+
+/* checkbox-style list, mirrors the original paper form */
+.cbx-list{ list-style:none; margin:6px 0 0; padding:0; }
+.cbx-list li{ position:relative; padding-left:20px; margin-bottom:4px; }
+.cbx-list li::before{ content:"☐"; position:absolute; left:0; top:0; color:var(--ink-faint); }
+
+/* review table (mirrors "Mobilization Plan Review") */
+.review-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.review-table th, .review-table td{ border:1px solid #a9bac4; padding:9px 10px; vertical-align:top; }
+.review-table th{ font-family:var(--display); font-weight:600; text-align:center; }
+.review-table td.label{ font-family:var(--display); font-weight:600; font-size:12px; width:150px; background:#dce6ec; }
+.review-table ul{ list-style:none; margin:0; padding:0; }
+.review-table ul li{ position:relative; padding-left:18px; margin-bottom:3px; }
+.review-table ul li::before{ content:"☐"; position:absolute; left:0; top:0; }
+
+@media (max-width:820px){
+  .fc-title-row{ flex-direction:column; }
+  .fc-label{ flex:none; }
+  .flow-yn{ flex-direction:column; align-items:center; }
+}
+
+/* ============================================================
    QUIZ
    ============================================================ */
 #quiz-score-bar{
@@ -577,7 +672,7 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
       </div>
       <div class="card">
         <span class="num">02</span>
-        <h3>Support clinical design</h3>
+        <h3>Support clinical decision</h3>
         <p>Provide the information needed to design and deliver a relatively safe, individualised exercise programme.</p>
       </div>
       <div class="card">
@@ -618,7 +713,7 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
     <div class="section-head reveal">
       <span class="section-kicker">03 — Long-bone fracture risk</span>
       <h2>Mirels' Classification Scoring System</h2>
-      <p>The most widely used pathological fracture risk tool for known long-bone metastases. Sensitivity 91%, specificity 35% — it's built to catch risk, not to rule it out on its own. Try the calculator with a real case.</p>
+      <p>The most widely used pathological fracture risk stratification tool for known long-bone metastases. Sensitivity 91%, specificity 35% — it's built to catch risk, not to rule it out on its own. Try the calculator with a real case.</p>
     </div>
 
     <div class="calc-block reveal">
@@ -702,7 +797,7 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
     <div class="grid cols-2 reveal">
       <div class="factor">
         <div class="fnum">01</div>
-        <div><h4>Site of disease</h4><p>Cervical, thoracic or lumbar. The ribs and chest wall support the thoracic spine — support the cervical spine lacks — so equivalent disease is more destabilising higher up.</p></div>
+        <div><h4>Site of disease</h4><p>Cervical, thoracic or lumbar. The ribs and chest wall support the thoracic spine — support the cervical and lumbar spine lacks.</p></div>
       </div>
       <div class="factor">
         <div class="fnum">02</div>
@@ -797,12 +892,12 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
           <div class="row"><span>Clinical category</span><b id="s-cat">Stable</b></div>
           <div class="row"><span>Binary scale</span><b id="s-binary">Stable</b></div>
         </div>
-        <div class="meter-action g" id="s-action">1–6 → stable. Proceed with mobilisation per the physio plan.</div>
+        <div class="meter-action g" id="s-action">1–6 → stable. Proceed with mobilisation.</div>
       </div>
     </div>
 
     <div class="film reveal" style="margin-top:24px;">
-      <h3>Table 4 — Determination of stability</h3>
+      <h3>Determination of stability</h3>
       <table>
         <thead><tr><th>Score range</th><th>Clinical category</th><th>Binary scale</th></tr></thead>
         <tbody>
@@ -821,7 +916,7 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
     <div class="section-head reveal">
       <span class="section-kicker">06 — Reference library</span>
       <h2>Other classification tools you'll see in the chart</h2>
-      <p>Less central to day-to-day exercise decisions, but you'll meet these in oncology and spine surgery notes. Expand any card for the reference values.</p>
+      <p>Less central to day-to-day exercise decisions, but you'll meet these in oncology and orthopaedic notes. Expand any card for the reference values.</p>
     </div>
 
     <div class="reveal">
@@ -893,6 +988,19 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
         <summary>Revised Tokuhashi Prognostic Score <span class="plus">+</span></summary>
         <div class="acc-body">
           <p>A weighted prognostic score (Karnofsky performance, extraspinal bone metastases, vertebral metastases, visceral metastases, primary site, and Frankel palsy grade) used mainly by the spine surgery team to guide the aggressiveness of treatment.</p>
+          <table class="dark-table">
+            <thead>
+              <tr><th></th><th>Score 0</th><th>Score 1</th><th>Score 2</th><th>Score 3</th><th>Score 4</th><th>Score 5</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Karnofsky's performance (%)</td><td>10–40</td><td>50–70</td><td>80–100</td><td></td><td></td><td></td></tr>
+              <tr><td>Extraspinal bone metastases</td><td>3 or more</td><td>1–2</td><td>0</td><td></td><td></td><td></td></tr>
+              <tr><td>Vertebral metastases</td><td>3 or more</td><td>2</td><td>1</td><td></td><td></td><td></td></tr>
+              <tr><td>Visceral metastases</td><td>Unremovable</td><td>Removable</td><td>None</td><td></td><td></td><td></td></tr>
+              <tr><td>Primary site (e.g.)</td><td>Lung</td><td>Liver</td><td>Other</td><td>Kidney</td><td>Rectum</td><td>Breast</td></tr>
+              <tr><td>Palsy</td><td>Frankel A, B</td><td>Frankel C, D</td><td>Frankel E</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
         </div>
       </details>
     </div>
@@ -913,10 +1021,10 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
         <div class="tl-head"><span class="tl-badge before">Before</span><h4>Set up the session</h4></div>
         <ul class="tl-list">
           <li>Know the baseline information and precautions before exercise</li>
-          <li>Use the Mobilization Checklist for screening</li>
+          <li>Use the checklist for mobilisation of patients with bone metastases for screening</li>
           <li>Communicate with the patient and caregivers so they understand the risks and benefits of mobilisation vs. bed rest</li>
           <li>Ensure proper exposure of the body part</li>
-          <li>Prepare walking aids and manual-handling tools (hoist, draw sheets)</li>
+          <li>Prepare walking aids and manual-handling tools (e.g. hoist, draw sheets)</li>
           <li>Prepare adequate manpower for manual handling</li>
         </ul>
       </div>
@@ -934,10 +1042,8 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
       <div class="tl-col after">
         <div class="tl-head"><span class="tl-badge after">After</span><h4>Close the loop</h4></div>
         <ul class="tl-list">
-          <li>Inform ward staff (nurse or doctor) immediately of any drastic change in sensibility</li>
-          <li>Escalate radiating pain or new neurological deficiency without delay</li>
-          <li>Escalate any cord compression, nerve root, or cauda equina compression sign</li>
-          <li>Document your findings and plan in the progress note</li>
+          <li>Inform ward staff (nurse or doctor) immediately of any drastic change in sensibility, radiating pain, neurological deficiency, cord compression sign, nerve root or cauda equina compression sign</li>
+          <li>Document findings in the progress note</li>
         </ul>
       </div>
     </div>
@@ -953,69 +1059,93 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
       <p>Every patient splits first by <b style="color:var(--ink-dim);">new vs. old diagnosis</b>, then by site (spine/MSCC, non-weight-bearing bone, or weight-bearing bone). Five pathways, five different starting actions.</p>
     </div>
 
-    <div class="grid cols-2 reveal" style="grid-template-columns:1fr; gap:14px;">
-
-      <div class="path-card spine">
-        <div class="path-head"><span class="code">1.1</span><span class="name">Spine / MSCC — new diagnosis</span></div>
-        <div class="path-body">
-          <div class="step"><b>Assess →</b> Bed rest until workup is completed. Record neurological signs and pain (mild / moderate / mechanical).</div>
-          <div class="step"><b>Decide →</b> Is the spine unstable?</div>
-          <div class="step"><b>If yes →</b> Check the medical plan — RT, surgery, brace, or continued bed rest.</div>
-          <div class="step"><b>If no →</b> Proceed to physio plan:</div>
-          <ul class="plan-list">
-            <li>Bed rest / in-bed cycling</li>
-            <li>Start mobilisation: sit at bedside → stand with support → walk (with distance recorded)</li>
-            <li>Educate patient on spine precautions and warning signs</li>
-            <li>Promote bronchial hygiene</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="path-card wb">
-        <div class="path-head"><span class="code">1.2</span><span class="name">Non-weight-bearing bone — new diagnosis</span></div>
-        <div class="path-body">
-          <div class="step"><b>Assess →</b> Bed rest until workup on the involved bone is completed.</div>
-          <div class="step"><b>Next →</b> Check the orthopaedic management plan and advice — surgery, brace, bed rest, or a defined NWB/PWB/FWB status.</div>
-          <div class="step"><b>Then →</b> Build the physio plan around the confirmed weight-bearing status once advice is available.</div>
-        </div>
-      </div>
-
-      <div class="path-card wb">
-        <div class="path-head"><span class="code">1.3</span><span class="name">Weight-bearing bone — new diagnosis</span></div>
-        <div class="path-body">
-          <div class="step"><b>Assess →</b> Bed rest until workup is completed.</div>
-          <div class="step"><b>Decide →</b> Is there an impending or actual pathological fracture risk?</div>
-          <div class="step"><b>If yes →</b> Check the orthopaedic plan — surgery, brace, bed rest, or NWB/PWB/FWB status.</div>
-          <div class="step"><b>If no →</b> Proceed to physio plan:</div>
-          <ul class="plan-list">
-            <li>Start mobilisation as FWB / PWB / touch-down / NWB per advice</li>
-            <li>Select an appropriate walking aid</li>
-            <li>Monitor and record any pain</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="path-card old">
-        <div class="path-head"><span class="code">2.1</span><span class="name">Non-weight-bearing bone — old diagnosis</span></div>
-        <div class="path-body">
-          <div class="step"><b>Check →</b> Past medical history for the previous weight-bearing status (FWB / PWB / touch-down / NWB) and continue accordingly.</div>
-        </div>
-      </div>
-
-      <div class="path-card old">
-        <div class="path-head"><span class="code">2.2</span><span class="name">Weight-bearing bone or spine — old diagnosis</span></div>
-        <div class="path-body">
-          <div class="step"><b>Ask →</b> Has pain increased in the area of known metastasis, or elsewhere?</div>
-          <div class="step"><b>If yes →</b> Treat as bed rest until a fresh work-up is completed — the same caution as a new diagnosis.</div>
-          <div class="step"><b>If no →</b> Check past medical history for previous weight-bearing status and treat as new diagnosis pathway 1.1 / 1.2 / 1.3 to confirm the current plan.</div>
-        </div>
-      </div>
-
+    <!-- ===== Overview flowchart, redrawn from the original "Initial Assessment Checklist" form ===== -->
+    <div class="flowchart reveal">
+    <img src="Bone_met_pic/Chart.png" alt="Flowchart showing the five pathways for initial assessment of patients with bone metastases" style="width:100%; max-width:1000px; display:block; margin:0 auto;">
     </div>
 
-    <div class="film reveal" style="margin-top:20px;">
-      <h4 style="margin-bottom:10px;">Ongoing: Mobilization Plan Review</h4>
-      <p style="font-size:14px; margin:0;">Every subsequent session, re-check: change of condition (pain, general condition, operation done, pain control), any new investigation results, fresh advice from the doctor, and the patient's or relative's concerns — before updating the physio plan and discharge plan.</p>
+    <!-- ===== Mobilization Plan Review table, redrawn from the original form ===== -->
+    <div class="film reveal" style="margin-top:22px; overflow-x:auto;">
+      <h4 style="margin-bottom:14px;">Mobilization Plan Review</h4>
+      <table class="review-table">
+        <thead>
+          <tr><th></th><th>Date / Physio&nbsp; / </th><th>Date / Physio&nbsp; / </th><th>Date / Physio&nbsp; / </th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">Change of condition</td>
+            <td><ul><li>↑ Pain in same site</li><li>↑ Pain in other area</li><li>↓ GC</li><li>Operation done</li><li>Improved pain control</li><li>Others</li><li>Nil</li></ul></td>
+            <td><ul><li>↑ Pain in same site</li><li>↑ Pain in other area</li><li>↓ GC</li><li>Operation done</li><li>Improved pain control</li><li>Others</li><li>Nil</li></ul></td>
+            <td><ul><li>↑ Pain in same site</li><li>↑ Pain in other area</li><li>↓ GC</li><li>Operation done</li><li>Improved pain control</li><li>Others</li><li>Nil</li></ul></td>
+          </tr>
+          <tr>
+            <td class="label">Investigation result</td>
+            <td>_______________<br><ul><li>NA</li></ul></td>
+            <td>_______________<br><ul><li>NA</li></ul></td>
+            <td>_______________<br><ul><li>NA</li></ul></td>
+          </tr>
+          <tr>
+            <td class="label">Advice from doctor</td>
+            <td>_______________<br><ul><li>NA</li></ul></td>
+            <td>_______________<br><ul><li>NA</li></ul></td>
+            <td>_______________<br><ul><li>NA</li></ul></td>
+          </tr>
+          <tr>
+            <td class="label">Patient's / relative's will / concern</td>
+            <td>_______________<br><ul><li>NA</li></ul></td>
+            <td>_______________<br><ul><li>NA</li></ul></td>
+            <td>_______________<br><ul><li>NA</li></ul></td>
+          </tr>
+          <tr>
+            <td class="label">Physio Plan</td>
+            <td>
+              <ul>
+                <li>Proceed mobilization to:</li>
+                <li style="padding-left:34px;">WB status FWB / as tolerated / PWB / TD / NWB</li>
+                <li style="padding-left:34px;">Walking aid — Nil / stick / quadripod / rollator / frame</li>
+                <li style="padding-left:34px;">Brace / Orthosis:</li>
+                <li>Sitting ex only</li>
+                <li>For WC training</li>
+                <li>Mobilization in bed</li>
+                <li>For complete bed rest</li>
+                <li>Others:</li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li>Proceed mobilization to:</li>
+                <li style="padding-left:34px;">WB status FWB / as tolerated / PWB / TD / NWB</li>
+                <li style="padding-left:34px;">Walking aid — Nil / stick / quadripod / rollator / frame</li>
+                <li style="padding-left:34px;">Brace / Orthosis:</li>
+                <li>Sitting ex only</li>
+                <li>For WC training</li>
+                <li>Mobilization in bed</li>
+                <li>For complete bed rest</li>
+                <li>Others:</li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li>Proceed mobilization to:</li>
+                <li style="padding-left:34px;">WB status FWB / as tolerated / PWB / TD / NWB</li>
+                <li style="padding-left:34px;">Walking aid — Nil / stick / quadripod / rollator / frame</li>
+                <li style="padding-left:34px;">Brace / Orthosis:</li>
+                <li>Sitting ex only</li>
+                <li>For WC training</li>
+                <li>Mobilization in bed</li>
+                <li>For complete bed rest</li>
+                <li>Others:</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Discharge Plan</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -1048,22 +1178,8 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
 
 <footer>
   <div class="wrap">
-    <div class="refwrap reveal">
-      <h4 style="font-size:14px; margin-bottom:14px;">Key references</h4>
-      <ol>
-        <li>Mirels H. Metastatic disease in long bones: a proposed scoring system for diagnosing impending pathologic fractures. <i>Clin Orthop Relat Res.</i> 1989;(249):256–264.</li>
-        <li>Fisher CG, et al. A novel classification system for spinal instability in neoplastic disease. <i>Spine.</i> 2010;35(22):E1221–E1229.</li>
-        <li>Tomita K, et al. Surgical strategy for spinal metastases. <i>Spine.</i> 2001;26(3):298–306.</li>
-        <li>Harrington KD. Impending pathologic fractures from metastatic malignancy. <i>Instr Course Lect.</i> 1986;35:357–381.</li>
-        <li>Frankel HL, et al. The value of postural reduction in the initial management of closed injuries of the spine. <i>Paraplegia.</i> 1969;7(3):179–192.</li>
-        <li>American Spinal Injury Association. International standards for neurological classification of spinal cord injury (Revised 2019).</li>
-        <li>Tokuhashi Y, et al. A revised scoring system for preoperative evaluation of metastatic spine tumor prognosis. <i>Spine.</i> 2005;30(19):2186–2191.</li>
-        <li>Sheill G, et al. Considerations for exercise prescription in patients with bone metastases: a comprehensive narrative review. <i>PM&amp;R.</i> 2018;10:843–864.</li>
-        <li>National Institute for Health and Care Excellence. Spinal metastases and metastatic spinal cord compression. NICE Guideline NG234, 2023.</li>
-        <li>PMH Physiotherapy Department. Guideline for mobilization of patients with bone metastases. Hong Kong, Jul 2013.</li>
-      </ol>
-    </div>
-    <p class="doc-id">HAHO-COC-GL-PHY-014-v01 · Approved by COC-Grade (Physiotherapy), 10 Dec 2025 · Educational summary for internal HA physiotherapy training — always confirm against the current electronic version.</p>
+    <p class="doc-id">This page is an AI genterated summary for internal physiotherapist education only. Always refer to the complete HA guideline and local departmental policy for full clinical detail before making patient-care decisions.
+<br><br>Portal validation by: Ms. Gigi Cheung</p>
   </div>
 </footer>
 
@@ -1133,7 +1249,7 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
       tx.textContent = 'Prophylactic fixation recommended';
       action.classList.add('r');
       action.textContent = 'Score > 9 → further medical assessment is necessary before exercise prescription.';
-    } else if(s === 8){
+    } else if(s === 8 || s === 9){
       bandLabel.textContent = 'Borderline — clinical judgment';
       bandLabel.style.color = 'var(--amber)';
       fxrisk.textContent = '15%';
@@ -1183,21 +1299,21 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
       cat.textContent = 'Unstable';
       binary.textContent = 'Current / potentially unstable';
       action.classList.add('r');
-      action.textContent = '13–18 → unstable. Possible surgical intervention — hold mobilisation pending spine team review.';
+      action.textContent = '13–18 → unstable. Possible surgical intervention — Suspend mobilisation, for doctors review.';
     } else if(s >= 7){
       bandLabel.textContent = 'Potentially unstable';
       bandLabel.style.color = 'var(--amber)';
       cat.textContent = 'Potentially unstable';
       binary.textContent = 'Current / potentially unstable';
       action.classList.add('a');
-      action.textContent = '7–12 → potentially unstable. Possible surgical intervention — seek spine/ortho input before progressing mobilisation.';
+      action.textContent = '7–12 → potentially unstable. Possible surgical intervention — seek doctor input before progressing mobilisation.';
     } else {
       bandLabel.textContent = 'Stable';
       bandLabel.style.color = 'var(--green)';
       cat.textContent = 'Stable';
       binary.textContent = 'Stable';
       action.classList.add('g');
-      action.textContent = '1–6 → stable. Proceed with mobilisation per the physio plan.';
+      action.textContent = '1–6 → stable. Proceed with mobilisation.';
     }
   }
   [loc,pain,lesion,align,collapse,postero].forEach(el=>el.addEventListener('change', calc));
@@ -1218,7 +1334,7 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
         { text: "Score = 10; prophylactic fixation is mandatory before any exercise is considered.", correct:false },
         { text: "Score = 8; bed rest is mandatory with no further exercise prescription.", correct:false }
       ],
-      rationale: "Lower limb (2) + moderate pain (2) + mixed appearance (2) + 1/3\u20132/3 cortex (2) = <b>8</b>. Per Table 2, a score of 8 carries a 15% fracture risk and calls for clinical judgment \u2014 the patient should still be prescribed an individualised exercise plan, not withheld from exercise or automatically fixed. A score \u2265 10 or 6 would both be miscalculations here, and resistance training on the involved limb is avoided regardless of score."
+      rationale: "Lower limb (2) + moderate pain (2) + mixed appearance (2) + 1/3\u20132/3 cortex (2) = <b>8</b>. Per Table 2, a score of 8 carries a 15% fracture risk and calls for clinical judgment \u2014 the patient should still be prescribed an individualised exercise plan, not withheld from exercise or automatically fixed. A score of 10 or 6 would both be miscalculations here, and resistance training on the involved limb is avoided regardless of score."
     },
     {
       tag: 'Case 2 · SINS',
@@ -1247,14 +1363,14 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
       scenario: "A patient is newly diagnosed with spinal bone metastasis at T6 and reports new bilateral leg weakness, raising concern for metastatic spinal cord compression (MSCC). Per the mobilisation checklist, what is the correct first physiotherapy action?",
       options: [
         { text: "Begin standing and gait training immediately to prevent deconditioning.", correct:false },
-        { text: "Place the patient on bed rest until diagnostic work-up is completed, then reassess neurological signs and spinal stability before planning mobilisation.", correct:true },
+        { text: "Place the patient on bed rest until diagnostic work-up is completed, then check orthopaedic management plan & advice before planning mobilisation.", correct:true },
         { text: "Proceed with in-bed cycling only, skipping medical review since it is low-impact.", correct:false },
         { text: "Hand the mobilisation decision to nursing staff without a physiotherapy assessment.", correct:false }
       ],
-      rationale: "Pathway 1.1 (Spine/MSCC, new diagnosis) starts with bed rest until work-up is completed, with neurological signs and pain recorded. Only once spinal stability has been checked \u2014 stable vs. unstable \u2014 does the physio plan (bed rest, in-bed cycling, sit-to-stand progression, walking, education) begin. Starting gait training or in-bed cycling before that review, or deferring entirely to nursing, both skip the safety check this pathway exists for."
+      rationale: "Pathway 1.1 (Spine/MSCC, new diagnosis) starts with bed rest until work-up is completed, with neurological signs and pain recorded.Check orthopaedic management plan & advice then build the physio plan accordingly. Both starting gait training or in-bed cycling before that medical review, or deferring entirely to nursing, skip the safety check this pathway exists for."
     },
     {
-      tag: 'Case 5 · Red-flag escalation',
+      tag: 'Case 5 · Condition changes',
       scenario: "While mobilising a patient with known lumbar spine metastases, she suddenly develops new radiating pain down one leg with associated numbness. What is the correct response?",
       options: [
         { text: "Continue the session but reduce the exercise intensity.", correct:false },
@@ -1327,7 +1443,7 @@ footer .doc-id{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint
             rationale.innerHTML = '<span class="verdict">Correct</span>' + q.rationale;
           } else {
             rationale.classList.add('incorrect');
-            rationale.innerHTML = '<span class="verdict">Not quite</span>' + q.rationale;
+            rationale.innerHTML = '<span class="verdict">Incorrect</span>' + q.rationale;
           }
 
           updateScoreBar();
