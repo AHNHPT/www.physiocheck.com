@@ -446,6 +446,150 @@ tr:nth-child(even) td{ background:#FBFCFC; }
   margin-top:6px;
   text-decoration:none;
 }
+
+/* ---------- Auscultation Stimulator ---------- */
+.ausc-widget{
+  margin-top:4px;
+  padding:16px 16px 18px;
+  background:radial-gradient(180% 140% at 50% -10%, #143B36 0%, #081714 65%);
+  border:1px solid rgba(95,224,208,.35);
+  border-radius:14px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.2), 0 10px 30px rgba(4,20,18,.45), 0 0 26px rgba(20,179,165,.18) inset;
+  position:relative;
+  overflow:hidden;
+}
+.ausc-widget::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(180deg, rgba(255,255,255,.035) 0px, rgba(255,255,255,.035) 1px, transparent 1px, transparent 3px);
+  opacity:.5;
+}
+.ausc-tabs{
+  display:flex;
+  gap:6px;
+  margin-bottom:10px;
+  position:relative;
+}
+.ausc-tab{
+  flex:1;
+  padding:8px 10px;
+  border-radius:8px;
+  border:1px solid rgba(143,181,175,.28);
+  background:rgba(255,255,255,.04);
+  color:#8FB5AF;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:12.5px;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.ausc-tab.active{
+  background:linear-gradient(180deg,#1FCBB8,#0E7A72);
+  border-color:#5FE0D0;
+  color:#04211D;
+  box-shadow:0 0 14px rgba(95,224,208,.55);
+}
+.ausc-hint{
+  font-size:12px;
+  color:#7FA39C;
+  margin:0 0 12px;
+  text-align:center;
+  position:relative;
+}
+.ausc-chest{
+  display:flex;
+  justify-content:center;
+  position:relative;
+}
+.ausc-chest svg{
+  width:100%;
+  max-width:230px;
+  height:auto;
+}
+.ausc-lungs{
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:auscBreathe 4.5s ease-in-out infinite;
+}
+@keyframes auscBreathe{
+  0%,100%{ transform:scale(1); }
+  50%{ transform:scale(1.015); }
+}
+.ausc-heart{
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:auscHeartbeat 1.15s ease-in-out infinite;
+}
+@keyframes auscHeartbeat{
+  0%,100%{ transform:scale(1); }
+  15%{ transform:scale(1.12); }
+  30%{ transform:scale(1); }
+  45%{ transform:scale(1.08); }
+  60%{ transform:scale(1); }
+}
+.ausc-marker-group{ cursor:pointer; }
+.ausc-marker{
+  fill:#0B1F1C;
+  stroke:#8CF2E6;
+  stroke-width:2;
+  transition:fill .15s ease, stroke .15s ease;
+}
+.ausc-marker-group:hover .ausc-marker{ stroke:#EAFFFB; }
+.ausc-marker-group.visited .ausc-marker{ fill:#173F35; stroke:#4ADE9A; }
+.ausc-marker-group.current .ausc-marker{ fill:#EAFFFB; stroke:#EAFFFB; }
+.ausc-ping{
+  fill:none;
+  stroke:#5FE0D0;
+  stroke-width:2;
+  opacity:0;
+}
+.ausc-marker-group.current .ausc-ping{
+  animation:auscPing 1.3s ease-out infinite;
+}
+@keyframes auscPing{
+  0%{ r:9; opacity:.65; }
+  100%{ r:24; opacity:0; }
+}
+.ausc-label{
+  font-family:'Inter',sans-serif;
+  font-size:9px;
+  font-weight:600;
+  fill:#8FB5AF;
+  pointer-events:none;
+  text-anchor:middle;
+}
+.ausc-orient{
+  font-family:'Lexend',sans-serif;
+  font-size:18px;
+  font-weight:700;
+  fill:#8FB5AF;
+  text-anchor:middle;
+}
+.ausc-player{ margin-top:14px; position:relative; }
+.ausc-now{
+  font-size:13.5px;
+  font-weight:600;
+  color:#8CF2E6;
+  margin-bottom:8px;
+  text-align:center;
+  min-height:17px;
+}
+.ausc-player audio{
+  width:100%;
+  color-scheme:dark;
+  border-radius:8px;
+}
+.ausc-progress{
+  font-size:12px;
+  color:#7FA39C;
+  text-align:center;
+  margin-top:10px;
+  position:relative;
+}
 </style>
 </head>
 <body>
@@ -630,6 +774,200 @@ tr:nth-child(even) td{ background:#FBFCFC; }
 <script>
 const flImg = "Forward-Leaning.png";
 
+// ---------- Auscultation Stimulator ----------
+// One audio file per lung zone. All 12 zones default to the same clip
+// (sound1.mp3, high-pitched expiratory wheeze) since Maya's case is diffuse
+// bilateral acute severe asthma. To give a specific zone a different sound
+// later (e.g. decreased/absent breath sounds over one base for atelectasis,
+// or a "silent chest" clip once she deteriorates), just change that zone's
+// "audio" filename below — everything else keeps working.
+const auscZones = {
+  'ant-R-upper':  { label: "Right Upper Zone — Anterior",  audio: 'sound1.mp3' },
+  'ant-R-mid':    { label: "Right Mid Zone — Anterior",    audio: 'sound1.mp3' },
+  'ant-R-lower':  { label: "Right Base — Anterior",        audio: 'sound1.mp3' },
+  'ant-L-upper':  { label: "Left Upper Zone — Anterior",   audio: 'sound1.mp3' },
+  'ant-L-mid':    { label: "Left Mid Zone — Anterior",     audio: 'sound1.mp3' },
+  'ant-L-lower':  { label: "Left Base — Anterior",         audio: 'sound1.mp3' },
+  'post-R-upper': { label: "Right Upper Zone — Posterior", audio: 'sound1.mp3' },
+  'post-R-mid':   { label: "Right Mid Zone — Posterior",   audio: 'sound1.mp3' },
+  'post-R-lower': { label: "Right Base — Posterior",       audio: 'sound1.mp3' },
+  'post-L-upper': { label: "Left Upper Zone — Posterior",  audio: 'sound1.mp3' },
+  'post-L-mid':   { label: "Left Mid Zone — Posterior",    audio: 'sound1.mp3' },
+  'post-L-lower': { label: "Left Base — Posterior",        audio: 'sound1.mp3' }
+};
+
+// Anterior diagram is drawn as if facing Maya, so her right side is on the
+// image's left (standard clinical convention) — hence "R" labelled on the
+// left column here.
+function auscAnteriorSVG(uid){
+  return `<svg viewBox="0 0 260 320" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="${uid}-gradA" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#14B3A5"/>
+        <stop offset="100%" stop-color="#0A5B55"/>
+      </linearGradient>
+      <filter id="${uid}-glowA" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="${uid}-softA" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/></feMerge>
+      </filter>
+    </defs>
+
+    <g stroke="#1E4A44" stroke-width="1.5" fill="none" opacity="0.6">
+      <path d="M20,90 C70,70 190,70 240,90"/>
+      <path d="M15,140 C70,115 190,115 245,140"/>
+      <path d="M15,190 C70,165 190,165 245,190"/>
+      <path d="M20,240 C70,215 190,215 240,240"/>
+    </g>
+
+    <g class="ausc-lungs">
+      <path id="${uid}-lungA" d="M100,28 C82,16 50,20 34,52 C20,80 22,112 25,145 C28,178 20,220 40,258 C58,290 90,294 106,266 C116,246 110,215 113,182 C116,148 120,105 108,62 C104,46 108,36 100,28 Z"
+        fill="url(#${uid}-gradA)" stroke="#5FE0D0" stroke-width="2.2" filter="url(#${uid}-glowA)"/>
+      <use href="#${uid}-lungA" transform="translate(260,0) scale(-1,1)"/>
+      <path d="M28,120 C55,132 90,130 111,118" fill="none" stroke="#0B1F1C" stroke-width="2" opacity="0.55"/>
+      <path d="M35,175 C60,168 95,168 112,178" fill="none" stroke="#0B1F1C" stroke-width="2" opacity="0.55"/>
+      <path d="M148,165 C175,155 205,157 232,170" fill="none" stroke="#0B1F1C" stroke-width="2" opacity="0.55"/>
+    </g>
+
+    <rect x="123" y="10" width="14" height="60" rx="6" fill="#0A5B55" stroke="#5FE0D0" stroke-width="1.5"/>
+    <line x1="123" y1="22" x2="137" y2="22" stroke="#5FE0D0" stroke-width="1"/>
+    <line x1="123" y1="34" x2="137" y2="34" stroke="#5FE0D0" stroke-width="1"/>
+    <line x1="123" y1="46" x2="137" y2="46" stroke="#5FE0D0" stroke-width="1"/>
+    <line x1="123" y1="58" x2="137" y2="58" stroke="#5FE0D0" stroke-width="1"/>
+    <path d="M130,68 C110,80 90,85 78,100" fill="none" stroke="#5FE0D0" stroke-width="3" stroke-linecap="round"/>
+    <path d="M130,68 C150,80 170,85 182,100" fill="none" stroke="#5FE0D0" stroke-width="3" stroke-linecap="round"/>
+
+    <path class="ausc-heart" d="M130,175 c-8,-10 -22,-4 -22,8 c0,10 14,20 22,28 c8,-8 22,-18 22,-28 c0,-12 -14,-18 -22,-8Z"
+      fill="#E05B4E" opacity="0.9" filter="url(#${uid}-softA)"/>
+
+    <text class="ausc-orient" x="65" y="55">R</text>
+    <text class="ausc-orient" x="195" y="55">L</text>
+
+    ${auscMarkers(uid, 'ant')}
+  </svg>`;
+}
+
+// Posterior diagram is drawn as if standing behind Maya, so her right side
+// is on the image's right (no mirroring) — the opposite of the anterior view.
+// Only the oblique fissure is visible from behind (the horizontal fissure is
+// an anterior/lateral landmark only), and the spine replaces the trachea.
+function auscPosteriorSVG(uid){
+  return `<svg viewBox="0 0 260 320" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="${uid}-gradP" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#14B3A5"/>
+        <stop offset="100%" stop-color="#0A5B55"/>
+      </linearGradient>
+      <filter id="${uid}-glowP" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <g stroke="#1E4A44" stroke-width="1.5" fill="none" opacity="0.6">
+      <path d="M20,90 C70,70 190,70 240,90"/>
+      <path d="M15,140 C70,115 190,115 245,140"/>
+      <path d="M15,190 C70,165 190,165 245,190"/>
+      <path d="M20,240 C70,215 190,215 240,240"/>
+    </g>
+
+    <g class="ausc-lungs">
+      <path id="${uid}-lungP" d="M100,28 C82,16 50,20 34,52 C20,80 22,112 25,145 C28,178 20,220 40,258 C58,290 90,294 106,266 C116,246 110,215 113,182 C116,148 120,105 108,62 C104,46 108,36 100,28 Z"
+        fill="url(#${uid}-gradP)" stroke="#5FE0D0" stroke-width="2.2" filter="url(#${uid}-glowP)"/>
+      <use href="#${uid}-lungP" transform="translate(260,0) scale(-1,1)"/>
+      <path d="M30,150 C58,160 92,158 112,145" fill="none" stroke="#0B1F1C" stroke-width="2" opacity="0.55"/>
+      <path d="M148,145 C168,158 202,160 230,150" fill="none" stroke="#0B1F1C" stroke-width="2" opacity="0.55"/>
+    </g>
+
+    <ellipse cx="65" cy="95" rx="17" ry="26" fill="none" stroke="#5FE0D0" stroke-width="1.3" opacity="0.5"/>
+    <ellipse cx="195" cy="95" rx="17" ry="26" fill="none" stroke="#5FE0D0" stroke-width="1.3" opacity="0.5"/>
+
+    <g fill="#0A5B55" stroke="#5FE0D0" stroke-width="1.2">
+      <rect x="123" y="15" width="14" height="14" rx="3"/>
+      <rect x="123" y="33" width="14" height="14" rx="3"/>
+      <rect x="123" y="51" width="14" height="14" rx="3"/>
+      <rect x="123" y="69" width="14" height="14" rx="3"/>
+      <rect x="123" y="87" width="14" height="14" rx="3"/>
+      <rect x="123" y="105" width="14" height="14" rx="3"/>
+      <rect x="123" y="123" width="14" height="14" rx="3"/>
+    </g>
+
+    <text class="ausc-orient" x="65" y="55">L</text>
+    <text class="ausc-orient" x="195" y="55">R</text>
+
+    ${auscMarkers(uid, 'post')}
+  </svg>`;
+}
+
+// Six glowing, tappable auscultation points per view (upper/mid/base x L/R),
+// shared layout between anterior and posterior — only the zone-id prefix differs.
+function auscMarkers(uid, prefix){
+  const pts = [
+    ['R','upper',65,75], ['R','mid',65,150], ['R','lower',65,225],
+    ['L','upper',195,75], ['L','mid',195,150], ['L','lower',195,225]
+  ];
+  return pts.map(function(p){
+    const zoneId = prefix + '-' + p[0] + '-' + p[1];
+    return `<g class="ausc-marker-group" data-zone="${zoneId}" onclick="auscSelectZone('${uid}','${zoneId}')">
+      <circle class="ausc-ping" cx="${p[2]}" cy="${p[3]}" r="9"/>
+      <circle class="ausc-marker" cx="${p[2]}" cy="${p[3]}" r="9"/>
+    </g>`;
+  }).join('');
+}
+
+function buildAuscultationWidget(uid){
+  return `<div class="ausc-widget" id="${uid}">
+    <div class="ausc-tabs">
+      <button type="button" class="ausc-tab active" id="${uid}-tab-anterior" onclick="auscSetView('${uid}','anterior')">Anterior</button>
+      <button type="button" class="ausc-tab" id="${uid}-tab-posterior" onclick="auscSetView('${uid}','posterior')">Posterior</button>
+    </div>
+    <p class="ausc-hint">Tap a lung zone to auscultate that area. Diagrams are drawn from the assessor's viewpoint, so R/L reflect Maya's actual side.</p>
+    <div class="ausc-chest" id="${uid}-view-anterior">${auscAnteriorSVG(uid)}</div>
+    <div class="ausc-chest" id="${uid}-view-posterior" style="display:none;">${auscPosteriorSVG(uid)}</div>
+    <div class="ausc-player">
+      <div class="ausc-now" id="${uid}-now">Tap a zone above to listen</div>
+      <audio id="${uid}-audio" controls style="width:100%;">
+        <source id="${uid}-source" src="" type="audio/mpeg">
+      </audio>
+    </div>
+    <div class="ausc-progress" id="${uid}-progress">0 / 12 zones auscultated</div>
+  </div>`;
+}
+
+function auscSetView(uid, view){
+  document.getElementById(uid + '-view-anterior').style.display = (view === 'anterior') ? 'flex' : 'none';
+  document.getElementById(uid + '-view-posterior').style.display = (view === 'posterior') ? 'flex' : 'none';
+  document.getElementById(uid + '-tab-anterior').classList.toggle('active', view === 'anterior');
+  document.getElementById(uid + '-tab-posterior').classList.toggle('active', view === 'posterior');
+}
+
+function auscSelectZone(uid, zoneId){
+  const z = auscZones[zoneId];
+  if(!z) return;
+
+  const audio = document.getElementById(uid + '-audio');
+  const source = document.getElementById(uid + '-source');
+  source.src = z.audio;
+  audio.load();
+  audio.play().catch(function(){ /* autoplay may be blocked — controls are still visible */ });
+  document.getElementById(uid + '-now').textContent = z.label;
+
+  document.querySelectorAll('#' + uid + ' .ausc-marker-group').forEach(function(el){
+    el.classList.remove('current');
+  });
+  document.querySelectorAll('#' + uid + ' .ausc-marker-group[data-zone="' + zoneId + '"]').forEach(function(el){
+    el.classList.add('current');
+    el.classList.add('visited');
+  });
+
+  const total = document.querySelectorAll('#' + uid + ' .ausc-marker-group').length;
+  const visited = document.querySelectorAll('#' + uid + ' .ausc-marker-group.visited').length;
+  document.getElementById(uid + '-progress').textContent = visited + ' / ' + total + ' zones auscultated';
+}
+
 // ---------- Data ----------
 const q1 = [
   { text: "Check latest ABG", cor: true,
@@ -642,7 +980,7 @@ const q1 = [
     reveal: "Today CXR not done. Would be essentially unchanged from the admission film — repeating imaging today is not indicated (see explanation).",
     exp: "Urgent CXR was already done last night when Maya was suffering from desaturation with breathing difficulty. Unless she suddenly deteriorates — e.g. spikes a brand-new high fever or shows signs of a localised lung collapse — repeating CXR is unnecessary. It exposes a child to needless radiation. Maya's clinical condition can be reviewed by tracking symptoms and vitals, and reviewing ABG, not by daily imaging." },
   { text: "Auscultation", cor: true,
-    reveal: "All lung fields: <br><audio controls><source src='sound1.mp3' type='audio/mpeg'></audio>",
+    widget: "auscultation",
     exp: "Regularly listening to Maya's chest is vital to mapping her clinical trajectory. <br><br>If her wheezing shifts from a tight, high-pitched whistle to a lower-pitched, looser sound, the bronchodilators are successfully widening her airways. <br><br>Conversely, a sudden drop in wheezing accompanied by increased distress warns of a dangerous &ldquo;silent chest&rdquo;.<br><br><strong>Silent Chest (Extreme Bronchospasm)</strong> — The smooth muscles surrounding Maya's airways have constricted so tightly, and the inner lining is so swollen, that the airways are almost completely choked off. Sound requires airflow: in a silent chest, the volume of air moving in and out of the lungs is so microscopic that it cannot even generate a wheeze. This is a pre-terminal medical emergency — it is often a deceptive trap, because the terrifying &ldquo;tight wheezing&rdquo; heard minutes ago suddenly stops, making it seem like the patient is improving, when in reality the child is suffocating because air is trapped inside and no fresh oxygen can get in.<br><br><strong>Lung Collapse (Atelectasis)</strong> — usually caused by a thick mucus plug completely blocking a specific airway branch; the air trapped behind the plug gets absorbed by the body, causing that section of lung to collapse. On examination, a collapsed lung section will have absent breath sounds only over that specific area (e.g. the right lower base), whereas the rest of the lungs will still have loud wheezing or air entry — a silent chest is generalised silence across the entire thorax combined with extreme respiratory failure.<br><br><img src='silent.png' alt='Silent Chest' width='100%' class='img-fluid'>" }
 ];
 
@@ -672,7 +1010,10 @@ function renderQ1(data, prefix, containerId){
     container.appendChild(label);
     container.appendChild(fb);
     label.querySelector('input').addEventListener('change', function(){
-      fb.innerHTML = this.checked ? item.reveal : '';
+      if(!this.checked){ fb.innerHTML = ''; return; }
+      fb.innerHTML = (item.widget === 'auscultation')
+        ? buildAuscultationWidget(prefix + '-ausc-' + i)
+        : item.reveal;
     });
   });
 }
