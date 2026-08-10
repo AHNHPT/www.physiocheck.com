@@ -1,0 +1,2437 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PneumoSim 01 · Airway Clearance in Severe Pneumonia</title>
+<style>
+:root{
+  --void:#06080B; --bezel:#0C1117; --panel:#111820; --panel2:#0E141B;
+  --rail:#1C2632; --rail2:#2C3B4B;
+  --bone:#E6EDF3; --mute:#8496A8; --dim:#5A6B7C;
+  --cy:#3AD8E6; --cy-d:#1B7C88;
+  --ok:#2FE07A; --warn:#FFC24B; --crit:#FF4D6D;
+  --ecg:#2FE07A; --pleth:#3AD8E6; --co2:#FFC24B; --art:#FF4D6D;
+  --ff-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,sans-serif;
+  --ff-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,"JetBrains Mono",Consolas,monospace;
+  --sh:0 10px 30px rgba(0,0,0,.5);
+  --r:10px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--void); color:var(--bone);
+  font-family:var(--ff-ui); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 70% -10%, #0D1720 0%, transparent 60%);
+}
+h1,h2,h3{text-wrap:balance;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cy);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--ff-mono);font-variant-numeric:tabular-nums}
+.eyebrow{
+  font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);
+}
+.hr{height:1px;background:var(--rail);border:0;margin:0}
+
+/* ---------- boot / title ---------- */
+#boot{
+  position:fixed;inset:0;z-index:200;background:var(--void);
+  display:grid;place-items:center;padding:24px;overflow:auto;
+}
+.boot-card{max-width:660px;width:100%}
+.boot-mark{
+  font-family:var(--ff-mono);font-size:11px;letter-spacing:.3em;color:var(--cy);
+  text-transform:uppercase;margin-bottom:18px;
+}
+.boot-card h1{font-size:clamp(30px,5.4vw,46px);line-height:1.05;letter-spacing:-.028em;font-weight:800}
+.boot-card h1 em{font-style:normal;color:var(--mute);display:block;font-weight:500;font-size:.46em;letter-spacing:-.01em;margin-top:14px;line-height:1.4}
+.boot-meta{
+  display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 20px;
+}
+.tag{
+  font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--rail2);color:var(--mute);padding:5px 9px;border-radius:999px;
+}
+.boot-body{color:var(--mute);font-size:14.5px;max-width:60ch}
+.boot-body b{color:var(--bone);font-weight:600}
+.modepick{display:grid;gap:10px;margin:22px 0 26px}
+.modepick label{
+  display:flex;gap:12px;align-items:flex-start;padding:13px 15px;border:1px solid var(--rail);
+  border-radius:var(--r);cursor:pointer;background:var(--panel2);transition:border-color .15s,background .15s;
+}
+.modepick label:hover{border-color:var(--rail2)}
+.modepick input{margin:4px 0 0;accent-color:var(--cy);flex:none}
+.modepick input:checked ~ .mp-t b{color:var(--cy)}
+.mp-t b{display:block;font-size:14px;font-weight:600}
+.mp-t span{display:block;font-size:13px;color:var(--mute);line-height:1.45}
+
+.btn{
+  border:1px solid var(--rail2);background:var(--panel);border-radius:8px;
+  padding:11px 18px;cursor:pointer;font-size:14px;font-weight:600;
+  transition:background .15s,border-color .15s,transform .06s;
+}
+.btn:hover{background:#16202B;border-color:#3C5062}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--cy);border-color:var(--cy);color:#04161A}
+.btn.pri:hover{background:#54E7F3;border-color:#54E7F3}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.sm{padding:7px 12px;font-size:13px}
+
+/* ---------- top bar ---------- */
+#bar{
+  position:sticky;top:0;z-index:60;background:rgba(8,11,15,.93);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--rail);
+}
+.bar-in{max-width:1320px;margin:0 auto;padding:9px 16px;display:flex;align-items:center;gap:14px}
+.brand{font-family:var(--ff-mono);font-size:11.5px;letter-spacing:.2em;color:var(--cy);white-space:nowrap}
+.bar-sp{flex:1}
+.chip{
+  font-family:var(--ff-mono);font-size:11.5px;letter-spacing:.06em;color:var(--mute);
+  border:1px solid var(--rail);border-radius:6px;padding:4px 9px;white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+.chip b{color:var(--bone)}
+.iconbtn{
+  border:1px solid var(--rail);background:transparent;border-radius:6px;width:32px;height:29px;
+  cursor:pointer;font-size:14px;display:grid;place-items:center;color:var(--mute);
+}
+.iconbtn:hover{color:var(--bone);border-color:var(--rail2)}
+.iconbtn[aria-pressed="true"]{color:var(--cy);border-color:var(--cy-d)}
+#rail{max-width:1320px;margin:0 auto;padding:0 16px 8px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+#rail::-webkit-scrollbar{display:none}
+.rstep{
+  font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);padding:4px 0 6px;border-top:2px solid var(--rail);flex:1;min-width:62px;
+  white-space:nowrap;transition:color .3s,border-color .3s;
+}
+.rstep.done{color:var(--mute);border-top-color:var(--cy-d)}
+.rstep.now{color:var(--cy);border-top-color:var(--cy)}
+
+/* ---------- layout ---------- */
+#wrap{
+  max-width:1320px;margin:0 auto;padding:18px 16px 64px;
+  display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:18px;align-items:start;
+}
+#stage{min-width:0;display:grid;gap:18px}
+/* narrow-screen overrides live at the end of the sheet, after the base rules */
+
+.card{
+  background:linear-gradient(180deg,var(--panel) 0%,var(--panel2) 100%);
+  border:1px solid var(--rail);border-radius:var(--r);box-shadow:var(--sh);
+}
+.card-h{padding:14px 18px 12px;border-bottom:1px solid var(--rail);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.card-h h2{font-size:18px;letter-spacing:-.015em;font-weight:700}
+.card-b{padding:18px}
+.card-b>*+*{margin-top:14px}
+.lede{color:var(--mute);font-size:14.5px;max-width:68ch}
+.lede b,.lede strong{color:var(--bone);font-weight:600}
+
+/* ---------- monitor ---------- */
+#mon{
+  background:#05070A;border:1px solid var(--rail);border-radius:var(--r);
+  box-shadow:var(--sh);overflow:hidden;
+}
+#mon.alarm{border-color:var(--crit);box-shadow:0 0 0 1px var(--crit),0 0 34px rgba(255,77,109,.28)}
+.mon-h{display:flex;align-items:center;gap:8px;padding:8px 11px;background:#0A0F14;border-bottom:1px solid var(--rail)}
+.mon-h .pid{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.09em;color:var(--mute)}
+.mon-h .clk{margin-left:auto;font-family:var(--ff-mono);font-size:12px;color:var(--bone);font-variant-numeric:tabular-nums}
+#trace{display:block;width:100%;height:186px;background:#05070A}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rail)}
+.nm{padding:7px 10px 8px;border-right:1px solid var(--rail);border-bottom:1px solid var(--rail);min-width:0}
+.nm:nth-child(3n){border-right:0}
+.nm .k{font-family:var(--ff-mono);font-size:9px;letter-spacing:.13em;color:var(--dim);text-transform:uppercase}
+.nm .v{font-family:var(--ff-mono);font-size:27px;line-height:1.08;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.nm .u{font-family:var(--ff-mono);font-size:9.5px;color:var(--dim)}
+.nm.c-ecg .v{color:var(--ecg)} .nm.c-spo2 .v{color:var(--pleth)} .nm.c-art .v{color:var(--art)}
+.nm.c-co2 .v{color:var(--co2)} .nm.c-rr .v{color:#C8D6E2} .nm.c-t .v{color:#C8D6E2;font-size:20px}
+.nm.warn{background:rgba(255,194,75,.09)} .nm.crit{background:rgba(255,77,109,.13)}
+.nm.crit .v{animation:blink 1s steps(1,end) infinite}
+@keyframes blink{50%{opacity:.28}}
+.vent{padding:9px 11px;display:grid;gap:5px;background:#080C11}
+.vrow{display:flex;gap:8px;font-family:var(--ff-mono);font-size:11px;align-items:baseline}
+.vrow .k{color:var(--dim);letter-spacing:.09em;text-transform:uppercase;font-size:9.5px;width:74px;flex:none}
+.vrow .v{color:#BFD0DD;font-variant-numeric:tabular-nums}
+.vrow .v.up{color:var(--warn)} .vrow .v.bad{color:var(--crit)} .vrow .v.good{color:var(--ok)}
+.vrow .d{margin-left:auto;color:var(--dim);font-size:10px}
+#alarmtxt{
+  padding:6px 11px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--crit);background:rgba(255,77,109,.12);
+  border-top:1px solid rgba(255,77,109,.3);min-height:0;display:none;
+}
+#alarmtxt.on{display:block}
+#alarmtxt.warn{color:var(--warn);background:rgba(255,194,75,.10);border-top-color:rgba(255,194,75,.3)}
+
+/* ---------- options ---------- */
+.opts{display:grid;gap:9px}
+.opt{
+  display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--panel2);border:1px solid var(--rail);border-radius:9px;padding:12px 14px;
+  cursor:pointer;transition:border-color .14s,background .14s,transform .06s;
+}
+.opt:hover:not(:disabled){border-color:var(--rail2);background:#141C25}
+.opt:active:not(:disabled){transform:translateY(1px)}
+.opt .ltr{
+  font-family:var(--ff-mono);font-size:11px;font-weight:700;flex:none;
+  width:22px;height:22px;border-radius:5px;border:1px solid var(--rail2);
+  display:grid;place-items:center;color:var(--mute);margin-top:1px;
+}
+.opt .tx{flex:1;min-width:0;font-size:14.5px;line-height:1.45}
+.opt .fb{display:none;margin-top:7px;font-size:13px;line-height:1.5;color:var(--mute)}
+.opt.rv .fb{display:block}
+.opt[aria-pressed="true"]{border-color:var(--cy);background:rgba(58,216,230,.07)}
+.opt[aria-pressed="true"] .ltr{border-color:var(--cy);color:var(--cy)}
+.opt.good{border-color:var(--ok);background:rgba(47,224,122,.07)}
+.opt.good .ltr{border-color:var(--ok);color:var(--ok)}
+.opt.bad{border-color:var(--crit);background:rgba(255,77,109,.07)}
+.opt.bad .ltr{border-color:var(--crit);color:var(--crit)}
+.opt.miss{border-color:var(--warn);border-style:dashed}
+.opt.miss .ltr{border-color:var(--warn);color:var(--warn)}
+.opt:disabled{cursor:default}
+.opt .ord{
+  font-family:var(--ff-mono);font-size:10px;color:var(--cy);border:1px solid var(--cy-d);
+  border-radius:4px;padding:1px 5px;margin-left:auto;flex:none;
+}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.hintline{font-size:13px;color:var(--dim);font-family:var(--ff-mono)}
+
+/* ---------- data tables / panels ---------- */
+.scroll{overflow-x:auto}
+table.dat{border-collapse:collapse;width:100%;font-family:var(--ff-mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+table.dat th{
+  text-align:left;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+  font-weight:500;padding:7px 10px;border-bottom:1px solid var(--rail);white-space:nowrap;
+}
+table.dat td{padding:7px 10px;border-bottom:1px solid rgba(28,38,50,.6);white-space:nowrap}
+table.dat tr:last-child td{border-bottom:0}
+td.hi{color:var(--warn)} td.hi2{color:var(--crit)} td.lo{color:var(--pleth)} td.nl{color:var(--mute)}
+.flag{font-size:10px;padding:1px 5px;border-radius:4px;margin-left:6px;letter-spacing:.06em}
+.flag.h{background:rgba(255,77,109,.16);color:var(--crit)}
+.flag.l{background:rgba(58,216,230,.14);color:var(--pleth)}
+.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.pnl{border:1px solid var(--rail);border-radius:9px;background:var(--panel2);overflow:hidden}
+.pnl>h3{
+  font-family:var(--ff-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
+  padding:9px 12px;border-bottom:1px solid var(--rail);font-weight:500;background:#0B1016;
+}
+.pnl .pb{padding:10px 12px;font-size:13.5px;color:var(--mute)}
+.pnl .pb ul{margin:0;padding-left:17px}
+.pnl .pb li{margin:3px 0}
+
+/* SBAR */
+.sbar{display:grid;gap:0;border:1px solid var(--rail);border-radius:9px;overflow:hidden}
+.sb{display:grid;grid-template-columns:96px 1fr;border-bottom:1px solid var(--rail)}
+.sb:last-child{border-bottom:0}
+.sb dt{
+  font-family:var(--ff-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--cy);padding:12px;background:#0A1015;border-right:1px solid var(--rail);
+}
+.sb dd{margin:0;padding:12px 14px;font-size:14px;color:var(--mute)}
+.sb dd b{color:var(--bone);font-weight:600}
+@media(max-width:520px){.sb{grid-template-columns:1fr}.sb dt{border-right:0;border-bottom:1px solid var(--rail);padding:8px 12px}}
+
+/* ---------- X-ray viewer ---------- */
+.pacs{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:14px}
+@media(max-width:760px){.pacs{grid-template-columns:1fr}}
+.filmbox{
+  position:relative;background:#000;border:1px solid var(--rail2);border-radius:8px;overflow:hidden;
+  touch-action:none;cursor:crosshair;aspect-ratio:7/8;
+}
+#film{display:block;width:100%;height:100%;transform-origin:center;transition:filter .1s linear}
+#filmsvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.fmark{position:absolute;width:26px;height:26px;border:2px solid var(--cy);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 12px rgba(58,216,230,.6)}
+.fmark.good{border-color:var(--ok);box-shadow:0 0 12px rgba(47,224,122,.6)}
+.fmark.bad{border-color:var(--crit);box-shadow:0 0 12px rgba(255,77,109,.6)}
+.filmtag{
+  position:absolute;top:8px;left:10px;font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.12em;
+  color:rgba(230,237,243,.5);pointer-events:none;text-transform:uppercase;
+}
+.filmtag.r{left:auto;right:10px;text-align:right}
+.pacsctl{display:grid;gap:12px;align-content:start}
+.ctl label{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:5px}
+.ctl output{font-family:var(--ff-mono);font-size:11px;color:var(--mute);float:right}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--rail2);border-radius:3px;outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--cy);cursor:grab;
+  border:2px solid #04161A;box-shadow:0 0 8px rgba(58,216,230,.5);
+}
+input[type=range]::-moz-range-thumb{
+  width:16px;height:16px;border-radius:50%;background:var(--cy);cursor:grab;border:2px solid #04161A;
+}
+input[type=range]:disabled::-webkit-slider-thumb{background:var(--dim);box-shadow:none}
+
+/* ---------- auscultation ---------- */
+.ausc{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:680px){.ausc{grid-template-columns:1fr}}
+.chestwrap{background:radial-gradient(ellipse at 50% 40%,#0E1A22 0%,#070B0F 70%);border:1px solid var(--rail);border-radius:9px;padding:6px}
+#chest{display:block;width:100%;height:auto}
+.apt{cursor:pointer}
+.apt circle.hit{fill:rgba(58,216,230,.10);stroke:var(--cy);stroke-width:1.2;transition:fill .15s}
+.apt:hover circle.hit{fill:rgba(58,216,230,.28)}
+.apt.heard circle.hit{fill:rgba(47,224,122,.22);stroke:var(--ok)}
+.apt.playing circle.hit{fill:rgba(58,216,230,.5);stroke-width:2.4}
+.apt text{font-family:var(--ff-mono);font-size:9px;fill:var(--mute);pointer-events:none}
+.seg{display:inline-flex;border:1px solid var(--rail2);border-radius:7px;overflow:hidden}
+.seg button{
+  background:transparent;border:0;padding:6px 13px;font-family:var(--ff-mono);font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--mute);cursor:pointer;
+}
+.seg button[aria-pressed="true"]{background:var(--cy);color:#04161A;font-weight:700}
+.findlog{display:grid;gap:8px;max-height:330px;overflow-y:auto}
+.find{border-left:2px solid var(--cy-d);padding:6px 0 6px 11px;font-size:13.5px;color:var(--mute)}
+.find b{color:var(--bone);font-weight:650}
+.find b.lb{display:block;font-family:var(--ff-mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--cy);margin-bottom:2px}
+
+/* ---------- suction sim ---------- */
+.sucgrid{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:820px){.sucgrid{grid-template-columns:1fr}}
+.airwaybox{background:radial-gradient(ellipse at 50% 35%,#0F1A23 0%,#06090D 72%);border:1px solid var(--rail);border-radius:9px;padding:4px;position:relative}
+#airway{display:block;width:100%;height:auto}
+.depthctl{display:grid;gap:9px;margin-top:12px}
+.depthrow{display:flex;gap:8px;align-items:center}
+.depthrow .btn{padding:8px 0;flex:1;font-family:var(--ff-mono);font-size:13px}
+.dreads{display:flex;gap:10px;align-items:baseline;font-family:var(--ff-mono)}
+.dreads .big{font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.dreads .zone{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;padding:3px 8px;border-radius:5px;border:1px solid}
+.z-out{color:var(--dim);border-color:var(--rail2)}
+.z-ett{color:var(--ok);border-color:var(--ok);background:rgba(47,224,122,.1)}
+.z-deep{color:var(--warn);border-color:var(--warn);background:rgba(255,194,75,.1)}
+.z-carina{color:var(--crit);border-color:var(--crit);background:rgba(255,77,109,.12)}
+#suckbtn{
+  width:100%;padding:22px;border-radius:12px;border:2px solid var(--rail2);background:#131C25;
+  font-family:var(--ff-mono);font-size:15px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+  cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none;transition:none;
+}
+#suckbtn:hover{border-color:#44596C}
+#suckbtn.on{background:var(--crit);border-color:var(--crit);color:#fff;box-shadow:0 0 40px rgba(255,77,109,.45)}
+#suckbtn:disabled{opacity:.35;cursor:not-allowed}
+.suctimer{display:flex;align-items:baseline;gap:8px;margin-top:10px;font-family:var(--ff-mono)}
+.suctimer .t{font-size:23px;font-variant-numeric:tabular-nums;font-weight:600}
+.suctimer .t.w{color:var(--warn)} .suctimer .t.c{color:var(--crit)}
+.bar{height:5px;background:var(--rail);border-radius:3px;overflow:hidden;flex:1}
+.bar i{display:block;height:100%;background:var(--cy);border-radius:3px;transition:width .12s linear}
+.bar i.w{background:var(--warn)} .bar i.c{background:var(--crit)}
+.checks{display:grid;gap:5px}
+.chk{
+  display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--dim);
+  font-family:var(--ff-mono);font-size:11.5px;letter-spacing:.02em;line-height:1.5;
+}
+.chk .m{flex:none;width:14px;text-align:center;color:var(--rail2)}
+.chk.ok{color:var(--mute)} .chk.ok .m{color:var(--ok)}
+.chk.no{color:#E0A8B4} .chk.no .m{color:var(--crit)}
+.chk.warn{color:#E6CD9A} .chk.warn .m{color:var(--warn)}
+.secmeter{display:grid;gap:6px}
+.secbar{height:16px;border:1px solid var(--rail2);border-radius:5px;overflow:hidden;background:#0A0F14;position:relative}
+.secbar i{display:block;height:100%;background:linear-gradient(90deg,#8A7A2E,#C9B24A);transition:width .2s linear}
+
+/* ---------- crisis modal ---------- */
+#crisis{
+  position:fixed;inset:0;z-index:150;background:rgba(4,6,9,.86);backdrop-filter:blur(4px);
+  display:none;place-items:center;padding:18px;overflow:auto;
+}
+#crisis.on{display:grid}
+.crisis-c{
+  max-width:620px;width:100%;background:var(--panel);border:1px solid var(--crit);border-radius:12px;
+  box-shadow:0 0 60px rgba(255,77,109,.28);overflow:hidden;
+}
+.crisis-h{padding:14px 18px;background:rgba(255,77,109,.13);border-bottom:1px solid rgba(255,77,109,.35)}
+.crisis-h .t{font-family:var(--ff-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--crit)}
+.crisis-h h2{font-size:20px;margin-top:4px}
+.cdown{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--rail)}
+.cdown .n{font-family:var(--ff-mono);font-size:19px;color:var(--crit);font-variant-numeric:tabular-nums;font-weight:700}
+
+/* ---------- debrief ---------- */
+.grade{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.grade .pct{font-family:var(--ff-mono);font-size:60px;font-weight:700;letter-spacing:-.04em;line-height:1}
+.grade .band{font-family:var(--ff-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;padding:5px 11px;border-radius:6px;border:1px solid}
+.dom{display:grid;gap:10px}
+.domrow{display:grid;grid-template-columns:150px 1fr 62px;gap:11px;align-items:center;font-family:var(--ff-mono);font-size:11.5px}
+@media(max-width:520px){.domrow{grid-template-columns:110px 1fr 54px;font-size:10.5px}}
+.domrow .lb{color:var(--mute);letter-spacing:.09em;text-transform:uppercase;font-size:10px}
+.dbar{height:8px;background:var(--rail);border-radius:4px;overflow:hidden}
+.dbar i{display:block;height:100%;border-radius:4px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.domrow .sc{text-align:right;color:var(--bone);font-variant-numeric:tabular-nums}
+.tl{display:grid;gap:0;border:1px solid var(--rail);border-radius:9px;overflow:hidden}
+.tli{display:grid;grid-template-columns:46px 22px 1fr;gap:10px;padding:9px 12px;border-bottom:1px solid rgba(28,38,50,.7);font-size:13.5px;align-items:start}
+.tli:last-child{border-bottom:0}
+.tli .tm{font-family:var(--ff-mono);font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums;padding-top:2px}
+.tli .ic{font-family:var(--ff-mono);font-size:13px;text-align:center;padding-top:1px}
+.tli.g .ic{color:var(--ok)} .tli.b .ic{color:var(--crit)} .tli.w .ic{color:var(--warn)} .tli.i .ic{color:var(--dim)}
+.tli .tt{color:var(--mute);min-width:0}
+.tli .tt b{color:var(--bone);font-weight:600}
+.crits{border:1px solid var(--crit);border-radius:9px;background:rgba(255,77,109,.07);padding:14px 16px}
+.crits h3{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--crit);margin-bottom:9px}
+.crits ul{margin:0;padding-left:18px;font-size:13.5px;color:#E6C3CA}
+.crits li{margin:4px 0}
+.tp{display:grid;gap:12px}
+.tpi{border-left:2px solid var(--cy-d);padding-left:14px}
+.tpi h4{margin:0 0 3px;font-size:14.5px;font-weight:650}
+.tpi p{margin:0;font-size:13.5px;color:var(--mute);line-height:1.55}
+.refs{font-size:12px;color:var(--dim);line-height:1.7;font-family:var(--ff-mono)}
+
+/* toast */
+#toast{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(140%);z-index:170;
+  background:var(--panel);border:1px solid var(--rail2);border-radius:9px;padding:11px 17px;
+  box-shadow:var(--sh);font-size:13.5px;max-width:min(520px,92vw);transition:transform .3s cubic-bezier(.2,.9,.3,1);
+}
+#toast.on{transform:translateX(-50%) translateY(0)}
+#toast.g{border-color:var(--ok)} #toast.b{border-color:var(--crit)} #toast.w{border-color:var(--warn)}
+
+.fbbox{border-radius:9px;padding:13px 15px;font-size:13.5px;line-height:1.55;border:1px solid}
+.fbbox.g{border-color:rgba(47,224,122,.4);background:rgba(47,224,122,.07)}
+.fbbox.b{border-color:rgba(255,77,109,.4);background:rgba(255,77,109,.07)}
+.fbbox.w{border-color:rgba(255,194,75,.4);background:rgba(255,194,75,.07)}
+.fbbox.n{border-color:var(--rail);background:var(--panel2)}
+.fbbox b{font-weight:650}
+.fbbox .hd{font-family:var(--ff-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;display:block}
+.fbbox.g .hd{color:var(--ok)} .fbbox.b .hd{color:var(--crit)} .fbbox.w .hd{color:var(--warn)} .fbbox.n .hd{color:var(--dim)}
+
+#filmsvg{transform-origin:center center}
+
+/* ---------- narrow screens ---------- */
+@media(max-width:1040px){
+  #wrap{grid-template-columns:1fr;padding-top:12px}
+  #mon{order:-1;position:sticky;top:56px;z-index:40}
+}
+/* On a phone the monitor must stay visible without eating the screen: a compact
+   strip with the traces, the four numbers that drive decisions during a pass,
+   and the two ventilator values that say whether the treatment worked. */
+@media(max-width:640px){
+  .bar-in{padding:7px 12px;gap:8px}
+  .brand{font-size:10px;letter-spacing:.14em}
+  .chip{font-size:10px;padding:3px 7px}
+  .iconbtn{width:28px;height:25px}
+  #rail{padding:0 12px 6px}
+  .rstep{font-size:8.5px;min-width:52px;letter-spacing:.08em}
+  #mon{top:52px}
+  .mon-h{padding:4px 9px}
+  .mon-h .pid{font-size:9.5px}
+  .mon-h .clk{font-size:11px}
+  #trace{height:84px}
+  .nums{grid-template-columns:repeat(4,1fr)}
+  #nm-rr,#nm-t{display:none}
+  .nm{padding:4px 7px 5px;border-right:1px solid var(--rail)}
+  .nm:nth-child(3n){border-right:1px solid var(--rail)}
+  .nm .k{font-size:8px}
+  .nm .v{font-size:20px;line-height:1.15}
+  .nm.c-art .v{font-size:13px;padding-top:4px}
+  .nm .u{font-size:8px}
+  .vent{padding:5px 9px;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px}
+  .vent .vrow:nth-child(1),.vent .vrow:nth-child(3),.vent .vrow:nth-child(5){display:none}
+  .vrow .k{width:auto;font-size:8.5px}
+  .vrow .d{display:none}
+  #alarmtxt{font-size:9.5px;padding:4px 9px}
+  .airwaybox{max-width:288px;margin:0 auto}
+  .card-b{padding:14px}
+  .card-h{padding:12px 14px 10px}
+  .card-h h2{font-size:16.5px}
+  .grade .pct{font-size:46px}
+  .sb dd,.opt .tx,.lede{font-size:14px}
+  #suckbtn{padding:18px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+/* the debrief is the thing educators will want on paper */
+@media print{
+  :root{--bone:#111;--mute:#333;--dim:#666;--rail:#ccc;--rail2:#999;--panel:#fff;--panel2:#fff}
+  body{background:#fff;color:#111}
+  #bar,#mon,#boot,#toast,#crisis,.actions{display:none !important}
+  #wrap{grid-template-columns:1fr;padding:0;max-width:none}
+  .card{border-color:#ccc;box-shadow:none;background:#fff;break-inside:auto}
+  .tli,.tpi,.domrow,.crits{break-inside:avoid}
+  .dbar i{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+</style>
+
+<div id="boot">
+  <div class="boot-card">
+    <div class="boot-mark">PneumoSim · Case 01</div>
+    <h1>Airway clearance in severe pneumonia
+      <em>A real-time ICU simulation for physiotherapists. Assess, read the film, plan, and suction a deteriorating patient — the monitor never stops running.</em>
+    </h1>
+    <div class="boot-meta">
+      <span class="tag">Respiratory · ICU</span>
+      <span class="tag">Endotracheal suction</span>
+      <span class="tag">~20 min</span>
+      <span class="tag">Scored · 9 stations</span>
+    </div>
+    <div class="boot-body">
+      <p><b>Mr Chan Kwok-Wah, 68</b>, day 3 of invasive ventilation for severe community-acquired pneumonia. The nurse has bleeped you: he is rattly, his peak pressures are climbing and his saturations are drifting. You have a ventilated patient, a bedside monitor and a decision to make.</p>
+      <p>Everything you do moves his physiology in real time. Suction too long, too deep, or without pre-oxygenating and you will watch it happen on the trace.</p>
+    </div>
+    <div class="modepick" role="radiogroup" aria-label="Feedback mode">
+      <label><input type="radio" name="mode" value="coach" checked>
+        <span class="mp-t"><b>Coach mode</b><span>Feedback and rationale appear immediately after each decision. Best for teaching and self-study.</span></span></label>
+      <label><input type="radio" name="mode" value="exam">
+        <span class="mp-t"><b>Assessment mode</b><span>No feedback until the debrief. Use this when you are marking someone.</span></span></label>
+    </div>
+    <div class="actions">
+      <button class="btn pri" id="startbtn">Take the handover</button>
+      <span class="hintline">Sound on · headphones recommended</span>
+    </div>
+  </div>
+</div>
+
+<header id="bar" hidden>
+  <div class="bar-in">
+    <span class="brand">PNEUMOSIM 01</span>
+    <span class="bar-sp"></span>
+    <span class="chip mono" id="chip-score">SCORE <b>0</b></span>
+    <span class="chip mono" id="chip-clock">T+<b>00:00</b></span>
+    <button class="iconbtn" id="sndbtn" aria-pressed="true" title="Sound on/off" aria-label="Toggle sound">♪</button>
+  </div>
+  <div id="rail"></div>
+</header>
+
+<main id="wrap" hidden>
+  <section id="stage"></section>
+  <aside id="mon" aria-label="Patient monitor">
+    <div class="mon-h">
+      <span class="pid">CHAN K.W. · 68M · ICU BED 7</span>
+      <span class="clk mono" id="mon-clk">00:00</span>
+    </div>
+    <canvas id="trace" width="700" height="372" aria-label="Live ECG, pulse oximetry and capnography traces"></canvas>
+    <div class="nums">
+      <div class="nm c-ecg" id="nm-hr"><div class="k">HR</div><div class="v" id="v-hr">--</div><div class="u">bpm · sinus</div></div>
+      <div class="nm c-spo2" id="nm-spo2"><div class="k">SpO₂</div><div class="v" id="v-spo2">--</div><div class="u" id="u-fio2">FiO₂ 0.55</div></div>
+      <div class="nm c-art" id="nm-bp"><div class="k">ABP</div><div class="v" id="v-bp" style="font-size:18px">--</div><div class="u" id="u-map">MAP --</div></div>
+      <div class="nm c-rr" id="nm-rr"><div class="k">RR</div><div class="v" id="v-rr">--</div><div class="u">/min</div></div>
+      <div class="nm c-co2" id="nm-co2"><div class="k">etCO₂</div><div class="v" id="v-co2">--</div><div class="u">mmHg</div></div>
+      <div class="nm c-t" id="nm-t"><div class="k">Temp</div><div class="v" id="v-t">--</div><div class="u">°C tympanic</div></div>
+    </div>
+    <div class="vent">
+      <div class="vrow"><span class="k">Mode</span><span class="v">PCV · Pinsp 18 / PEEP 8</span></div>
+      <div class="vrow"><span class="k">P peak</span><span class="v" id="v-ppeak">--</span><span class="d" id="d-ppeak"></span></div>
+      <div class="vrow"><span class="k">P plat</span><span class="v" id="v-pplat">--</span><span class="d">cmH₂O</span></div>
+      <div class="vrow"><span class="k">VTe</span><span class="v" id="v-vt">--</span><span class="d" id="d-vt"></span></div>
+      <div class="vrow"><span class="k">Sedation</span><span class="v">Propofol + fentanyl · RASS −3</span></div>
+    </div>
+    <div id="alarmtxt"></div>
+  </aside>
+</main>
+
+<div id="crisis" role="dialog" aria-modal="true" aria-labelledby="crisis-t"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   PneumoSim 01 — Airway clearance in severe pneumonia
+   Part 1: physiology engine, monitor, audio
+   ===================================================================== */
+"use strict";
+const $ = (s,r)=>(r||document).querySelector(s);
+const $$ = (s,r)=>Array.from((r||document).querySelectorAll(s));
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const R1=v=>Math.round(v*10)/10;
+
+/* ---------- patient physiology ---------- */
+const P = {
+  hr:112, spo2:91, sbp:105, dbp:62, map:76, rr:24, temp:38.6, etco2:48,
+  ppeak:38, pplat:24, vt:380, fio2:0.55, peep:8,
+  secretions:100,     // % of initial secretion load
+  o2res:0,            // 0..1 pre-oxygenation reserve
+  suction:false,      // vacuum currently applied
+  openSystem:false,   // open suction = circuit disconnected
+  vagal:0,            // 0..1 vagal tone (carinal stimulation)
+  pvc:0,              // ectopic probability per beat
+  desatMult:1,        // technique-driven desaturation multiplier
+  bronchospasm:0,
+  crisis:false,       // scripted vagal / hypoxaemic event in progress
+  frozen:false,       // physiology paused (between stations)
+  arrest:false
+};
+const START = JSON.parse(JSON.stringify(P));
+
+/* ---------- session state ---------- */
+const S = {
+  mode:'coach', t0:0, t:0, sound:true, step:0, running:false,
+  passes:[], passN:0, lastPassEnd:-999, crisisDone:false, crisisScore:0,
+  setup:{system:null,size:null,pressure:150,preOx:false,ppe:false,assistant:false},
+  preOxAt:-999, listened:new Set(), auscRound:1,
+  clearRate:1, traumaRisk:0.06, onTick:null
+};
+const SC = {
+  assess:{g:0,m:0,label:'Assessment'},
+  imaging:{g:0,m:0,label:'X-ray & labs'},
+  reason:{g:0,m:0,label:'Clinical reasoning'},
+  tech:{g:0,m:0,label:'Suction technique'},
+  crisis:{g:0,m:0,label:'Crisis response'}
+};
+const LOG=[], CRITICALS=[];
+
+function mmss(s){const m=Math.floor(s/60),x=Math.floor(s%60);return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0');}
+function award(dom,got,max,text,kind){
+  if(SC[dom]){SC[dom].g+=got;SC[dom].m+=max;}
+  LOG.push({t:S.t,text,kind:kind||(got>=max?'g':got>0?'w':'b'),got,max});
+  $('#chip-score').innerHTML='SCORE <b>'+totalPct()+'%</b>';
+}
+function note(text,kind){LOG.push({t:S.t,text,kind:kind||'i',got:0,max:0});}
+function critical(text){if(!CRITICALS.includes(text))CRITICALS.push(text);}
+function totalPct(){
+  let g=0,m=0;for(const k in SC){g+=SC[k].g;m+=SC[k].m;}
+  return m?Math.round(g/m*100):0;
+}
+function toast(msg,kind,ms){
+  const t=$('#toast');t.className=(kind||'')+' on';t.innerHTML=msg;
+  clearTimeout(t._h);t._h=setTimeout(()=>t.className=kind||'',ms||4200);
+}
+
+/* =====================================================================
+   AUDIO — everything synthesised, nothing loaded
+   ===================================================================== */
+const A={ctx:null,master:null,suckSrc:null,suckGain:null,alarmTimer:null,lungSrc:null,buf:{}};
+function actx(){
+  if(!A.ctx){
+    const C=window.AudioContext||window.webkitAudioContext;
+    A.ctx=new C();A.master=A.ctx.createGain();A.master.gain.value=1;A.master.connect(A.ctx.destination);
+  }
+  if(A.ctx.state==='suspended')A.ctx.resume();
+  return A.ctx;
+}
+function tone(f,dur,vol,type){
+  if(!S.sound)return;const c=actx();
+  const o=c.createOscillator(),g=c.createGain();
+  o.type=type||'sine';o.frequency.value=f;
+  g.gain.setValueAtTime(0,c.currentTime);
+  g.gain.linearRampToValueAtTime(vol,c.currentTime+0.006);
+  g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+dur);
+  o.connect(g);g.connect(A.master);o.start();o.stop(c.currentTime+dur+0.02);
+}
+function qrsBeep(){
+  // real monitors drop the pitch as SpO2 falls — variable-pitch pulse tone
+  const f=560+clamp(P.spo2-80,0,20)*15;
+  tone(f,0.05,0.035,'sine');
+}
+function alarmOn(){
+  if(A.alarmTimer)return;
+  const fire=()=>{tone(980,0.13,0.075,'square');setTimeout(()=>tone(980,0.13,0.075,'square'),185);
+                  setTimeout(()=>tone(760,0.2,0.075,'square'),370);};
+  fire();A.alarmTimer=setInterval(fire,1600);
+}
+function alarmOff(){if(A.alarmTimer){clearInterval(A.alarmTimer);A.alarmTimer=null;}}
+
+function noiseBuf(sec){
+  const c=actx(),n=Math.floor(c.sampleRate*sec),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);
+  for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+  return b;
+}
+function suckSoundOn(){
+  if(!S.sound||A.suckSrc)return;const c=actx();
+  const src=c.createBufferSource();src.buffer=noiseBuf(2);src.loop=true;
+  const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=760;bp.Q.value=0.7;
+  const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1900;
+  const g=c.createGain();g.gain.value=0.0;
+  // gurgle: slow amplitude wobble
+  const lfo=c.createOscillator(),lg=c.createGain();
+  lfo.frequency.value=5.5;lg.gain.value=0.035;lfo.connect(lg);lg.connect(g.gain);lfo.start();
+  g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(0.075,c.currentTime+0.09);
+  src.connect(bp);bp.connect(lp);lp.connect(g);g.connect(A.master);src.start();
+  A.suckSrc=src;A.suckGain=g;A.suckLfo=lfo;
+}
+function suckSoundOff(){
+  if(!A.suckSrc)return;const c=actx();
+  try{A.suckGain.gain.cancelScheduledValues(c.currentTime);
+      A.suckGain.gain.setValueAtTime(A.suckGain.gain.value,c.currentTime);
+      A.suckGain.gain.linearRampToValueAtTime(0,c.currentTime+0.07);
+      A.suckSrc.stop(c.currentTime+0.1);A.suckLfo.stop(c.currentTime+0.1);}catch(e){}
+  A.suckSrc=null;A.suckGain=null;
+}
+/* --- lung sound synthesis --------------------------------------------- */
+function svf(f,q,sr){let lp=0,bp=0;const F=2*Math.sin(Math.PI*Math.min(f,sr*0.45)/sr),Q=1/q;
+  return x=>{lp+=F*bp;const hp=x-lp-Q*bp;bp+=F*hp;return[lp,bp,hp];};}
+function lungBuffer(kinds){
+  const key=kinds.join('|');if(A.buf[key])return A.buf[key];
+  const c=actx(),sr=c.sampleRate,cyc=2.3,dur=cyc*2,n=Math.floor(sr*dur);
+  const b=c.createBuffer(1,n,sr),d=b.getChannelData(0);
+  const has=k=>kinds.indexOf(k)>=0;
+  const bronchial=has('bronchial'),reduced=has('reduced'),absent=has('absent');
+  const f1=svf(bronchial?620:300,0.72,sr), f2=svf(bronchial?240:150,0.8,sr);
+  const rh=svf(150,7,sr), rh2=svf(215,6,sr);
+  let base=absent?0.05:reduced?0.22:1.0;
+  for(let i=0;i<n;i++){
+    const t=(i/sr)%cyc;
+    // breath envelope: insp 0-0.95, gap, exp 1.15-2.05
+    let env=0,phase=0;
+    if(t<0.95){env=Math.sin(Math.PI*t/0.95);phase=1;}
+    else if(t>1.12&&t<2.05){env=Math.sin(Math.PI*(t-1.12)/0.93);phase=2;}
+    let amp=env*(phase===1?1:(bronchial?1.05:0.3));
+    let x=(Math.random()*2-1);
+    let v=f1(x)[0];v=v-f2(v)[0]*0.55;
+    let out=v*amp*base*2.2;
+    if(has('rhonchi')&&env>0.05){
+      const r=rh(x)[1]*0.9+rh2(x)[1]*0.5;
+      out+=r*amp*(phase===2?1.25:0.85)*1.5;
+    }
+    d[i]=out;
+  }
+  // discrete crackles layered on top
+  const addCrackles=(count,coarse)=>{
+    for(let cyi=0;cyi<2;cyi++)for(let k=0;k<count;k++){
+      // coarse crackles: mid-inspiration and early expiration, irregular
+      const insp=Math.random()<0.72;
+      const tt=cyi*cyc+(insp?(0.28+Math.random()*0.62):(1.20+Math.random()*0.45));
+      const st=Math.floor(tt*sr),len=Math.floor(sr*(coarse?0.010:0.004));
+      const amp=(coarse?0.85:0.5)*(0.5+Math.random()*0.6);
+      const cf=svf(coarse?420:900,1.2,sr);
+      for(let i=0;i<len&&st+i<n;i++){
+        const e=Math.exp(-i/len*4.5);
+        d[st+i]+=cf(Math.random()*2-1)[1]*e*amp;
+      }
+    }
+  };
+  if(has('coarse'))addCrackles(11,true);
+  if(has('fine'))addCrackles(14,false);
+  // soft-clip
+  for(let i=0;i<n;i++)d[i]=Math.tanh(d[i]*0.85)*0.85;
+  A.buf[key]=b;return b;
+}
+function playLung(kinds){
+  if(!S.sound)return null;const c=actx();
+  stopLung();
+  const src=c.createBufferSource();src.buffer=lungBuffer(kinds);
+  const g=c.createGain();g.gain.value=0.85;
+  src.connect(g);g.connect(A.master);src.start();
+  A.lungSrc=src;return src;
+}
+function stopLung(){if(A.lungSrc){try{A.lungSrc.stop();}catch(e){}A.lungSrc=null;}}
+
+/* =====================================================================
+   PHYSIOLOGY LOOP
+   ===================================================================== */
+function physio(dt){
+  if(P.frozen||P.arrest)return;
+  // --- oxygenation ---
+  const sTarget=clamp(84+(P.fio2-0.21)*22+(100-P.secretions)*0.055-P.bronchospasm*6,60,100);
+  if(P.suction){
+    const rate=1.55*P.desatMult*(1-0.5*P.o2res)*(P.openSystem?1.45:1);
+    P.spo2-=rate*dt;
+  }else{
+    const gap=sTarget-P.spo2;
+    P.spo2+=gap*dt*(gap>0?0.42:0.9);
+  }
+  if(P.crisis)P.spo2+=(78-P.spo2)*dt*1.8;   // scripted event overrides normal recovery
+  P.spo2=clamp(P.spo2,45,100);
+  P.o2res=clamp(P.o2res-dt/150,0,1);
+  // --- heart rate ---
+  const hypox=Math.max(0,90-P.spo2)*1.9;
+  const hrT=clamp(112+hypox-P.vagal*92,28,175);
+  P.hr+=(hrT-P.hr)*dt*(P.vagal>0.2?2.2:0.55);
+  P.pvc=P.spo2<84||P.vagal>0.4?0.22:P.spo2<88?0.05:0;
+  // --- pressure ---
+  const mapT=clamp(76-P.vagal*15-Math.max(0,86-P.spo2)*0.45,35,110);
+  P.map+=(mapT-P.map)*dt*0.6;
+  P.sbp=P.map*1.42;P.dbp=P.map*0.80;
+  // --- ventilation mechanics ---
+  P.ppeak=26+P.secretions*0.12+P.bronchospasm*9;
+  P.pplat=24-(100-P.secretions)*0.018;
+  P.vt=380+(100-P.secretions)*0.95-P.bronchospasm*40;
+  P.etco2=48-(100-P.secretions)*0.075;
+  P.rr=clamp(24+Math.max(0,90-P.spo2)*0.42,16,40);
+  P.bronchospasm=Math.max(0,P.bronchospasm-dt*0.06);
+  P.vagal=Math.max(0,P.vagal-dt*0.055);
+}
+
+/* =====================================================================
+   MONITOR RENDERING
+   ===================================================================== */
+const M={cv:null,ctx:null,W:0,H:0,x:0,prev:[null,null,null],beat:0,tb:99,pvc:false,pulse:99,resp:0,pxs:0};
+function fitCanvas(){
+  const cv=$('#trace');if(!cv)return;
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const w=cv.clientWidth||330,h=cv.clientHeight||186;
+  cv.width=Math.floor(w*dpr);cv.height=Math.floor(h*dpr);
+  M.W=cv.width;M.H=cv.height;M.pxs=M.W/4.4;   // sweep 4.4 s across
+  M.ctx=cv.getContext('2d');M.ctx.lineWidth=Math.max(1.4,1.5*dpr);M.ctx.lineJoin='round';
+  M.ctx.fillStyle='#05070A';M.ctx.fillRect(0,0,M.W,M.H);M.x=0;M.prev=[null,null,null];
+  drawGrid();
+}
+function drawGrid(){
+  const c=M.ctx,L=M.H/3;
+  c.save();c.strokeStyle='rgba(255,255,255,.045)';c.lineWidth=1;
+  for(let i=1;i<3;i++){c.beginPath();c.moveTo(0,L*i);c.lineTo(M.W,L*i);c.stroke();}
+  c.restore();
+}
+const g=(t,mu,s)=>Math.exp(-Math.pow(t-mu,2)/(2*s*s));
+function ecgV(tb,pvc){
+  if(tb>0.9)return 0;
+  if(pvc)return -0.85*g(tb,0.20,0.030)+0.55*g(tb,0.30,0.048);
+  return 0.13*g(tb,0.06,0.020)-0.07*g(tb,0.176,0.008)+1.0*g(tb,0.192,0.0085)
+         -0.24*g(tb,0.214,0.011)+0.26*g(tb,0.37,0.045);
+}
+function plethV(tp){
+  if(tp>1.4)return 0;
+  return (1-Math.exp(-tp*36))*Math.exp(-tp*3.0)*1.35+0.30*g(tp,0.33,0.052);
+}
+function co2V(r){
+  if(r<0.30)return 0;
+  const e=(r-0.30)/0.70, shark=4.0+(100-P.secretions)*0.075;
+  return P.etco2*(1-Math.exp(-e*shark));
+}
+function advance(dt){
+  M.tb+=dt;M.pulse+=dt;
+  M.beat+=dt*(P.hr/60);
+  if(M.beat>=1){
+    M.beat-=1;M.tb=0;M.pulse=-0.16;
+    M.pvc=Math.random()<P.pvc;
+    if(!P.arrest)qrsBeep();
+  }
+  M.resp=(M.resp+dt*(P.rr/60))%1;
+}
+function drawTraces(dt){
+  const c=M.ctx;if(!c)return;
+  const L=M.H/3, steps=Math.min(Math.floor(dt*M.pxs),M.W);
+  const sdt=dt/Math.max(steps,1);
+  const perf=clamp((P.map-35)/45,0.25,1);
+  for(let i=0;i<steps;i++){
+    advance(sdt);
+    const x=M.x;
+    c.fillStyle='#05070A';c.fillRect(x,0,10,M.H);
+    c.save();c.strokeStyle='rgba(255,255,255,.045)';c.lineWidth=1;
+    for(let k=1;k<3;k++){c.beginPath();c.moveTo(x,L*k);c.lineTo(x+10,L*k);c.stroke();}
+    c.restore();
+    const vals=[
+      P.arrest?(Math.random()-0.5)*0.06 : ecgV(M.tb,M.pvc),
+      P.arrest?0 : plethV(Math.max(M.pulse,0))*perf*(0.55+P.spo2/220),
+      co2V(M.resp)/60
+    ];
+    const ys=[ L*0.5-vals[0]*L*0.40, L*1.5-vals[1]*L*0.34, L*3-4-vals[2]*(L-10) ];
+    const cols=['#2FE07A','#3AD8E6','#FFC24B'];
+    for(let k=0;k<3;k++){
+      if(M.prev[k]!==null){
+        c.strokeStyle=cols[k];c.beginPath();c.moveTo(x-1,M.prev[k]);c.lineTo(x,ys[k]);c.stroke();
+      }
+      M.prev[k]=ys[k];
+    }
+    M.x++;if(M.x>=M.W){M.x=0;M.prev=[null,null,null];}
+  }
+}
+function setNum(id,box,v,warn,crit){
+  const e=$(id);if(e)e.textContent=v;
+  const b=$(box);if(!b)return;
+  b.classList.toggle('warn',!!warn&&!crit);b.classList.toggle('crit',!!crit);
+}
+function paintNumbers(){
+  setNum('#v-hr','#nm-hr',Math.round(P.hr),P.hr>130||P.hr<55,P.hr>150||P.hr<50);
+  setNum('#v-spo2','#nm-spo2',Math.round(P.spo2),P.spo2<90,P.spo2<88);
+  $('#u-fio2').textContent='FiO₂ '+P.fio2.toFixed(2);
+  setNum('#v-bp','#nm-bp',Math.round(P.sbp)+'/'+Math.round(P.dbp),P.map<70,P.map<62);
+  $('#u-map').textContent='MAP '+Math.round(P.map);
+  setNum('#v-rr','#nm-rr',Math.round(P.rr),P.rr>30,false);
+  setNum('#v-co2','#nm-co2',Math.round(P.etco2),P.etco2>50,false);
+  $('#v-t').textContent=P.temp.toFixed(1);
+  const pk=$('#v-ppeak');pk.textContent=Math.round(P.ppeak)+' cmH₂O';
+  pk.className='v '+(P.ppeak>34?'bad':P.ppeak>30?'up':'good');
+  $('#d-ppeak').textContent=P.ppeak>34?'↑ resistive':'';
+  $('#v-pplat').textContent=Math.round(P.pplat);
+  const vt=$('#v-vt');vt.textContent=Math.round(P.vt)+' mL';
+  vt.className='v '+(P.vt<400?'bad':P.vt<440?'up':'good');
+  $('#d-vt').textContent=Math.round(P.vt/62)+' mL/kg';
+  // alarms
+  const al=[];
+  if(P.spo2<88)al.push('SpO₂ LOW '+Math.round(P.spo2)+'%');
+  else if(P.spo2<90)al.push('SpO₂ '+Math.round(P.spo2)+'%');
+  if(P.hr<50)al.push('BRADYCARDIA '+Math.round(P.hr));
+  if(P.hr>145)al.push('TACHYCARDIA '+Math.round(P.hr));
+  if(P.map<62)al.push('MAP LOW '+Math.round(P.map));
+  if(P.ppeak>38)al.push('HIGH AIRWAY PRESSURE');
+  if(P.pvc>0.1)al.push('VENTRICULAR ECTOPY');
+  const box=$('#alarmtxt'),crit=P.spo2<88||P.hr<50||P.map<62||P.hr>145;
+  box.className=(al.length?'on ':'')+(crit?'':'warn');box.textContent=al.join('  ·  ');
+  $('#mon').classList.toggle('alarm',crit);
+  if(crit&&S.running)alarmOn();else alarmOff();
+}
+let lastT=0;
+function loop(ts){
+  requestAnimationFrame(loop);
+  if(!lastT){lastT=ts;return;}
+  // clamp both ends: a stalled tab gives a huge dt, and a non-monotonic
+  // timestamp gives a negative one, which would run every decay term backwards
+  let dt=clamp((ts-lastT)/1000,0,0.25);lastT=ts;
+  if(!S.running)return;
+  S.t+=dt;
+  physio(dt);
+  drawTraces(dt);
+  M.acc=(M.acc||0)+dt;
+  if(M.acc>0.12){M.acc=0;paintNumbers();}   // numerics refresh ~8 Hz, traces every frame
+  if(S.onTick)S.onTick(dt);
+  const c=mmss(S.t);$('#mon-clk').textContent=c;$('#chip-clock').innerHTML='T+<b>'+c+'</b>';
+}
+requestAnimationFrame(loop);
+window.addEventListener('resize',()=>{fitCanvas();});
+
+/* =====================================================================
+   Part 2: station framework
+   ===================================================================== */
+const STEPS=[
+  {id:'handover',label:'Handover',render:stHandover},
+  {id:'assess',  label:'Assess',  render:stAssess},
+  {id:'xray',    label:'X-ray',   render:stXray},
+  {id:'labs',    label:'Labs',    render:stLabs},
+  {id:'plan',    label:'Plan',    render:stPlan},
+  {id:'setup',   label:'Set-up',  render:stSetup},
+  {id:'suction', label:'Suction', render:stSuction},
+  {id:'review',  label:'Review',  render:stReview},
+  {id:'debrief', label:'Debrief', render:stDebrief}
+];
+function buildRail(){
+  $('#rail').innerHTML=STEPS.map((s,i)=>
+    '<div class="rstep '+(i<S.step?'done':i===S.step?'now':'')+'">'+s.label+'</div>').join('');
+}
+function goStep(i){
+  S.step=i;S.onTick=null;buildRail();
+  const st=$('#stage');st.innerHTML='';
+  STEPS[i].render(st);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function nextStep(){goStep(S.step+1);}
+const coach=()=>S.mode==='coach';
+
+function card(host,eyebrow,title,sub){
+  const c=document.createElement('div');c.className='card';
+  c.innerHTML='<div class="card-h"><div><div class="eyebrow">'+eyebrow+'</div>'
+    +'<h2>'+title+'</h2></div></div><div class="card-b"></div>';
+  host.appendChild(c);
+  const b=c.querySelector('.card-b');
+  if(sub){const p=document.createElement('p');p.className='lede';p.innerHTML=sub;b.appendChild(p);}
+  return b;
+}
+function nextBtn(host,label,fn){
+  const w=document.createElement('div');w.className='actions';
+  w.innerHTML='<button class="btn pri">'+(label||'Continue')+'</button>';
+  const b=w.firstChild;
+  b.onclick=()=>{           // single-shot: a second press must not re-run the handler
+    b.disabled=true;b.onclick=null;
+    (fn||nextStep)();
+  };
+  host.appendChild(w);return w;
+}
+const LT='ABCDEFGHIJKL';
+
+/* --- single best answer ------------------------------------------------ */
+function mcq(host,cfg){
+  const wrap=document.createElement('div');
+  wrap.innerHTML='<p class="lede" style="margin-bottom:14px"><b>'+cfg.q+'</b></p><div class="opts"></div>';
+  const box=wrap.querySelector('.opts');
+  const max=Math.max.apply(null,cfg.opts.map(o=>o.p));
+  cfg.opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt';b.type='button';
+    b.innerHTML='<span class="ltr">'+LT[i]+'</span><span class="tx">'+o.t
+      +'<span class="fb">'+o.fb+'</span></span>';
+    b.onclick=()=>{
+      $$('.opt',box).forEach((x,j)=>{
+        x.disabled=true;
+        if(coach()){
+          x.classList.add('rv');
+          if(cfg.opts[j].p===max)x.classList.add('good');
+          else if(j===i)x.classList.add('bad');
+        }else if(j===i){x.classList.add('rv');}
+      });
+      if(!coach())b.classList.add('good');
+      award(cfg.dom,o.p,max,cfg.log+' — '+o.t.replace(/<[^>]+>/g,''),o.p>=max?'g':o.p>0?'w':'b');
+      if(o.crit)critical(o.crit);
+      if(o.effect)o.effect();
+      const fb=document.createElement('div');
+      fb.className='fbbox '+(coach()?(o.p>=max?'g':o.p>0?'w':'b'):'n');
+      fb.innerHTML='<span class="hd">'+(coach()?(o.p>=max?'Good call':o.p>0?'Partly right':'Not this one'):'Answer recorded')+'</span>'
+        +(coach()?o.fb:'Rationale is held back in assessment mode — it appears in your debrief.');
+      wrap.appendChild(fb);
+      nextBtn(wrap,cfg.nextLabel,cfg.onNext);
+    };
+    box.appendChild(b);
+  });
+  host.appendChild(wrap);
+  return wrap;
+}
+/* --- multiple select ---------------------------------------------------- */
+function multi(host,cfg){
+  const sel=new Set();
+  const wrap=document.createElement('div');
+  wrap.innerHTML='<p class="lede" style="margin-bottom:6px"><b>'+cfg.q+'</b></p>'
+    +'<p class="hintline" style="margin:0 0 14px">'+(cfg.limit?('Select up to '+cfg.limit+' · <span id="rem">'+cfg.limit+'</span> left'):'Select all that apply')+'</p>'
+    +'<div class="opts"></div>';
+  const box=wrap.querySelector('.opts');
+  const posMax=cfg.max!=null?cfg.max:cfg.opts.filter(o=>o.p>0).reduce((a,o)=>a+o.p,0);
+  cfg.opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt';b.type='button';b.setAttribute('aria-pressed','false');
+    b.innerHTML='<span class="ltr">'+LT[i]+'</span><span class="tx">'+o.t+'<span class="fb">'+(o.fb||'')+'</span></span>';
+    b.onclick=()=>{
+      if(sel.has(i)){sel.delete(i);b.setAttribute('aria-pressed','false');}
+      else{
+        if(cfg.limit&&sel.size>=cfg.limit){toast('You have used all '+cfg.limit+' selections. Deselect one first.','w');return;}
+        sel.add(i);b.setAttribute('aria-pressed','true');
+      }
+      if(cfg.limit)$('#rem',wrap).textContent=cfg.limit-sel.size;
+    };
+    box.appendChild(b);
+  });
+  const act=document.createElement('div');act.className='actions';
+  act.innerHTML='<button class="btn pri">'+(cfg.submit||'Submit')+'</button>';
+  act.firstChild.onclick=()=>{
+    if(!sel.size){toast('Choose at least one option.','w');return;}
+    let got=0;
+    $$('.opt',box).forEach((x,j)=>{
+      x.disabled=true;const o=cfg.opts[j];
+      if(sel.has(j)){
+        got+=o.p;
+        if(coach()){x.classList.add('rv',o.p>0?'good':'bad');}else{x.classList.add('rv');}
+        if(o.crit&&o.p<=0)critical(o.crit);
+      }else if(o.p>0&&coach()){x.classList.add('miss','rv');}
+    });
+    got=clamp(got,0,posMax);
+    award(cfg.dom,got,posMax,cfg.log+' — chose '+Array.from(sel).map(j=>LT[j]).join(', '),
+      got>=posMax*0.85?'g':got>=posMax*0.5?'w':'b');
+    if(cfg.check)cfg.check(sel,wrap);
+    act.remove();
+    const fb=document.createElement('div');fb.className='fbbox '+(coach()?'n':'n');
+    fb.innerHTML='<span class="hd">'+(coach()?'Marked':'Answer recorded')+'</span>'
+      +(coach()?'Scored '+got+' of '+posMax+'. Dashed amber outlines are correct answers you missed.'
+              :'Held back in assessment mode. Full breakdown appears in your debrief.');
+    wrap.appendChild(fb);
+    if(cfg.onSubmit)cfg.onSubmit(sel,wrap);else nextBtn(wrap,cfg.nextLabel,cfg.onNext);
+  };
+  wrap.appendChild(act);host.appendChild(wrap);
+  return wrap;
+}
+
+/* =====================================================================
+   STATION 1 — HANDOVER
+   ===================================================================== */
+function stHandover(host){
+  const b=card(host,'Station 1 of 9 · 14:20, ICU bed 7','Take the handover',
+    'The ICU nurse hands over as you arrive at the bedside. The high-pressure alarm sounds twice while she is speaking.');
+  const d=document.createElement('dl');d.className='sbar';
+  d.innerHTML=[
+    ['Situation','<b>Chan Kwok-Wah, 68, 62 kg.</b> Day 3 of invasive ventilation. Referred for airway clearance — audible rattling, rising peak pressures, saturations drifting down over the last two hours.'],
+    ['Background','Severe community-acquired pneumonia with <b>Streptococcus pneumoniae</b> bacteraemia; intubated on day 1 for hypoxaemic respiratory failure. Ex-smoker, 40 pack-years, mild COPD. Type 2 diabetes, hypertension. On IV ceftriaxone and azithromycin, day 3.'],
+    ['Assessment','ETT 8.0 mm at 22 cm at the lips, closed in-line suction catheter in the circuit. PCV, Pinsp 18 over PEEP 8, FiO₂ 0.55. <b>Peak pressure has gone from 30 to 38 cmH₂O since this morning</b>, tidal volumes falling. Propofol and fentanyl, RASS −3. Noradrenaline 0.05 µg/kg/min, MAP 76. Temp 38.6 °C.'],
+    ['Recommendation','"He sounds full of secretions and he keeps setting off the pressure alarm. Can you sort him out?"']
+  ].map(r=>'<div class="sb"><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>').join('');
+  b.appendChild(d);
+  const hr=document.createElement('hr');hr.className='hr';b.appendChild(hr);
+  mcq(b,{
+    dom:'reason',log:'First action at the bedside',
+    q:'The nurse is waiting. What do you do first?',
+    opts:[
+      {t:'Carry out a focused bedside assessment — observe, auscultate, and read the ventilator screen — before touching the patient.',p:6,
+       fb:'Correct. Suction is a treatment, not a reflex. The ventilator screen alone will tell you whether the rising pressure is resistive (secretions) or elastic (worsening consolidation, pneumothorax, abdominal distension) — and those need entirely different responses.'},
+      {t:'Suction him straight away — the nurse can hear secretions and the pressures are climbing.',p:1,
+       fb:'Tempting, and it may end up being the right treatment, but not yet. A rising peak pressure has several causes and only some respond to suction. Suctioning a hypoxaemic patient you have not assessed is how you turn a treatable problem into an emergency.',
+       crit:'Went straight to suction with no assessment.'},
+      {t:'Position him head-down in right side-lying for postural drainage before doing anything else.',p:0,
+       fb:'No. He is hypoxaemic with a P/F ratio in the moderate ARDS range and on a vasopressor. A head-down tilt in that context risks worsening oxygenation and hypotension, and you have not yet established which lobes you are trying to drain.'},
+      {t:'Ask the nurse to turn FiO₂ up to 1.0 and come back when he has settled.',p:0,
+       fb:'Raising the FiO₂ treats the number, not the patient, and delays the intervention he actually needs. Oxygen is part of the plan — as pre-oxygenation immediately before suction — not a substitute for it.'}
+    ],
+    nextLabel:'Go to the bedside'
+  });
+}
+
+/* =====================================================================
+   STATION 2 — BEDSIDE ASSESSMENT
+   ===================================================================== */
+const ASSESS=[
+  {t:'<b>General observation</b> — chest wall movement, work of breathing, secretions in the tube',p:3,
+   f:'Reduced expansion on the <b>right</b>. Secretions visible bubbling in the ETT and the catheter mount. He splutters against the ventilator every few breaths. No paradoxical movement, no surgical emphysema.'},
+  {t:'<b>Palpation</b> — chest expansion and tactile fremitus',p:2,
+   f:'Coarse palpable <b>rattle</b> over the right anterior and lateral chest, maximal at the right base. Expansion measurably less on the right. Trachea central.'},
+  {t:'<b>Auscultate</b> the chest',p:4,ausc:true,
+   f:'Findings recorded on the chest map below.',
+   crit:'Did not auscultate before performing airway clearance.'},
+  {t:'<b>Ventilator screen and waveforms</b>',p:4,
+   f:'Ppeak <b>38</b> cmH₂O (30 at 08:00). Pplat <b>24</b> cmH₂O. <b>Ppeak − Pplat = 14 cmH₂O</b>, was 6 this morning. The expiratory limb of the flow–volume loop shows a <b>sawtooth</b> pattern. VTe 380 mL, was 460. This is a rising <b>resistive</b> load — airway secretions — with unchanged compliance.'},
+  {t:'<b>ETT position, cuff pressure and circuit</b>',p:2,
+   f:'ETT 8.0 mm internal diameter, secured at 22 cm at the lips, bilateral air entry on the left is preserved so it is not endobronchial. Cuff pressure 24 cmH₂O. A <b>closed in-line suction catheter</b> is already attached. HME (heat–moisture exchanger) in circuit, visibly wet.'},
+  {t:'<b>Suction equipment and vacuum settings</b>',p:2,
+   f:'Wall vacuum functioning. The dial has been left at <b>250 mmHg</b> by the previous user. Catheters available: 10, 12, 14 and 16 Fr. Manual resuscitation bag with PEEP valve and a spare closed-suction catheter at the bedside.'},
+  {t:'<b>Sedation level and cough effectiveness</b>',p:3,
+   f:'RASS −3, moderate sedation. Catheter stimulation produces a <b>weak but present</b> cough. He cannot mobilise secretions to the tube on his own — this is why he needs you.'},
+  {t:'<b>Precautions and contraindications screen</b>',p:3,
+   f:'Platelets 176, INR 1.2 — no bleeding diathesis. No head injury or raised ICP, no rib fractures, no chest drain, no recent thoracic or abdominal surgery. <b>No absolute contraindication.</b> Relative caution: vasopressor-dependent, MAP 76 — avoid prolonged head-down positioning.'},
+  {t:'Ask him to perform the <b>active cycle of breathing technique</b>',p:-2,
+   f:'He is intubated and sedated to RASS −3. He cannot follow a command, take a controlled breath in on request, or huff. Selecting a technique that requires active cooperation means the conscious level has not registered.',
+   crit:'Selected an intervention requiring active cooperation in a patient sedated to RASS −3.'},
+  {t:'Request an <b>urgent CT thorax</b>',p:-2,
+   f:'A vasopressor-dependent, hypoxaemic patient does not get moved to the scanner to answer a question the ventilator screen has already answered. Transfer carries real risk and would delay treatment by an hour.'}
+];
+function stAssess(host){
+  const b=card(host,'Station 2 of 9 · Bedside','Focused bedside assessment',
+    'You have a few minutes before you commit to a treatment. Choose the six assessments that will actually change what you do next.');
+  multi(b,{
+    dom:'assess',log:'Bedside assessment',limit:6,max:19,
+    q:'Which assessments do you perform?',
+    opts:ASSESS.map(a=>({t:a.t,p:a.p,fb:a.f,crit:a.crit})),
+    submit:'Perform these assessments',
+    onSubmit:(sel,wrap)=>{
+      if(!sel.has(2))critical('Did not auscultate before performing airway clearance.');
+      if(!sel.has(3))critical('Did not look at the ventilator screen before treating a rising airway pressure.');
+      if(!sel.has(5))note('Never checked the suction unit — the dial is still where the last user left it.','w');
+      // findings report
+      const rep=document.createElement('div');rep.className='panels';rep.style.marginTop='18px';
+      Array.from(sel).sort((x,y)=>x-y).forEach(i=>{
+        if(ASSESS[i].p<0)return;
+        const p=document.createElement('div');p.className='pnl';
+        p.innerHTML='<h3>'+ASSESS[i].t.replace(/<[^>]+>/g,'').split('—')[0].trim()+'</h3><div class="pb">'+ASSESS[i].f+'</div>';
+        rep.appendChild(p);
+      });
+      if(rep.children.length)wrap.appendChild(rep);
+      if(sel.has(2)){auscBlock(wrap);}
+      else{
+        const w=document.createElement('div');w.className='fbbox b';w.style.marginTop='16px';
+        w.innerHTML='<span class="hd">Safety flag</span>You are about to put a catheter into this man\'s lungs without having listened to them. You will have no baseline to compare against afterwards, and no way of knowing whether what you can hear is secretions you can remove or consolidation you cannot.';
+        wrap.appendChild(w);
+        auscQ(wrap);
+      }
+    }
+  });
+}
+
+/* =====================================================================
+   AUSCULTATION MAP
+   ===================================================================== */
+const AUSC_PTS={
+  ant:[
+    {id:'aru',x:96,y:112,lb:'R upper'},{id:'alu',x:204,y:112,lb:'L upper'},
+    {id:'arm',x:86,y:168,lb:'R mid'},  {id:'alm',x:214,y:168,lb:'L mid'},
+    {id:'arb',x:96,y:224,lb:'R base'}, {id:'alb',x:204,y:224,lb:'L base'}
+  ],
+  post:[
+    {id:'pru',x:204,y:108,lb:'R upper'},{id:'plu',x:96,y:108,lb:'L upper'},
+    {id:'prm',x:212,y:166,lb:'R mid'},  {id:'plm',x:88,y:166,lb:'L mid'},
+    {id:'prb',x:204,y:226,lb:'R base'}, {id:'plb',x:96,y:226,lb:'L base'}
+  ]
+};
+const AUSC_FIND={
+  1:{
+    aru:[['rhonchi'],'Air entry present. Loud low-pitched <b>rhonchi</b> that change character between breaths — these are secretions sitting in the trachea and main bronchi. This is the sound suction can remove.'],
+    arm:[['bronchial','coarse'],'<b>Bronchial breathing</b> with coarse crackles through both inspiration and expiration. Consolidated right middle lobe lying directly against the chest wall.'],
+    arb:[['coarse','reduced'],'Markedly <b>reduced air entry</b> with coarse crackles just above the base.'],
+    alu:[['vesicular'],'Normal vesicular breath sounds.'],
+    alm:[['vesicular'],'Normal vesicular breath sounds. A few transmitted upper-airway sounds only.'],
+    alb:[['coarse'],'Scattered coarse crackles at the left base — early change on the good side. Worth watching over the next 24 hours.'],
+    pru:[['rhonchi'],'Coarse rhonchi, loudest here posteriorly. Secretions pooling in the dependent right upper lobe posterior segment.'],
+    prm:[['bronchial','coarse'],'Bronchial breathing with coarse inspiratory and expiratory crackles.'],
+    prb:[['absent'],'Breath sounds almost <b>absent</b>, stony dull to percussion. This is the small parapneumonic effusion at the right base — <b>no amount of suction will change this.</b>'],
+    plu:[['vesicular'],'Normal vesicular breath sounds.'],
+    plm:[['vesicular'],'Normal vesicular breath sounds.'],
+    plb:[['coarse'],'A few coarse crackles, clearing partially after a breath.']
+  },
+  2:{
+    aru:[['vesicular'],'The rhonchi have <b>gone</b>. Air entry is clearly better than before.'],
+    arm:[['bronchial'],'Bronchial breathing persists, crackles much reduced. <b>Consolidation does not suction out</b> — this is alveolar filling, and it needs antibiotics and time.'],
+    arb:[['reduced'],'Air entry improved but still reduced.'],
+    alu:[['vesicular'],'Normal vesicular breath sounds.'],
+    alm:[['vesicular'],'Normal vesicular breath sounds.'],
+    alb:[['vesicular'],'Crackles have cleared.'],
+    pru:[['vesicular'],'Rhonchi resolved. Good air entry.'],
+    prm:[['bronchial'],'Bronchial breathing unchanged — as expected.'],
+    prb:[['absent'],'Unchanged. The effusion is still there, exactly as it was.'],
+    plu:[['vesicular'],'Normal.'],plm:[['vesicular'],'Normal.'],plb:[['vesicular'],'Clear.']
+  }
+};
+function chestSVG(view){
+  const pts=AUSC_PTS[view];
+  const torso='<path d="M150 22c-17 0-29 9-32 22-3 13-29 15-44 25-13 9-19 23-20 41-2 31-3 63-1 98 2 34 7 66 14 86 5 15 18 22 33 24 25 3 71 3 96 0 15-2 28-9 33-24 7-20 12-52 14-86 2-35 1-67-1-98-1-18-7-32-20-41-15-10-41-12-44-25-3-13-15-22-32-22z" fill="#0F1A22" stroke="#2C3B4B" stroke-width="1.4"/>';
+  // right lung sits on the viewer's left; the left lung carries the cardiac notch
+  const lungRa='M142 78 C118 82 102 104 96 134 C90 166 92 204 102 230 C108 246 120 254 132 250 C140 247 143 238 143 224 Z';
+  const lungLa='M158 78 C182 82 198 104 204 134 C210 166 208 204 198 230 C192 246 180 254 168 250 C162 248 158 242 158 232 C158 218 167 210 167 199 C167 189 158 185 158 174 Z';
+  const lungRp='M142 76 C117 80 101 103 95 134 C89 168 91 208 101 236 C107 253 120 261 133 256 C141 253 143 244 143 230 Z';
+  const lungLp='M158 76 C183 80 199 103 205 134 C211 168 209 208 199 236 C193 253 180 261 167 256 C159 253 157 244 157 230 Z';
+  const body=view==='ant'
+    ? torso
+      +'<path d="M104 62c14 9 32 11 46 11s32-2 46-11" fill="none" stroke="#22323F" stroke-width="2"/>'
+      +'<path d="M150 70v120" stroke="#22323F" stroke-width="2"/>'
+      +'<path d="'+lungRa+'" fill="#0A1219" stroke="#22323F" stroke-width="1.2"/>'
+      +'<path d="'+lungLa+'" fill="#0A1219" stroke="#22323F" stroke-width="1.2"/>'
+      +'<path d="M97 148 H143" stroke="#1E2C38" stroke-width="1.4"/>'
+      +'<path d="M99 186 C116 174 132 164 143 160" fill="none" stroke="#1E2C38" stroke-width="1.4"/>'
+      +'<path d="M201 186 C184 174 168 164 158 160" fill="none" stroke="#1E2C38" stroke-width="1.4"/>'
+    : torso
+      +'<path d="M150 54v198" stroke="#22323F" stroke-width="3"/>'
+      +'<path d="M114 78l26 46M186 78l-26 46" stroke="#22323F" stroke-width="2" fill="none"/>'
+      +'<path d="'+lungRp+'" fill="#0A1219" stroke="#22323F" stroke-width="1.2"/>'
+      +'<path d="'+lungLp+'" fill="#0A1219" stroke="#22323F" stroke-width="1.2"/>'
+      +'<path d="M97 196 C116 180 132 168 143 162" fill="none" stroke="#1E2C38" stroke-width="1.4"/>'
+      +'<path d="M203 196 C184 180 168 168 157 162" fill="none" stroke="#1E2C38" stroke-width="1.4"/>';
+  return '<svg id="chest" viewBox="0 0 300 300" role="img" aria-label="Chest auscultation points">'
+    +'<defs><radialGradient id="gl"><stop offset="0" stop-color="#3AD8E6" stop-opacity=".18"/><stop offset="1" stop-color="#3AD8E6" stop-opacity="0"/></radialGradient></defs>'
+    +'<ellipse cx="150" cy="150" rx="140" ry="140" fill="url(#gl)"/>'+body
+    +pts.map(p=>'<g class="apt" data-id="'+p.id+'" tabindex="0" role="button" aria-label="Listen at '+p.lb+'">'
+      +'<circle class="hit" cx="'+p.x+'" cy="'+p.y+'" r="17"/>'
+      +'<text x="'+p.x+'" y="'+(p.y+3.5)+'" text-anchor="middle">'+p.lb.replace(' ',' ')+'</text></g>').join('')
+    +'<text x="150" y="288" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5A6B7C" letter-spacing="2">'
+    +(view==='ant'?'ANTERIOR':'POSTERIOR')+'</text></svg>';
+}
+function auscBlock(host,round,done){
+  round=round||1;
+  const rd=round;
+  const sec=document.createElement('div');sec.style.marginTop='18px';
+  sec.innerHTML='<hr class="hr" style="margin-bottom:16px">'
+    +'<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px">'
+    +'<div class="eyebrow" style="flex:1;min-width:180px">Auscultation · tap a zone to listen</div>'
+    +'<div class="seg"><button data-v="ant" aria-pressed="true">Anterior</button>'
+    +'<button data-v="post" aria-pressed="false">Posterior</button></div></div>'
+    +'<div class="ausc"><div class="chestwrap" id="cw"></div>'
+    +'<div><div class="eyebrow" style="margin-bottom:9px">Findings recorded '
+    +'<span id="acount" style="color:var(--cy)">0</span>/12</div>'
+    +'<div class="findlog" id="flog"><p class="lede" style="font-size:13.5px;margin:0">Nothing yet. Compare left with right at each level — a single zone tells you very little.</p></div></div></div>';
+  host.appendChild(sec);
+  const heard=new Set();
+  let view='ant';
+  function paint(){
+    $('#cw',sec).innerHTML=chestSVG(view);
+    $$('.apt',sec).forEach(gp=>{
+      const id=gp.dataset.id;
+      if(heard.has(id))gp.classList.add('heard');
+      const fire=()=>{
+        $$('.apt',sec).forEach(x=>x.classList.remove('playing'));
+        gp.classList.add('playing');gp.classList.add('heard');
+        const f=AUSC_FIND[rd][id];
+        const src=playLung(f[0]);
+        if(src)src.onended=()=>gp.classList.remove('playing');
+        else setTimeout(()=>gp.classList.remove('playing'),600);
+        if(!heard.has(id)){
+          heard.add(id);
+          const lg=$('#flog',sec);
+          if(heard.size===1)lg.innerHTML='';
+          const lb=AUSC_PTS[view].find(p=>p.id===id).lb;
+          const d=document.createElement('div');d.className='find';
+          d.innerHTML='<b class="lb">'+(view==='ant'?'Anterior':'Posterior')+' · '+lb+'</b>'+f[1];
+          lg.insertBefore(d,lg.firstChild);
+          $('#acount',sec).textContent=heard.size;
+          if(heard.size===4)toast('Four zones. Keep going — you have not compared both bases yet.','w',3200);
+        }
+      };
+      gp.onclick=fire;
+      gp.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fire();}};
+    });
+  }
+  paint();
+  $$('.seg button',sec).forEach(btn=>btn.onclick=()=>{
+    view=btn.dataset.v;
+    $$('.seg button',sec).forEach(x=>x.setAttribute('aria-pressed',String(x===btn)));
+    paint();
+  });
+  const act=document.createElement('div');act.className='actions';
+  act.innerHTML='<button class="btn pri">Finish auscultating</button>';
+  act.firstChild.onclick=()=>{
+    stopLung();
+    if(heard.size<3){toast('Listen to at least three zones before you move on.','w');return;}
+    act.remove();
+    if(rd===1){
+      const bothSides=['aru','arm','arb','pru','prm','prb'].some(x=>heard.has(x))
+                    &&['alu','alm','alb','plu','plm','plb'].some(x=>heard.has(x));
+      const pts=heard.size>=8?3:heard.size>=6?2.5:heard.size>=4?1.5:0.5;
+      const bonus=bothSides?1:0;
+      if(!bothSides)note('Auscultated one side only — no left–right comparison.','b');
+      award('assess',pts+bonus,4,'Auscultation coverage — '+heard.size+' zones'+(bothSides?', both sides':', one side only'),
+        pts+bonus>=3.5?'g':pts+bonus>=2?'w':'b');
+      auscQ(sec);
+    }else{
+      award('reason',3,3,'Re-auscultated after suction to evaluate the treatment','g');
+      if(done)done();
+    }
+  };
+  sec.appendChild(act);
+  return sec;
+}
+function auscQ(host){
+  const hr=document.createElement('hr');hr.className='hr';hr.style.margin='18px 0';host.appendChild(hr);
+  mcq(host,{
+    dom:'reason',log:'Which findings will suction change',
+    q:'Of everything you can hear in this chest, which will suction actually change?',
+    opts:[
+      {t:'The low-pitched rhonchi over the right upper and mid zones.',p:6,
+       fb:'Right. Rhonchi are generated by air moving past secretions in <b>large airways</b> — that is exactly what a suction catheter can reach. Bronchial breathing is alveolar consolidation, and the absent sounds at the right posterior base are a pleural effusion. Neither of those is a suction problem, and expecting them to change is how clinicians end up performing pass after pass on a patient who is only getting more hypoxaemic.'},
+      {t:'The bronchial breathing over the right middle and lower lobes.',p:0,
+       fb:'No. Bronchial breathing means consolidated lung is transmitting central airway sounds to the chest wall. The alveoli are full of pus and inflammatory exudate, not clearable secretions. That needs antibiotics and time, not a catheter.'},
+      {t:'The absent breath sounds at the right posterior base.',p:0,
+       fb:'No. That is fluid in the pleural space — a parapneumonic effusion sitting outside the lung entirely. A suction catheter in the airway cannot reach it. If it enlarges, it needs drainage.'},
+      {t:'All of them — clearing the airway will improve every finding.',p:0,
+       fb:'This is the commonest reasoning error in this scenario, and it is the one that leads to over-suctioning. Set your expectation before you start: you are treating the rhonchi and the rising airway resistance. If those improve, the treatment worked, even though the chest still sounds abnormal.',
+       crit:'Expected suction to resolve consolidation and effusion — risk of over-suctioning.'}
+    ],
+    nextLabel:'Review the chest X-ray'
+  });
+}
+
+/* =====================================================================
+   Part 3: the chest radiograph — procedurally rendered
+   ===================================================================== */
+let _seed=20260810;
+const rnd=()=>((_seed=_seed*16807%2147483647)/2147483647);
+function drawCXR(cv){
+  _seed=20260810;
+  const W=700,H=800;cv.width=W;cv.height=H;
+  const c=cv.getContext('2d');
+  const gr=a=>'rgba(255,255,255,'+a+')';
+  c.fillStyle='#000';c.fillRect(0,0,W,H);
+
+  /* --- soft tissue envelope --- */
+  const body=new Path2D();
+  body.moveTo(258,0);body.lineTo(268,72);
+  body.bezierCurveTo(206,96,124,112,64,192);
+  body.bezierCurveTo(38,250,22,300,18,352);
+  body.lineTo(6,800);body.lineTo(694,800);body.lineTo(682,352);
+  body.bezierCurveTo(678,300,662,250,636,192);
+  body.bezierCurveTo(576,112,494,96,432,72);body.lineTo(442,0);body.closePath();
+  let gd=c.createLinearGradient(0,0,0,H);
+  gd.addColorStop(0,gr(.09));gd.addColorStop(.55,gr(.13));gd.addColorStop(1,gr(.25));
+  c.fillStyle=gd;c.fill(body);
+  [[98,212],[602,212]].forEach(p=>{
+    const rg=c.createRadialGradient(p[0],p[1],5,p[0],p[1],62);
+    rg.addColorStop(0,gr(.20));rg.addColorStop(1,gr(0));
+    c.fillStyle=rg;c.beginPath();c.arc(p[0],p[1],62,0,7);c.fill();
+  });
+
+  /* --- lung fields --- */
+  const lungR=new Path2D();
+  lungR.moveTo(256,116);
+  lungR.bezierCurveTo(196,124,120,182,98,262);
+  lungR.bezierCurveTo(82,336,80,452,96,528);
+  lungR.bezierCurveTo(104,568,112,596,124,606);
+  lungR.bezierCurveTo(200,600,272,594,312,580);
+  lungR.bezierCurveTo(322,500,320,360,308,286);
+  lungR.bezierCurveTo(300,206,288,140,256,116);
+  const lungL=new Path2D();
+  lungL.moveTo(444,116);
+  lungL.bezierCurveTo(504,124,580,182,602,262);
+  lungL.bezierCurveTo(618,336,620,452,604,528);
+  lungL.bezierCurveTo(596,570,586,600,572,612);
+  lungL.bezierCurveTo(496,606,420,596,388,578);
+  lungL.bezierCurveTo(380,500,382,360,394,286);
+  lungL.bezierCurveTo(402,206,414,140,444,116);
+  gd=c.createLinearGradient(0,110,0,610);
+  gd.addColorStop(0,'#121212');gd.addColorStop(.45,'#0a0a0a');gd.addColorStop(1,'#060606');
+  c.fillStyle=gd;c.fill(lungR);c.fill(lungL);
+
+  /* --- pulmonary vasculature --- */
+  function branch(x,y,ang,len,w,depth,col){
+    if(depth<=0||w<0.3)return;
+    const x2=x+Math.cos(ang)*len,y2=y+Math.sin(ang)*len;
+    c.strokeStyle=col?col:gr(.018+w*.022);c.lineWidth=w;c.lineCap='round';
+    c.beginPath();c.moveTo(x,y);
+    c.quadraticCurveTo((x+x2)/2+(rnd()-.5)*14,(y+y2)/2+(rnd()-.5)*10,x2,y2);c.stroke();
+    branch(x2,y2,ang-0.30-rnd()*0.28,len*0.68,w*0.62,depth-1,col);
+    branch(x2,y2,ang+0.30+rnd()*0.28,len*0.68,w*0.62,depth-1,col);
+  }
+  c.save();c.clip(lungR);
+  [2.6,3.1,3.7,1.8].forEach(a=>branch(304,372,a,50,3.4,4));
+  c.restore();
+  c.save();c.clip(lungL);
+  [0.5,0.05,-0.5,1.3].forEach(a=>branch(396,352,a,50,3.4,4));
+  c.restore();
+
+  /* --- ribs: posterior sweep steeply, anterior are fainter and slope inwards --- */
+  for(let i=0;i<9;i++){
+    const y0=128+i*46;
+    c.strokeStyle=gr(.115-i*.004);c.lineWidth=5.5;c.lineCap='round';
+    c.beginPath();c.moveTo(336,y0);c.bezierCurveTo(240,y0+2,140,y0+30,94,y0+96);c.stroke();
+    c.beginPath();c.moveTo(364,y0);c.bezierCurveTo(460,y0+2,560,y0+30,606,y0+96);c.stroke();
+  }
+  for(let i=0;i<6;i++){
+    const y0=222+i*54;
+    c.strokeStyle=gr(.05);c.lineWidth=5;
+    c.beginPath();c.moveTo(88,y0);c.quadraticCurveTo(214,y0+66,330,y0+54);c.stroke();
+    c.beginPath();c.moveTo(612,y0);c.quadraticCurveTo(486,y0+66,370,y0+54);c.stroke();
+  }
+  /* clavicles + scapulae */
+  c.strokeStyle=gr(.24);c.lineWidth=9;c.lineCap='round';
+  c.beginPath();c.moveTo(330,158);c.quadraticCurveTo(212,134,112,172);c.stroke();
+  c.beginPath();c.moveTo(370,158);c.quadraticCurveTo(488,134,588,172);c.stroke();
+  c.strokeStyle=gr(.055);c.lineWidth=5;
+  c.beginPath();c.moveTo(126,182);c.quadraticCurveTo(150,300,196,372);c.stroke();
+  c.beginPath();c.moveTo(574,182);c.quadraticCurveTo(550,300,504,372);c.stroke();
+
+  /* --- spine --- */
+  gd=c.createLinearGradient(328,0,372,0);
+  gd.addColorStop(0,gr(.06));gd.addColorStop(.5,gr(.17));gd.addColorStop(1,gr(.06));
+  c.fillStyle=gd;c.fillRect(328,60,44,600);
+  c.strokeStyle='rgba(0,0,0,.45)';c.lineWidth=3;
+  for(let y=96;y<660;y+=38){c.beginPath();c.moveTo(328,y);c.lineTo(372,y);c.stroke();}
+  c.fillStyle=gr(.09);
+  for(let y=112;y<650;y+=38){c.beginPath();c.ellipse(350,y,6,10,0,0,7);c.fill();}
+
+  /* aerated lung attenuates least — push both fields back behind everything drawn in them */
+  c.save();c.fillStyle='rgba(0,0,0,.42)';c.fill(lungR);c.fill(lungL);c.restore();
+
+  /* --- airway --- */
+  c.fillStyle='#080808';
+  c.beginPath();c.moveTo(336,64);c.lineTo(364,64);c.lineTo(362,344);c.lineTo(338,344);c.closePath();c.fill();
+  c.beginPath();c.moveTo(340,340);c.lineTo(300,392);c.lineTo(288,384);c.lineTo(332,332);c.closePath();c.fill();
+  c.beginPath();c.moveTo(360,340);c.lineTo(410,400);c.lineTo(418,390);c.lineTo(368,332);c.closePath();c.fill();
+
+  /* --- mediastinum and heart --- */
+  const heart=new Path2D();
+  heart.moveTo(336,300);
+  heart.bezierCurveTo(330,368,326,470,322,552);
+  heart.bezierCurveTo(360,572,400,576,436,566);
+  heart.bezierCurveTo(470,540,482,472,470,414);
+  heart.bezierCurveTo(456,352,410,306,376,296);
+  heart.closePath();
+  c.fillStyle=gr(.24);c.fill(heart);
+  c.fillStyle=gr(.20);c.beginPath();c.ellipse(392,300,28,20,-.2,0,7);c.fill();
+  c.fillStyle=gr(.16);c.beginPath();c.ellipse(404,360,26,30,0,0,7);c.fill();
+  c.fillStyle=gr(.13);c.beginPath();c.ellipse(302,372,22,26,0,0,7);c.fill();
+
+  /* --- diaphragms --- */
+  c.fillStyle=gr(.26);
+  c.beginPath();c.moveTo(70,596);c.quadraticCurveTo(196,516,330,566);
+  c.lineTo(330,800);c.lineTo(70,800);c.closePath();c.fill();
+  c.beginPath();c.moveTo(372,572);c.quadraticCurveTo(500,538,640,612);
+  c.lineTo(640,800);c.lineTo(372,800);c.closePath();c.fill();
+  c.fillStyle='#0b0b0b';c.beginPath();c.ellipse(500,634,64,34,0,0,7);c.fill();
+
+  /* --- PATHOLOGY: right middle + lower lobe consolidation --- */
+  c.save();c.clip(lungR);
+  c.globalCompositeOperation='lighter';
+  const blobs=[[204,500,172,.32],[246,432,136,.24],[150,548,144,.27],[278,536,124,.19],[176,448,120,.16],[214,570,128,.21]];
+  blobs.forEach(b=>{
+    const rg=c.createRadialGradient(b[0],b[1],10,b[0],b[1],b[2]);
+    rg.addColorStop(0,gr(b[3]));rg.addColorStop(.55,gr(b[3]*.68));rg.addColorStop(1,gr(0));
+    c.fillStyle=rg;c.beginPath();c.arc(b[0],b[1],b[2],0,7);c.fill();
+  });
+  for(let i=0;i<90;i++){
+    const x=104+rnd()*216,y=396+rnd()*216,r=14+rnd()*32;
+    const rg=c.createRadialGradient(x,y,0,x,y,r);
+    rg.addColorStop(0,gr(.03+rnd()*.045));rg.addColorStop(1,gr(0));
+    c.fillStyle=rg;c.beginPath();c.arc(x,y,r,0,7);c.fill();
+  }
+  c.globalCompositeOperation='source-over';
+  /* air bronchograms — dark branching airways outlined by the opacified alveoli around them */
+  [[2.45,46],[2.8,52],[3.15,44]].forEach(a=>branch(300,430,a[0],a[1],3.6,3,'rgba(0,0,0,.17)'));
+  /* small right parapneumonic effusion — soft meniscus at the costophrenic angle */
+  const eg=c.createLinearGradient(0,556,0,634);
+  eg.addColorStop(0,gr(0));eg.addColorStop(.45,gr(.15));eg.addColorStop(1,gr(.26));
+  c.fillStyle=eg;
+  c.beginPath();c.moveTo(80,560);c.quadraticCurveTo(180,616,310,586);
+  c.lineTo(318,648);c.lineTo(80,648);c.closePath();c.fill();
+  c.restore();
+  /* faint left basal change */
+  c.save();c.clip(lungL);c.globalCompositeOperation='lighter';
+  const rg2=c.createRadialGradient(520,540,4,520,540,96);
+  rg2.addColorStop(0,gr(.07));rg2.addColorStop(1,gr(0));
+  c.fillStyle=rg2;c.beginPath();c.arc(520,540,96,0,7);c.fill();
+  c.globalCompositeOperation='source-over';c.restore();
+
+  /* --- lines and tubes --- */
+  c.strokeStyle=gr(.80);c.lineWidth=4.5;c.lineCap='butt';
+  c.beginPath();c.moveTo(348,52);c.lineTo(350,268);c.stroke();
+  c.lineWidth=7;c.beginPath();c.moveTo(342,266);c.lineTo(358,266);c.stroke();
+  c.strokeStyle=gr(.62);c.lineWidth=2.6;
+  c.beginPath();c.moveTo(250,48);c.bezierCurveTo(268,140,320,240,356,330);c.stroke();
+  c.fillStyle=gr(.7);c.beginPath();c.arc(356,332,4,0,7);c.fill();
+  /* ECG leads and wires draped over the film */
+  c.strokeStyle=gr(.20);c.lineWidth=3;
+  c.beginPath();c.moveTo(0,258);c.quadraticCurveTo(160,286,140,700);c.stroke();
+  c.beginPath();c.moveTo(700,282);c.quadraticCurveTo(540,300,566,700);c.stroke();
+  c.fillStyle=gr(.26);
+  [[140,262],[566,286],[176,470]].forEach(p=>{c.beginPath();c.arc(p[0],p[1],13,0,7);c.fill();});
+
+  /* --- side marker, grain, vignette --- */
+  c.fillStyle=gr(.45);c.font='bold 34px ui-monospace,monospace';c.fillText('R',72,120);
+  const img=c.getImageData(0,0,W,H),d=img.data;
+  for(let i=0;i<d.length;i+=4){
+    const n=(rnd()-.5)*14;d[i]+=n;d[i+1]+=n;d[i+2]+=n;
+  }
+  c.putImageData(img,0,0);
+  const vg=c.createRadialGradient(W/2,H/2,170,W/2,H/2,520);
+  vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.68)');
+  c.fillStyle=vg;c.fillRect(0,0,W,H);
+}
+const CXR_NOTES=[
+  [206,494,'RML + RLL consolidation with air bronchograms',20,-150],
+  [322,470,'Right heart border silhouetted out',400,-40],
+  [250,572,'Right hemidiaphragm outline lost',380,60],
+  [104,600,'Blunted right costophrenic angle',20,90],
+  [350,266,'ETT tip ~4 cm above carina',400,-190],
+  [356,332,'Right IJ CVC, tip at cavo-atrial junction',430,-110],
+  [520,430,'Left lung relatively clear',560,-30]
+];
+
+function stXray(host){
+  const b=card(host,'Station 3 of 9 · Radiology','Chest radiograph, 07:40 today',
+    'AP semi-erect portable film. Use the window and level controls the way you would on the ward workstation — the finding you are looking for may be hiding in the settings someone else left behind.');
+  const v=document.createElement('div');v.className='pacs';
+  v.innerHTML=
+    '<div class="filmbox" id="fbox">'
+    +'<canvas id="film"></canvas>'
+    +'<svg id="filmsvg" viewBox="0 0 700 800" preserveAspectRatio="xMidYMid meet"></svg>'
+    +'<span class="filmtag">CHAN K.W. · 68M<br>AP SEMI-ERECT · PORTABLE</span>'
+    +'<span class="filmtag r">10 AUG 2026 07:40<br>ICU BED 7</span></div>'
+    +'<div class="pacsctl">'
+    +'<div class="ctl"><label>Brightness <output id="o-b">100%</output></label>'
+    +'<input type="range" id="r-b" min="40" max="190" value="100"></div>'
+    +'<div class="ctl"><label>Contrast <output id="o-c">100%</output></label>'
+    +'<input type="range" id="r-c" min="50" max="230" value="100"></div>'
+    +'<div class="ctl"><label>Zoom <output id="o-z">1.0×</output></label>'
+    +'<input type="range" id="r-z" min="10" max="26" value="10"></div>'
+    +'<button class="btn sm ghost" id="b-inv" aria-pressed="false">Invert greyscale</button>'
+    +'<button class="btn sm ghost" id="b-rst">Reset view</button>'
+    +'<button class="btn sm ghost" id="b-ann" aria-pressed="false" disabled>Show report overlay</button>'
+    +'<p class="hintline" style="font-size:11.5px;line-height:1.5;margin:0">Drag to pan when zoomed. The overlay unlocks once you have reported the film yourself.</p>'
+    +'</div>';
+  b.appendChild(v);
+  const cv=$('#film',v);drawCXR(cv);
+  const box=$('#fbox',v),svg=$('#filmsvg',v);
+  let zoom=1,px=0,py=0,inv=false;
+  function apply(){
+    const br=$('#r-b',v).value/100,ct=$('#r-c',v).value/100;
+    cv.style.filter='brightness('+br+') contrast('+ct+')'+(inv?' invert(1)':'');
+    cv.style.transform='scale('+zoom+') translate('+px+'px,'+py+'px)';
+    svg.style.transform=cv.style.transform;
+    $('#o-b',v).textContent=Math.round(br*100)+'%';$('#o-c',v).textContent=Math.round(ct*100)+'%';
+    $('#o-z',v).textContent=zoom.toFixed(1)+'×';
+  }
+  $('#r-b',v).oninput=$('#r-c',v).oninput=apply;
+  $('#r-z',v).oninput=e=>{zoom=e.target.value/10;if(zoom===1){px=py=0;}apply();};
+  $('#b-inv',v).onclick=e=>{inv=!inv;e.target.setAttribute('aria-pressed',String(inv));apply();};
+  $('#b-rst',v).onclick=()=>{zoom=1;px=py=0;inv=false;$('#r-b',v).value=100;$('#r-c',v).value=100;
+    $('#r-z',v).value=10;$('#b-inv',v).setAttribute('aria-pressed','false');apply();};
+  apply();
+
+  /* pan + tap-to-tag */
+  let down=null,moved=0,tagMode=true,tagged=false;
+  box.addEventListener('pointerdown',e=>{
+    down={x:e.clientX,y:e.clientY,px,py};moved=0;
+    try{box.setPointerCapture(e.pointerId);}catch(err){}
+  });
+  box.addEventListener('pointermove',e=>{
+    if(!down)return;
+    const dx=e.clientX-down.x,dy=e.clientY-down.y;moved=Math.max(moved,Math.abs(dx)+Math.abs(dy));
+    if(zoom>1){px=down.px+dx/zoom;py=down.py+dy/zoom;apply();}
+  });
+  box.addEventListener('pointerup',e=>{
+    if(!down)return;const wasTap=moved<7;down=null;
+    if(!wasTap||!tagMode||tagged)return;
+    const r=box.getBoundingClientRect();
+    const nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height;
+    // un-transform for zoom/pan
+    const ux=clamp((nx-0.5)/zoom+0.5-px/r.width,0,1), uy=clamp((ny-0.5)/zoom+0.5-py/r.height,0,1);
+    tagged=true;
+    const bull=ux>0.13&&ux<0.47&&uy>0.54&&uy<0.80;
+    const near=ux>0.13&&ux<0.47&&uy>0.40&&uy<0.86;
+    const m=document.createElement('div');m.className='fmark '+(bull?'good':near?'':'bad');
+    m.style.left=(nx*100)+'%';m.style.top=(ny*100)+'%';box.appendChild(m);
+    award('imaging',bull?5:near?3:0,5,'Localised the dominant abnormality on the film',bull?'g':near?'w':'b');
+    const fb=document.createElement('div');fb.className='fbbox '+(coach()?(bull?'g':near?'w':'b'):'n');
+    fb.innerHTML='<span class="hd">'+(coach()?(bull?'On target':near?'Close':'Off target'):'Recorded')+'</span>'
+      +(coach()?(bull?'The right lower zone is where the density is greatest and where gravity will pool secretions in a supine, sedated patient. That is your treatment target.'
+        :near?'You are in the right lung but not on the worst of it. The greatest density is in the <b>right lower zone</b>, below the horizontal fissure.'
+        :'Look again. The dense, hazy area sits in the <b>right</b> lung — remember the film is displayed as if you are facing the patient, so the right lung is on the left of the screen.')
+        :'Recorded.');
+    task1.appendChild(fb);
+    setTimeout(()=>step2(),400);
+  });
+
+  const task1=document.createElement('div');task1.style.marginTop='16px';
+  task1.innerHTML='<hr class="hr" style="margin-bottom:14px"><p class="lede"><b>Tap the film</b> at the region where you expect the greatest consolidation and secretion burden — the area your treatment will target.</p>';
+  b.appendChild(task1);
+
+  function step2(){
+    tagMode=false;
+    const w=document.createElement('div');w.style.marginTop='18px';
+    w.innerHTML='<hr class="hr" style="margin-bottom:16px">';
+    b.appendChild(w);
+    multi(w,{
+      dom:'imaging',log:'Chest X-ray report',
+      q:'Report the film. Select every finding that is present.',
+      opts:[
+        {t:'Dense consolidation in the right mid and lower zones with air bronchograms',p:2,
+         fb:'Present. Air bronchograms — dark branching airways outlined by surrounding opacified alveoli — confirm this is <b>airspace filling</b>, not collapse or fluid outside the lung.'},
+        {t:'Loss of the right heart border silhouette',p:2,
+         fb:'Present. The right heart border is only visible because aerated right middle lobe sits against it. Lose the air, lose the border.'},
+        {t:'Loss of the outline of the right hemidiaphragm',p:2,
+         fb:'Present. Same principle applied to the right lower lobe, which sits against the diaphragm.'},
+        {t:'Blunting of the right costophrenic angle',p:2,
+         fb:'Present — a small parapneumonic effusion. Worth flagging: if it enlarges or he fails to improve, it needs an ultrasound and possibly drainage.'},
+        {t:'Endotracheal tube tip approximately 4 cm above the carina',p:2,
+         fb:'Present and satisfactory. Between 2 and 6 cm above the carina with the head in neutral is the accepted range. Always check this before you pass a catheter.'},
+        {t:'Right internal jugular central line with tip at the cavo-atrial junction',p:2,
+         fb:'Present and correctly sited.'},
+        {t:'Left tension pneumothorax with mediastinal shift',p:-3,
+         fb:'Not present, and it matters that you can exclude it — this is the one finding that would make you stop and call for a chest drain rather than pick up a suction catheter. There is no visible pleural edge and no shift.',
+         crit:'Reported a tension pneumothorax that is not present.'},
+        {t:'Endotracheal tube in the right main bronchus',p:-3,
+         fb:'Not present. If it were, you would see a collapsed left lung and the tip below the carina — and the treatment would be to withdraw the tube, not to suction.'},
+        {t:'Cardiomegaly',p:-2,
+         fb:'Cannot be called on an AP portable film — magnification makes the heart look larger. Do not report a cardiothoracic ratio from a film like this.'},
+        {t:'Right upper lobe collapse with an elevated horizontal fissure',p:-2,
+         fb:'Not present. The right upper zone is relatively spared and the fissure is not displaced. Lobar collapse would pull structures <b>towards</b> the abnormality; consolidation does not.'}
+      ],
+      onSubmit:(sel,wrap)=>{
+        $('#b-ann',v).disabled=false;
+        svg.innerHTML=CXR_NOTES.map(n=>{
+          const anchor=n[3]<300?'start':'end';
+          return '<g opacity="0"><circle cx="'+n[0]+'" cy="'+n[1]+'" r="9" fill="none" stroke="#3AD8E6" stroke-width="3"/>'
+          +'<line x1="'+n[0]+'" y1="'+n[1]+'" x2="'+(n[3]+(n[3]<300?60:-60))+'" y2="'+(n[1]+n[4])+'" stroke="#3AD8E6" stroke-width="2.2"/>'
+          +'<text x="'+n[3]+'" y="'+(n[1]+n[4]-8)+'" fill="#3AD8E6" font-family="ui-monospace,monospace" font-size="17" text-anchor="'+anchor+'">'+n[2]+'</text></g>';
+        }).join('');
+        let annOn=false;
+        $('#b-ann',v).onclick=e=>{
+          annOn=!annOn;e.target.setAttribute('aria-pressed',String(annOn));
+          e.target.textContent=annOn?'Hide report overlay':'Show report overlay';
+          $$('g',svg).forEach(gg=>gg.setAttribute('opacity',annOn?'1':'0'));
+        };
+        toast('Radiologist\'s overlay unlocked — compare it with your own report.','g',5000);
+        const w2=document.createElement('div');w2.style.marginTop='18px';
+        w2.innerHTML='<hr class="hr" style="margin-bottom:16px">';
+        wrap.appendChild(w2);
+        mcq(w2,{
+          dom:'reason',log:'Silhouette sign interpretation',
+          q:'Both the right heart border and the right hemidiaphragm outline are lost. What does that combination localise?',
+          opts:[
+            {t:'Right middle lobe <b>and</b> right lower lobe',p:5,
+             fb:'Correct — and this is the single most useful thing the film tells you today. The silhouette sign localises disease by which border disappears: right heart border = right middle lobe (it sits against it); right hemidiaphragm = right lower lobe. Both gone means both lobes. That determines your positioning.'},
+            {t:'Right middle lobe only',p:1,
+             fb:'That would explain the lost heart border, but not the lost diaphragm outline. The middle lobe does not touch the diaphragm.'},
+            {t:'Right lower lobe only',p:1,
+             fb:'That accounts for the diaphragm but not the heart border. The lower lobe does not lie against the right heart border.'},
+            {t:'Right upper lobe',p:0,
+             fb:'The right upper lobe abuts neither the right heart border nor the diaphragm. Upper lobe disease silhouettes out the superior mediastinum instead.'}
+          ],
+          nextLabel:'Review bloods and gases'
+        });
+      }
+    });
+  }
+}
+
+/* =====================================================================
+   STATION 4 — LABS AND BLOOD GASES
+   ===================================================================== */
+function stLabs(host){
+  const b=card(host,'Station 4 of 9 · Results','Bloods, gases and microbiology',
+    'Taken 30 minutes ago on FiO₂ 0.55. Read them as a physiotherapist: which numbers change what you are about to do, and which are simply context?');
+  const p=document.createElement('div');p.className='panels';
+  p.innerHTML=
+   '<div class="pnl"><h3>Arterial blood gas · FiO₂ 0.55</h3><div class="scroll"><table class="dat">'
+   +row('pH','7.31','hi2','7.35–7.45')+row('PaCO₂','6.9 kPa (52 mmHg)','hi','4.7–6.0')
+   +row('PaO₂','8.6 kPa (65 mmHg)','hi2','11–13')+row('HCO₃⁻','25 mmol/L','nl','22–26')
+   +row('Base excess','−1.5','nl','−2 to +2')+row('SaO₂','91 %','hi','>94')
+   +row('Lactate','2.3 mmol/L','hi','<2.0')
+   +'</table></div></div>'
+   +'<div class="pnl"><h3>Haematology &amp; biochemistry</h3><div class="scroll"><table class="dat">'
+   +row('WBC','18.4 ×10⁹/L','hi2','4–11')+row('Neutrophils','16.1 ×10⁹/L','hi2','2–7.5')
+   +row('CRP','248 mg/L','hi2','<5')+row('Procalcitonin','4.7 µg/L','hi2','<0.5')
+   +row('Haemoglobin','10.6 g/dL','lo','13–17')+row('Platelets','176 ×10⁹/L','nl','150–400')
+   +row('INR','1.2','nl','0.9–1.2')+row('Creatinine','121 µmol/L','hi','60–110')
+   +row('Urea','9.4 mmol/L','hi','2.5–7.8')+row('Albumin','26 g/L','lo','35–50')
+   +row('Glucose','9.8 mmol/L','hi','4–7')
+   +'</table></div></div>'
+   +'<div class="pnl"><h3>Microbiology</h3><div class="pb"><ul>'
+   +'<li>Sputum Gram stain: Gram-positive diplococci, abundant neutrophils</li>'
+   +'<li>Pneumococcal urinary antigen: <b style="color:var(--warn)">positive</b></li>'
+   +'<li>Blood cultures 2/2: <b style="color:var(--warn)">Streptococcus pneumoniae</b>, penicillin-sensitive</li>'
+   +'<li>SARS-CoV-2 and influenza PCR: negative</li>'
+   +'<li>Day 3 of IV ceftriaxone and azithromycin</li></ul></div></div>'
+   +'<div class="pnl"><h3>Relevant to your treatment</h3><div class="pb"><ul>'
+   +'<li>Platelets and INR normal — <b>no bleeding precaution</b></li>'
+   +'<li>Noradrenaline 0.05 µg/kg/min, MAP 76 — <b>marginal haemodynamics</b></li>'
+   +'<li>Fluid balance +2.1 L over 3 days; urine output 0.6 mL/kg/h</li>'
+   +'<li>No head injury, no rib fractures, no chest drain, no recent surgery</li></ul></div></div>';
+  b.appendChild(p);
+  function row(k,v,cls,ref){
+    return '<tr><td class="nl">'+k+'</td><td class="'+cls+'">'+v+'</td><td class="nl" style="color:var(--dim);font-size:11px">'+ref+'</td></tr>';
+  }
+  const hr=document.createElement('hr');hr.className='hr';b.appendChild(hr);
+  mcq(b,{
+    dom:'imaging',log:'ABG interpretation',
+    q:'Interpret the gas.',
+    opts:[
+      {t:'Acute respiratory acidosis with severe hypoxaemia; P/F ratio 118 mmHg (15.7 kPa) — moderate ARDS range',p:5,
+       fb:'Correct. pH 7.31 with a raised PaCO₂ and a normal bicarbonate means the acidosis is <b>acute</b> — there has been no time for renal compensation. PaO₂ 65 mmHg on FiO₂ 0.55 gives a P/F of 118, which sits in the moderate band. Practically: he has very little oxygen reserve, so every second of suction costs him more than it would cost a well-oxygenated patient.'},
+      {t:'Chronic compensated respiratory acidosis from his COPD — his normal baseline, no action needed',p:0,
+       fb:'No. Chronic CO₂ retention drives a compensatory rise in bicarbonate, often to 30 or more. His HCO₃⁻ is 25 and his base excess is normal, so this is an acute change on a near-normal baseline.'},
+      {t:'Metabolic acidosis from sepsis with appropriate respiratory compensation',p:0,
+       fb:'No. In a metabolic acidosis the PaCO₂ falls as compensation. His is <b>raised</b> at 6.9 kPa, so the respiratory system is the source of the acidosis, not the compensation for it. The lactate of 2.3 is mildly raised but is not driving this pH.'},
+      {t:'Type 1 respiratory failure — hypoxaemia with normal carbon dioxide clearance',p:1,
+       fb:'Half right on the hypoxaemia, wrong on the CO₂. A PaCO₂ of 6.9 kPa is not normal clearance; hypoxaemia plus hypercapnia is type 2 respiratory failure. The distinction matters because his rising CO₂ is another sign that airway resistance is climbing.'}
+    ],
+    nextLabel:'Next question',
+    onNext:()=>{
+      const w=document.createElement('div');w.style.marginTop='18px';
+      w.innerHTML='<hr class="hr" style="margin-bottom:16px">';b.appendChild(w);
+      mcq(w,{
+        dom:'reason',log:'Ppeak minus Pplat interpretation',
+        q:'At 08:00 his peak pressure was 30 and his plateau 24. Now they are 38 and 24. What has changed?',
+        opts:[
+          {t:'Airway resistance has risen while compliance is unchanged — consistent with secretions in the airways',p:5,
+           fb:'Correct, and this is the objective evidence that justifies suctioning him. The Ppeak−Pplat difference reflects <b>resistive</b> load; the plateau reflects <b>compliance</b>. A widening gap with a static plateau points to the airway lumen, not the lung parenchyma. It also gives you a measurable outcome: if suction works, the peak pressure falls and the gap narrows.'},
+          {t:'Lung compliance has fallen — the consolidation is progressing',p:0,
+           fb:'That would raise the <b>plateau</b> pressure, which has not moved at all. Falling compliance and rising resistance are distinguished exactly this way, and physiotherapy helps with one of them.'},
+          {t:'A pneumothorax has developed',p:0,
+           fb:'A pneumothorax raises both peak and plateau pressures together, and his plateau is unchanged. The film also shows no pneumothorax. Worth actively excluding, but this is not it.'},
+          {t:'He is over-sedated and hypoventilating',p:0,
+           fb:'Sedation reduces respiratory drive and minute ventilation; it does not raise peak airway pressure. If anything, an agitated patient fighting the ventilator raises peak pressure.'}
+        ],
+        nextLabel:'Next question',
+        onNext:()=>{
+          const w2=document.createElement('div');w2.style.marginTop='18px';
+          w2.innerHTML='<hr class="hr" style="margin-bottom:16px">';b.appendChild(w2);
+          mcq(w2,{
+            dom:'reason',log:'Choosing an outcome measure',
+            q:'You want an objective measure to judge whether your treatment worked, available at the bedside within ten minutes. Which do you choose?',
+            opts:[
+              {t:'Peak airway pressure and expiratory tidal volume from the ventilator',p:4,
+               fb:'Yes. These respond within minutes, they are already being measured, and they are directly linked to the mechanism you are treating. Pair them with re-auscultation and the SpO₂/FiO₂ relationship. Decide your outcome measure <b>before</b> you treat, or you will judge the session on how much sputum you saw in the tubing.'},
+              {t:'CRP',p:0,
+               fb:'CRP lags by 24–48 hours and reflects the infection, not your airway clearance. It will tell you nothing about the next ten minutes.'},
+              {t:'A repeat chest X-ray immediately after treatment',p:1,
+               fb:'Radiographic change lags well behind clinical change, and consolidation will look identical whether or not you cleared the large airways. It also means unnecessary radiation.'},
+              {t:'Temperature',p:0,
+               fb:'Driven by the pneumococcal bacteraemia and the antibiotics, not by your treatment.'}
+            ],
+            nextLabel:'Plan the treatment'
+          });
+        }
+      });
+    }
+  });
+}
+
+/* =====================================================================
+   STATION 5 — TREATMENT PLAN
+   ===================================================================== */
+function stPlan(host){
+  const b=card(host,'Station 5 of 9 · Planning','Build the treatment',
+    'You have a sedated, ventilated man with a rising resistive load, secretions in the large airways of the right lung, consolidated right middle and lower lobes, a small effusion and almost no oxygen reserve. Choose the components of your treatment.');
+  multi(b,{
+    dom:'reason',log:'Treatment plan',
+    q:'Which of these will you include?',
+    opts:[
+      {t:'Pre-oxygenate with FiO₂ 1.0 for 30–60 seconds before each suction pass',p:2,
+       fb:'Essential in a patient with a P/F of 118. Pre-oxygenation is the single most effective thing you can do to prevent suction-induced desaturation.'},
+      {t:'Position in <b>left side-lying</b> — right (affected) side uppermost',p:3,
+       fb:'The best positioning answer here, because two principles converge. Affected side <b>up</b> aids gravitational drainage of the right middle and lower lobes; good lung <b>down</b> improves ventilation–perfusion matching in unilateral disease and usually improves oxygenation. In right-sided disease those point the same way. In bilateral disease they would not, and you would have to choose.'},
+      {t:'Ventilator hyperinflation — increase the delivered volume through the ventilator to mobilise secretions centrally',p:3,
+       fb:'Appropriate. VHI raises expiratory flow bias to shear secretions towards the central airways while <b>keeping PEEP and the circuit intact</b> — which matters enormously in a patient this hypoxaemic.'},
+      {t:'Manual hyperinflation using a rebreathe bag, disconnecting from the ventilator',p:-2,
+       fb:'Not in this patient. Disconnecting a patient on PEEP 8 and FiO₂ 0.55 causes immediate derecruitment and desaturation, and the PEEP you can maintain by hand is unreliable. MHI has a place, but ventilator hyperinflation achieves the same goal without breaking the circuit.',
+       crit:'Planned to disconnect the circuit for manual hyperinflation in a hypoxaemic, PEEP-dependent patient.'},
+      {t:'Expiratory vibrations over the right chest, timed to the ventilator expiratory phase',p:2,
+       fb:'A reasonable adjunct, timed to expiration so it augments expiratory flow rather than fighting the inflation.'},
+      {t:'Closed in-line endotracheal suction',p:3,
+       fb:'Yes — the definitive step for secretions already in the large airways, and closed suction preserves lung volume.'},
+      {t:'Instil 5 mL of 0.9% saline down the tube before suctioning to loosen the secretions',p:-3,
+       fb:'No. Routine saline instillation is not supported: it causes desaturation, it does not measurably thin secretions, and it dislodges bacterial biofilm from the tube into the lower airway, increasing ventilator-associated pneumonia risk. If secretions are too thick, fix the <b>humidification</b> and the patient\'s hydration instead.',
+       crit:'Planned routine saline instillation before suction.'},
+      {t:'Head-down (Trendelenburg) postural drainage for 20 minutes',p:-2,
+       fb:'Not in this patient. He is hypoxaemic and on a vasopressor with a MAP of 76. A prolonged head-down tilt risks worsening oxygenation, raising intracranial and intra-abdominal pressure, and reflux. Modified positioning without head-down tilt gives you most of the benefit.'},
+      {t:'Ask for the heat–moisture exchanger to be replaced with a heated humidifier',p:2,
+       fb:'A genuinely useful and often forgotten recommendation. His secretions are thick and his HME is already saturated. Active heated humidification is more effective for thick, tenacious secretions and reduces tube occlusion — and it treats the cause rather than repeatedly suctioning the consequence.'},
+      {t:'Five minutes of continuous chest percussion over the right chest',p:0,
+       fb:'Not harmful here, but unlikely to add much. Percussion over consolidated lung does not clear alveolar exudate, tolerance is poor in the haemodynamically marginal, and the evidence in ventilated adults is weak. Your time is better spent on positioning, hyperinflation and well-executed suction.'}
+    ],
+    submit:'Confirm the plan',
+    onSubmit:(sel,wrap)=>{
+      const w=document.createElement('div');w.style.marginTop='18px';
+      w.innerHTML='<hr class="hr" style="margin-bottom:16px">';wrap.appendChild(w);
+      mcq(w,{
+        dom:'reason',log:'Treatment sequencing',
+        q:'In what order do you deliver it?',
+        opts:[
+          {t:'Position → pre-oxygenate → hyperinflation with expiratory vibrations → suction → re-oxygenate and reassess',p:5,
+           fb:'Correct. Airway clearance works <b>peripheral to central, then out</b>: position and hyperinflation move secretions towards the large airways, and suction only removes what has already arrived there. Suction is the last step, not the first, because a catheter reaches roughly as far as the carina and no further.'},
+          {t:'Suction first to clear the tube, then position and hyperinflate',p:1,
+           fb:'You will clear the tube and then push everything you subsequently mobilise back into a patient you have already destabilised. It also means two suction episodes instead of one.'},
+          {t:'Hyperinflation → suction → position → pre-oxygenate',p:0,
+           fb:'Pre-oxygenation after suction is pointless as a preventive measure — the desaturation has already happened. Positioning after suction wastes the mobilising effect entirely.'},
+          {t:'Pre-oxygenate → suction → position → hyperinflate',p:1,
+           fb:'You have the pre-oxygenation in the right place but you are suctioning before you have mobilised anything, so the pass will be low-yield and you will need more of them.'}
+        ],
+        nextLabel:'Prepare the equipment'
+      });
+    }
+  });
+}
+
+/* =====================================================================
+   STATION 6 — EQUIPMENT SET-UP
+   ===================================================================== */
+function stSetup(host){
+  const b=card(host,'Station 6 of 9 · Preparation','Set up for suction',
+    'The trolley is at the bedside. Every choice here changes what happens to him in the next five minutes.');
+  const g=document.createElement('div');
+  g.innerHTML=
+   '<div class="panels">'
+   +'<div class="pnl"><h3>Suction system</h3><div class="pb" style="display:grid;gap:8px">'
+   +optRow('sys','closed','Closed in-line (already in circuit)')
+   +optRow('sys','open','Open suction — disconnect and pass a sterile catheter')
+   +'</div></div>'
+   +'<div class="pnl"><h3>Catheter size · ETT is 8.0 mm</h3><div class="pb" style="display:grid;gap:8px">'
+   +optRow('sz','10','10 Fr')+optRow('sz','12','12 Fr')+optRow('sz','14','14 Fr')+optRow('sz','16','16 Fr')
+   +'</div></div>'
+   +'<div class="pnl"><h3>Wall vacuum</h3><div class="pb">'
+   +'<div style="font-family:var(--ff-mono);font-size:34px;font-weight:600;letter-spacing:-.02em" id="pv">250</div>'
+   +'<div class="eyebrow" style="margin-bottom:10px">mmHg · <span id="pvk">33.3</span> kPa</div>'
+   +'<input type="range" id="pr" min="40" max="300" step="10" value="250">'
+   +'<p class="hintline" style="font-size:11.5px;margin:8px 0 0">Left at 250 mmHg by the last user.</p>'
+   +'</div></div>'
+   +'<div class="pnl"><h3>Before you start</h3><div class="pb" style="display:grid;gap:8px">'
+   +chkRow('ppe','Hand hygiene, gloves and eye protection')
+   +chkRow('assist','Second person available at the bedside')
+   +chkRow('meas','Pre-measure the catheter against a spare tube and mount')
+   +chkRow('bag','Manual resuscitation bag with PEEP valve checked and within reach')
+   +'</div></div></div>';
+  b.appendChild(g);
+  function optRow(n,v,t){return '<label style="display:flex;gap:9px;align-items:center;cursor:pointer;font-size:13.5px">'
+    +'<input type="radio" name="'+n+'" value="'+v+'" style="accent-color:var(--cy)"><span>'+t+'</span></label>';}
+  function chkRow(id,t){return '<label style="display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.5px">'
+    +'<input type="checkbox" id="c-'+id+'" style="accent-color:var(--cy);margin-top:3px"><span>'+t+'</span></label>';}
+  const pr=$('#pr',g);
+  pr.oninput=()=>{$('#pv',g).textContent=pr.value;$('#pvk',g).textContent=(pr.value*0.1333).toFixed(1);
+    const c=pr.value>200?'var(--crit)':pr.value>=100&&pr.value<=150?'var(--ok)':'var(--warn)';
+    $('#pv',g).style.color=c;};
+  pr.oninput();
+
+  const act=document.createElement('div');act.className='actions';
+  act.innerHTML='<button class="btn pri">Confirm set-up and go to the patient</button>';
+  act.firstChild.onclick=()=>{
+    const sys=$('input[name=sys]:checked',g),sz=$('input[name=sz]:checked',g);
+    if(!sys||!sz){toast('Choose a suction system and a catheter size.','w');return;}
+    const pres=+pr.value;
+    S.setup={system:sys.value,size:+sz.value,pressure:pres,
+      ppe:$('#c-ppe',g).checked,assistant:$('#c-assist',g).checked,
+      meas:$('#c-meas',g).checked,bag:$('#c-bag',g).checked};
+    let got=0;const F=[];
+    if(sys.value==='closed'){got+=4;F.push(['g','<b>Closed in-line suction.</b> Correct. He is on PEEP 8 with FiO₂ 0.55 and a P/F of 118 — disconnecting him would derecruit the lung and drop his saturation before the catheter even went in. Closed suction also keeps his pneumococcal secretions out of the air you are breathing.']);}
+    else{P.openSystem=true;F.push(['b','<b>Open suction.</b> This means disconnecting a PEEP-dependent, hypoxaemic patient. He will lose lung volume the moment you break the circuit, and he will desaturate faster during every pass. A closed in-line catheter was already in the circuit.']);
+      critical('Chose open suction, disconnecting a PEEP-dependent hypoxaemic patient.');}
+    const szn=+sz.value;
+    if(szn===12){got+=4;F.push(['g','<b>12 Fr.</b> Correct. The rule is that the catheter\'s outer diameter should not exceed half the tube\'s internal diameter. French size ÷ 3 = outer diameter in mm, so 12 Fr = 4.0 mm = exactly half of an 8.0 mm tube. Anything larger occludes too much of the lumen during the pass.']);}
+    else if(szn===14){got+=2;F.push(['w','<b>14 Fr.</b> Defensible but at the limit. This comes from the commonly taught formula (tube size − 1) × 2, which gives 14 for an 8.0 tube. But 14 Fr is 4.67 mm — 58% of the lumen, above the half-diameter rule. It will clear thick secretions faster and desaturate him faster. Know that you are making that trade.']);}
+    else if(szn===10){got+=1;F.push(['w','<b>10 Fr.</b> Safe for gas exchange but too narrow for secretions this thick. You will need more passes to achieve the same clearance, and more passes means more total hypoxaemia — the opposite of what the small catheter was meant to achieve.']);}
+    else{F.push(['b','<b>16 Fr.</b> Too large. At 5.33 mm it occupies two thirds of an 8.0 mm tube. During the pass it acts as a plug: it obstructs inspiration, generates high negative pressure in the airway, and causes rapid derecruitment and desaturation.']);
+      critical('Used a 16 Fr catheter in an 8.0 mm tube — exceeds half the internal diameter.');}
+    if(pres>=100&&pres<=150){got+=4;F.push(['g','<b>'+pres+' mmHg.</b> Correct — the recommended adult range is 80–150 mmHg, and as low as will clear the secretions.']);}
+    else if(pres>150&&pres<=200){got+=1;F.push(['w','<b>'+pres+' mmHg.</b> Above the recommended ceiling of 150. It will clear faster, but the risk of mucosal trauma and suction-induced atelectasis rises with it.']);}
+    else if(pres<100){got+=1;F.push(['w','<b>'+pres+' mmHg.</b> Gentle, but probably too low to move secretions this thick — you will end up doing more passes to compensate.']);}
+    else{F.push(['b','<b>'+pres+' mmHg.</b> Far too high, and it is the number the last user left on the dial. Above 200 mmHg you strip ciliated epithelium, cause bleeding, and pull enough gas out of the lung to collapse alveoli. <b>Always set the pressure yourself before every use.</b>']);
+      critical('Suction pressure set at '+pres+' mmHg (recommended maximum 150).');}
+    if(S.setup.ppe)got+=2;else F.push(['b','<b>No personal protective equipment.</b> Suction generates aerosols and splashes from a patient with pneumococcal pneumonia. Gloves and eye protection are not optional.']);
+    if(S.setup.assistant)got+=2;else F.push(['w','<b>No second person.</b> If he desaturates or becomes bradycardic mid-pass you will need someone to help while your hands are occupied.']);
+    if(S.setup.meas)got+=2;else F.push(['w','<b>Catheter not pre-measured.</b> Without a measured depth you are relying on feeling resistance — which means finding the carina with the catheter tip. That is exactly the stimulus that causes bradycardia and mucosal damage.']);
+    if(S.setup.bag)got+=1;
+    award('tech',got,19,'Equipment set-up — '+sys.value+' system, '+szn+' Fr, '+pres+' mmHg',got>=16?'g':got>=10?'w':'b');
+    // physiological consequences
+    P.desatMult=({10:0.85,12:1.0,14:1.15,16:1.6})[szn]*(pres>200?1.15:1)*(sys.value==='open'?1:1);
+    S.clearRate=({10:0.65,12:1.0,14:1.25,16:1.4})[szn]*(pres<100?0.55:pres<=150?1:pres<=200?1.15:1.25);
+    S.traumaRisk=(pres>200?0.7:pres>150?0.3:0.06)+(szn>=14?0.15:0);
+    act.remove();
+    const box=document.createElement('div');box.style.marginTop='18px';box.style.display='grid';box.style.gap='10px';
+    if(coach()){
+      F.forEach(f=>{const d=document.createElement('div');d.className='fbbox '+f[0];
+        d.innerHTML='<span class="hd">'+(f[0]==='g'?'Correct':f[0]==='w'?'Acceptable, with a cost':'Unsafe')+'</span>'+f[1];box.appendChild(d);});
+    }else{
+      const d=document.createElement('div');d.className='fbbox n';
+      d.innerHTML='<span class="hd">Set-up recorded</span>Closed/open system, catheter size, vacuum pressure and preparation steps have all been logged and will be marked in your debrief.';
+      box.appendChild(d);
+    }
+    b.appendChild(box);
+    nextBtn(b,'Begin the suction pass');
+  };
+  b.appendChild(act);
+}
+
+/* =====================================================================
+   STATION 7 — THE SUCTION SIMULATOR
+   ===================================================================== */
+const Y0=20,PPC=9.4,ETT_TIP=26,CARINA=30;
+const yOf=d=>Y0+d*PPC;
+const MONO='ui-monospace,monospace';
+function airwaySVG(){
+  const tick=(d,lb)=>'<line x1="'+(lb?52:58)+'" y1="'+yOf(d)+'" x2="64" y2="'+yOf(d)+'" stroke="#3B4C5C" stroke-width="1.3"/>'
+    +(lb?'<text x="46" y="'+(yOf(d)+3.4)+'" text-anchor="end" font-size="9.5" fill="#6E8091" font-family="'+MONO+'">'+d+'</text>':'');
+  let ticks='';for(let d=0;d<=34;d+=2)ticks+=tick(d,d%10===0||d===26||d===34);
+  const rings=Array.from({length:11},(_,i)=>{
+    const y=112+i*17;
+    return '<line x1="116" y1="'+y+'" x2="124" y2="'+y+'" stroke="#31414F" stroke-width="1.8"/>'
+          +'<line x1="176" y1="'+y+'" x2="184" y2="'+y+'" stroke="#31414F" stroke-width="1.8"/>';
+  }).join('');
+  return '<svg id="airway" viewBox="0 0 300 400" role="img" aria-label="Airway diagram with suction catheter at the current depth">'
+  +'<defs>'
+  +'<radialGradient id="cons"><stop offset="0" stop-color="#C9B24A" stop-opacity=".34"/><stop offset="1" stop-color="#C9B24A" stop-opacity="0"/></radialGradient>'
+  +'<filter id="glow"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
+  +'</defs>'
+  /* consolidated right lower territory, behind everything */
+  +'<ellipse cx="86" cy="348" rx="62" ry="52" fill="url(#cons)"/>'
+  /* depth scale: colour bands mark the safe, deep and carinal zones */
+  +'<rect x="68" y="'+yOf(24)+'" width="7" height="'+(yOf(26)-yOf(24))+'" fill="#2FE07A" opacity=".7" rx="2"/>'
+  +'<rect x="68" y="'+yOf(26)+'" width="7" height="'+(yOf(29)-yOf(26))+'" fill="#FFC24B" opacity=".55" rx="2"/>'
+  +'<rect x="68" y="'+yOf(29)+'" width="7" height="'+(yOf(34)-yOf(29))+'" fill="#FF4D6D" opacity=".55" rx="2"/>'
+  +'<line x1="64" y1="'+yOf(0)+'" x2="64" y2="'+yOf(34)+'" stroke="#3B4C5C" stroke-width="1.3"/>'+ticks
+  +'<text x="46" y="'+(yOf(0)-9)+'" text-anchor="end" font-size="8" fill="#5A6B7C" font-family="'+MONO+'" letter-spacing="1">CM</text>'
+  /* trachea */
+  +'<rect x="116" y="96" width="68" height="208" rx="6" fill="#0A1219" stroke="#31414F" stroke-width="1.4"/>'+rings
+  /* carina and main bronchi — the right is wider and more vertical, which is why it fills first */
+  +'<path d="M120 300 L74 366 L100 380 L142 310 Z" fill="#0A1219" stroke="#31414F" stroke-width="1.4"/>'
+  +'<path d="M180 300 L222 356 L200 368 L158 310 Z" fill="#0A1219" stroke="#31414F" stroke-width="1.4"/>'
+  +'<path d="M139 300 L150 316 L161 300 Z" fill="#415568"/>'
+  /* ETT sitting inside the trachea, cuff inflated against the wall */
+  +'<rect x="122" y="34" width="56" height="230" rx="4" fill="#16222C" stroke="#4E6376" stroke-width="1.3"/>'
+  +'<ellipse cx="150" cy="240" rx="32" ry="14" fill="#22333F" stroke="#4E6376" stroke-width="1.2"/>'
+  +'<rect x="126" y="6" width="48" height="28" rx="5" fill="#1B2833" stroke="#4E6376" stroke-width="1.2"/>'
+  +'<text x="150" y="24" text-anchor="middle" font-size="7.5" fill="#7A8FA1" font-family="'+MONO+'" letter-spacing=".5">MOUNT</text>'
+  +'<line x1="150" y1="34" x2="150" y2="264" stroke="#7A8FA1" stroke-width="1" stroke-dasharray="3 4" opacity=".45"/>'
+  /* right-hand annotations */
+  +'<line x1="180" y1="264" x2="206" y2="264" stroke="#2FE07A" stroke-width="1.2"/>'
+  +'<text x="210" y="261" font-size="8.5" fill="#2FE07A" font-family="'+MONO+'">ETT TIP</text>'
+  +'<text x="210" y="271" font-size="8.5" fill="#6E8091" font-family="'+MONO+'">26 cm</text>'
+  +'<line x1="176" y1="304" x2="228" y2="304" stroke="#FF4D6D" stroke-width="1.2"/>'
+  +'<text x="232" y="301" font-size="8.5" fill="#FF4D6D" font-family="'+MONO+'">CARINA</text>'
+  +'<text x="232" y="311" font-size="8.5" fill="#6E8091" font-family="'+MONO+'">30 cm</text>'
+  +'<text x="86" y="394" text-anchor="middle" font-size="8.5" fill="#5A6B7C" font-family="'+MONO+'" letter-spacing="1.5">RIGHT</text>'
+  +'<text x="214" y="394" text-anchor="middle" font-size="8.5" fill="#5A6B7C" font-family="'+MONO+'" letter-spacing="1.5">LEFT</text>'
+  +'<g id="secs"></g>'
+  +'<g id="cath"><line id="cline" x1="150" y1="6" x2="150" y2="'+yOf(0)+'" stroke="#E6EDF3" stroke-width="4.6" stroke-linecap="round"/>'
+  +'<circle id="ctip" cx="150" cy="'+yOf(0)+'" r="4.4" fill="#E6EDF3"/></g>'
+  +'</svg>';
+}
+/* secretion pools: inside the tube, in the trachea below the tip, and weighted to the right bronchus */
+const SECRETIONS=[[150,150,8],[143,182,6],[157,210,6],[150,238,7],[149,276,9],[152,294,8],
+                  [128,320,9],[113,340,8],[99,358,7],[176,320,6],[190,338,6]];
+function paintSecs(){
+  const g=document.getElementById('secs');if(!g)return;
+  const f=clamp(P.secretions/100,0,1);
+  g.innerHTML=SECRETIONS.map((s,i)=>{
+    const vis=f>(i/SECRETIONS.length)*0.9?1:0;
+    const r=s[2]*(0.5+f*0.6);
+    return '<ellipse cx="'+s[0]+'" cy="'+s[1]+'" rx="'+r+'" ry="'+(r*0.7)+'" fill="#C9B24A" opacity="'+(vis*(0.30+f*0.45))+'"/>';
+  }).join('');
+}
+function stSuction(host){
+  const b=card(host,'Station 7 of 9 · At the bedside','Suction pass',
+    'He is in left side-lying. You have hyperinflated and vibrated. Now remove what you have mobilised. '
+    +'<b>Hold the suction button</b> to apply vacuum — and watch the monitor, not the catheter.');
+  const g=document.createElement('div');g.className='sucgrid';
+  g.innerHTML=
+   '<div><div class="airwaybox">'+airwaySVG()+'</div>'
+   +'<div class="depthctl">'
+   +'<div class="dreads"><span class="big" id="dnum">0.0</span><span class="eyebrow">cm</span>'
+   +'<span class="zone z-out" id="dzone" style="margin-left:auto">Outside</span></div>'
+   +'<input type="range" id="dep" min="0" max="34" step="0.5" value="0" aria-label="Catheter depth in centimetres">'
+   +'<div class="depthrow"><button class="btn" id="dm">− advance out</button>'
+   +'<button class="btn" id="dp">advance in +</button></div>'
+   +'<button class="btn ghost sm" id="dout">Withdraw fully</button></div></div>'
+   +'<div style="display:grid;gap:14px">'
+   +'<div class="pnl"><h3>Oxygen</h3><div class="pb">'
+   +'<button class="btn" id="preox" style="width:100%">Pre-oxygenate · FiO₂ 1.0</button>'
+   +'<div class="suctimer" style="margin-top:10px"><span class="eyebrow" id="oxlb">Not pre-oxygenated</span>'
+   +'<div class="bar" style="margin-left:auto"><i id="oxbar" style="width:0%"></i></div></div>'
+   +'<button class="btn ghost sm" id="postox" style="width:100%;margin-top:9px" disabled>Return FiO₂ to 0.55</button>'
+   +'</div></div>'
+   +'<button id="suckbtn">Hold to suction</button>'
+   +'<div class="suctimer"><span class="t" id="stime">0.0s</span>'
+   +'<div class="bar"><i id="sbar" style="width:0%"></i></div>'
+   +'<span class="eyebrow" id="passlb">Pass 0 / 3</span></div>'
+   +'<div class="pnl"><h3>Secretion load</h3><div class="pb"><div class="secmeter">'
+   +'<div class="secbar"><i id="secb" style="width:100%"></i></div>'
+   +'<div class="eyebrow" id="seclb">Large volume, thick and purulent</div></div></div></div>'
+   +'<div class="pnl"><h3>Technique</h3><div class="pb"><div class="checks" id="chks"></div></div></div>'
+   +'<button class="btn pri" id="fin" disabled>End the treatment session</button>'
+   +'</div>';
+  b.appendChild(g);
+  paintSecs();
+
+  /* --- pass state --- */
+  const F={preOxMissed:0,insertSuction:false,deep:0,long:0,shortRest:0,passes:0,minSpO2:100,ignoredDesat:false,trauma:false,total:0};
+  let depth=0,suck=false,passOn=false,passMax=0,passSecs=0,restOK=true,lastEnd=-999,oxT=-999,ended=false;
+  let trackFrom=0;   // suspend the SpO2-nadir check across the scripted event and its recovery
+  const dep=$('#dep',g),dnum=$('#dnum',g),dzone=$('#dzone',g),sb=$('#suckbtn',g);
+  const zoneOf=d=>d<2?['Outside','z-out']:d<24?['In the tube','z-out']:d<=26?['At the tube tip','z-ett']
+    :d<29?['Beyond the tube','z-deep']:['At the carina','z-carina'];
+
+  function paintDepth(){
+    dnum.textContent=depth.toFixed(1);
+    const z=zoneOf(depth);dzone.textContent=z[0];dzone.className='zone '+z[1];
+    const y=yOf(depth);
+    const cl=document.getElementById('cline'),tp=document.getElementById('ctip');
+    if(cl){cl.setAttribute('y2',Math.max(y,yOf(0)));tp.setAttribute('cy',y);
+      const col=suck?'#FF4D6D':'#E6EDF3';
+      cl.setAttribute('stroke',col);tp.setAttribute('fill',col);
+      tp.setAttribute('r',suck?6.4:4.4);
+      document.getElementById('cath').setAttribute('filter',suck?'url(#glow)':'');}
+  }
+  function setDepth(v,fromUser){
+    const nv=clamp(v,0,34);
+    if(suck&&nv>depth+0.01&&fromUser!=='auto'){
+      if(!F.insertSuction){F.insertSuction=true;
+        toast('You are applying suction while advancing the catheter. Suction on the way <b>out</b>, never on the way in.','b',6000);
+        note('Applied suction while advancing the catheter.','b');}
+    }
+    depth=nv;dep.value=depth;
+    if(depth>=2&&!passOn){startPass();}
+    if(depth<1&&passOn){endPass();}
+    if(passOn)passMax=Math.max(passMax,depth);
+    if(depth>=29&&!F.carinaHit){
+      F.carinaHit=true;F.deep++;P.vagal=Math.max(P.vagal,0.45);P.bronchospasm=1.4;
+      toast('Resistance. The catheter is at the carina — he coughs hard and his heart rate drops.','b',6000);
+      note('Advanced the catheter to the carina (' + depth.toFixed(1) + ' cm).','b');
+      if(S.sound)tone(180,0.5,0.06,'sawtooth');
+    }
+    paintDepth();paintChecks();
+  }
+  function startPass(){
+    passOn=true;passMax=depth;passSecs=0;F.carinaHit=false;
+    const rest=S.t-lastEnd;
+    restOK=F.passes===0||rest>=30;
+    if(!restOK){F.shortRest++;note('Started a new pass only '+Math.round(rest)+' s after the last one.','b');}
+    if(S.t-oxT>90){F.preOxMissed++;note('Started a pass without pre-oxygenating.','b');}
+    $('#passlb',g).textContent='Pass '+(F.passes+1)+' / 3';
+  }
+  function endPass(){
+    passOn=false;F.passes++;lastEnd=S.t;F.total+=passSecs;
+    P.suction=false;suck=false;sb.classList.remove('on');suckSoundOff();
+    const trauma=Math.random()<S.traumaRisk||F.carinaHit;
+    if(trauma)F.trauma=true;
+    const vol=passSecs<3?'a trace of':passSecs<7?'a moderate volume of':'a large volume of';
+    const desc=vol+' thick, tenacious, <b>purulent yellow-green</b> secretions'
+      +(trauma?' <b style="color:var(--crit)">streaked with fresh blood</b>':'');
+    const d=document.createElement('div');d.className='fbbox '+(trauma?'w':'n');d.style.marginTop='0';
+    d.innerHTML='<span class="hd">Pass '+F.passes+' complete · '+passSecs.toFixed(1)+' s of suction</span>'
+      +'You clear '+desc+'.'
+      +(trauma?' Blood staining means you have traumatised the mucosa — from carinal contact, excessive vacuum, or both.':'')
+      +' Peak pressure is now '+Math.round(P.ppeak)+' cmH₂O, tidal volume '+Math.round(P.vt)+' mL.';
+    log.insertBefore(d,log.firstChild);
+    $('#passlb',g).textContent='Pass '+F.passes+' / 3';
+    $('#fin',g).disabled=false;
+    if(F.passes>=2&&!S.crisisDone&&!ended){/* crisis fires during pass 2, handled in tick */}
+    if(F.passes>=3){sb.disabled=true;toast('Three passes. Stop and reassess — further passes now cause more harm than they clear.','w',6000);}
+    paintChecks();
+  }
+  /* --- suction button --- */
+  function suckOn(){
+    if(sb.disabled||ended)return;
+    suck=true;P.suction=true;sb.classList.add('on');sb.textContent='SUCTIONING';suckSoundOn();paintDepth();
+  }
+  function suckOff(){
+    if(!suck)return;
+    suck=false;P.suction=false;sb.classList.remove('on');sb.textContent='Hold to suction';suckSoundOff();paintDepth();
+  }
+  sb.addEventListener('pointerdown',e=>{
+    e.preventDefault();
+    try{sb.setPointerCapture(e.pointerId);}catch(err){}   // capture is a nicety; suction must never depend on it
+    suckOn();
+  });
+  sb.addEventListener('pointerup',suckOff);
+  sb.addEventListener('pointercancel',suckOff);
+  sb.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();suckOn();}});
+  sb.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();suckOff();}});
+
+  dep.addEventListener('input',()=>setDepth(+dep.value));
+  let holdT=null;
+  const hold=(dir)=>{setDepth(depth+dir);holdT=setInterval(()=>setDepth(depth+dir),90);};
+  const rel=()=>{clearInterval(holdT);holdT=null;};
+  $('#dp',g).addEventListener('pointerdown',()=>hold(0.5));
+  $('#dm',g).addEventListener('pointerdown',()=>hold(-0.5));
+  ['pointerup','pointerleave','pointercancel'].forEach(ev=>{
+    $('#dp',g).addEventListener(ev,rel);$('#dm',g).addEventListener(ev,rel);});
+  $('#dout',g).onclick=()=>setDepth(0);
+
+  /* --- oxygen --- */
+  let oxRun=0;
+  $('#preox',g).onclick=()=>{
+    P.fio2=1.0;oxRun=1;oxT=S.t;
+    $('#preox',g).disabled=true;$('#postox',g).disabled=false;
+    note('Pre-oxygenated with FiO₂ 1.0.','g');
+  };
+  $('#postox',g).onclick=()=>{
+    P.fio2=0.55;$('#postox',g).disabled=true;$('#preox',g).disabled=false;
+    note('Returned FiO₂ to 0.55.','g');
+  };
+
+  /* --- live technique checklist --- */
+  const log=document.createElement('div');log.style.display='grid';log.style.gap='10px';log.style.marginTop='18px';
+  b.appendChild(log);
+  function paintChecks(){
+    const rest=S.t-lastEnd;
+    const items=[
+      ['Pre-oxygenated before each pass', F.preOxMissed?'no':(F.passes||passOn?'ok':'')],
+      ['Suction applied on withdrawal only', F.insertSuction?'no':(F.total>0?'ok':'')],
+      ['Catheter kept at or above the tube tip', F.deep?'no':(passMax>26?'warn':(F.passes||passOn?'ok':''))],
+      ['Each pass under 15 s of suction', F.long?'no':(passSecs>10?'warn':(F.total>0?'ok':''))],
+      ['At least 30 s recovery between passes', F.shortRest?'no':(F.passes>1?'ok':'')],
+      ['No more than three passes', F.passes>3?'no':(F.passes?'ok':'')],
+      ['SpO₂ kept at or above 88 %', F.minSpO2<85?'no':F.minSpO2<88?'warn':(F.total>0?'ok':'')]
+    ];
+    $('#chks',g).innerHTML=items.map(i=>'<div class="chk '+i[1]+'"><span class="m">'
+      +(i[1]==='ok'?'✓':i[1]==='no'?'✕':i[1]==='warn'?'!':'·')+'</span><span>'+i[0]+'</span></div>').join('');
+  }
+  paintChecks();
+
+  /* --- real-time hook --- */
+  let warned10=false,warned15=false,desatWarn=false;
+  S.onTick=(dt)=>{
+    if(ended)return;
+    // pre-oxygenation ramp
+    if(oxRun>0){
+      const el=S.t-oxT;P.o2res=clamp(el/45,0,1);
+      $('#oxbar',g).style.width=Math.min(100,el/60*100)+'%';
+      $('#oxlb',g).textContent=el<60?('Pre-oxygenating · '+Math.round(60-el)+' s'):'Pre-oxygenated · reserve full';
+      if(el>60)oxRun=0;
+    }else if(oxT>0){
+      $('#oxlb',g).textContent=S.t-oxT<90?'Pre-oxygenated · reserve full':'Pre-oxygenation has lapsed';
+      $('#oxbar',g).style.width=(P.o2res*100)+'%';
+    }
+    // the scripted vagal event drives the saturation down on its own — judge that
+    // through the crisis-response score, not as a technique failure
+    if(S.t>=trackFrom&&!P.crisis)F.minSpO2=Math.min(F.minSpO2,P.spo2);
+    if(suck){
+      passSecs+=dt;
+      const eff=depth>=24&&depth<=28?1:depth>28?0.85:depth>=18?0.4:0.05;
+      const rate=2.6*(0.35+0.65*clamp((P.secretions-22)/78,0,1))*S.clearRate*eff;
+      P.secretions=Math.max(22,P.secretions-rate*dt);
+      paintSecs();
+      $('#secb',g).style.width=P.secretions+'%';
+      $('#seclb',g).textContent=P.secretions>75?'Large volume, thick and purulent'
+        :P.secretions>50?'Moderate volume still present':P.secretions>32?'Small volume remaining'
+        :'Airways largely clear · residual consolidation cannot be suctioned';
+      if(passSecs>10&&!warned10){warned10=true;toast('Ten seconds. Release the vacuum now.','w',3000);}
+      if(passSecs>15&&!warned15){warned15=true;F.long++;
+        critical('Continued suction beyond 15 seconds in a single pass.');
+        toast('Over 15 seconds of continuous suction. This is causing hypoxaemia and derecruitment.','b',6000);}
+      if(P.spo2<85&&!desatWarn){desatWarn=true;toast('SpO₂ below 85 %. Stop, withdraw and re-oxygenate.','b',5000);}
+      if(P.spo2<82){F.ignoredDesat=true;}
+    }
+    const t=$('#stime',g);t.textContent=passSecs.toFixed(1)+'s';
+    t.className='t '+(passSecs>15?'c':passSecs>10?'w':'');
+    const bi=$('#sbar',g);bi.style.width=Math.min(100,passSecs/15*100)+'%';
+    bi.className=passSecs>15?'c':passSecs>10?'w':'';
+    // the deterioration fires once total vacuum time passes 12 s — reachable
+    // by a long first pass or, with good technique, early in the second
+    if(!S.crisisDone&&suck&&(F.total+passSecs)>=12)fireCrisis();
+    paintChecks();
+  };
+
+  function fireCrisis(){
+    S.crisisDone=true;
+    suckOff();sb.disabled=true;
+    P.crisis=true;P.vagal=1;P.spo2=Math.min(P.spo2,88);P.pvc=0.25;trackFrom=Infinity;
+    if(S.sound)alarmOn();
+    note('Acute deterioration during suction: SpO₂ 79 %, HR 44, ventricular ectopics.','w');
+    openCrisis(res=>{
+      award('crisis',res.got,14,'Response to intra-suction bradycardia and desaturation',res.got>=11?'g':res.got>=6?'w':'b');
+      if(res.good){
+        P.crisis=false;P.vagal=0;P.fio2=1.0;P.o2res=1;
+        $('#postox',g).disabled=false;$('#preox',g).disabled=true;
+        setDepth(0);
+        toast('He is reconnected on 100 % oxygen. Heart rate climbing, saturations recovering.','g',6000);
+        note('Managed the event correctly — stopped, ventilated, called for help.','g');
+      }else{
+        P.vagal=0.9;P.spo2=Math.max(70,P.spo2-4);
+        critical('Failed to stop and restore ventilation during an intra-suction bradycardia.');
+        setTimeout(()=>{
+          P.crisis=false;P.vagal=0;P.fio2=1.0;P.o2res=1;setDepth(0);
+          $('#postox',g).disabled=false;$('#preox',g).disabled=true;
+          toast('The bedside nurse pushes you aside, disconnects the catheter and hand-ventilates him on 100 % oxygen. He recovers.','b',9000);
+          note('The nurse had to intervene and take over.','b');
+        },3500);
+      }
+      setTimeout(()=>{
+        sb.disabled=F.passes>=3;$('#fin',g).disabled=false;
+        trackFrom=S.t+25;   // resume nadir tracking once he has had a chance to recover
+        toast('Wait at least 30 seconds and re-oxygenate before you consider another pass.','w',6000);
+      },6000);
+    });
+  }
+
+  $('#fin',g).onclick=()=>{
+    if(F.passes<1){toast('You have not completed a pass yet.','w');return;}
+    ended=true;suckOff();S.onTick=null;alarmOff();
+    // ---- score technique ----
+    let got=0;const max=26;
+    const c=[];
+    if(F.preOxMissed===0){got+=5;c.push(['g','Pre-oxygenated before every pass.']);}
+    else{c.push(['b',F.preOxMissed+' pass(es) started without pre-oxygenation. In a patient with a P/F of 118 this is the difference between a 3 % dip and a 15 % one.']);
+      critical('Suctioned without pre-oxygenation.');}
+    if(!F.insertSuction){got+=5;c.push(['g','Vacuum applied on withdrawal only.']);}
+    else{c.push(['b','Suction was applied while advancing the catheter. That evacuates gas from the lung all the way down and drags the mucosa into the catheter eye.']);
+      critical('Applied suction while advancing the catheter.');}
+    if(F.deep===0){got+=4;c.push(['g','Catheter kept at or above the tube tip — no carinal contact.']);}
+    else{c.push(['b','The catheter reached the carina '+F.deep+' time(s). Carinal contact causes vagally-mediated bradycardia, bronchospasm and mucosal injury, and it is entirely avoidable with a pre-measured depth.']);}
+    if(F.long===0){got+=4;c.push(['g','No pass exceeded 15 seconds of continuous suction.']);}
+    else{c.push(['b',F.long+' pass(es) exceeded 15 seconds. The recommended ceiling exists because alveolar gas is being removed for the whole of that time.']);}
+    if(F.shortRest===0&&F.passes>1){got+=3;c.push(['g','Adequate recovery between passes.']);}
+    else if(F.passes>1){c.push(['w','You went back in before he had recovered. Saturations should return to baseline and stay there before the next pass.']);}
+    else got+=3;
+    if(F.passes<=3){got+=2;c.push(['g',F.passes+' pass(es) — within the recommended limit.']);}
+    else{c.push(['b',F.passes+' passes. Each additional pass has a lower yield and the same cost.']);}
+    if(F.minSpO2>=88){got+=3;c.push(['g','Lowest SpO₂ '+Math.round(F.minSpO2)+' % — he stayed safe throughout.']);}
+    else if(F.minSpO2>=82){got+=1;c.push(['w','Lowest SpO₂ '+Math.round(F.minSpO2)+' %. Survivable, but he had no reserve to give.']);}
+    else{c.push(['b','Lowest SpO₂ '+Math.round(F.minSpO2)+' %. That is a significant hypoxaemic insult in a septic patient with a lactate of 2.3.']);
+      critical('Allowed SpO₂ to fall below 82 % during suction.');}
+    if(F.trauma)note('Blood-stained secretions — mucosal trauma occurred.','w');
+    award('tech',got,max,'Suction technique — '+F.passes+' pass(es), '+F.total.toFixed(0)+' s total vacuum',got>=21?'g':got>=13?'w':'b');
+    const clr=100-P.secretions;
+    award('reason',clr>=40?5:clr>=28?3.5:clr>=15?2:0.5,5,
+      'Secretion clearance achieved — load reduced by '+Math.round(clr)+' %',clr>=45?'g':clr>=30?'w':'b');
+    // ---- feedback ----
+    g.style.opacity='.55';g.style.pointerEvents='none';
+    const box=document.createElement('div');box.style.display='grid';box.style.gap='10px';box.style.marginTop='18px';
+    if(coach()){
+      c.forEach(x=>{const d=document.createElement('div');d.className='fbbox '+x[0];
+        d.innerHTML='<span class="hd">'+(x[0]==='g'?'Done well':x[0]==='w'?'Watch this':'Unsafe')+'</span>'+x[1];box.appendChild(d);});
+    }else{
+      const d=document.createElement('div');d.className='fbbox n';
+      d.innerHTML='<span class="hd">Session recorded</span>'+F.passes+' pass(es), '+F.total.toFixed(0)+' seconds of total vacuum, lowest SpO₂ '+Math.round(F.minSpO2)+' %. Marked in your debrief.';
+      box.appendChild(d);
+    }
+    b.appendChild(box);
+    nextBtn(b,'Reassess him');
+  };
+}
+
+/* --- crisis modal ------------------------------------------------------- */
+const CRISIS_OPTS=[
+  {t:'Stop suctioning immediately and withdraw the catheter',p:4},
+  {t:'Make sure he is ventilated — restore the circuit and give FiO₂ 1.0',p:4},
+  {t:'Call for help: alert the bedside nurse and the ICU doctor now',p:3},
+  {t:'Stay with him, watch the monitor, and do not suction again until he has recovered',p:3},
+  {t:'Advance the catheter further — there must be a plug causing this',p:-4,
+   crit:'Advanced the catheter during an intra-suction bradycardia.'},
+  {t:'Instil 5 mL of saline and suction again to clear it',p:-4,
+   crit:'Instilled saline during an acute deterioration.'},
+  {t:'Start chest compressions',p:-2},
+  {t:'Carry on — a brief desaturation during suction is expected',p:-4,
+   crit:'Continued suctioning through a bradycardic desaturation.'}
+];
+function openCrisis(done){
+  const m=$('#crisis');const sel=new Set();let left=15,timer;
+  m.innerHTML='<div class="crisis-c"><div class="crisis-h"><div class="t">Acute deterioration</div>'
+    +'<h2 id="crisis-t">SpO₂ 79 % · HR 44 · ventricular ectopics</h2></div>'
+    +'<div class="cdown"><span class="n" id="cd">15</span>'
+    +'<span class="hintline" style="font-size:12px">seconds to act · select everything you would do, in any order</span></div>'
+    +'<div class="card-b"><div class="opts" id="copts"></div>'
+    +'<div class="actions"><button class="btn pri" id="cgo">Act now</button></div></div></div>';
+  const box=$('#copts',m);
+  CRISIS_OPTS.forEach((o,i)=>{
+    const btn=document.createElement('button');btn.className='opt';btn.type='button';btn.setAttribute('aria-pressed','false');
+    btn.innerHTML='<span class="ltr">'+LT[i]+'</span><span class="tx">'+o.t+'</span>';
+    btn.onclick=()=>{
+      if(sel.has(i)){sel.delete(i);btn.setAttribute('aria-pressed','false');}
+      else if(sel.size>=4){toast('Four actions maximum — choose the ones that matter most.','w');}
+      else{sel.add(i);btn.setAttribute('aria-pressed','true');}
+    };
+    box.appendChild(btn);
+  });
+  m.classList.add('on');
+  const finish=(timedOut)=>{
+    clearInterval(timer);m.classList.remove('on');
+    let got=0;sel.forEach(i=>{got+=CRISIS_OPTS[i].p;if(CRISIS_OPTS[i].crit&&CRISIS_OPTS[i].p<0)critical(CRISIS_OPTS[i].crit);});
+    got=clamp(got,0,14);
+    const good=sel.has(0)&&sel.has(1)&&got>=8;
+    if(timedOut){critical('Froze during an acute intra-suction deterioration — no action taken.');
+      note('No action taken within 15 seconds.','b');got=0;}
+    LOG.push({t:S.t,text:'Crisis actions: '+(timedOut?'none — no response':Array.from(sel).map(i=>CRISIS_OPTS[i].t).join('; ')),
+      kind:good?'g':'b',got:0,max:0});
+    done({got,good:good&&!timedOut,sel});
+  };
+  $('#cgo',m).onclick=()=>{if(!sel.size){toast('Choose at least one action.','w');return;}finish(false);};
+  timer=setInterval(()=>{
+    left--;const n=$('#cd',m);if(n)n.textContent=left;
+    if(left<=0)finish(true);
+  },1000);
+}
+
+/* =====================================================================
+   STATION 8 — REASSESSMENT
+   ===================================================================== */
+function stReview(host){
+  // the acute insults of the treatment episode are over; what is left is the
+  // secretion load, which is what the before/after table is actually about
+  P.vagal=0;P.pvc=0;P.bronchospasm=0;P.crisis=false;
+  const b=card(host,'Station 8 of 9 · Reassessment','Did it work?',
+    'He has settled. Compare where he was with where he is, then decide what you leave behind you.');
+  const t=document.createElement('div');t.className='scroll';
+  const rows=[
+    ['Peak airway pressure','38 cmH₂O',Math.round(P.ppeak)+' cmH₂O',P.ppeak<34],
+    ['Plateau pressure','24 cmH₂O',Math.round(P.pplat)+' cmH₂O',null,'unchanged, as expected'],
+    ['Ppeak − Pplat','14 cmH₂O',Math.round(P.ppeak-P.pplat)+' cmH₂O',P.ppeak-P.pplat<11],
+    ['Expiratory tidal volume','380 mL',Math.round(P.vt)+' mL',P.vt>410],
+    ['SpO₂ on FiO₂ 0.55','91 %',Math.round(P.fio2>0.6?P.spo2-4:P.spo2)+' %',P.spo2>93],
+    ['End-tidal CO₂','48 mmHg',Math.round(P.etco2)+' mmHg',P.etco2<46],
+    ['Heart rate','112 bpm',Math.round(P.hr)+' bpm',P.hr<106],
+    ['Capnograph upstroke','sloped "shark fin"',P.secretions<62?'near-square':'still sloped',P.secretions<62]
+  ];
+  t.innerHTML='<table class="dat"><tr><th>Measure</th><th>Before</th><th>After</th><th></th></tr>'
+    +rows.map(r=>{
+      const cls=r[3]===null?'nl':r[3]?'lo':'hi';
+      return '<tr><td class="nl">'+r[0]+'</td><td class="nl">'+r[1]+'</td><td class="'+cls+'">'+r[2]
+        +'</td><td class="'+cls+'">'+(r[4]||(r[3]?'improved':'little change'))+'</td></tr>';
+    }).join('')+'</table>';
+  b.appendChild(t);
+  const abg=document.createElement('div');abg.className='fbbox n';
+  abg.innerHTML='<span class="hd">Repeat gas, 20 minutes later, FiO₂ 0.55</span>'
+    +'pH 7.34 · PaCO₂ 6.3 kPa (47 mmHg) · PaO₂ '+(P.secretions<60?'9.9 kPa (74 mmHg)':'8.9 kPa (67 mmHg)')
+    +' · HCO₃⁻ 25 · Lactate 2.1. P/F ratio '+(P.secretions<60?'135':'122')+' mmHg.';
+  b.appendChild(abg);
+  auscBlock(b,2,()=>{
+    const w=document.createElement('div');w.style.marginTop='18px';
+    w.innerHTML='<hr class="hr" style="margin-bottom:16px">';b.appendChild(w);
+    multi(w,{
+      dom:'reason',log:'Before leaving the bedside',
+      q:'What do you do before you leave the bedside?',
+      opts:[
+        {t:'Return the FiO₂ to its pre-suction setting once the saturation is stable',p:3,
+         fb:'Yes. Pre-oxygenation is a bridge, not a destination. Leaving him on 1.0 hides deterioration, exposes him to hyperoxia, and means the next person cannot interpret his saturation.'},
+        {t:'Re-auscultate and record the response to treatment',p:3,
+         fb:'Yes — and note specifically what changed and what did not. "Rhonchi cleared, bronchial breathing unchanged at the right base" is a far more useful entry than "chest clearer".'},
+        {t:'Document the volume, colour and consistency of secretions, his tolerance, and any adverse events',p:3,
+         fb:'Yes. Secretion characteristics track the infection over days, and adverse events during suction must be recorded — including the bradycardia, if it happened.'},
+        {t:'Recommend changing the HME to a heated humidifier',p:2,
+         fb:'Yes. Thick, tenacious secretions in a patient needing repeated suction is a humidification problem until proven otherwise. This is the intervention most likely to reduce how often he needs you.'},
+        {t:'Agree a review time and hand over the triggers that should bring you back sooner',p:2,
+         fb:'Yes. "Review at 18:00, call me earlier if the peak pressure exceeds 35 or the saturation falls below 90 on 0.55" turns a one-off treatment into a plan.'},
+        {t:'Leave the FiO₂ at 1.0 to give him a safety margin',p:-2,
+         fb:'No. It masks change, and prolonged high FiO₂ contributes to absorption atelectasis and oxidative injury. The safety margin comes from monitoring, not from a permanently raised FiO₂.'},
+        {t:'Prescribe two-hourly suction on the nursing chart for the next 24 hours',p:-3,
+         fb:'No. Suction is performed <b>on indication</b>, never by the clock: audible or visible secretions, a sawtooth flow–volume loop, a rising peak pressure, a falling tidal volume, or desaturation. Scheduled suction guarantees unnecessary passes on a patient who does not need them at that moment.',
+         crit:'Prescribed suction by the clock rather than on clinical indication.'},
+        {t:'Add routine saline instillation before each suction to the nursing instructions',p:-3,
+         fb:'No — and writing it on the chart spreads the practice to everyone who reads it. Improve the humidification instead.',
+         crit:'Recommended routine saline instillation in the nursing plan.'}
+      ],
+      submit:'Complete the session',
+      check:(sel)=>{
+        if(sel.has(0)){P.fio2=0.55;note('FiO₂ returned to 0.55 at the bedside.','g');}
+        else if(sel.has(5)){P.fio2=1.0;note('Left him on FiO₂ 1.0.','b');}
+      },
+      onSubmit:(sel,wrap)=>{
+        const w2=document.createElement('div');w2.style.marginTop='18px';
+        w2.innerHTML='<hr class="hr" style="margin-bottom:16px">';wrap.appendChild(w2);
+        mcq(w2,{
+          dom:'reason',log:'Recurrent deterioration two hours later',
+          q:'Two hours later the nurse calls again: peak pressure is back to 37, SpO₂ 89 % on FiO₂ 0.55, and he has spiked to 39.1 °C. What is your priority?',
+          opts:[
+            {t:'Reassess him properly — secretions returning this fast need a cause, not just another pass',p:5,
+             fb:'Correct. Re-accumulation within two hours means something is driving it: inadequate humidification, dehydration, a new ventilator-associated pneumonia, an enlarging effusion or empyema, or lobar collapse. Repeatedly suctioning a patient without asking why he keeps needing it is treating the symptom and missing the diagnosis. Reassess, re-image if indicated, and talk to the team.'},
+            {t:'Repeat exactly the same treatment',p:1,
+             fb:'It may well be part of the answer, but doing it without asking why he deteriorated so fast means you will be back again in another two hours.'},
+            {t:'Increase suction to hourly',p:0,
+             fb:'More frequent suction on a fixed schedule increases mucosal injury, hypoxaemic episodes and VAP risk without addressing the cause.'},
+            {t:'Nothing — this is the expected course of severe pneumonia',p:0,
+             fb:'A new fever spike with rapid mechanical deterioration is not something to accept. It needs to be escalated.'}
+          ],
+          nextLabel:'See your debrief'
+        });
+      }
+    });
+  });
+}
+
+/* =====================================================================
+   STATION 9 — DEBRIEF
+   ===================================================================== */
+const TEACHING=[
+  ['Suction is a treatment, not a routine',
+   'Endotracheal suction is indicated by findings, not by the clock: audible or visible secretions, a sawtooth expiratory flow–volume loop, a rising peak inspiratory pressure with an unchanged plateau, a falling tidal volume, desaturation, or a patient unable to clear their own airway. Scheduled suctioning exposes patients to hypoxaemia, arrhythmia and mucosal injury on the occasions when they did not need it.'],
+  ['Ppeak minus Pplat is your objective indication and your outcome measure',
+   'The peak-to-plateau difference is the resistive component of the breath. A widening gap with a static plateau localises the problem to the airway lumen — which is the one thing suction can fix. Record it before and after, and you have an objective measure of whether your treatment worked, available within a minute of finishing.'],
+  ['Match the catheter to the tube',
+   'The catheter\'s outer diameter should not exceed half the tube\'s internal diameter. French size ÷ 3 gives the outer diameter in millimetres, so an 8.0 mm tube takes a 12 Fr catheter (4.0 mm). The widely taught (tube size − 1) × 2 formula gives 14 Fr, which is 58 % of the lumen — usable, but know that you are trading gas exchange for clearance.'],
+  ['Pre-oxygenate, and keep the vacuum brief',
+   'Pre-oxygenation with FiO₂ 1.0 for 30–60 seconds is the single most effective preventive measure against suction-induced desaturation, and it matters most in exactly the patients who look too unstable to bother with it. Apply vacuum only on withdrawal, keep each application under 15 seconds, and allow full recovery before another pass.'],
+  ['Shallow beats deep',
+   'Insert to a pre-measured depth — the length of the tube plus its connector — rather than advancing until you feel resistance. "Resistance" is the carina. Carinal contact provokes vagally mediated bradycardia, bronchospasm, coughing and mucosal haemorrhage, and it produces no extra secretions in return.'],
+  ['Closed suction protects lung volume',
+   'In-line closed suction avoids disconnection, so PEEP and lung volume are preserved. It is the default in patients on high PEEP or high FiO₂, in ARDS, and where the patient is a transmission risk — which describes most patients you will be asked to suction in intensive care.'],
+  ['Do not instil saline',
+   'Routine normal saline instillation does not thin secretions, reliably causes desaturation, and washes bacterial biofilm from the tube into the lower airway, raising ventilator-associated pneumonia risk. Thick secretions are a humidification and hydration problem: switch a saturated HME for active heated humidification and address fluid balance.'],
+  ['Know which sounds you can change',
+   'Rhonchi arise from secretions in large airways and are the sound suction removes. Bronchial breathing is consolidated lung; absent sounds with stony dullness are pleural fluid. Neither of those responds to a catheter. Setting that expectation before you start is what stops a two-pass treatment turning into a six-pass one.'],
+  ['Stop means stop',
+   'Bradycardia during suction is vagal until proven otherwise. Stop, withdraw the catheter, restore ventilation on 100 % oxygen, and call for help. Do not advance further looking for a plug, do not instil saline, and do not press on because "a bit of desaturation is normal". Almost every suction-related arrest follows a clinician who kept going.'],
+  ['Positioning: two principles that sometimes agree',
+   'Affected side up drains; good lung down improves ventilation–perfusion matching. In unilateral right-sided disease, left side-lying delivers both, which is why it is the answer here. In bilateral disease they conflict, and oxygenation usually wins in the acutely hypoxaemic patient.']
+];
+function stDebrief(host){
+  P.frozen=true;alarmOff();S.onTick=null;
+  const pct=totalPct();
+  const band=pct>=85?['Exemplary','var(--ok)']:pct>=70?['Competent','var(--cy)']
+            :pct>=55?['Developing','var(--warn)']:['Needs close supervision','var(--crit)'];
+  const b=card(host,'Station 9 of 9 · Debrief','How that went');
+  const gr=document.createElement('div');gr.className='grade';
+  gr.innerHTML='<span class="pct" style="color:'+band[1]+'">'+pct+'%</span>'
+    +'<span class="band" style="color:'+band[1]+';border-color:'+band[1]+'">'+band[0]+'</span>'
+    +'<span class="hintline" style="margin-left:auto">'+mmss(S.t)+' at the bedside · '
+    +(S.mode==='coach'?'coach mode':'assessment mode')+'</span>';
+  b.appendChild(gr);
+  const dm=document.createElement('div');dm.className='dom';
+  dm.innerHTML=Object.keys(SC).filter(k=>SC[k].m>0).map(k=>{
+    const s=SC[k],p=Math.round(clamp(s.g/s.m,0,1)*100);
+    const col=p>=80?'var(--ok)':p>=60?'var(--cy)':p>=40?'var(--warn)':'var(--crit)';
+    return '<div class="domrow"><span class="lb">'+s.label+'</span>'
+      +'<span class="dbar"><i style="width:0%;background:'+col+'" data-w="'+p+'"></i></span>'
+      +'<span class="sc">'+Math.round(s.g)+'/'+Math.round(s.m)+'</span></div>';
+  }).join('');
+  b.appendChild(dm);
+  setTimeout(()=>$$('.dbar i',dm).forEach(i=>i.style.width=i.dataset.w+'%'),120);
+
+  if(CRITICALS.length){
+    const cb=document.createElement('div');cb.className='crits';
+    cb.innerHTML='<h3>Critical safety events — '+CRITICALS.length+'</h3><ul>'
+      +CRITICALS.map(c=>'<li>'+c+'</li>').join('')+'</ul>'
+      +'<p style="font-size:12.5px;color:var(--mute);margin:10px 0 0">In a real assessment any one of these would be discussed regardless of the overall score. They are listed separately for exactly that reason.</p>';
+    b.appendChild(cb);
+  }else{
+    const cb=document.createElement('div');cb.className='fbbox g';
+    cb.innerHTML='<span class="hd">No critical safety events</span>Nothing you did in this session would have been flagged as a patient-safety concern. That is the part that matters most.';
+    b.appendChild(cb);
+  }
+
+  const th=document.createElement('div');th.innerHTML='<div class="eyebrow" style="margin-bottom:10px">What you did · '+mmss(S.t)+' timeline</div>';
+  const tl=document.createElement('div');tl.className='tl';
+  tl.innerHTML=LOG.map(l=>'<div class="tli '+l.kind+'"><span class="tm">'+mmss(l.t)+'</span>'
+    +'<span class="ic">'+(l.kind==='g'?'✓':l.kind==='b'?'✕':l.kind==='w'?'!':'·')+'</span>'
+    +'<span class="tt">'+l.text+(l.max?' <b>['+Math.round(l.got*10)/10+'/'+l.max+']</b>':'')+'</span></div>').join('');
+  th.appendChild(tl);b.appendChild(th);
+
+  const tp=document.createElement('div');
+  tp.innerHTML='<div class="eyebrow" style="margin-bottom:12px">Ten things to take away</div>'
+    +'<div class="tp">'+TEACHING.map(t=>'<div class="tpi"><h4>'+t[0]+'</h4><p>'+t[1]+'</p></div>').join('')+'</div>';
+  b.appendChild(tp);
+
+  const rf=document.createElement('div');
+  rf.innerHTML='<div class="eyebrow" style="margin-bottom:8px">Underpinning evidence</div>'
+    +'<p class="refs">AARC Clinical Practice Guideline: Endotracheal Suctioning of Mechanically Ventilated Patients with Artificial Airways. <i>Respir Care</i> 2010.<br>'
+    +'Metheny NA et al. Effectiveness of closed versus open suction systems. <i>Cochrane / AJCC</i> reviews.<br>'
+    +'Metallinou D et al. Normal saline instillation before endotracheal suctioning — a systematic review.<br>'
+    +'Metlay JP et al. ATS/IDSA Diagnosis and Treatment of Adults with Community-acquired Pneumonia. <i>AJRCCM</i> 2019.<br>'
+    +'Gosselink R et al. Physiotherapy for adult patients with critical illness: ESICM recommendations. <i>Intensive Care Med</i> 2008.<br>'
+    +'Ntoumenopoulos G. Indications for manual and ventilator hyperinflation in the ventilated patient.</p>'
+    +'<p class="refs" style="color:var(--dim);margin-top:12px">This is a teaching simulation. The patient, results and images are fabricated for education and must not be used for clinical decision-making. Follow your own unit\'s protocols.</p>';
+  b.appendChild(rf);
+
+  const act=document.createElement('div');act.className='actions';
+  act.innerHTML='<button class="btn pri" id="again">Run the case again</button>'
+    +'<button class="btn ghost" id="prt">Print / save debrief</button>';
+  act.querySelector('#again').onclick=()=>location.reload();
+  act.querySelector('#prt').onclick=()=>window.print();
+  b.appendChild(act);
+}
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+$('#sndbtn').onclick=e=>{
+  S.sound=!S.sound;e.currentTarget.setAttribute('aria-pressed',String(S.sound));
+  if(!S.sound){alarmOff();suckSoundOff();stopLung();}else actx();
+};
+$('#startbtn').onclick=()=>{
+  S.mode=$('input[name=mode]:checked').value;
+  actx();
+  $('#boot').style.display='none';
+  $('#bar').hidden=false;$('#wrap').hidden=false;
+  S.running=true;S.t=0;
+  fitCanvas();
+  buildRail();
+  goStep(0);
+  note('Session started in '+S.mode+' mode.','i');
+};
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&$('#crisis').classList.contains('on'))e.preventDefault();
+});
+</script>
