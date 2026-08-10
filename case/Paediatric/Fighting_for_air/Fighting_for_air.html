@@ -692,8 +692,8 @@ tr:nth-child(even) td{ background:#FBFCFC; }
       <br>Noted desat from 91% 2L O2 NC, tachycardia 130-140, RR 30-32 last night ~1am.
       <br>Step up O2 to HFNC FiO2 0.3, FR 30L/min
       <br>Now on Ventolin 6 puff Q2H, added PO prednisolone.
-      <br><br>P/E: <br>temp 37.7°C, HR 110–120, SpO2 95% on HFNC FiO2 0.3, RR 24.
-      <br><br>Mx: <br>Keep current HFNC settings<br>Holiday chest physio.
+      <br><br>P/E: temp 37.7°C, HR 110–120, SpO2 95% on HFNC FiO2 0.3, RR 24.
+      <br><br>Mx: keep current HFNC settings, holiday chest physio.
     <br>---------------------------</p>
   </div>
 
@@ -905,9 +905,17 @@ function auscPosteriorSVG(uid){
 // Six glowing, tappable auscultation points per view (upper/mid/base x L/R),
 // shared layout between anterior and posterior — only the zone-id prefix differs.
 function auscMarkers(uid, prefix){
+  // Anterior is mirrored (facing the patient): patient's right = image-left.
+  // Posterior is not mirrored (standing behind the patient): patient's
+  // right = image-right. The column each side's markers sit in has to
+  // flip between views to stay under the correct "R"/"L" header label —
+  // only the zoneId (and therefore the sound/label it plays) always
+  // names the patient's actual side, regardless of which column draws it.
+  const leftCol = (prefix === 'post') ? 'L' : 'R';
+  const rightCol = (prefix === 'post') ? 'R' : 'L';
   const pts = [
-    ['R','upper',65,75], ['R','mid',65,150], ['R','lower',65,225],
-    ['L','upper',195,75], ['L','mid',195,150], ['L','lower',195,225]
+    [leftCol,'upper',65,75], [leftCol,'mid',65,150], [leftCol,'lower',65,225],
+    [rightCol,'upper',195,75], [rightCol,'mid',195,150], [rightCol,'lower',195,225]
   ];
   return pts.map(function(p){
     const zoneId = prefix + '-' + p[0] + '-' + p[1];
