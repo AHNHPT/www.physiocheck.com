@@ -2217,13 +2217,13 @@ function stXray(host){
           dom:'reason',log:'Silhouette sign interpretation',
           q:'The right hemidiaphragm outline is lost but the right heart border stays sharp. Which lobe is consolidated, and which is spared?',
           opts:[
-            {t:'Right <b>lower</b> lobe consolidated; right middle lobe spared',p:5,
+            {t:'Right lower lobe consolidated; right middle lobe spared',p:5,
              fb:'Correct, and it is the single most useful thing this film gives you. The silhouette sign works by contact: a structure\'s outline disappears only when airless lung lies directly against it. The right middle lobe touches the right heart border; the right lower lobe touches the hemidiaphragm. Diaphragm gone, heart border intact — lower lobe. That tells you which segments to position for and where to expect your findings on auscultation.'},
             {t:'Right middle lobe consolidated; right lower lobe spared',p:0,
              fb:'That is the reverse. Middle lobe disease obliterates the <b>right heart border</b> and leaves the diaphragm crisp. Here the opposite is true.'},
-            {t:'Both right middle and right lower lobes',p:1,
+            {t:'Both right middle and right lower lobes consolidated',p:1,
              fb:'This is the commonest overcall on a film like this, and the preserved heart border rules it out. If the middle lobe were consolidated the right cardiac margin would be indistinct.'},
-            {t:'Right upper lobe',p:0,
+            {t:'Right upper lobe consolidated and left upper lobe spared',p:0,
              fb:'The right upper lobe abuts neither structure — upper lobe disease silhouettes out the superior mediastinum and does not touch the diaphragm at all.'}
           ],
           nextLabel:'Review bloods and gases'
@@ -2281,15 +2281,15 @@ function stLabs(host){
   const hr=document.createElement('hr');hr.className='hr';b.appendChild(hr);
   mcq(b,{
     dom:'imaging',log:'ABG interpretation',
-    q:'Interpret the gas.',
+    q:'Interpret the blood gas.',
     opts:[
-      {t:'Acute respiratory acidosis with severe hypoxaemia; P/F ratio 118 mmHg (15.7 kPa) — moderate ARDS range',p:5,
+      {t:'Moderate Acute Respiratory Distress Syndrome (ARDS)',p:5,
        fb:'Correct. pH 7.31 with a raised PaCO₂ and a normal bicarbonate means the acidosis is <b>acute</b> — there has been no time for renal compensation. PaO₂ 65 mmHg on FiO₂ 0.55 gives a P/F of 118, which sits in the moderate band. Practically: he has very little oxygen reserve, so every second of suction costs him more than it would cost a well-oxygenated patient.'},
-      {t:'Chronic compensated respiratory acidosis from his COPD — his normal baseline, no action needed',p:0,
+      {t:'Chronic compensated respiratory acidosis from his COPD (patient normal baseline)',p:0,
        fb:'No. Chronic CO₂ retention drives a compensatory rise in bicarbonate, often to 30 or more. His HCO₃⁻ is 25 and his base excess is normal, so this is an acute change on a near-normal baseline.'},
-      {t:'Metabolic acidosis from sepsis with appropriate respiratory compensation',p:0,
+      {t:'Metabolic acidosis from sepsis with respiratory compensation',p:0,
        fb:'No. In a metabolic acidosis the PaCO₂ falls as compensation. His is <b>raised</b> at 6.9 kPa, so the respiratory system is the source of the acidosis, not the compensation for it. The lactate of 2.3 is mildly raised but is not driving this pH.'},
-      {t:'Type 1 respiratory failure — hypoxaemia with normal carbon dioxide clearance',p:1,
+      {t:'Type 1 respiratory failure',p:1,
        fb:'Half right on the hypoxaemia, wrong on the CO₂. A PaCO₂ of 6.9 kPa is not normal clearance; hypoxaemia plus hypercapnia is type 2 respiratory failure. The distinction matters because his rising CO₂ is another sign that airway resistance is climbing.'}
     ],
     nextLabel:'Next question',
@@ -2323,8 +2323,8 @@ function stLabs(host){
                fb:'CRP lags by 24–48 hours and reflects the infection, not your airway clearance. It will tell you nothing about the next ten minutes.'},
               {t:'A repeat chest X-ray immediately after treatment',p:1,
                fb:'Radiographic change lags well behind clinical change, and consolidation will look identical whether or not you cleared the large airways. It also means unnecessary radiation.'},
-              {t:'Temperature',p:0,
-               fb:'Driven by the pneumococcal bacteraemia and the antibiotics, not by your treatment.'}
+              {t:'O2 requirement',p:0,
+               fb:'O2 requirement can be a useful indicator of treatment effectiveness, but it is not as immediate or specific as other measures.'}
             ],
             nextLabel:'Plan the treatment'
           });
@@ -2378,13 +2378,13 @@ function stPlan(host){
         dom:'reason',log:'Treatment sequencing',
         q:'In what order do you deliver it?',
         opts:[
-          {t:'Position → pre-oxygenate → hyperinflation with expiratory vibrations → suction → re-oxygenate and reassess',p:5,
+          {t:'Position → pre-oxygenate → hyperinflation/vibrations → suction → re-oxygenate and reassess',p:5,
            fb:'Correct. Airway clearance works <b>peripheral to central, then out</b>: position and hyperinflation move secretions towards the large airways, and suction only removes what has already arrived there. Suction is the last step, not the first, because a catheter reaches roughly as far as the carina and no further.'},
-          {t:'Suction first to clear the tube, then position and hyperinflate',p:1,
+          {t:'Suction first to clear the tube, then position and hyperinflation/vibrations',p:1,
            fb:'You will clear the tube and then push everything you subsequently mobilise back into a patient you have already destabilised. It also means two suction episodes instead of one.'},
-          {t:'Hyperinflation → suction → position → pre-oxygenate',p:0,
+          {t:'hyperinflation/vibrations → suction → position → pre-oxygenate',p:0,
            fb:'Pre-oxygenation after suction is pointless as a preventive measure — the desaturation has already happened. Positioning after suction wastes the mobilising effect entirely.'},
-          {t:'Pre-oxygenate → suction → position → hyperinflate',p:1,
+          {t:'Pre-oxygenate → suction → position → hyperinflation/vibrations',p:1,
            fb:'You have the pre-oxygenation in the right place but you are suctioning before you have mobilised anything, so the pass will be low-yield and you will need more of them.'}
         ],
         nextLabel:'Prepare the equipment'
@@ -3049,8 +3049,11 @@ function stDebrief(host){
     +'Metallinou D et al. Normal saline instillation before endotracheal suctioning — a systematic review.<br>'
     +'Metlay JP et al. ATS/IDSA Diagnosis and Treatment of Adults with Community-acquired Pneumonia. <i>AJRCCM</i> 2019.<br>'
     +'Gosselink R et al. Physiotherapy for adult patients with critical illness: ESICM recommendations. <i>Intensive Care Med</i> 2008.<br>'
-    +'Ntoumenopoulos G. Indications for manual and ventilator hyperinflation in the ventilated patient.</p>'
-    +'<p class="refs" style="color:var(--dim);margin-top:12px">This is a teaching simulation. The patient, results and images are fabricated for education and must not be used for clinical decision-making. Follow your own unit\'s protocols.</p>';
+    +'Ntoumenopoulos G. Indications for manual and ventilator hyperinflation in the ventilated patient.<br>'
+    +'Taché Sala A, Foradada Ubach S, Lladó Vilar M. Dynamic air bronchogram in pneumococcal community acquired pneumonia. Med Intensiva (Engl Ed). 2025 Feb;49(2):120-121. doi: 10.1016/j.medine.2024.06.004. Epub 2024 Jun 18. PMID: 38897898.</p>'
+    +'<p class="refs" style="color:var(--dim);margin-top:12px">This is a teaching simulation. The patient, results and images are fabricated for education and must not be used for clinical decision-making. Follow your own unit\'s protocols.</p>'
+    +'<p class="refs" style="color:var(--dim);margin-top:6px">The simulation is based on the 2010 AARC suctioning guideline, the 2019 ATS/IDSA pneumonia guideline, and the 2008 ESICM physiotherapy guideline.</p>'
+    +'<p class="refs" style="color:var(--dim);margin-top:6px">The simulation was developed by Mr Thomas Mak, Mr Eric Chan.</p>';
   b.appendChild(rf);
 
   const act=document.createElement('div');act.className='actions';
