@@ -143,7 +143,7 @@ body.mob .fp-h{cursor:default}
 #pawCanvas{width:100%;height:56px;display:block;background:#04070A;border:1px solid var(--rail);border-radius:5px;margin-bottom:8px}
 .tension{margin-top:9px}
 .tbar{height:7px;border-radius:4px;background:#101821;overflow:hidden;border:1px solid var(--rail)}
-.tfill{height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--warn) 68%,var(--crit));transition:width .5s}
+.tfill{display:block;height:100%;width:0;min-width:2px;background:linear-gradient(90deg,var(--ok),var(--warn) 68%,var(--crit));transition:width .5s}
 .tlab{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);display:flex;justify-content:space-between;margin-bottom:4px}
 .tlab b{color:var(--bone);font-weight:500}
 
@@ -156,8 +156,13 @@ body.mob .fp-h{cursor:default}
 .ob.hot .ot b{color:var(--warn)}
 .ob.bad .ot b{color:var(--crit)}
 .borg{margin-top:3px}
-.borgbar{height:8px;border-radius:4px;background:#101821;border:1px solid var(--rail);overflow:hidden}
-.borgfill{height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--warn) 60%,var(--crit));transition:width .6s}
+.borgbar{height:11px;border-radius:6px;background:#0C131A;border:1px solid var(--rail2);overflow:hidden;position:relative}
+/* the ticks at 5 and 7 are where "hard" and "very hard" sit on the modified Borg */
+.borgbar::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(90deg,transparent calc(50% - 1px),rgba(132,150,168,.5) calc(50% - 1px),rgba(132,150,168,.5) 50%,transparent 50%),
+             linear-gradient(90deg,transparent calc(70% - 1px),rgba(255,194,75,.55) calc(70% - 1px),rgba(255,194,75,.55) 70%,transparent 70%)}
+.borgfill{display:block;height:100%;width:0;min-width:3px;border-radius:5px;
+  background:linear-gradient(90deg,var(--ok),var(--warn) 60%,var(--crit));transition:width .6s}
 
 /* ---------- mobilisation ladder ---------- */
 .lad{padding:8px 9px 10px;background:#060A0E;display:grid;gap:2px}
@@ -197,7 +202,14 @@ body.mob .fp-h{cursor:default}
 #ov-min:hover{color:var(--bone);border-color:var(--rail2)}
 #ov-b{flex:1;overflow-y:auto;padding:18px 20px 40px;overscroll-behavior:contain}
 #ov-mob{display:none}
-body.mob #ov-mob{display:block;padding:14px 16px 0}
+/* On a narrow window the instruments stack into the top of the sheet. Left
+   uncapped they eat the whole panel and push the action buttons out of reach,
+   so give them their own scroll area and keep the controls' share of the height. */
+body.mob #ov-mob{display:block;padding:14px 16px 0;flex:none;max-height:36vh;overflow-y:auto;
+  overscroll-behavior:contain;border-bottom:1px solid var(--rail)}
+/* and pin the primary moves so they are reachable however far the tools scroll */
+body.mob #mobMain{position:sticky;top:0;z-index:4;background:var(--panel2);
+  margin-top:0;padding:10px 0;box-shadow:0 8px 12px -9px rgba(0,0,0,.9)}
 #ovtab{position:fixed;right:0;top:50%;transform:translate(101%,-50%);z-index:49;background:var(--panel);border:1px solid var(--rail2);border-right:0;border-radius:9px 0 0 9px;padding:15px 9px;cursor:pointer;font-family:var(--ff-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;writing-mode:vertical-rl;color:var(--cy);transition:transform .38s cubic-bezier(.22,.9,.3,1)}
 #ovtab.on{transform:translate(0,-50%)}
 
@@ -2089,24 +2101,31 @@ function qBlock(host,q,sub){
   h.innerHTML='<p class="qhead">'+q+'</p>'+(sub?'<p class="qsub">'+sub+'</p>':'');
   host.appendChild(h);
 }
-/* a multi- or single-select question with marking */
+/* A multi- or single-select question with marking.
+   The options are laid out in a fresh random order on every run — otherwise the
+   correct answers sit at the top of every list and the position becomes the cue
+   instead of the clinical reasoning. Selections are still reported back to the
+   caller as indices into the array it passed, so scoring is unaffected. */
 function askOpts(host,opts,cfg){
   cfg=cfg||{};
   const multi=!!cfg.multi, max=cfg.max||opts.length;
-  const sel=new Set();const box=document.createElement('div');box.className='opts';host.appendChild(box);
-  const btns=opts.map((o,i)=>{
+  const order=cfg.shuffle===false?opts.map((_,i)=>i):shuffled(opts.map((_,i)=>i));
+  const sel=new Set();                       // holds the caller's indices, not screen positions
+  const box=document.createElement('div');box.className='opts';host.appendChild(box);
+  const btns=order.map((oi,pos)=>{
+    const o=opts[oi];
     const b=document.createElement('button');b.className='opt';b.type='button';b.setAttribute('aria-pressed','false');
-    b.innerHTML='<span class="ltr">'+LT[i]+'</span><span class="tx">'+o.t+'</span>';
+    b.innerHTML='<span class="ltr">'+LT[pos]+'</span><span class="tx">'+o.t+'</span>';
     b.onclick=()=>{
       if(b.disabled)return;
       if(multi){
-        if(sel.has(i)){sel.delete(i);b.setAttribute('aria-pressed','false');}
+        if(sel.has(oi)){sel.delete(oi);b.setAttribute('aria-pressed','false');}
         else if(sel.size>=max){toast('Choose at most '+max+'.','w');}
-        else{sel.add(i);b.setAttribute('aria-pressed','true');}
+        else{sel.add(oi);b.setAttribute('aria-pressed','true');}
         go.disabled=sel.size===0;
       }else{
         sel.clear();btns.forEach(x=>x.setAttribute('aria-pressed','false'));
-        sel.add(i);b.setAttribute('aria-pressed','true');go.disabled=false;
+        sel.add(oi);b.setAttribute('aria-pressed','true');go.disabled=false;
       }
     };
     box.appendChild(b);return b;
@@ -2117,9 +2136,9 @@ function askOpts(host,opts,cfg){
   go.onclick=()=>{
     go.remove();
     const chosen=Array.from(sel);
-    btns.forEach((b,i)=>{
+    order.forEach((oi,pos)=>{
+      const b=btns[pos],o=opts[oi],picked=sel.has(oi);
       b.disabled=true;
-      const o=opts[i],picked=sel.has(i);
       if(coach()){
         if(picked)b.classList.add(o.p>0?'good':o.p<0?'bad':'miss');
         else if(o.p>0&&o.must!==false)b.classList.add('miss');
@@ -2128,7 +2147,7 @@ function askOpts(host,opts,cfg){
     });
     cfg.onDone&&cfg.onDone(chosen,act);
   };
-  return {btns,sel,act};
+  return {btns,sel,act,order};
 }
 function nextBtn(host,label,fn){
   const a=host.classList&&host.classList.contains('actions')?host:(()=>{const d=document.createElement('div');d.className='actions';host.appendChild(d);return d;})();
@@ -2376,14 +2395,6 @@ function showFindings(host){
     +'<tr><td>Pain</td><td>3/10 at rest, 5/10 on movement, localised to the throat</td><td><span class="fl">pre-medicate</span></td></tr>'
     +'</table>';
   b.appendChild(t);
-  const lb=document.createElement('div');lb.className='actions';
-  const l1=document.createElement('button');l1.className='btn sm ghost';l1.textContent='▶ Listen — right base';
-  const l2=document.createElement('button');l2.className='btn sm ghost';l2.textContent='▶ Listen — right upper zone';
-  const l3=document.createElement('button');l3.className='btn sm ghost';l3.textContent='■ Stop';
-  l1.onclick=()=>{playLung('coarse');setView('face');};
-  l2.onclick=()=>{playLung('reduced');setView('face');};
-  l3.onclick=()=>stopLung();
-  lb.append(l1,l2,l3);b.appendChild(lb);
 
   if(F.assessments.includes('tilt')){
     const o=card(host,'The head-up challenge','You sat him to 60° for two minutes',
@@ -2757,6 +2768,7 @@ function buildMobPanel(){
     +'<div class="actions" id="mobTools"></div>'
     +'<div id="mobFeed"></div></div>';
   h.appendChild(c);
+  narrate.last=null;paintObs.last=null;   // fresh nodes, so the change-caches must go
   renderMobButtons();
   paintLadder();
 }
@@ -2846,11 +2858,15 @@ function paintObs(){
     :['','No signal'];
   const rows=[['◉',colour],['≋',breath],['☺',face],['✊',grip],['✋',sig]];
   const labs=['Colour','Breathing','Face','Grip','Stop signal'];
-  o.innerHTML=rows.map((r,i)=>'<div class="ob '+r[1][0]+'"><span class="oi">'+r[0]+'</span>'
+  const html=rows.map((r,i)=>'<div class="ob '+r[1][0]+'"><span class="oi">'+r[0]+'</span>'
     +'<span class="ot">'+labs[i]+' — <b>'+r[1][1]+'</b></span></div>').join('')
-    +'<div class="borg"><div class="tlab"><span>Modified Borg</span><b>'+P.borg.toFixed(1)+' / 10</b></div>'
-    +'<div class="borgbar"><i class="borgfill" style="width:'+(P.borg*10)+'%"></i></div></div>';
-  const lc=$('#lvClock');if(lc)lc.textContent=Math.round(P.lvT)+' s';
+    +'<div class="borg"><div class="tlab"><span>Modified Borg</span>'
+    +'<b style="color:'+(P.borg>7.5?'#FF8FA3':P.borg>5?'#FFD98A':'#7BEDAC')+'">'+P.borg.toFixed(1)+' / 10 · '
+    +(P.borg>7.5?'very hard':P.borg>5?'hard':P.borg>3?'moderate':P.borg>1?'light':'nothing')+'</b></div>'
+    +'<div class="borgbar"><i class="borgfill" style="width:'+clamp(P.borg*10,0,100).toFixed(1)+'%"></i></div></div>';
+  if(html!==paintObs.last){paintObs.last=html;o.innerHTML=html;}
+  const lc=$('#lvClock'),ls=Math.round(P.lvT)+' s';
+  if(lc&&lc.textContent!==ls)lc.textContent=ls;
 }
 /* ---------- what stopping rules are currently breached ---------- */
 function breaches(){
@@ -2879,16 +2895,21 @@ function narrate(){
   else s='Comfortable at '+L.t.toLowerCase()+'. MAP '+Math.round(P.map)+', SpO₂ '+Math.round(P.spo2)+'%, Borg '+P.borg.toFixed(0)+'.';
   if(P.tension>0.9&&P.tension<=1)s+=' <b>The circuit is nearly tight.</b>';
   if(P.tension>1)s+=' <b>The circuit is pulling on the tube.</b>';
-  n.innerHTML=s;
-  const adv=$('#btnAdv');
-  if(adv){
-    adv.disabled=P.level>=7||P.crisis;
-    adv.textContent=P.level>=7?'You are at your ceiling':'Advance to '+(LEVELS[P.level+1]?LEVELS[P.level+1].short.toLowerCase():'');
-  }
-  const back=$('#btnBack');if(back)back.disabled=P.level<=0||P.crisis;
-  const hold=$('#btnHold');if(hold)hold.disabled=P.crisis;
-  const stop=$('#btnStop');
-  if(stop)stop.textContent=P.level===7?'Settle him in the chair and finish':'Stop and return him to bed';
+  if(s!==narrate.last){narrate.last=s;n.innerHTML=s;}
+  // Only touch a control when its label or state has actually changed. Rewriting
+  // a button's text node every frame tears down the node under the user's cursor
+  // and makes the button feel dead.
+  setBtn($('#btnAdv'),
+    P.level>=7?'You are at your ceiling':'Advance to '+(LEVELS[P.level+1]?LEVELS[P.level+1].short.toLowerCase():''),
+    P.level>=7||P.crisis);
+  setBtn($('#btnBack'),null,P.level<=0||P.crisis);
+  setBtn($('#btnHold'),null,MOB.holdLock||P.crisis);
+  setBtn($('#btnStop'),P.level===7?'Settle him in the chair and finish':'Stop and return him to bed',null);
+}
+function setBtn(b,label,disabled){
+  if(!b)return;
+  if(label!=null&&b.textContent!==label)b.textContent=label;
+  if(disabled!=null&&b.disabled!==disabled)b.disabled=disabled;
 }
 /* ---------- moving between rungs ---------- */
 function advanceLevel(){
@@ -2914,7 +2935,7 @@ function advanceLevel(){
   F.peakLevel=Math.max(F.peakLevel,P.level);
   F.imsAchieved=Math.max(F.imsAchieved,LEVELS[P.level].ims);
   setPose(LEVELS[P.level].pose);
-  paintLadder();
+  paintLadder();narrate();
   if(P.level>=4&&sceneView==='bed')setView('bed');
 }
 function holdHere(){
@@ -2923,11 +2944,12 @@ function holdHere(){
   F.orthoTrain=clamp(F.orthoTrain+0.18,0,1);
   award('mob',2,2,'Held at rung '+P.level+' to let his circulation catch up.');
   toast('Holding. Watch the pressure recover.','g');
-  const b=$('#btnHold');if(b){b.disabled=true;setTimeout(()=>{const x=$('#btnHold');if(x)x.disabled=false;},4000);}
+  // narrate() owns the button states, so the cool-down has to be a flag it respects
+  MOB.holdLock=true;narrate();setTimeout(()=>{MOB.holdLock=false;narrate();},4000);
 }
 function stepBack(){
   if(P.level<=0||P.crisis)return;
-  P.level--;P.lvT=0;setPose(LEVELS[P.level].pose);paintLadder();
+  P.level--;P.lvT=0;setPose(LEVELS[P.level].pose);paintLadder();narrate();
   award('mob',3,3,'Stepped back to rung '+P.level+' rather than pushing through.');
   toast('Back a rung. That is a decision, not a failure.','g');
 }
@@ -2945,7 +2967,7 @@ function doSuction(){
 }
 
 /* ---------- the live tick ---------- */
-MOB.tenT=0;MOB.insult=null;MOB.insultT=0;MOB.modalOpen=false;MOB.resolveT=0;
+MOB.tenT=0;MOB.insult=null;MOB.insultT=0;MOB.modalOpen=false;MOB.resolveT=0;MOB.uiT=0;MOB.holdLock=false;
 function mobTick(dt){
   if(!MOB.active||MOB.ended)return;
   P.lvT+=dt;
@@ -2979,7 +3001,10 @@ function mobTick(dt){
       if(MOB.tenT>3||noOwner){F.ettTrigger=MOB.tenT>3?'traction':'unowned';fireInsult('ett');}
     }
   }
-  paintObs();narrate();
+  // the text panels do not need repainting at frame rate — 8 Hz is plenty, and it
+  // keeps the main thread free for the traces, the rig and the user's clicks
+  MOB.uiT+=dt;
+  if(MOB.uiT>=0.125){MOB.uiT=0;paintObs();narrate();}
   const lc=$('#lvClock');if(lc)lc.textContent=Math.round(P.lvT)+' s';
 }
 function fireInsult(kind){
