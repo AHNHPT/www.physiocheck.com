@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manic relapse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F6F6;
+  --card:#FFFFFF;
+  --ink:#1E2A2E;
+  --muted:#5C6B70;
+  --line:#E1E8E8;
+  --teal:#0E7A72;
+  --teal-dark:#0A5B55;
+  --teal-tint:#E7F3F1;
+  --amber:#C97A2B;
+  --amber-tint:#FBF0E2;
+  --good:#1E8F5F;
+  --good-tint:#E7F5EE;
+  --bad:#C4483C;
+  --bad-tint:#FBEAE8;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,30,30,.04), 0 6px 20px rgba(16,30,30,.06);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, #EAF3F2 0%, var(--bg) 60%);
+  color:var(--ink);
+  max-width:720px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{
+  font-family:'Lexend',Arial,sans-serif;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+
+/* ---------- Header ---------- */
+.masthead{
+  text-align:center;
+  margin-bottom:26px;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.masthead h1{
+  font-size:26px;
+  color:var(--ink);
+}
+.masthead p.role{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* ---------- Progress bar ---------- */
+.progress{
+  display:flex;
+  gap:6px;
+  margin:20px 0 24px;
+}
+.progress .seg{
+  flex:1;
+  height:5px;
+  border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress .seg.done{ background:var(--teal); }
+.progress .seg.active{
+  background:linear-gradient(90deg,var(--teal) 50%,var(--line) 50%);
+}
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- Cards ---------- */
+.box{
+  background:var(--card);
+  padding:22px 22px 24px;
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.box h3{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:4px;
+}
+.box h3 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:var(--teal);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.box .subhint{
+  color:var(--muted);
+  font-size:13px;
+  margin:2px 0 16px;
+}
+
+/* ---------- Case note fields ---------- */
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0 4px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:999px;
+}
+.tag.diag{ background:var(--amber-tint); color:var(--amber); }
+.tag.ref{ background:var(--teal-tint); color:var(--teal-dark); }
+
+.field-group{
+  margin:18px 0;
+}
+.field-group h4{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.field-group p{
+  margin:0 0 8px;
+  font-size:14.5px;
+}
+.field-group ul{
+  margin:0;
+  padding-left:18px;
+  font-size:14.5px;
+}
+.field-group li{ margin-bottom:4px; }
+.field-group dl{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-size:14.5px;
+  margin:0;
+}
+.field-group dt{ color:var(--muted); font-weight:500; white-space:nowrap; }
+.field-group dd{ margin:0; }
+
+.pe-block{
+  background:#FAFCFC;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-top:8px;
+}
+.pe-block + .pe-block{ margin-top:10px; }
+.pe-block .k{
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--ink);
+}
+.pe-block .v{
+  font-size:14px;
+  color:var(--ink);
+  margin-top:2px;
+}
+
+.drug-chart{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+.drug-chart th, .drug-chart td{
+  border:1px solid var(--line);
+  padding:9px 10px;
+  text-align:center;
+}
+.drug-chart th{
+  background:#F3F6F6;
+  font-family:'Lexend',Arial,sans-serif;
+  font-weight:600;
+  font-size:11.5px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+.drug-chart td:first-child{
+  text-align:left;
+  font-weight:600;
+}
+.drug-chart tbody tr:nth-child(even) td{ background:#FBFCFC; }
+.drug-chart .na{ color:var(--muted); }
+.chart-note{
+  font-size:12.5px;
+  color:var(--muted);
+  margin:8px 0 0;
+}
+.case-img{
+  margin-top:14px;
+  text-align:center;
+}
+.case-img img{
+  max-width:100%;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+.case-img.placeholder{
+  border:1.5px dashed var(--line);
+  border-radius:10px;
+  padding:22px 14px;
+  color:var(--muted);
+  font-size:13px;
+  background:#FAFCFC;
+}
+.case-img .ecg-cap{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+}
+.case-img.placeholder .ph-label{
+  font-weight:600;
+  color:var(--teal-dark);
+  display:block;
+  margin-bottom:4px;
+}
+
+.prompt-line{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px dashed var(--line);
+  font-size:14.5px;
+  font-style:italic;
+  color:var(--muted);
+}
+
+/* ---------- Checkbox-style questions ---------- */
+label.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:9px 0;
+  cursor:pointer;
+  font-size:14.5px;
+  transition:background .15s ease, border-color .15s ease;
+}
+label.opt:hover{
+  background:var(--teal-tint);
+  border-color:var(--teal);
+}
+label.opt input[type="checkbox"]{
+  margin-top:2px;
+  width:17px;height:17px;
+  accent-color:var(--teal);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+.feedback{
+  font-size:13.5px;
+  color:var(--teal-dark);
+  background:var(--teal-tint);
+  border-radius:8px;
+  margin:-4px 0 9px 2px;
+}
+.feedback:empty{ display:none; }
+.feedback:not(:empty){ padding:10px 14px; }
+
+/* ---------- Buttons ---------- */
+.btn{
+  margin-top:18px;
+  padding:12px 20px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  letter-spacing:.01em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--teal-dark); }
+.btn:active{ transform:scale(.98); }
+.btn.ghost{
+  background:transparent;
+  color:var(--teal-dark);
+  border:1px solid var(--line);
+}
+.btn.ghost:hover{ background:var(--teal-tint); border-color:var(--teal); }
+.btn[disabled]{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+/* ---------- Results: score banner ---------- */
+.score-banner{
+  background:var(--teal-tint);
+  border:1px solid var(--teal);
+  border-radius:12px;
+  padding:16px 18px;
+  text-align:center;
+  margin-bottom:18px;
+  transition:background .2s ease, border-color .2s ease;
+}
+.score-banner .big{
+  font-family:'Lexend',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--teal-dark);
+}
+.score-banner .pct{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--teal-dark);
+  opacity:.85;
+  margin-top:2px;
+}
+.score-banner .lbl{
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--teal-dark);
+  opacity:.8;
+}
+.score-banner.low{
+  background:var(--bad-tint);
+  border-color:var(--bad);
+}
+.score-banner.low .big,
+.score-banner.low .pct,
+.score-banner.low .lbl{
+  color:var(--bad);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13.5px;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:9px 8px;
+  text-align:center;
+}
+th{
+  background:#F3F6F6;
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--muted);
+}
+td:nth-child(2){ text-align:left; }
+tr:nth-child(even) td{ background:#FBFCFC; }
+.ok{ color:var(--good); font-weight:700; }
+.no{ color:var(--bad); font-weight:700; }
+
+/* ---------- Learning point / model answer section ---------- */
+.learning{
+  margin-top:26px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:14.5px;
+}
+.learning h4{
+  font-size:15px;
+  color:var(--teal-dark);
+  margin-bottom:10px;
+}
+.learning .key-points{
+  background:var(--teal-tint);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:16px;
+}
+.learning .key-points ul{ margin:0; padding-left:18px; }
+.learning .key-points li{ margin-bottom:4px; }
+.learning .qa{
+  margin-top:16px;
+  padding:14px 16px;
+  background:#FAFBFB;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.learning .qa + .qa{ margin-top:10px; }
+.learning .qa .opt-title{
+  color:var(--teal-dark);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.learning .qa p{ margin:0 0 8px; }
+.learning .qa p:last-child{ margin-bottom:0; }
+.learning .ref{
+  font-size:12.5px;
+  color:var(--muted);
+  font-style:italic;
+}
+.creator{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  margin-top:20px;
+}
+.back-link{
+  display:inline-flex;
+  margin-top:6px;
+  text-decoration:none;
+}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="eyebrow">🩺 Physiotherapy Case &middot; PSY</div>
+  <h1>Manic relapse</h1>
+  <p class="role">Specialty: PSY &nbsp;&middot;&nbsp; Difficulty: &#9733;&#9733;&#9734;</p>
+</div>
+
+<div class="progress">
+  <div class="seg active" id="seg1"></div>
+  <div class="seg" id="seg2"></div>
+</div>
+<div class="progress-labels">
+  <span>Assessment</span>
+  <span>Management</span>
+</div>
+
+<!-- ================= CASE NOTE ================= -->
+<div class="box">
+  <div class="field-group">
+    <h4>Case background / presentation:</h4>
+    <p>A Bipolar Affective Disorder case admitted due to manic relapse.<br>
+    Cases doctor restarted the previous regime and showed improvement.<br>
+    But the condition deteriorated after gastroenteritis&hellip;</p>
+  </div>
+
+  <div class="field-group">
+    <h4>SHx:</h4>
+    <ul>
+      <li>M/26</li>
+      <li>Single</li>
+      <li>Living with parents</li>
+      <li>Unemployed</li>
+      <li>Known to MHS since 2011, Dx: BAD</li>
+      <li>Repeated admission since 7/2023 x manic relapse</li>
+      <li>Last adm in TPH PSY 5/10 &ndash; 1/12/2023 x disorganized and elated on admission with persecutory and bizarre beliefs</li>
+    </ul>
+  </div>
+
+  <div class="field-group">
+    <h4>PMHx:</h4>
+    <ul>
+      <li>Good Past Health</li>
+    </ul>
+  </div>
+
+  <div class="field-group">
+    <h4>HPI:</h4>
+    <ul>
+      <li>Recurrence of manic symptoms soon 1 week after previous D/C</li>
+      <li>Mood elated, talkative, overspending behaviour</li>
+      <li>Energetic and reduced sleep (~4hrs per night)</li>
+      <li>Delusional thought+: patient can absorb and emit microwave</li>
+      <li>Wandered around in Tsim Sha Tsui without returning home</li>
+      <li>On recent 2 weeks, expressed paranoid idea (PS5 being hacked) and grandiose idea that became pioneer in IT field</li>
+      <li>On DoA upon FU, family expressed heavy carer stress and patient showed poor insight.</li>
+      <li>Also reported doubtful drug compliance.</li>
+    </ul>
+    <!-- Original wording from the case form:
+         "Dosage : Li 400mg (Pre discharge blood test Li 0.8 mEq/L) and Epilim 900mg
+          but follow-up blood test: Li 0.4 mEq/L and Epilim 497mEq/L." -->
+    <h4 style="margin-top:14px;">Dosage:</h4>
+    <table class="drug-chart">
+      <thead>
+        <tr>
+          <th>Drug</th>
+          <th>Dose</th>
+          <th>Last Admission</th>
+          <th>SOPD FU</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Li (lithium)</td>
+          <td>400 mg</td>
+          <td>0.8 mEq/L</td>
+          <td>0.4 mEq/L</td>
+        </tr>
+        <tr>
+          <td>Epilim</td>
+          <td>900 mg</td>
+          <td class="na">&mdash;</td>
+          <td>497 mEq/L</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="field-group">
+    <h4>On admission:</h4>
+    <ul>
+      <li>F123 was signed and admitted.</li>
+      <li>On admission patient&rsquo;s mood was elated and talkative.</li>
+      <li>Speech was relevant and coherent, orientated to time, place and person.</li>
+      <li>Expressed similar delusions, denied active hallucinations nor suicidal ideas.</li>
+      <li>Walking unaided independently with steady gait.</li>
+      <li>Case doctor restarted the regime for a week.</li>
+      <li>Patient&rsquo;s mental status seems improving but suffered gastroenteritis for 2 days.</li>
+    </ul>
+  </div>
+
+  <p class="prompt-line">Then noted deteriorated mental state, confused speech, diarrhea, resting tremor, dizziness and inability to stand or walk safely. Refer physiotherapy for assessment and management.</p>
+</div>
+
+<!-- ================= QUESTION 1 ================= -->
+<div class="box" id="question1">
+  <h3><span class="num">1</span> What Investigation / OE you would like to check / perform?</h3>
+  <p class="subhint">Tick an item to reveal its result.</p>
+  <div id="q1-list"></div>
+  <button class="btn" id="q1-btn" onclick="proceedToQ2()">➡️ Proceed to Management</button>
+</div>
+
+<!-- ================= QUESTION 2 ================= -->
+<div class="box" id="question2" style="display:none;">
+  <h3><span class="num">2</span> Select all management options you would like to provide after the condition stabilized?</h3>
+  <div id="q2-list"></div>
+  <button class="btn" id="q2-btn" onclick="submitCase()">✅ Submit and Show Result</button>
+</div>
+
+<!-- ================= RESULT ================= -->
+<div class="box" id="result" style="display:none;">
+  <h3>📊 Final Score &amp; Response Chart</h3>
+  <div class="score-banner" id="score-banner">
+    <div class="lbl">Your total score</div>
+    <div class="big" id="final-score"></div>
+    <div class="pct" id="final-pct"></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Q</th><th>Option</th><th>Indicated?</th><th>Your Selection</th></tr>
+    </thead>
+    <tbody id="result-table-body"></tbody>
+  </table>
+
+  <div class="learning">
+    <h4>🧪 Key Points</h4>
+    <div class="key-points">
+      <ul>
+        <li>Lithium is a key mood stabilizer with a narrow therapeutic index, meaning the safe dose is very close to a toxic dose. Dehydration or electrolyte imbalances can quickly trigger lithium toxicity because the body holds onto lithium when salt or water levels drop.</li>
+        <li><img src="toxic.jpg" alt="Lithium toxicity" width="100%"></li>
+      </ul>
+    </div>
+
+    <h4>Explanation of each option</h4>
+    <div id="qa-list"></div>
+
+    <p class="ref">References:</p>
+    <ol class="ref">
+      <li>Nolen W. A., Licht R. W., Young A. H., et al. What is the optimal serum level for lithium in the maintenance treatment of bipolar disorder? A systematic review and recommendations from the ISBD/IGSLI Task Force on treatment with lithium. Bipolar Disord. 2019 Jun 20;21(5):394&ndash;409.</li>
+      <li>Slubicki M., Avula A., Schaffer D.H., et al. Lithium Toxicity. [Updated 2026 Jun 19]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026 Jan-.</li>
+      <li>Puhr J., Hack J. B., Early J. A., Price W. L., Meggs W. J.. Lithium overdose with electrocardiogram changes suggesting ischemia. J Med Toxicol 2008 Sep;4(3):170&ndash;172</li>
+      <li>Mehta N., Vannozzi R.. Lithium&#8208;induced electrocardiographic changes: A complete review. Clin Cardiol. 2017 Dec 16;40(12):1363&ndash;1367.</li>
+      <li>Hellmann M. J., Gupta N.. Silent Danger: Lithium Toxicity And Associated Neurologic Sequelae. Am J Respir Crit Care Med 2017;195:A3799.</li>
+      <li>Nobematsu A, Wakabayashi H, Hanada T, Watanabe N, Tachibana K. Post-acute Rehabilitation for Ataxia Associated with Acute Lithium Toxicity: A Case Report. Prog Rehabil Med. 2018 May 16;3:20180010</li>
+    </ol>
+  </div>
+
+  <p class="creator">Case creator: Alex Cheung</p>
+  <button class="btn ghost" onclick="location.reload()">🔁 Restart Case</button>
+</div>
+<!-- Back to Homepage Button -->
+<a href="../../case_index.html" class="btn ghost back-link">← Back to Homepage</a>
+
+<script>
+// ---------- Data ----------
+
+// ▼▼▼  ECG IMAGE  ▼▼▼
+// Currently holding a generated lead II rhythm strip (58 bpm, QT ~520 ms /
+// QTc ~510 ms, flattened T waves), embedded as an SVG data URI.
+// To use your own ECG instead: put the image file next to this HTML file and
+// replace the whole string below with its name, e.g. "my_ecg.png".
+// Set it to "" to go back to the dashed placeholder box.
+const ECG_IMAGE_SRC = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MjIgMjYwIiB3aWR0aD0iNjIyIiBoZWlnaHQ9IjI2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJTaW5nbGUtbGVhZCByaHl0aG0gc3RyaXAsIGxlYWQgSUksIDU4IGJlYXRzIHBlciBtaW51dGUsIHByb2xvbmdlZCBRVCBpbnRlcnZhbCB3aXRoIGZsYXR0ZW5lZCBUIHdhdmVzIj4KPHN0eWxlPgogIC5iZ3B7ZmlsbDojRkVGN0Y1O30KICAubWlue3N0cm9rZTojRjNDOUMyO3N0cm9rZS13aWR0aDowLjY7fQogIC5tYWp7c3Ryb2tlOiNFMzlBOEU7c3Ryb2tlLXdpZHRoOjEuMjt9CiAgLnRyYWNle2ZpbGw6bm9uZTtzdHJva2U6IzFFMkEyRTtzdHJva2Utd2lkdGg6Mi42O3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2UtbGluZWNhcDpyb3VuZDt9CiAgLmxibHtmb250LWZhbWlseTonSW50ZXInLEFyaWFsLHNhbnMtc2VyaWY7Zm9udC1zaXplOjE5cHg7Zm9udC13ZWlnaHQ6NzAwO2ZpbGw6IzFFMkEyRTt9CiAgLnN1Yntmb250LWZhbWlseTonSW50ZXInLEFyaWFsLHNhbnMtc2VyaWY7Zm9udC1zaXplOjE1cHg7ZmlsbDojNUM2QjcwO30KICAuZnJhbWV7ZmlsbDpub25lO3N0cm9rZTojRTM5QThFO3N0cm9rZS13aWR0aDoxLjY7fQo8L3N0eWxlPgo8cmVjdCBjbGFzcz0iYmdwIiB4PSIwIiB5PSIwIiB3aWR0aD0iNjIyIiBoZWlnaHQ9IjI2MCIgcng9IjYiLz4KPGc+PGxpbmUgeDE9IjMwLjAiIHkxPSIzMC4wIiB4Mj0iMzAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjM1LjAiIHkxPSIzMC4wIiB4Mj0iMzUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjQwLjAiIHkxPSIzMC4wIiB4Mj0iNDAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjQ1LjAiIHkxPSIzMC4wIiB4Mj0iNDUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjUwLjAiIHkxPSIzMC4wIiB4Mj0iNTAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjU1LjAiIHkxPSIzMC4wIiB4Mj0iNTUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjYwLjAiIHkxPSIzMC4wIiB4Mj0iNjAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjY1LjAiIHkxPSIzMC4wIiB4Mj0iNjUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjcwLjAiIHkxPSIzMC4wIiB4Mj0iNzAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9Ijc1LjAiIHkxPSIzMC4wIiB4Mj0iNzUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjgwLjAiIHkxPSIzMC4wIiB4Mj0iODAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9Ijg1LjAiIHkxPSIzMC4wIiB4Mj0iODUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjkwLjAiIHkxPSIzMC4wIiB4Mj0iOTAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9Ijk1LjAiIHkxPSIzMC4wIiB4Mj0iOTUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjEwMC4wIiB5MT0iMzAuMCIgeDI9IjEwMC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMTA1LjAiIHkxPSIzMC4wIiB4Mj0iMTA1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1haiIvPjxsaW5lIHgxPSIxMTAuMCIgeTE9IjMwLjAiIHgyPSIxMTAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjExNS4wIiB5MT0iMzAuMCIgeDI9IjExNS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMTIwLjAiIHkxPSIzMC4wIiB4Mj0iMTIwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIxMjUuMCIgeTE9IjMwLjAiIHgyPSIxMjUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjEzMC4wIiB5MT0iMzAuMCIgeDI9IjEzMC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtYWoiLz48bGluZSB4MT0iMTM1LjAiIHkxPSIzMC4wIiB4Mj0iMTM1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIxNDAuMCIgeTE9IjMwLjAiIHgyPSIxNDAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjE0NS4wIiB5MT0iMzAuMCIgeDI9IjE0NS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMTUwLjAiIHkxPSIzMC4wIiB4Mj0iMTUwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIxNTUuMCIgeTE9IjMwLjAiIHgyPSIxNTUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjE2MC4wIiB5MT0iMzAuMCIgeDI9IjE2MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMTY1LjAiIHkxPSIzMC4wIiB4Mj0iMTY1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIxNzAuMCIgeTE9IjMwLjAiIHgyPSIxNzAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjE3NS4wIiB5MT0iMzAuMCIgeDI9IjE3NS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMTgwLjAiIHkxPSIzMC4wIiB4Mj0iMTgwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1haiIvPjxsaW5lIHgxPSIxODUuMCIgeTE9IjMwLjAiIHgyPSIxODUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjE5MC4wIiB5MT0iMzAuMCIgeDI9IjE5MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMTk1LjAiIHkxPSIzMC4wIiB4Mj0iMTk1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIyMDAuMCIgeTE9IjMwLjAiIHgyPSIyMDAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjIwNS4wIiB5MT0iMzAuMCIgeDI9IjIwNS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtYWoiLz48bGluZSB4MT0iMjEwLjAiIHkxPSIzMC4wIiB4Mj0iMjEwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIyMTUuMCIgeTE9IjMwLjAiIHgyPSIyMTUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjIyMC4wIiB5MT0iMzAuMCIgeDI9IjIyMC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMjI1LjAiIHkxPSIzMC4wIiB4Mj0iMjI1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIyMzAuMCIgeTE9IjMwLjAiIHgyPSIyMzAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjIzNS4wIiB5MT0iMzAuMCIgeDI9IjIzNS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMjQwLjAiIHkxPSIzMC4wIiB4Mj0iMjQwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIyNDUuMCIgeTE9IjMwLjAiIHgyPSIyNDUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjI1MC4wIiB5MT0iMzAuMCIgeDI9IjI1MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMjU1LjAiIHkxPSIzMC4wIiB4Mj0iMjU1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1haiIvPjxsaW5lIHgxPSIyNjAuMCIgeTE9IjMwLjAiIHgyPSIyNjAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjI2NS4wIiB5MT0iMzAuMCIgeDI9IjI2NS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMjcwLjAiIHkxPSIzMC4wIiB4Mj0iMjcwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIyNzUuMCIgeTE9IjMwLjAiIHgyPSIyNzUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjI4MC4wIiB5MT0iMzAuMCIgeDI9IjI4MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtYWoiLz48bGluZSB4MT0iMjg1LjAiIHkxPSIzMC4wIiB4Mj0iMjg1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIyOTAuMCIgeTE9IjMwLjAiIHgyPSIyOTAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjI5NS4wIiB5MT0iMzAuMCIgeDI9IjI5NS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzAwLjAiIHkxPSIzMC4wIiB4Mj0iMzAwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzMDUuMCIgeTE9IjMwLjAiIHgyPSIzMDUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjMxMC4wIiB5MT0iMzAuMCIgeDI9IjMxMC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzE1LjAiIHkxPSIzMC4wIiB4Mj0iMzE1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzMjAuMCIgeTE9IjMwLjAiIHgyPSIzMjAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMyNS4wIiB5MT0iMzAuMCIgeDI9IjMyNS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzMwLjAiIHkxPSIzMC4wIiB4Mj0iMzMwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1haiIvPjxsaW5lIHgxPSIzMzUuMCIgeTE9IjMwLjAiIHgyPSIzMzUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjM0MC4wIiB5MT0iMzAuMCIgeDI9IjM0MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzQ1LjAiIHkxPSIzMC4wIiB4Mj0iMzQ1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzNTAuMCIgeTE9IjMwLjAiIHgyPSIzNTAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjM1NS4wIiB5MT0iMzAuMCIgeDI9IjM1NS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtYWoiLz48bGluZSB4MT0iMzYwLjAiIHkxPSIzMC4wIiB4Mj0iMzYwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzNjUuMCIgeTE9IjMwLjAiIHgyPSIzNjUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjM3MC4wIiB5MT0iMzAuMCIgeDI9IjM3MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzc1LjAiIHkxPSIzMC4wIiB4Mj0iMzc1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzODAuMCIgeTE9IjMwLjAiIHgyPSIzODAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjM4NS4wIiB5MT0iMzAuMCIgeDI9IjM4NS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzkwLjAiIHkxPSIzMC4wIiB4Mj0iMzkwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzOTUuMCIgeTE9IjMwLjAiIHgyPSIzOTUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjQwMC4wIiB5MT0iMzAuMCIgeDI9IjQwMC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNDA1LjAiIHkxPSIzMC4wIiB4Mj0iNDA1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1haiIvPjxsaW5lIHgxPSI0MTAuMCIgeTE9IjMwLjAiIHgyPSI0MTAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjQxNS4wIiB5MT0iMzAuMCIgeDI9IjQxNS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNDIwLjAiIHkxPSIzMC4wIiB4Mj0iNDIwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI0MjUuMCIgeTE9IjMwLjAiIHgyPSI0MjUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjQzMC4wIiB5MT0iMzAuMCIgeDI9IjQzMC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtYWoiLz48bGluZSB4MT0iNDM1LjAiIHkxPSIzMC4wIiB4Mj0iNDM1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI0NDAuMCIgeTE9IjMwLjAiIHgyPSI0NDAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjQ0NS4wIiB5MT0iMzAuMCIgeDI9IjQ0NS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNDUwLjAiIHkxPSIzMC4wIiB4Mj0iNDUwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI0NTUuMCIgeTE9IjMwLjAiIHgyPSI0NTUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjQ2MC4wIiB5MT0iMzAuMCIgeDI9IjQ2MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNDY1LjAiIHkxPSIzMC4wIiB4Mj0iNDY1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI0NzAuMCIgeTE9IjMwLjAiIHgyPSI0NzAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjQ3NS4wIiB5MT0iMzAuMCIgeDI9IjQ3NS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNDgwLjAiIHkxPSIzMC4wIiB4Mj0iNDgwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1haiIvPjxsaW5lIHgxPSI0ODUuMCIgeTE9IjMwLjAiIHgyPSI0ODUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjQ5MC4wIiB5MT0iMzAuMCIgeDI9IjQ5MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNDk1LjAiIHkxPSIzMC4wIiB4Mj0iNDk1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI1MDAuMCIgeTE9IjMwLjAiIHgyPSI1MDAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjUwNS4wIiB5MT0iMzAuMCIgeDI9IjUwNS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtYWoiLz48bGluZSB4MT0iNTEwLjAiIHkxPSIzMC4wIiB4Mj0iNTEwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI1MTUuMCIgeTE9IjMwLjAiIHgyPSI1MTUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjUyMC4wIiB5MT0iMzAuMCIgeDI9IjUyMC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNTI1LjAiIHkxPSIzMC4wIiB4Mj0iNTI1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI1MzAuMCIgeTE9IjMwLjAiIHgyPSI1MzAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjUzNS4wIiB5MT0iMzAuMCIgeDI9IjUzNS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNTQwLjAiIHkxPSIzMC4wIiB4Mj0iNTQwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI1NDUuMCIgeTE9IjMwLjAiIHgyPSI1NDUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjU1MC4wIiB5MT0iMzAuMCIgeDI9IjU1MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNTU1LjAiIHkxPSIzMC4wIiB4Mj0iNTU1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1haiIvPjxsaW5lIHgxPSI1NjAuMCIgeTE9IjMwLjAiIHgyPSI1NjAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjU2NS4wIiB5MT0iMzAuMCIgeDI9IjU2NS4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iNTcwLjAiIHkxPSIzMC4wIiB4Mj0iNTcwLjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI1NzUuMCIgeTE9IjMwLjAiIHgyPSI1NzUuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjU4MC4wIiB5MT0iMzAuMCIgeDI9IjU4MC4wIiB5Mj0iMjMwLjAiIGNsYXNzPSJtYWoiLz48bGluZSB4MT0iNTg1LjAiIHkxPSIzMC4wIiB4Mj0iNTg1LjAiIHkyPSIyMzAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSI1OTAuMCIgeTE9IjMwLjAiIHgyPSI1OTAuMCIgeTI9IjIzMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIzMC4wIiB4Mj0iNTkyLjUiIHkyPSIzMC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIzNS4wIiB4Mj0iNTkyLjUiIHkyPSIzNS4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI0MC4wIiB4Mj0iNTkyLjUiIHkyPSI0MC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI0NS4wIiB4Mj0iNTkyLjUiIHkyPSI0NS4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI1MC4wIiB4Mj0iNTkyLjUiIHkyPSI1MC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI1NS4wIiB4Mj0iNTkyLjUiIHkyPSI1NS4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI2MC4wIiB4Mj0iNTkyLjUiIHkyPSI2MC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI2NS4wIiB4Mj0iNTkyLjUiIHkyPSI2NS4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI3MC4wIiB4Mj0iNTkyLjUiIHkyPSI3MC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI3NS4wIiB4Mj0iNTkyLjUiIHkyPSI3NS4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI4MC4wIiB4Mj0iNTkyLjUiIHkyPSI4MC4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI4NS4wIiB4Mj0iNTkyLjUiIHkyPSI4NS4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI5MC4wIiB4Mj0iNTkyLjUiIHkyPSI5MC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSI5NS4wIiB4Mj0iNTkyLjUiIHkyPSI5NS4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIxMDAuMCIgeDI9IjU5Mi41IiB5Mj0iMTAwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzAuMCIgeTE9IjEwNS4wIiB4Mj0iNTkyLjUiIHkyPSIxMDUuMCIgY2xhc3M9Im1haiIvPjxsaW5lIHgxPSIzMC4wIiB5MT0iMTEwLjAiIHgyPSI1OTIuNSIgeTI9IjExMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIxMTUuMCIgeDI9IjU5Mi41IiB5Mj0iMTE1LjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzAuMCIgeTE9IjEyMC4wIiB4Mj0iNTkyLjUiIHkyPSIxMjAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzMC4wIiB5MT0iMTI1LjAiIHgyPSI1OTIuNSIgeTI9IjEyNS4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIxMzAuMCIgeDI9IjU5Mi41IiB5Mj0iMTMwLjAiIGNsYXNzPSJtYWoiLz48bGluZSB4MT0iMzAuMCIgeTE9IjEzNS4wIiB4Mj0iNTkyLjUiIHkyPSIxMzUuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzMC4wIiB5MT0iMTQwLjAiIHgyPSI1OTIuNSIgeTI9IjE0MC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIxNDUuMCIgeDI9IjU5Mi41IiB5Mj0iMTQ1LjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzAuMCIgeTE9IjE1MC4wIiB4Mj0iNTkyLjUiIHkyPSIxNTAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzMC4wIiB5MT0iMTU1LjAiIHgyPSI1OTIuNSIgeTI9IjE1NS4wIiBjbGFzcz0ibWFqIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIxNjAuMCIgeDI9IjU5Mi41IiB5Mj0iMTYwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzAuMCIgeTE9IjE2NS4wIiB4Mj0iNTkyLjUiIHkyPSIxNjUuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzMC4wIiB5MT0iMTcwLjAiIHgyPSI1OTIuNSIgeTI9IjE3MC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIxNzUuMCIgeDI9IjU5Mi41IiB5Mj0iMTc1LjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzAuMCIgeTE9IjE4MC4wIiB4Mj0iNTkyLjUiIHkyPSIxODAuMCIgY2xhc3M9Im1haiIvPjxsaW5lIHgxPSIzMC4wIiB5MT0iMTg1LjAiIHgyPSI1OTIuNSIgeTI9IjE4NS4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIxOTAuMCIgeDI9IjU5Mi41IiB5Mj0iMTkwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzAuMCIgeTE9IjE5NS4wIiB4Mj0iNTkyLjUiIHkyPSIxOTUuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzMC4wIiB5MT0iMjAwLjAiIHgyPSI1OTIuNSIgeTI9IjIwMC4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIyMDUuMCIgeDI9IjU5Mi41IiB5Mj0iMjA1LjAiIGNsYXNzPSJtYWoiLz48bGluZSB4MT0iMzAuMCIgeTE9IjIxMC4wIiB4Mj0iNTkyLjUiIHkyPSIyMTAuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzMC4wIiB5MT0iMjE1LjAiIHgyPSI1OTIuNSIgeTI9IjIxNS4wIiBjbGFzcz0ibWluIi8+PGxpbmUgeDE9IjMwLjAiIHkxPSIyMjAuMCIgeDI9IjU5Mi41IiB5Mj0iMjIwLjAiIGNsYXNzPSJtaW4iLz48bGluZSB4MT0iMzAuMCIgeTE9IjIyNS4wIiB4Mj0iNTkyLjUiIHkyPSIyMjUuMCIgY2xhc3M9Im1pbiIvPjxsaW5lIHgxPSIzMC4wIiB5MT0iMjMwLjAiIHgyPSI1OTIuNSIgeTI9IjIzMC4wIiBjbGFzcz0ibWFqIi8+PC9nPgo8cmVjdCBjbGFzcz0iZnJhbWUiIHg9IjMwLjAiIHk9IjMwLjAiIHdpZHRoPSI1NjIuNSIgaGVpZ2h0PSIyMDAuMCIvPgo8cGF0aCBjbGFzcz0idHJhY2UiIGQ9Ik0gMzAuMCwxNTQuMCBMIDQyLjIsMTU0LjAgTCA1NC4zLDE1NC4wIEwgNTcuNSwxMDQuMCBMIDY5LjgsMTA0LjAgTCA4Mi4wLDEwNC4wIEwgODIuNSwxNTQuMCBMIDk0LjgsMTU0LjAgTCAxMDcuMCwxNTQuMCBMIDExNy41LDE1MS42IEwgMTE3LjcsMTUxLjIgTCAxMTguMCwxNTAuOCBMIDExOC4yLDE1MC4zIEwgMTE4LjUsMTQ5LjkgTCAxMTguOCwxNDkuNSBMIDExOS4wLDE0OS4wIEwgMTE5LjIsMTQ4LjYgTCAxMTkuNSwxNDguMSBMIDExOS44LDE0Ny43IEwgMTIwLjAsMTQ3LjQgTCAxMjAuNSwxNDYuOCBMIDEyMi41LDE0Ny40IEwgMTIyLjgsMTQ3LjcgTCAxMjMuMCwxNDguMSBMIDEyMy4yLDE0OC42IEwgMTIzLjUsMTQ5LjAgTCAxMjMuOCwxNDkuNSBMIDEyNC4wLDE0OS45IEwgMTI0LjIsMTUwLjMgTCAxMjQuNSwxNTAuOCBMIDEyNC44LDE1MS4yIEwgMTI1LjAsMTUxLjYgTCAxMjUuNSwxNTIuMiBMIDEyNi4wLDE1Mi44IEwgMTI2LjUsMTUzLjIgTCAxMjcuMiwxNTMuNiBMIDEyOS4wLDE1My45IEwgMTM2LjUsMTU0LjMgTCAxMzcuMCwxNTUuMCBMIDEzNy41LDE1NS43IEwgMTM4LjAsMTU2LjMgTCAxMzguNSwxNTcuMCBMIDEzOC44LDE1Mi4xIEwgMTM5LjAsMTQ3LjMgTCAxMzkuMiwxNDIuNCBMIDEzOS41LDEzNy42IEwgMTM5LjgsMTMyLjcgTCAxNDAuMCwxMjcuOSBMIDE0MC4yLDEyMy4wIEwgMTQwLjUsMTE4LjIgTCAxNDAuOCwxMTMuMyBMIDE0MS4wLDEwOC41IEwgMTQxLjIsMTAzLjYgTCAxNDEuNSw5OC44IEwgMTQxLjgsOTMuOSBMIDE0Mi4yLDk5LjcgTCAxNDIuNSwxMDUuMSBMIDE0Mi44LDExMC42IEwgMTQzLjAsMTE2LjAgTCAxNDMuMiwxMjEuNCBMIDE0My41LDEyNi45IEwgMTQzLjgsMTMyLjMgTCAxNDQuMCwxMzcuOCBMIDE0NC4yLDE0My4yIEwgMTQ0LjUsMTQ4LjcgTCAxNDQuOCwxNTQuMSBMIDE0NS4wLDE1OS42IEwgMTQ1LjIsMTY1LjAgTCAxNDUuNSwxNjQuMCBMIDE0NS44LDE2My4xIEwgMTQ2LjAsMTYyLjEgTCAxNDYuMiwxNjEuMiBMIDE0Ni41LDE2MC4yIEwgMTQ2LjgsMTU5LjMgTCAxNDcuMCwxNTguMyBMIDE0Ny4yLDE1Ny4zIEwgMTQ3LjUsMTU2LjQgTCAxNDcuOCwxNTUuNCBMIDE0OC4wLDE1NC41IEwgMTQ4LjIsMTU0LjAgTCAxNjAuNSwxNTQuMCBMIDE3Mi44LDE1My44IEwgMTc1LjgsMTUzLjQgTCAxNzcuNSwxNTMuMCBMIDE3OC44LDE1Mi42IEwgMTc5LjgsMTUyLjMgTCAxODAuOCwxNTEuOSBMIDE4MS43LDE1MS41IEwgMTgyLjgsMTUxLjEgTCAxODQuMCwxNTAuNyBMIDE4NS44LDE1MC4zIEwgMTg5LjgsMTUwLjcgTCAxOTEuMCwxNTEuMSBMIDE5Mi4wLDE1MS41IEwgMTkzLjAsMTUxLjkgTCAxOTQuMCwxNTIuMyBMIDE5NS4wLDE1Mi42IEwgMTk2LjIsMTUzLjAgTCAxOTcuOCwxNTMuNCBMIDIwMC4zLDE1My43IEwgMjEyLjUsMTU0LjAgTCAyMjQuOCwxNTQuMCBMIDIzNy4wLDE1NC4wIEwgMjQ0LjUsMTUzLjYgTCAyNDUuMiwxNTMuMiBMIDI0NS44LDE1Mi44IEwgMjQ2LjIsMTUyLjMgTCAyNDYuOCwxNTEuNyBMIDI0Ny4wLDE1MS4zIEwgMjQ3LjIsMTUwLjkgTCAyNDcuNSwxNTAuNSBMIDI0Ny44LDE1MC4wIEwgMjQ4LjAsMTQ5LjYgTCAyNDguMiwxNDkuMSBMIDI0OC41LDE0OC43IEwgMjQ4LjgsMTQ4LjIgTCAyNDkuMCwxNDcuOCBMIDI0OS4yLDE0Ny41IEwgMjQ5LjgsMTQ2LjkgTCAyNTAuNSwxNDYuNSBMIDI1MS41LDE0Ny4wIEwgMjUyLjAsMTQ3LjYgTCAyNTIuMiwxNDguMCBMIDI1Mi41LDE0OC40IEwgMjUyLjgsMTQ4LjkgTCAyNTMuMCwxNDkuMyBMIDI1My4yLDE0OS44IEwgMjUzLjUsMTUwLjIgTCAyNTMuOCwxNTAuNyBMIDI1NC4wLDE1MS4xIEwgMjU0LjIsMTUxLjUgTCAyNTQuNSwxNTEuOCBMIDI1NS4wLDE1Mi41IEwgMjU1LjUsMTUyLjkgTCAyNTYuMCwxNTMuMyBMIDI1Ni44LDE1My43IEwgMjY1LjgsMTU0LjMgTCAyNjYuMiwxNTQuOSBMIDI2Ni44LDE1NS42IEwgMjY3LjIsMTU2LjMgTCAyNjcuOCwxNTYuOSBMIDI2OC4wLDE1My4zIEwgMjY4LjIsMTQ4LjUgTCAyNjguNSwxNDMuNiBMIDI2OC44LDEzOC44IEwgMjY5LjAsMTMzLjkgTCAyNjkuMiwxMjkuMSBMIDI2OS41LDEyNC4yIEwgMjY5LjgsMTE5LjQgTCAyNzAuMCwxMTQuNSBMIDI3MC4yLDEwOS43IEwgMjcwLjUsMTA0LjggTCAyNzAuOCw5OS45IEwgMjcxLjAsOTUuMSBMIDI3MS4yLDkyLjkgTCAyNzEuNSw5OC40IEwgMjcxLjgsMTAzLjggTCAyNzIuMCwxMDkuMiBMIDI3Mi4yLDExNC43IEwgMjcyLjUsMTIwLjEgTCAyNzIuOCwxMjUuNiBMIDI3My4wLDEzMS4wIEwgMjczLjIsMTM2LjUgTCAyNzMuNSwxNDEuOSBMIDI3My44LDE0Ny40IEwgMjc0LjAsMTUyLjggTCAyNzQuMiwxNTguMiBMIDI3NC41LDE2My43IEwgMjc0LjgsMTY0LjMgTCAyNzUuMCwxNjMuMyBMIDI3NS4yLDE2Mi40IEwgMjc1LjUsMTYxLjQgTCAyNzUuOCwxNjAuNCBMIDI3Ni4wLDE1OS41IEwgMjc2LjIsMTU4LjUgTCAyNzYuNSwxNTcuNiBMIDI3Ni44LDE1Ni42IEwgMjc3LjAsMTU1LjcgTCAyNzcuMiwxNTQuNyBMIDI3Ny41LDE1NC4wIEwgMjg5LjgsMTU0LjAgTCAzMDIuMCwxNTMuOCBMIDMwNS4wLDE1My40IEwgMzA2LjgsMTUzLjAgTCAzMDguMCwxNTIuNiBMIDMwOS4wLDE1Mi4zIEwgMzEwLjAsMTUxLjkgTCAzMTEuMCwxNTEuNSBMIDMxMi4wLDE1MS4xIEwgMzEzLjIsMTUwLjcgTCAzMTUuMCwxNTAuMyBMIDMxOS4yLDE1MC43IEwgMzIwLjUsMTUxLjIgTCAzMjEuNSwxNTEuNiBMIDMyMi41LDE1MS45IEwgMzIzLjUsMTUyLjMgTCAzMjQuNSwxNTIuNyBMIDMyNS44LDE1My4xIEwgMzI3LjIsMTUzLjQgTCAzMjkuOCwxNTMuOCBMIDM0MS44LDE1NC4wIEwgMzU0LjAsMTU0LjAgTCAzNjYuMiwxNTQuMCBMIDM3My44LDE1My42IEwgMzc0LjUsMTUzLjMgTCAzNzUuMCwxNTIuOSBMIDM3NS41LDE1Mi40IEwgMzc2LjAsMTUxLjcgTCAzNzYuMiwxNTEuNCBMIDM3Ni41LDE1MS4wIEwgMzc2LjgsMTUwLjYgTCAzNzcuMCwxNTAuMSBMIDM3Ny4yLDE0OS43IEwgMzc3LjUsMTQ5LjIgTCAzNzcuOCwxNDguOCBMIDM3OC4wLDE0OC4zIEwgMzc4LjIsMTQ3LjkgTCAzNzguNSwxNDcuNSBMIDM3OS4wLDE0Ni45IEwgMzc5LjUsMTQ2LjYgTCAzODAuOCwxNDYuOSBMIDM4MS4yLDE0Ny42IEwgMzgxLjUsMTQ3LjkgTCAzODEuOCwxNDguMyBMIDM4Mi4wLDE0OC44IEwgMzgyLjIsMTQ5LjIgTCAzODIuNSwxNDkuNyBMIDM4Mi44LDE1MC4xIEwgMzgzLjAsMTUwLjYgTCAzODMuMiwxNTEuMCBMIDM4My41LDE1MS40IEwgMzgzLjgsMTUxLjcgTCAzODQuMywxNTIuNCBMIDM4NC44LDE1Mi45IEwgMzg1LjIsMTUzLjMgTCAzODYuMCwxNTMuNiBMIDM4OC41LDE1NC4wIEwgMzk1LjIsMTU0LjUgTCAzOTUuOCwxNTUuMiBMIDM5Ni4yLDE1NS44IEwgMzk2LjgsMTU2LjUgTCAzOTcuMiwxNTQuNSBMIDM5Ny41LDE0OS42IEwgMzk3LjgsMTQ0LjggTCAzOTguMCwxMzkuOSBMIDM5OC4yLDEzNS4xIEwgMzk4LjUsMTMwLjIgTCAzOTguOCwxMjUuNCBMIDM5OS4wLDEyMC41IEwgMzk5LjMsMTE1LjcgTCAzOTkuNSwxMTAuOCBMIDM5OS44LDEwNi4wIEwgNDAwLjAsMTAxLjEgTCA0MDAuMyw5Ni4zIEwgNDAwLjUsOTEuNiBMIDQwMC44LDk3LjAgTCA0MDEuMCwxMDIuNSBMIDQwMS4yLDEwNy45IEwgNDAxLjUsMTEzLjQgTCA0MDEuOCwxMTguOCBMIDQwMi4wLDEyNC4zIEwgNDAyLjIsMTI5LjcgTCA0MDIuNSwxMzUuMSBMIDQwMi44LDE0MC42IEwgNDAzLjAsMTQ2LjAgTCA0MDMuMiwxNTEuNSBMIDQwMy41LDE1Ni45IEwgNDAzLjgsMTYyLjQgTCA0MDQuMCwxNjQuNSBMIDQwNC4zLDE2My41IEwgNDA0LjUsMTYyLjYgTCA0MDQuOCwxNjEuNiBMIDQwNS4wLDE2MC43IEwgNDA1LjIsMTU5LjcgTCA0MDUuNSwxNTguOCBMIDQwNS43LDE1Ny44IEwgNDA2LjAsMTU2LjkgTCA0MDYuMiwxNTUuOSBMIDQwNi41LDE1NC45IEwgNDA2LjgsMTU0LjAgTCA0MTkuMCwxNTQuMCBMIDQzMS4yLDE1My44IEwgNDM0LjIsMTUzLjQgTCA0MzYuMCwxNTMuMCBMIDQzNy4yLDE1Mi43IEwgNDM4LjIsMTUyLjMgTCA0MzkuMiwxNTEuOSBMIDQ0MC4yLDE1MS41IEwgNDQxLjIsMTUxLjEgTCA0NDIuNSwxNTAuNyBMIDQ0NC4wLDE1MC40IEwgNDQ4LjUsMTUwLjcgTCA0NDkuOCwxNTEuMSBMIDQ1MC44LDE1MS41IEwgNDUxLjgsMTUxLjkgTCA0NTIuOCwxNTIuMyBMIDQ1My44LDE1Mi43IEwgNDU1LjAsMTUzLjAgTCA0NTYuNSwxNTMuNCBMIDQ1OS4wLDE1My44IEwgNDcxLjIsMTU0LjAgTCA0ODMuNSwxNTQuMCBMIDQ5NS41LDE1NC4wIEwgNTAzLjAsMTUzLjYgTCA1MDMuOCwxNTMuMyBMIDUwNC4yLDE1Mi45IEwgNTA0LjgsMTUyLjQgTCA1MDUuMiwxNTEuOCBMIDUwNS41LDE1MS41IEwgNTA1LjgsMTUxLjEgTCA1MDYuMCwxNTAuNyBMIDUwNi4yLDE1MC4yIEwgNTA2LjUsMTQ5LjggTCA1MDYuOCwxNDkuMyBMIDUwNy4wLDE0OC45IEwgNTA3LjIsMTQ4LjQgTCA1MDcuNSwxNDguMCBMIDUwNy44LDE0Ny42IEwgNTA4LjIsMTQ3LjAgTCA1MDguOCwxNDYuNiBMIDUxMC4yLDE0Ny4yIEwgNTEwLjgsMTQ3LjggTCA1MTEuMCwxNDguMiBMIDUxMS4yLDE0OC43IEwgNTExLjUsMTQ5LjEgTCA1MTEuOCwxNDkuNiBMIDUxMi4wLDE1MC4wIEwgNTEyLjIsMTUwLjUgTCA1MTIuNSwxNTAuOSBMIDUxMi44LDE1MS4zIEwgNTEzLjAsMTUxLjcgTCA1MTMuNSwxNTIuMyBMIDUxNC4wLDE1Mi44IEwgNTE0LjUsMTUzLjIgTCA1MTUuMiwxNTMuNiBMIDUxNy4yLDE1NC4wIEwgNTI0LjUsMTU0LjQgTCA1MjUuMCwxNTUuMSBMIDUyNS41LDE1NS44IEwgNTI2LjAsMTU2LjQgTCA1MjYuNSwxNTUuNyBMIDUyNi44LDE1MC44IEwgNTI3LjAsMTQ2LjAgTCA1MjcuMiwxNDEuMSBMIDUyNy41LDEzNi4zIEwgNTI3LjgsMTMxLjQgTCA1MjguMCwxMjYuNiBMIDUyOC4yLDEyMS43IEwgNTI4LjUsMTE2LjggTCA1MjguOCwxMTIuMCBMIDUyOS4wLDEwNy4xIEwgNTI5LjIsMTAyLjMgTCA1MjkuNSw5Ny40IEwgNTI5LjgsOTIuNiBMIDUzMC4wLDk1LjcgTCA1MzAuMiwxMDEuMiBMIDUzMC41LDEwNi42IEwgNTMwLjgsMTEyLjEgTCA1MzEuMCwxMTcuNSBMIDUzMS4yLDEyMi45IEwgNTMxLjUsMTI4LjQgTCA1MzEuOCwxMzMuOCBMIDUzMi4wLDEzOS4zIEwgNTMyLjIsMTQ0LjcgTCA1MzIuNSwxNTAuMiBMIDUzMi44LDE1NS42IEwgNTMzLjAsMTYxLjEgTCA1MzMuMiwxNjQuNyBMIDUzMy41LDE2My44IEwgNTMzLjgsMTYyLjggTCA1MzQuMCwxNjEuOSBMIDUzNC4yLDE2MC45IEwgNTM0LjUsMTYwLjAgTCA1MzQuOCwxNTkuMCBMIDUzNS4wLDE1OC4wIEwgNTM1LjIsMTU3LjEgTCA1MzUuNSwxNTYuMSBMIDUzNS44LDE1NS4yIEwgNTM2LjAsMTU0LjIgTCA1NDguMiwxNTQuMCBMIDU2MC41LDE1My44IEwgNTYzLjUsMTUzLjUgTCA1NjUuMiwxNTMuMSBMIDU2Ni41LDE1Mi43IEwgNTY3LjUsMTUyLjMgTCA1NjguNSwxNTEuOSBMIDU2OS41LDE1MS42IEwgNTcwLjUsMTUxLjIgTCA1NzEuOCwxNTAuNyBMIDU3My4yLDE1MC40IEwgNTc4LjAsMTUwLjggTCA1NzkuMiwxNTEuMiBMIDU4MC4yLDE1MS42IEwgNTgxLjIsMTUyLjAgTCA1ODIuMiwxNTIuNCBMIDU4My41LDE1Mi44IEwgNTg0LjgsMTUzLjIgTCA1ODYuNSwxNTMuNSBMIDU5MC4wLDE1My45IEwgNTkyLjUsMTU0LjAiLz4KPHRleHQgY2xhc3M9ImxibCIgeD0iNDAiIHk9IjU2Ij5JSTwvdGV4dD4KPHRleHQgY2xhc3M9InN1YiIgeD0iNTgyIiB5PSIyMjAiIHRleHQtYW5jaG9yPSJlbmQiPjI1IG1tL3MgJiMxODM7IDEwIG1tL21WPC90ZXh0Pgo8L3N2Zz4=";
+// ▲▲▲  ------------------------  ▲▲▲
+
+// Original text result from the case form (kept here in case you want it back):
+// "Prolonged QTc interval (510 ms) and flattened T-waves."
+const ecgReveal = ECG_IMAGE_SRC
+  ? `<div class="case-img"><img src="${ECG_IMAGE_SRC}" alt="Lead II rhythm strip"><div class="ecg-cap">Lead II rhythm strip &middot; 25 mm/s &middot; 10 mm/mV</div></div>`
+  : `<div class="case-img placeholder"><span class="ph-label">📈 ECG image to be inserted</span>Set <code>ECG_IMAGE_SRC</code> at the top of the script block to the ECG image file name, and it will be displayed here.</div>`;
+
+// Q1 — "result" is what is revealed when the item is ticked; "exp" appears in the results section.
+const q1 = [
+  { text: "Check latest serum Lithium Level", cor: true,
+    result: "<strong>1.9 mEq/L</strong>",
+    exp: "Lithium level 1.9 is in toxicity range. <br><br>The therapeutic range for lithium (1):" +
+         "<table class='drug-chart'><thead><tr>" +
+         "<th>Level</th><th>Serum lithium</th><th>Comment</th>" +
+         "</tr></thead><tbody>" +
+         "<tr><td>Therapeutic Range (Acute)</td><td>0.8\u20131.2 mEq/L</td>" +
+             "<td>For treating active manic or depressive episodes.</td></tr>" +
+         "<tr><td>Therapeutic Range (Maintenance)</td><td>0.4\u20130.8 mEq/L (or up to 1.0 mEq/L)</td>" +
+             "<td>For long-term mood stability, especially in older adults.</td></tr>" +
+         "<tr><td>Toxic Level</td><td>Above 1.5 mEq/L</td><td class='na'>&mdash;</td></tr>" +
+         "<tr><td>Severe/Emergency Level</td><td>Above 2.0\u20132.5 mEq/L</td>" +
+             "<td>Which can be life-threatening.</td></tr>" +
+         "</tbody></table>" },
+  { text: "Check latest serum Sodium", cor: true,
+    result: "<strong>130 mEq/L</strong>",
+    exp: "There is slightly <b>Hyponatremia</b>. (Sodium level below 135 m Eq/L). <br><br>Kidneys handle lithium and sodium the exact same way. When blood sodium is low, the kidneys try to save sodium by reabsorbing more of it in the tubules. Because they cannot tell the difference, they reabsorb lithium too. This drops lithium clearance, trapping it in the blood and elevates the blood lithium level. (2)" },
+  { text: "Check BP, HR stat", cor: true,
+    result: "<strong>100/70mmHg, 58 bpm</strong>",
+    exp: "<b>BP</b>: indicates relative hypotension secondary to volume depletion.<br><b>HR</b>: indicates sinus bradycardia from lithium-induced cardiac conduction suppression." },
+  { text: "Check latest ECG", cor: true,
+    result: ecgReveal,
+    exp: "<b>The latest ECG shows prolonged QTc interval (510 ms) and flattened T-waves.</b> <br><br>Lithium toxicity causes ECG changes:(3,4)<br>T-wave changes: Flattened, biphasic, or inverted T waves.<br>ST depression: Depressed ST segments resembling low potassium.<br>QT prolongation: QTc interval exceeding 500 ms in severe cases.<br>Bradycardia: Slow heart rate or sinus node dysfunction.<br>Conduction blocks: First or second-degree AV blocks.<br>Arrhythmias: Rare reports of atrial fibrillation or ventricular tachycardia." }
+];
+
+const q2 = [
+  { text: "Balance and Coordination Training", cor: true,
+    exp: "Lithium toxicity frequently damages cerebellar pathways, causing severe coordination deficits and unsteadiness. This training retrains cerebellar and proprioceptive feedback loops to reduce backward/forward sway. (5)" },
+  { text: "Gait Retraining", cor: true,
+    exp: "Gait ataxia makes walking hazardous and prone to falls. Controlled dynamic drills rebuild step symmetry, spatial orientation, and safe weight-shifting during locomotion. (6)" },
+  { text: "Functional Task Retraining", cor: true,
+    exp: "It translates isolated balance and strength gains directly into safe performance of daily activities, boosting functional independence. (6)" },
+  { text: "Resistance Training", cor: true,
+    exp: "General immobilization, prolonged encephalopathy, or muscle weakness during acute toxicity leads to disuse atrophy. Strengthening proximal muscle groups improves core stability and overall endurance." }
+];
+
+// ---------- Render checklists ----------
+// Q1: checking an option immediately reveals the exam/investigation finding underneath it.
+function renderQ1(data, prefix, containerId){
+  const container = document.getElementById(containerId);
+  data.forEach((item, i) => {
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.innerHTML = `<input type="checkbox" id="${prefix}-${i}"><span>${item.text}</span>`;
+    const fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.id = `${prefix}-fb-${i}`;
+    container.appendChild(label);
+    container.appendChild(fb);
+    label.querySelector('input').addEventListener('change', function(){
+      fb.innerHTML = this.checked ? (item.result || item.exp) : '';
+    });
+  });
+}
+
+// Q2: plain checklist, no reveal on click — explanations only appear in the results section.
+function renderList(data, prefix, containerId){
+  const container = document.getElementById(containerId);
+  data.forEach((item, i) => {
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.innerHTML = `<input type="checkbox" id="${prefix}-${i}"><span>${item.text}</span>`;
+    container.appendChild(label);
+  });
+}
+renderQ1(q1, 'q1', 'q1-list');
+renderList(q2, 'q2', 'q2-list');
+
+// ---------- Navigation ----------
+function proceedToQ2(){
+  document.getElementById('question2').style.display = 'block';
+  document.getElementById('seg1').classList.add('done');
+  document.getElementById('seg1').classList.remove('active');
+  document.getElementById('seg2').classList.add('active');
+  document.getElementById('question2').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ---------- Scoring ----------
+function submitCase(){
+  let score = 0;
+  const maxScore = q1.length + q2.length;
+  const tbody = document.getElementById('result-table-body');
+  const qaList = document.getElementById('qa-list');
+  tbody.innerHTML = '';
+  qaList.innerHTML = '';
+
+  function processQuestion(data, prefix, qNum){
+    data.forEach((item, i) => {
+      const checked = document.getElementById(`${prefix}-${i}`).checked;
+      const correct = (checked === item.cor);
+      if (correct) score++;
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${qNum}</td>
+        <td>${item.text}</td>
+        <td>${item.cor ? '<span class="ok">✔</span>' : '<span class="no">✘</span>'}</td>
+        <td>${checked ? '<span class="ok">✔</span>' : '<span class="no">✘</span>'}</td>
+      `;
+      tbody.appendChild(row);
+
+      const qa = document.createElement('div');
+      qa.className = 'qa';
+      qa.innerHTML = `<div class="opt-title">Q${qNum} — ${item.text}</div><p>${item.exp}</p>`;
+      qaList.appendChild(qa);
+    });
+  }
+
+  processQuestion(q1, 'q1', 1);
+  processQuestion(q2, 'q2', 2);
+
+  document.getElementById('final-score').innerHTML = score + ' / ' + maxScore;
+  const pct = Math.ceil((score / maxScore) * 100);
+  document.getElementById('final-pct').innerHTML = pct + '%';
+
+  const banner = document.getElementById('score-banner');
+  if (pct < 60) { banner.classList.add('low'); } else { banner.classList.remove('low'); }
+
+  document.getElementById('seg2').classList.add('done');
+  document.getElementById('seg2').classList.remove('active');
+
+  document.getElementById('question2').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+
+</body>
+</html>
