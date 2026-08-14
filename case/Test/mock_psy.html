@@ -5,1125 +5,990 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Psychiatric Physiotherapy Competency Check</title>
 <style>
-  :root{
-    --paper:#FFF1D3;
-    --paper-dim:#FAE4BE;
-    --card:#FFFBF2;
-    --ink:#5D1C6A;
-    --ink-soft:#7A4380;
-    --ink-faint:#A9679B;
-    --line:#EBC9A3;
-    --line-soft:#F3DFC0;
-    --accent:#CA5995;
-    --accent-dark:#8C2E77;
-    --accent-tint:#FBE6F0;
-    --gold:#B85A2E;
-    --gold-tint:#FFE9DD;
-    --danger:#B23A2B;
-    --danger-tint:#F8DFDA;
-    --correct:#3F8F5F;
-    --correct-tint:#E4F3E8;
-    --radius:10px;
-    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
-    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--sans);
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-    min-height:100vh;
-  }
-  body::before{
-    content:"";
-    position:fixed; inset:0;
-    background-image:
-      linear-gradient(var(--line-soft) 1px, transparent 1px);
-    background-size: 100% 42px;
-    opacity:.35;
-    pointer-events:none;
-    z-index:0;
-  }
-  .wrap{position:relative; z-index:1; max-width:840px; margin:0 auto; padding:0 20px 80px;}
+:root{
+  --paper:#ffffff;
+  --shell:#f6f1eb;
+  --line:#eaeaea;
+  --ink:#444444;
+  --ink-soft:#6d6d6d;
+  --ink-faint:#8f8f8f;
+  --accent:#c33625;
+  --accent-soft:#fbeeec;
+  --accent-line:#e6bdb6;
+  --correct:#1c7c4a;
+  --correct-soft:#e8f4ed;
+  --correct-line:#a7d4bc;
+  --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --body:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang HK","Microsoft JhengHei",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --radius:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--shell);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 80px}
 
-  a{color:inherit;}
-  button{font-family:inherit;}
+/* ---------- masthead ---------- */
+.masthead{
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:40;
+}
+.masthead-in{
+  max-width:900px;margin:0 auto;padding:10px 16px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.mark{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);border-left:3px solid var(--accent);padding-left:9px;font-weight:600;
+}
+.mark span{color:var(--ink);letter-spacing:.06em}
+.mast-meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.08em}
 
-  /* ---------- Top bar ---------- */
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:18px 20px;
-    max-width:840px; margin:0 auto;
-    position:relative; z-index:2;
-  }
-  .brand{
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-  }
-  .brand b{color:var(--ink);}
-  .pill{
-    font-family:var(--mono);
-    font-size:11px;
-    letter-spacing:.06em;
-    padding:5px 10px;
-    border:1px solid var(--line);
-    border-radius:20px;
-    color:var(--ink-soft);
-    background:var(--card);
-  }
+/* ---------- cards ---------- */
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;margin-top:20px;
+}
+@media(max-width:600px){.card{padding:18px}}
 
-  /* ---------- Cover ---------- */
-  .cover-card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:44px 40px 40px;
-    margin-top:6px;
-  }
-  .exam-code{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--ink-faint);
-    letter-spacing:.1em;
-    margin-bottom:18px;
-  }
-  h1{
-    font-family:var(--serif);
-    font-weight:400;
-    font-size:clamp(28px,4.4vw,40px);
-    line-height:1.15;
-    margin:0 0 10px;
-    letter-spacing:-.01em;
-    color:var(--ink);
-  }
-  .subtitle{
-    color:var(--ink-soft);
-    font-size:15px;
-    max-width:58ch;
-    margin:0 0 28px;
-  }
-  .meta-row{
-    display:flex; flex-wrap:wrap; gap:10px;
-    margin-bottom:32px;
-  }
-  .meta-chip{
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:10px 14px;
-    flex:1 1 140px;
-    min-width:130px;
-    background:var(--card);
-  }
-  .meta-chip .num{
-    font-family:var(--mono);
-    font-size:20px;
-    color:var(--accent-dark);
-    display:block;
-  }
-  .meta-chip .lbl{
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color:var(--ink-faint);
-  }
+.eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:14px;
+}
+h1{
+  font-family:var(--display);font-weight:600;font-size:clamp(27px,5.2vw,40px);
+  line-height:1.16;margin:0 0 12px;color:#2f2f2f;letter-spacing:-.01em;
+}
+h2{
+  font-family:var(--display);font-size:20px;font-weight:600;margin:0 0 12px;color:#2f2f2f;
+}
+.lede{color:var(--ink-soft);font-size:15.5px;margin:0}
 
-  .instructions{
-    border:1px solid var(--line);
-    border-left:3px solid var(--accent);
-    border-radius:var(--radius);
-    padding:22px 24px;
-    margin-bottom:28px;
-    background:var(--paper-dim);
-  }
-  .instructions h2{
-    font-family:var(--serif);
-    font-weight:400;
-    font-size:17px;
-    margin:0 0 12px;
-    color:var(--ink);
-  }
-  .instructions ol{
-    margin:0 0 18px; padding-left:20px;
-    font-size:14px; color:var(--ink-soft);
-  }
-  .instructions li{margin-bottom:7px;}
-  .instructions li b{color:var(--ink);}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:22px}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--paper);padding:14px}
+.stat b{display:block;font-family:var(--display);font-size:22px;font-weight:600;color:var(--accent);line-height:1.2}
+.stat span{font-size:11.5px;color:var(--ink-faint);letter-spacing:.03em}
 
-  .marksheet-demo{
-    display:flex; gap:28px; flex-wrap:wrap;
-    padding-top:14px; border-top:1px dashed var(--line);
-  }
-  .demo-block{font-size:12px; color:var(--ink-soft);}
-  .demo-block .demo-title{
-    font-family:var(--mono); font-size:11px; text-transform:uppercase;
-    letter-spacing:.06em; color:var(--ink-faint); margin-bottom:8px;
-  }
-  .demo-bubbles{display:flex; gap:6px;}
-  .demo-bubble{
-    width:22px; height:22px; border:1.5px solid var(--ink-soft);
-    border-radius:50%; display:flex; align-items:center; justify-content:center;
-    font-family:var(--mono); font-size:11px; color:var(--ink-soft);
-  }
-  .demo-bubble.filled{ background:var(--ink); border-color:var(--ink); color:#fff; }
-  .demo-bubble.sq{ border-radius:5px; }
+ol.brief{margin:0;padding-left:20px;font-size:14.5px;color:var(--ink-soft)}
+ol.brief li{margin-bottom:9px}
+ol.brief b{color:var(--ink)}
 
-  .name-field{margin-bottom:26px;}
-  .name-field label{
-    display:block; font-size:11px; text-transform:uppercase; letter-spacing:.08em;
-    color:var(--ink-faint); margin-bottom:6px;
-  }
-  .name-field input{
-    width:100%; max-width:340px;
-    font-family:var(--sans); font-size:15px;
-    padding:10px 12px;
-    border:1px solid var(--line);
-    border-radius:6px;
-    background:#fff; color:var(--ink);
-  }
-  .name-field input:focus{outline:2px solid var(--accent); outline-offset:1px;}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+@media(max-width:560px){.demo{grid-template-columns:1fr}}
+.demo-box{border:1px dashed var(--line);border-radius:var(--radius);padding:12px;background:var(--shell)}
+.demo-box .eyebrow{margin-bottom:9px}
+.pip{display:flex;gap:7px}
+.pip i{
+  width:30px;height:30px;border:1px solid var(--line);border-radius:7px;background:var(--paper);
+  display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-style:normal;color:var(--ink-faint)
+}
+.pip i.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:700}
+.pip i.on2{border-radius:50%}
 
-  .btn{
-    appearance:none; border:none; cursor:pointer;
-    font-family:var(--sans); font-weight:600; font-size:14px;
-    letter-spacing:.02em;
-    padding:14px 26px;
-    border-radius:8px;
-    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
-  }
-  .btn:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
-  .btn-primary{
-    background:var(--ink); color:#fff;
-  }
-  .btn-primary:hover{background:var(--accent-dark);}
-  .btn-primary:active{transform:translateY(1px);}
-  .btn-ghost{
-    background:transparent; color:var(--ink); border:1px solid var(--line);
-  }
-  .btn-ghost:hover{border-color:var(--ink);}
-  .btn-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
-  .btn[disabled]{opacity:.4; cursor:not-allowed;}
+label.field{display:block;font-size:13px;color:var(--ink-soft);margin:22px 0 7px}
+input[type=text]{
+  width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:8px;background:var(--shell);
+  font-family:var(--body);font-size:15px;color:var(--ink)
+}
+input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px;background:var(--paper)}
 
-  /* ---------- Quiz ---------- */
-  #quiz-screen{display:none;}
-  .quiz-head{
-    position:sticky; top:0; z-index:5;
-    background:var(--paper);
-    padding-top:10px; padding-bottom:12px;
-    margin-bottom:10px;
-  }
-  .quiz-head::after{
-    content:""; display:block; height:1px; background:var(--line);
-    margin-top:12px;
-  }
-  .progress-row{
-    display:flex; justify-content:space-between; align-items:baseline;
-    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
-    margin-bottom:10px;
-  }
-  .progress-row .timer{color:var(--ink-faint);}
-  .progress-track{
-    height:4px; background:var(--line-soft); width:100%; overflow:hidden;
-    border-radius:4px;
-  }
-  .progress-fill{
-    height:100%; background:var(--accent); width:0%;
-    transition:width .25s ease;
-  }
-  .chip-rail{
-    display:flex; gap:6px; overflow-x:auto;
-    padding:12px 2px 4px;
-    scrollbar-width:thin;
-  }
-  .chip{
-    flex:0 0 auto;
-    width:30px; height:30px;
-    border:1px solid var(--line);
-    border-radius:7px;
-    background:#fff;
-    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer;
-  }
-  .chip:hover{border-color:var(--ink);}
-  .chip.answered{background:var(--accent-tint); border-color:var(--accent); color:var(--accent-dark);}
-  .chip.current{outline:2px solid var(--ink); outline-offset:1px;}
-  .chip:focus-visible{outline:2px solid var(--gold);}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--accent);color:#fff;border:1px solid var(--accent);
+  padding:12px 22px;border-radius:8px;font-family:var(--body);font-size:15px;font-weight:600;
+  cursor:pointer;transition:filter .15s ease;
+}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--paper);color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink-faint);filter:none}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,.opt:focus-visible,.railbtn:focus-visible,.cell:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.wide{width:100%;margin-top:20px;padding:14px}
 
-  .q-card{
-    background:var(--card); border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:32px 32px 28px;
-  }
-  .q-eyebrow{
-    display:flex; align-items:center; gap:10px; margin-bottom:16px;
-  }
-  .q-index{
-    font-family:var(--mono); font-size:13px; color:var(--ink-faint);
-  }
-  .q-domain{
-    font-family:var(--mono); font-size:11px; letter-spacing:.05em;
-    padding:3px 9px; border-radius:20px; border:1px solid var(--line);
-    color:var(--ink-soft); background:var(--paper-dim);
-    text-transform:uppercase;
-  }
-  .select-badge{
-    font-family:var(--mono); font-size:11px; letter-spacing:.05em;
-    padding:3px 9px; border-radius:20px; border:1px solid var(--gold); color:var(--gold);
-    background:var(--gold-tint);
-  }
-  .q-stem{
-    font-family:var(--serif);
-    font-size:19px; line-height:1.5;
-    white-space:pre-line;
-    margin:0 0 26px;
-    color:var(--ink);
-  }
-  .options{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
-  .option{
-    display:flex; align-items:flex-start; gap:14px;
-    padding:13px 16px;
-    border:1px solid var(--line);
-    border-radius:8px;
-    cursor:pointer;
-    transition:border-color .12s ease, background .12s ease;
-  }
-  .option:hover{border-color:var(--ink-soft);}
-  .option.selected{border-color:var(--accent); background:var(--accent-tint);}
-  .option:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
-  .bubble{
-    flex:0 0 auto;
-    width:26px; height:26px;
-    border:1.5px solid var(--ink-soft);
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
-    background:#fff;
-  }
-  .option.selected .bubble{background:var(--accent); border-color:var(--accent); color:#fff;}
-  .options.multi .bubble{border-radius:6px;}
-  .option-text{font-size:15px; padding-top:3px; color:var(--ink);}
+/* ---------- quiz ---------- */
+.qbar{
+  display:flex;align-items:center;gap:12px;margin-top:20px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.06em
+}
+.qbar .clock{margin-left:auto;color:var(--ink-soft)}
+.track{height:3px;background:var(--line);border-radius:2px;margin-top:8px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s ease}
 
-  .nav-row{
-    display:flex; justify-content:space-between; align-items:center;
-    margin-top:26px; gap:12px; flex-wrap:wrap;
-  }
-  .nav-row .right-group{display:flex; gap:10px;}
+.rail{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.railbtn{
+  width:32px;height:30px;border:1px solid var(--line);background:var(--paper);border-radius:6px;
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);cursor:pointer;padding:0
+}
+.railbtn.done{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent)}
+.railbtn.part{border-style:dashed;border-color:var(--accent);color:var(--accent);background:var(--paper);font-weight:700}
+.railbtn.part::after{content:"";position:absolute}
+.railbtn.here{border-color:var(--accent);background:var(--accent);color:#fff;font-weight:700}
+@media(max-width:560px){.railbtn{width:28px;height:27px;font-size:10.5px}}
 
-  /* ---------- Results ---------- */
-  #results-screen{display:none;}
-  .result-hero{
-    background:var(--card); border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:40px 36px; text-align:center; position:relative; overflow:hidden;
-    margin-top:6px;
-  }
-  .stamp{
-    display:inline-block;
-    font-family:var(--serif);
-    font-weight:700;
-    font-size:15px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    padding:10px 26px;
-    border:3px solid var(--accent);
-    border-radius:6px;
-    color:var(--accent-dark);
-    transform:rotate(-4deg);
-    margin-bottom:18px;
-  }
-  .stamp.fail{border-color:var(--danger); color:var(--danger);}
-  .score-big{
-    font-family:var(--mono);
-    font-size:56px;
-    color:var(--ink);
-    margin:6px 0 2px;
-  }
-  .score-sub{color:var(--ink-soft); font-size:14px; margin-bottom:22px;}
-  .stat-row{
-    display:flex; justify-content:center; gap:26px; flex-wrap:wrap;
-    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
-    padding-top:18px; border-top:1px dashed var(--line);
-  }
-  .stat-row .stat b{display:block; color:var(--ink); font-size:16px;}
+.qtag{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:20px;padding:3px 10px;color:var(--ink-faint)
+}
+.chip.hot{border-color:var(--accent-line);color:var(--accent);background:var(--accent-soft);font-weight:700}
+.chip.pend{border-style:dashed}
+.chip.topic{border-style:none;padding-left:0}
+.stem{font-size:17px;line-height:1.62;margin:0 0 6px;color:#333}
+.stem .vig{display:block;background:var(--shell);border-left:3px solid var(--accent-line);
+  padding:12px 14px;border-radius:0 8px 8px 0;margin-bottom:14px;font-size:15.5px;color:var(--ink-soft)}
 
-  .sheet-title{
-    font-family:var(--mono); font-size:11px; text-transform:uppercase;
-    letter-spacing:.08em; color:var(--ink-faint);
-    margin:34px 0 10px;
-  }
-  .answer-grid{
-    display:grid; grid-template-columns:repeat(15,1fr); gap:5px;
-  }
-  .grid-cell{
-    aspect-ratio:1; border:1px solid var(--line);
-    border-radius:5px;
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--mono); font-size:10px; color:#fff;
-    cursor:pointer;
-  }
-  .grid-cell.correct{background:var(--correct);}
-  .grid-cell.wrong{background:var(--danger);}
-  .grid-cell:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+.opts{margin-top:16px;display:grid;gap:8px}
+.opt{
+  display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+  border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:12px 14px;
+  font-family:var(--body);font-size:15px;color:var(--ink);cursor:pointer;line-height:1.5;
+  transition:border-color .12s ease,background .12s ease;
+}
+.opt:hover{border-color:var(--ink-faint)}
+.opt b{
+  flex:0 0 24px;height:24px;border:1px solid var(--line);border-radius:6px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink-faint);background:var(--shell)
+}
+.opt.two b{border-radius:50%}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel b{background:var(--accent);border-color:var(--accent);color:#fff}
 
-  .review-list{margin-top:36px; border-radius:var(--radius); overflow:hidden;}
-  .review-item{
-    border:1px solid var(--line); border-top:none;
-    padding:0;
-  }
-  .review-item:first-child{border-top:1px solid var(--line); border-radius:var(--radius) var(--radius) 0 0;}
-  .review-item:last-child{border-radius:0 0 var(--radius) var(--radius);}
-  .review-summary{
-    display:flex; align-items:center; gap:12px;
-    padding:14px 18px; cursor:pointer;
-    background:#fff;
-  }
-  .review-summary:hover{background:var(--paper-dim);}
-  .r-mark{
-    flex:0 0 auto; width:22px; height:22px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--mono); font-size:12px; color:#fff;
-  }
-  .r-mark.correct{background:var(--correct);}
-  .r-mark.wrong{background:var(--danger);}
-  .r-stem-short{
-    font-size:14px; color:var(--ink);
-    flex:1;
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-  }
-  .r-num{font-family:var(--mono); font-size:12px; color:var(--ink-faint);}
-  .r-caret{font-family:var(--mono); color:var(--ink-faint); transition:transform .15s ease;}
-  .review-item.open .r-caret{transform:rotate(90deg);}
-  .review-detail{
-    display:none;
-    padding:6px 18px 22px 52px;
-    border-top:1px solid var(--line-soft);
-    background:var(--paper-dim);
-  }
-  .review-item.open .review-detail{display:block;}
-  .review-detail .q-stem-full{
-    font-family:var(--serif); font-size:15px; margin:14px 0 12px; white-space:pre-line;
-  }
-  .review-opts{list-style:none; margin:0 0 14px; padding:0; font-size:13.5px;}
-  .review-opts li{
-    padding:7px 10px; margin-bottom:5px; border:1px solid var(--line-soft);
-    border-radius:6px;
-    display:flex; gap:8px; align-items:flex-start;
-    background:#fff;
-  }
-  .review-opts li.is-correct{border-color:var(--correct); background:var(--correct-tint);}
-  .review-opts li.is-user-wrong{border-color:var(--danger); background:var(--danger-tint);}
-  .tag{
-    font-family:var(--mono); font-size:10px; padding:1px 6px; border-radius:4px;
-    flex:0 0 auto;
-  }
-  .tag.correct-tag{background:var(--correct); color:#fff;}
-  .tag.wrong-tag{background:var(--danger); color:#fff;}
-  .explain{
-    font-size:13.5px; color:var(--ink-soft);
-    border-left:2px solid var(--ink-soft); padding-left:12px;
-  }
-  .explain b{color:var(--ink);}
+.nav{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.nav .btn{flex:1;min-width:120px}
+.nav .btn.submit{flex:0 0 auto}
 
-  .footer-actions{
-    display:flex; gap:12px; justify-content:center; margin-top:36px; flex-wrap:wrap;
-  }
-  .warn-banner{
-    background:var(--gold-tint); border:1px solid var(--gold); color:var(--ink);
-    border-radius:8px;
-    padding:10px 14px; font-size:13px; margin-bottom:14px; display:none;
-  }
+/* ---------- results ---------- */
+.verdict{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.badge{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  padding:6px 14px;border-radius:20px
+}
+.badge.pass{background:var(--correct-soft);color:var(--correct);border:1px solid var(--correct-line)}
+.badge.fail{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-line)}
+.bigscore{font-family:var(--display);font-size:clamp(38px,9vw,58px);font-weight:600;line-height:1;color:#2f2f2f}
+.bigscore small{font-size:.42em;color:var(--ink-faint);font-family:var(--body);font-weight:400}
+.pcline{font-size:13.5px;color:var(--ink-faint);margin-top:6px}
 
-  footer.pagefoot{
-    text-align:center; font-family:var(--mono); font-size:11px; color:var(--ink-faint);
-    padding:34px 20px 10px;
-  }
+.sheet{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:14px}
+@media(max-width:560px){.sheet{grid-template-columns:repeat(6,1fr)}}
+.cell{
+  aspect-ratio:1/1;border-radius:6px;border:1px solid var(--line);background:var(--paper);
+  font-family:var(--mono);font-size:11.5px;cursor:pointer;padding:0;color:var(--ink-faint)
+}
+.cell.ok{background:var(--correct-soft);border-color:var(--correct-line);color:var(--correct);font-weight:700}
+.cell.no{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent);font-weight:700}
 
-  @media (max-width:600px){
-    .cover-card{padding:30px 20px;}
-    .q-card{padding:24px 18px;}
-    .instructions{padding:18px;}
-    .answer-grid{grid-template-columns:repeat(10,1fr);}
-    .result-hero{padding:30px 18px;}
-    .score-big{font-size:44px;}
-    .nav-row{flex-direction:column; align-items:stretch;}
-    .nav-row .btn-row{width:100%; justify-content:space-between;}
-  }
+.review{margin-top:18px;border-top:1px solid var(--line)}
+.rev{padding:20px 0;border-bottom:1px solid var(--line)}
+.rev-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.verdict-tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  padding:3px 9px;border-radius:5px
+}
+.verdict-tag.ok{background:var(--correct-soft);color:var(--correct);border:1px solid var(--correct-line)}
+.verdict-tag.no{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-line)}
+.rev .rop{
+  display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);
+  border-radius:8px;margin-top:6px;font-size:14.5px;background:var(--paper)
+}
+.rev .rop b{flex:0 0 22px;font-family:var(--mono);font-size:11.5px;color:var(--ink-faint)}
+.rev .rop.key{border-color:var(--correct-line);background:var(--correct-soft)}
+.rev .rop.key b{color:var(--correct)}
+.rev .rop.picked-wrong{border-color:var(--accent-line);background:var(--accent-soft)}
+.rev .rop.picked-wrong b{color:var(--accent)}
+.rop-tag{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  white-space:nowrap;padding-top:3px}
+.rop.key .rop-tag{color:var(--correct)}
+.rop.picked-wrong .rop-tag{color:var(--accent)}
+.why{margin-top:12px;background:var(--shell);border-radius:8px;padding:13px 15px;font-size:14.5px;color:var(--ink-soft)}
+.why b{color:var(--ink);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  display:block;margin-bottom:5px}
 
-  @media (prefers-reduced-motion:reduce){
-    *{transition:none !important; animation:none !important;}
-  }
+.warn{margin:18px 0 0;padding:12px 14px;border:1px solid var(--accent-line);background:var(--accent-soft);
+  border-radius:8px;font-size:14px;color:var(--ink)}
+.warn b{color:var(--accent)}
+.jumps{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.jump{font-family:var(--mono);font-size:11.5px;border:1px solid var(--accent);background:var(--paper);
+  color:var(--accent);border-radius:6px;padding:4px 9px;cursor:pointer;font-weight:700}
+.jump:hover{background:var(--accent);color:#fff}
+.foot{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:26px}
+.hidden{display:none !important}
+
+@media print{
+  body{background:#fff}
+  .masthead,.nav,.rail,.btn,.sheet{display:none !important}
+  .card{border:none;padding:0;margin-top:14px;break-inside:avoid}
+  .rev{break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="brand">PSY&#8209;PT&#8209;COMP&#8209;CHECK &middot; <b>Staff Competency Set</b></div>
-  <div class="pill" id="modePill">30Q &middot; Pass 60%</div>
+<div class="masthead">
+  <div class="masthead-in">
+    <div class="mark">PT&#8209;PSYCH&#8209;CHECK · <span>Staff Competency Set</span></div>
+    <div class="mast-meta">30Q · PASS 60%</div>
+  </div>
 </div>
 
 <div class="wrap">
 
-  <!-- ===================== COVER ===================== -->
-  <section id="cover-screen">
-    <div class="cover-card">
-      <div class="exam-code">STAFF TRAINING SET &middot; PSYCHIATRY &middot; CLINICAL SELF-ASSESSMENT</div>
-      <h1>Psychiatric Physiotherapy Competency Check</h1>
-      <p class="subtitle">A 30-item self-assessment for junior physiotherapy staff, covering core
-      psychiatric knowledge and case-based clinical reasoning relevant to day-to-day practice on
-      psychiatric wards &mdash; medication side effects, risk recognition, safe handling, professional
-      boundaries, and person-centred care.</p>
+<!-- ============ INTRO ============ -->
+<section id="intro">
+  <div class="card">
+    <div class="eyebrow">Internal training paper · psychiatric physiotherapy · self-assessment</div>
+    <h1>Psychiatric Physiotherapy Competency Check</h1>
+    <p class="lede">A 30-item assessment for junior physiotherapy staff working with psychiatric in-patients and
+      out-patients: symptom recognition, medication effects that change how we treat, ward safety, communication,
+      boundaries, and management of specific presentations. Half the items test knowledge, half are clinical vignettes.
+      This is a hard paper by design — on most items more than one option is defensible, and you are being asked for
+      the strongest one.</p>
 
-      <div class="meta-row">
-        <div class="meta-chip"><span class="num">30</span><span class="lbl">Questions</span></div>
-        <div class="meta-chip"><span class="num">15+15</span><span class="lbl">Knowledge + case items</span></div>
-        <div class="meta-chip"><span class="num">~40</span><span class="lbl">Minutes (suggested)</span></div>
-        <div class="meta-chip"><span class="num">60%</span><span class="lbl">Pass mark (18/30)</span></div>
-      </div>
-
-      <div class="instructions">
-        <h2>Before you begin</h2>
-        <ol>
-          <li>Each question has <b>five options (1&ndash;5)</b>. Most questions require you to select
-            <b>one</b> answer; questions marked <b>&ldquo;Select 2&rdquo;</b> require exactly two.</li>
-          <li>Selecting the wrong number of answers on a &ldquo;Select 2&rdquo; item will be marked
-            as incorrect for that item.</li>
-          <li>Questions alternate between <b>knowledge</b> items (definitions, facts, principles) and
-            <b>case-based</b> items (a short clinical vignette followed by a question).</li>
-          <li>You may move freely between questions using the number rail or the Previous/Next
-            buttons before submitting.</li>
-          <li>Once you submit, you'll see your score, a marked answer sheet, and a full explanation
-            for every question.</li>
-        </ol>
-        <div class="marksheet-demo">
-          <div class="demo-block">
-            <div class="demo-title">Example &middot; Select 1</div>
-            <div class="demo-bubbles">
-              <div class="demo-bubble filled">1</div>
-              <div class="demo-bubble">2</div>
-              <div class="demo-bubble">3</div>
-            </div>
-          </div>
-          <div class="demo-block">
-            <div class="demo-title">Example &middot; Select 2</div>
-            <div class="demo-bubbles">
-              <div class="demo-bubble sq filled">1</div>
-              <div class="demo-bubble sq">2</div>
-              <div class="demo-bubble sq filled">3</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="name-field">
-        <label for="staffName">Staff name (optional, shown on your results)</label>
-        <input type="text" id="staffName" placeholder="e.g. Chan Tai Man">
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-primary" id="startBtn">Begin assessment &rarr;</button>
-      </div>
+    <div class="stats">
+      <div class="stat"><b>30</b><span>Questions (15 knowledge / 15 case)</span></div>
+      <div class="stat"><b>~50</b><span>Minutes (suggested)</span></div>
+      <div class="stat"><b>60%</b><span>Pass mark (18/30)</span></div>
+      <div class="stat"><b>5</b><span>Options per item</span></div>
     </div>
-  </section>
+  </div>
 
-  <!-- ===================== QUIZ ===================== -->
-  <section id="quiz-screen">
-    <div class="quiz-head">
-      <div class="progress-row">
-        <span id="progressLabel">Question 1 of 30</span>
-        <span class="timer" id="timerLabel">00:00</span>
+  <div class="card">
+    <h2>Before you begin</h2>
+    <ol class="brief">
+      <li>Each question has <b>five options (1–5)</b>. Most require <b>one</b> answer; items marked <b>“Select 2”</b> require exactly two.</li>
+      <li>Selecting the wrong number of answers on a “Select 2” item is marked as <b>incorrect</b> for that item.</li>
+      <li>Move freely between questions using the number rail or the Previous / Next buttons before you submit.</li>
+      <li>Read each stem carefully. Where it asks for the <b>best</b>, <b>first</b> or <b>most likely</b> option,
+        several answers will be partly right and some are true statements that do not answer the question asked.</li>
+      <li>After submitting you get your score, a marked answer sheet, and an explanation for every question —
+        including why each near-miss option fails.</li>
+    </ol>
+
+    <div class="demo">
+      <div class="demo-box">
+        <div class="eyebrow">Example · Select 1</div>
+        <div class="pip"><i>1</i><i class="on">2</i><i>3</i></div>
       </div>
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="chip-rail" id="chipRail"></div>
-    </div>
-
-    <div class="warn-banner" id="warnBanner"></div>
-
-    <div class="q-card">
-      <div class="q-eyebrow">
-        <span class="q-index" id="qIndex">Q01</span>
-        <span class="q-domain" id="qDomain">Knowledge</span>
-        <span class="select-badge" id="selectBadge">Select 1</span>
-      </div>
-      <p class="q-stem" id="qStem"></p>
-      <ul class="options" id="optionsList"></ul>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-ghost" id="prevBtn">&larr; Previous</button>
-      <div class="right-group">
-        <button class="btn btn-ghost" id="nextBtn">Next &rarr;</button>
-        <button class="btn btn-primary" id="submitBtn" style="display:none;">Submit test</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== RESULTS ===================== -->
-  <section id="results-screen">
-    <div class="result-hero">
-      <div class="stamp" id="stampEl">Pass</div>
-      <div class="score-big" id="scoreBig">0 / 30</div>
-      <div class="score-sub" id="scoreSub">0% &middot; pass mark is 60%</div>
-      <div class="stat-row">
-        <div class="stat"><b id="statCorrect">0</b>Correct</div>
-        <div class="stat"><b id="statIncorrect">0</b>Incorrect</div>
-        <div class="stat"><b id="statTime">00:00</b>Time taken</div>
-        <div class="stat"><b id="statName">&mdash;</b>Staff</div>
+      <div class="demo-box">
+        <div class="eyebrow">Example · Select 2</div>
+        <div class="pip"><i class="on on2">1</i><i class="on2">2</i><i class="on on2">3</i></div>
       </div>
     </div>
 
-    <div class="sheet-title">Marked answer sheet &middot; click a cell to jump to that question below</div>
-    <div class="answer-grid" id="answerGrid"></div>
+    <label class="field" for="who">Staff name (optional, shown on your results)</label>
+    <input type="text" id="who" placeholder="e.g. PT Chan" autocomplete="off">
+    <button class="btn wide" id="start">Begin assessment →</button>
+  </div>
+</section>
 
-    <div class="sheet-title">Question-by-question review</div>
-    <div class="review-list" id="reviewList"></div>
+<!-- ============ QUIZ ============ -->
+<section id="quiz" class="hidden">
+  <div class="qbar">
+    <span id="counter">Question 1 of 30</span>
+    <span class="clock" id="clock">00:00</span>
+  </div>
+  <div class="track"><i id="bar"></i></div>
+  <div class="rail" id="rail"></div>
 
-    <div class="footer-actions">
-      <button class="btn btn-ghost" id="retakeBtn">Retake this set</button>
-      <button class="btn btn-primary" id="printBtn">Print / save results</button>
+  <div class="card">
+    <div class="qtag">
+      <span class="chip" id="qno">Q01</span>
+      <span class="chip hot" id="qmode">Select 1</span>
+      <span class="chip topic" id="qtopic"></span>
     </div>
-  </section>
+    <p class="stem" id="stem"></p>
+    <div class="opts" id="opts"></div>
+    <p class="warn hidden" id="warn"></p>
+    <div class="nav">
+      <button class="btn ghost" id="prev">← Previous</button>
+      <button class="btn ghost" id="next">Next →</button>
+      <button class="btn submit" id="submit">Submit test</button>
+    </div>
+  </div>
+</section>
 
-  <footer class="pagefoot">Question set created for internal training use only &middot; not an official examination</footer>
+<!-- ============ RESULTS ============ -->
+<section id="results" class="hidden">
+  <div class="card">
+    <div class="eyebrow">Result</div>
+    <div class="verdict">
+      <span class="badge" id="badge">—</span>
+      <div>
+        <div class="bigscore"><span id="raw">0</span><small> / 30</small></div>
+        <div class="pcline"><span id="pc">0%</span> · pass mark is 60% (18/30)</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="nOk" style="color:var(--correct)">0</b><span>Correct</span></div>
+      <div class="stat"><b id="nNo">0</b><span>Incorrect</span></div>
+      <div class="stat"><b id="tTaken" style="color:var(--ink)">00:00</b><span>Time taken</span></div>
+      <div class="stat"><b id="staffOut" style="color:var(--ink)">—</b><span>Staff</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Marked answer sheet</h2>
+    <p class="lede" style="font-size:14px">Green is correct. Click any cell to jump to that question below.</p>
+    <div class="sheet" id="sheet"></div>
+  </div>
+
+  <div class="card">
+    <h2>Question-by-question review</h2>
+    <div class="review" id="review"></div>
+    <div class="nav">
+      <button class="btn ghost" id="retake">Retake this set</button>
+      <button class="btn ghost" id="printout">Print / save results</button>
+    </div>
+  </div>
+</section>
+
+<p class="foot">Question set adapted for internal training use only · not an official examination</p>
 </div>
 
 <script>
-(function(){
-  "use strict";
+const QUESTIONS = [
+{
+  n:1, mode:'Knowledge', select:2, topic:'Schizophrenia · negative symptoms',
+  stem:'Which <b>two</b> of the following are examples of <b>negative symptoms</b> in schizophrenia?',
+  options:[
+    'Thought insertion',
+    'Alogia (poverty of speech)',
+    'Impaired working memory and poor concentration',
+    'Avolition (loss of goal-directed drive)',
+    'Derailment of speech (formal thought disorder)'
+  ],
+  answer:[1,3],
+  why:'Negative symptoms are a <em>loss or reduction</em> of normal function, conventionally grouped as the five A’s: affective flattening, alogia, avolition, anhedonia and asociality. Thought insertion is a positive symptom (an addition to normal experience), and derailment belongs to the disorganisation cluster, which is usually counted with the positive symptoms. The subtle distractor is impaired concentration and working memory: this is real and disabling in schizophrenia, but it is a <em>cognitive</em> symptom in its own domain, not a negative symptom. The distinction matters in rehabilitation because positive symptoms usually respond well to antipsychotics, whereas negative symptoms tend to persist and are the main reason a patient does not engage. Note also that apparent negative symptoms are sometimes secondary — to extrapyramidal side effects, to active hallucinations, or to depression — and those causes are reversible once reported.'
+},
+{
+  n:2, mode:'Case', select:1, topic:'Schizophrenia · distinguishing the cause of poor participation',
+  vig:'A 26-year-old man with schizophrenia attends every deconditioning session but sits silently, shows almost no facial expression, moves slowly and needs prompting to begin each exercise. He denies hallucinations and his speech is coherent. His olanzapine dose was increased three weeks ago.',
+  stem:'Which single observation would most reliably distinguish <b>primary negative symptoms</b> from <b>antipsychotic-induced parkinsonism</b> as the main cause of this presentation?',
+  options:[
+    'Whether his facial expression is reduced',
+    'Whether his walking speed and step length are reduced',
+    'Whether passive wrist movement reveals cogwheel rigidity',
+    'Whether he initiates conversation spontaneously',
+    'Whether he reports low mood and hopelessness'
+  ],
+  answer:[2],
+  why:'Mask-like face, hypokinesia, slow quiet speech and a slow short-stepped gait are produced by <em>both</em> conditions, so none of them discriminates. The separator is the presence of extrapyramidal signs on passive movement — rigidity, cogwheeling, tremor — together with the temporal relationship to the dose change. Low mood is worth asking about, but it introduces a third possibility (depression) rather than distinguishing the first two. Physiotherapists are often the only staff who passively move these patients, which puts us in the best position to pick this up and report it.'
+},
+{
+  n:3, mode:'Knowledge', select:1, topic:'Staff safety · being cornered',
+  stem:'You are treating a patient in a side room when he stands, positions himself in the doorway — the only exit — and starts shouting at you. Which single action is most appropriate?',
+  options:[
+    'Stay where you are, keep your hands visible and your posture open, lower your voice and slow your speech, and activate your personal alarm',
+    'Move towards the door and ask him firmly to step aside so you can pass',
+    'Sit down so that you appear less threatening, and wait for him to calm down',
+    'Raise your voice so you can be heard clearly over his shouting',
+    'Tell him that security will be called unless he moves away from the door'
+  ],
+  answer:[0],
+  why:'Sitting down is often taught as de-escalation and is the strongest distractor here — but it surrenders the ability to move and puts you at a height disadvantage with the exit already blocked, so it is wrong in this specific configuration. Attempting to pass him risks physical contact and is the commonest way these incidents become assaults; matching his volume raises arousal; a security ultimatum is a threat and invites escalation. Lowering your voice, slowing down, keeping hands visible and summoning help without advancing is the combination that buys time. The real lesson is upstream: the door should never have been behind him.'
+},
+{
+  n:4, mode:'Case', select:1, topic:'Staff safety · predicting imminent violence',
+  vig:'You are allocated a 1:1 gym session with a 34-year-old man on the acute ward. Handover: he assaulted a staff member three years ago during a previous admission; he currently expresses paranoid ideas about a co-patient; the nurse mentions he has been pacing the corridor and refusing food since this morning, which is a change from the rest of the week; his diazepam is being reduced.',
+  stem:'Which single feature most strongly indicates a risk of <b>imminent</b> violence during your session today?',
+  options:[
+    'The assault on a staff member three years ago',
+    'The paranoid ideas about a co-patient',
+    'The escalating restlessness and change from his baseline behaviour today',
+    'The reducing dose of diazepam',
+    'His diagnosis and current admission status'
+  ],
+  answer:[2],
+  why:'A history of violence is the strongest predictor of violence <em>in the long term</em> and is the option most people choose — but it does not tell you about this afternoon. The best short-term indicator is an acute change from the individual’s own baseline: pacing, restlessness, refusing food, intrusiveness, a hardening of persecutory beliefs. Paranoid ideation and benzodiazepine reduction both raise background risk and belong in your risk assessment, but the behavioural change is what should determine whether the session goes ahead today, whether it is 1:1 or joint, and where it happens.'
+},
+{
+  n:5, mode:'Knowledge', select:2, topic:'EPS · akathisia versus anxiety',
+  stem:'Which <b>two</b> features best distinguish <b>akathisia</b> from the psychomotor agitation of an anxiety state?',
+  options:[
+    'The restlessness is predominantly in the lower limbs, with rocking, marching on the spot and inability to keep the legs still',
+    'The patient reports palpitations, sweating and a dry mouth',
+    'Onset or worsening within days of starting or increasing an antipsychotic, or of an antiemetic such as metoclopramide',
+    'The restlessness eases temporarily with reassurance and distraction',
+    'The patient describes the restlessness as intensely distressing'
+  ],
+  answer:[0,2],
+  why:'Autonomic symptoms and severe subjective distress occur in both, so neither separates them. What does: the movement pattern is characteristically lower-limb dominant, and there is a clear temporal link to a dopamine-blocking drug — antipsychotics, but also metoclopramide and prochlorperazine, which are easily overlooked because they are not thought of as psychiatric drugs. Anxiety-driven agitation typically fluctuates with the content of the patient’s worry and settles somewhat with reassurance, whereas akathisia does not. Getting this wrong has consequences: akathisia mislabelled as anxiety may be treated with more antipsychotic, which makes it worse, and it carries a recognised association with suicide.'
+},
+{
+  n:6, mode:'Case', select:1, topic:'EPS · the presentation that is not EPS',
+  vig:'A 42-year-old woman started on haloperidol six days ago is referred for mobility because the ward reports she has “stiffened up”. You find generalised lead-pipe rigidity, drowsiness with disorientation, temperature 38.3°C, HR 118, BP fluctuating between 100/60 and 160/95, and profuse sweating.',
+  stem:'What is the most appropriate action?',
+  options:[
+    'Treat as drug-induced parkinsonism: proceed with gait re-education using fall precautions, and inform the team at the end of the day',
+    'Withhold treatment and escalate immediately, as neuroleptic malignant syndrome must be excluded',
+    'Proceed with a shortened session avoiding resisted exercise, and record the temperature in your notes',
+    'Passively stretch the rigid limbs to reduce tone before attempting to mobilise her',
+    'Treat as catatonia and attempt to engage her with slow rhythmic movement'
+  ],
+  answer:[1],
+  why:'The referral, the timing and the rigidity all point towards ordinary extrapyramidal side effects, which is why this presentation is missed. The features that change everything are the ones that do not belong to drug-induced parkinsonism: fever, autonomic instability and altered consciousness. That triad with rigidity after recent antipsychotic exposure is neuroleptic malignant syndrome until proven otherwise — a condition with significant mortality that requires the drug to be stopped, plus urgent bloods including creatine kinase. Exercise raises the temperature and the CK further, and stretching does nothing for the rigidity. Catatonia is a genuine differential, but it is a medical decision, not a reason for you to proceed.'
+},
+{
+  n:7, mode:'Knowledge', select:1, topic:'Orthostatic hypotension · diagnostic criteria',
+  stem:'Which single statement about the assessment of orthostatic hypotension is correct?',
+  options:[
+    'A fall of ≥20 mmHg systolic <strong>and</strong> ≥10 mmHg diastolic within 1 minute of standing is required',
+    'A drop that meets the threshold at 1 minute but has recovered by 3 minutes does not meet the criteria',
+    'The measurement is invalid unless the patient has been supine for at least 20 minutes beforehand',
+    'A fall of ≥20 mmHg systolic <strong>or</strong> ≥10 mmHg diastolic within 3 minutes of standing meets the criteria',
+    'In a patient taking a beta-blocker, the absence of a compensatory tachycardia excludes the diagnosis'
+  ],
+  answer:[3],
+  why:'The trap is the conjunction: the criterion is <em>or</em>, not <em>and</em>, so an isolated systolic fall of 24 mmHg qualifies even with a stable diastolic. The window is “within three minutes”, so a drop at one minute counts whether or not it recovers — indeed initial orthostatic hypotension in the first 30–60 seconds is the pattern most likely to drop a patient during a transfer. Five minutes supine is the usual pre-test rest, not twenty. And heart-rate behaviour never confirms or excludes the diagnosis: it is a blood-pressure definition, and a blunted rate response in someone on a beta-blocker makes the fall more dangerous, not less real.'
+},
+{
+  n:8, mode:'Case', select:1, topic:'Orthostatic hypotension · preventing recurrence',
+  vig:'An elderly in-patient in the clozapine titration phase had presyncope on her first sit-to-stand yesterday: sitting BP 128/76, standing 98/60, with visual greying. She recovered fully after resting. You are planning the next session.',
+  stem:'Which single measure is most likely to prevent a recurrence?',
+  options:[
+    'Fit class 2 below-knee compression stockings before standing',
+    'Encourage her to drink 3 litres of fluid daily',
+    'Add standing-frame work so that she becomes habituated to the upright position',
+    'Perform one minute of ankle pumping in lying immediately before she stands',
+    'Schedule the session 3-5hrs after medication'
+  ],
+  answer:[4],
+  why:'Every option here has some justification, which is what makes it hard — the question is which gives the biggest return. Clozapine-related orthostasis is dose-timed, peaking in the hours after administration, so moving the session and rising in stages addresses the actual mechanism. Below-knee stockings are the weakest compression option for orthostasis (abdominal binders and thigh-length garments perform better). A blanket 3-litre target is unsafe advice in this group, where polydipsia and fluid restriction are both common. Counter-manoeuvres such as ankle pumping and leg crossing work best performed <em>during</em> standing, when symptoms begin, rather than beforehand. Standing frames do not habituate the baroreflex.'
+},
+{
+  n:9, mode:'Knowledge', select:2, topic:'Lithium · what raises the level',
+  stem:'A patient has been on a stable dose of lithium for two years. Which <b>two</b> of the following would most increase the risk of toxicity?',
+  options:[
+    'Deliberately increasing dietary sodium intake',
+    'Starting regular ibuprofen for knee pain',
+    'Starting a proton pump inhibitor for reflux',
+    'Beginning a supervised aerobic programme in an air-conditioned gym with free access to fluids',
+    'Developing gastroenteritis with vomiting and diarrhoea'
+  ],
+  answer:[1,4],
+  why:'Lithium is handled by the kidney like sodium, so anything that reduces renal perfusion or depletes sodium and water pushes the level up: NSAIDs, ACE inhibitors and ARBs, thiazides, dehydration, vomiting and diarrhoea, and heavy unreplaced sweating. Increasing dietary sodium is the reverse — it tends to <em>lower</em> the level, which is why it reads as risky but is not. Proton pump inhibitors are not a clinically significant interaction. Air-conditioned exercise with fluids available is safe and worth encouraging; it is the combination of heat, sweating and no replacement that causes the problem, not exercise itself. Reflexively labelling exercise as the hazard is the error this question is testing.'
+},
+{
+  n:10, mode:'Case', select:1, topic:'Lithium · benign side effect or warning sign',
+  vig:'A 35-year-old man on long-term lithium arrives for your outpatient exercise class in August and mentions his hands are shaky. The tremor is fine and regular, most obvious with the arms outstretched, and he says it has been there for years. His gait is steady, there is no vomiting, no slurred speech and he is fully oriented. He started ibuprofen three days ago for back pain and has been sweating heavily during his outdoor work.',
+  stem:'What is the most appropriate action?',
+  options:[
+    'Reassure him that a fine tremor is an expected side effect and run the class as planned',
+    'Run the class indoors with extra fluids, and mention the tremor at his next routine clinic in six weeks',
+    'Withhold the class and arrange same-day medical review for a lithium level, even though the tremor itself is not a toxic feature',
+    'Advise him to stop the ibuprofen and double his fluid intake, then proceed with the class',
+    'Arrange urgent review because a fine resting tremor is an early sign of lithium toxicity'
+  ],
+  answer:[2],
+  why:'Two options are half-right and both are tempting. The tremor genuinely is benign — fine, long-standing, postural — so the option calling it early toxicity is wrong on the physiology. But the correct physiology leads people to the wrong action, because the risk here is not the tremor at all: it is three days of an NSAID plus heavy unreplaced sweating in an August heat load, a combination that can raise the level over days before coarse tremor, ataxia, vomiting or confusion ever appear. You escalate for a level on the basis of the exposure, not the symptom. Telling him to stop a prescribed drug and to double his fluids is outside our scope and delays the review.'
+},
+{
+  n:11, mode:'Knowledge', select:1, topic:'Antidepressants & anxiolytics · fall risk',
+  stem:'Which single statement about psychotropic-related fall risk is most accurate?',
+  options:[
+    'The fall and fracture risk associated with SSRIs is broadly comparable to that of tricyclic antidepressants, despite their different side-effect profiles',
+    'Mirtazapine carries little fall risk because it is given at night',
+    'The excess hip-fracture risk seen with SSRIs is explained entirely by orthostatic hypotension',
+    'Benzodiazepine-related fall risk is confined to the first two weeks, after which tolerance develops',
+    'Once a patient has been on an unchanged dose for six months, the drug no longer contributes to fall risk'
+  ],
+  answer:[0],
+  why:'The intuitive answer is that SSRIs must be safer than tricyclics because they cause less sedation, less postural drop and fewer anticholinergic effects — and that intuition is what the evidence contradicts: the observed fall and fracture rates are similar. The mechanism is not only haemodynamic. SSRIs affect bone mineral density, psychomotor speed and gait variability, and may cause hyponatraemia, so attributing the fracture excess to orthostatic hypotension alone is wrong. Tolerance to benzodiazepine sedation is partial and does not abolish the fall risk, and risk persists on long-term stable dosing — which is exactly why psychotropics belong in every falls review, not only when they have just been started.'
+},
+{
+  n:12, mode:'Case', select:1, topic:'Falls · matching the intervention to the mechanism',
+  vig:'A 78-year-old woman on amitriptyline at night and PRN lorazepam had a near-fall walking to the toilet at 03:00. She is drowsy in the early hours, has urinary urgency, and shows a 24 mmHg systolic drop on standing. Her daytime gait and balance are only mildly impaired.',
+  stem:'Which single action by the physiotherapist is most likely to reduce her risk of falling <b>tonight</b>?',
+  options:[
+    'Refer her to a supervised strength and balance programme twice weekly',
+    'Provide a rollator for her to use at night',
+    'Teach staged rising with a pause in sitting before she walks',
+    'Arrange assisted toileting overnight with a lit, unobstructed path from bed to toilet',
+    'Advise her to omit the lorazepam tonight'
+  ],
+  answer:[3],
+  why:'The word doing the work in this stem is “tonight”. Strength and balance training is the single best-evidenced fall intervention overall, but it takes weeks and her daytime balance is not the problem. Staged rising is genuinely useful and would be part of the plan, yet at 03:00 the driver is a drowsy, urgent patient navigating a dark room. A rollator introduced the same night, used sedated and in a hurry, is as likely to add risk as remove it. Advising a patient to skip a prescribed drug is a prescriber decision — you describe what you observed so that review happens. Matching the intervention to the actual mechanism, and to the timescale asked about, is the skill being tested.'
+},
+{
+  n:13, mode:'Knowledge', select:1, topic:'Intellectual disability · motor learning',
+  stem:'Which single strategy is best supported when teaching a new transfer to a child with moderate intellectual disability?',
+  options:[
+    'Trial-and-error practice, so that the child learns to detect and correct their own mistakes',
+    'Random practice order from the first session, since variable practice improves long-term retention',
+    'Massed practice of the whole task, so that the sequence is experienced as a single unit',
+    'Verbal instruction paired with a written checklist the child can follow independently',
+    'Errorless learning with graded physical or gestural prompts that are systematically faded'
+  ],
+  answer:[4],
+  why:'The strongest distractor is random practice, because in standard motor-learning theory variable and random practice really does produce better retention than blocked practice — and that principle is taught on every undergraduate course. It assumes the learner can process and store the errors, which is precisely the capacity that is limited here. In intellectual disability, errorless learning with prompt fading is preferred: the error is prevented rather than corrected, because a repeated error is learned as readily as the correct movement. Trial-and-error and massed whole-task practice both generate errors; a written checklist assumes literacy and independent sequencing that cannot be presumed.'
+},
+{
+  n:14, mode:'Case', select:1, topic:'Intellectual disability · function of the behaviour',
+  vig:'An 8-year-old boy with moderate intellectual disability and autistic features attends for balance training. In the busy, echoing gym he covers his ears, refuses to step onto the beam, and throws the therapy ball across the room.',
+  stem:'Which interpretation of the behaviour is most appropriate?',
+  options:[
+    'Attention-seeking',
+    'Escape-maintained behaviour driven by sensory overload and an excessive demand',
+    'Sensory-seeking',
+    'A tantrum requiring a consistent consequence',
+    'Non-compliance related to his intellectual disability'
+  ],
+  answer:[1],
+  why:'Behaviour is communication, and the specific behaviours name the message: covering the ears is sensory <em>avoidance</em>, not sensory seeking, so adding vestibular input misreads it in the most confident-sounding way. Throwing the ball ends the demand, which tells you the behaviour is escape-maintained. Planned ignoring is a legitimate technique for attention-maintained behaviour and completely counterproductive for escape-maintained behaviour, because continuing to present the task escalates it. Reduce the sensory load and the demand, make the sequence predictable and visible, reinforce small approximations, and rebuild — accepting low participation as inevitable writes off a child who can learn in the right conditions.'
+},
+{
+  n:15, mode:'Knowledge', select:1, topic:'Antipsychotics · side effects that change exercise prescription',
+  stem:'Which single statement about the side effects of antipsychotic medication is most accurate?',
+  options:[
+    'Clozapine and olanzapine carry the lowest risk of weight gain and metabolic disturbance among the antipsychotics',
+    'Tardive dyskinesia characteristically appears within the first two weeks of treatment',
+    'Antipsychotics impair sweating and central thermoregulation, so a patient exercising in hot humid conditions is at increased risk of heat illness',
+    'Extrapyramidal symptoms can effectively be excluded once a patient has been switched to a second-generation antipsychotic',
+    'Prolactin elevation is a uniform class effect, occurring to the same degree with every antipsychotic'
+  ],
+  answer:[2],
+  why:'Antipsychotics block dopamine in the hypothalamus and most have anticholinergic activity, so they reduce sweating and blunt central temperature regulation; sedation and reduced awareness of thirst compound it. In a Hong Kong summer this is our problem more than anyone else’s, because we are the ones prescribing exertion — sessions need timing away from peak heat, accessible fluids, cooling, and a low threshold for stopping. The distractors invert the real picture. Clozapine and olanzapine are the <em>worst</em>, not the best, for weight gain and metabolic syndrome, which is precisely why exercise referrals cluster around them. Tardive dyskinesia is late-onset, emerging after months to years of exposure, whereas acute dystonia appears within days. Second-generation agents reduce but do not abolish extrapyramidal symptoms — risperidone in particular is dose-dependently associated with them. And prolactin elevation varies markedly between agents (marked with risperidone, amisulpride and the typicals; minimal with quetiapine, clozapine and aripiprazole); where it is sustained it lowers bone mineral density, which matters directly when you are assessing an unsteady patient for fracture risk.'
+},
+{
+  n:16, mode:'Case', select:1, topic:'Boundaries · attachment and team consistency',
+  vig:'A community patient with borderline personality traits tells you that she deteriorates whenever a different therapist covers her visit, that you are the only one who understands her, and asks you to promise that you will always be the one to come. She has also begun asking for longer sessions when distressed.',
+  stem:'Which response best manages this?',
+  options:[
+    'Explain the team’s shared-care arrangement, keep session length and frequency unchanged, name kindly what you have noticed, and agree a plan so that every therapist responds in the same way',
+    'Agree to be her named therapist for consistency, while explaining that you cannot promise to attend every single visit',
+    'Reduce your involvement gradually without discussing it, so that she becomes less dependent',
+    'Promise continuity for now and renegotiate the arrangement once she is more stable',
+    'Interpret the attachment for her, explaining how it relates to her personality difficulties'
+  ],
+  answer:[0],
+  why:'Consistency is the therapeutic ingredient — but consistency of the <em>team</em> response, not exclusivity of one therapist. Naming yourself as her therapist is the most seductive wrong answer, because continuity is genuinely valuable and the promise feels kind; in a service with leave, rotation and sickness it guarantees a rupture that will be experienced as abandonment, and it splits you from colleagues. Sliding session length with distress teaches that distress is what secures contact. Quiet withdrawal is abandonment without explanation. Offering an interpretation of her personality is outside our role and is commonly experienced as shaming.'
+},
+{
+  n:17, mode:'Knowledge', select:2, topic:'Communication · acute mania in a group setting',
+  stem:'A patient in an acute manic episode repeatedly interrupts, contradicts you and tries to take over your group exercise session. Which <b>two</b> responses are most appropriate?',
+  options:[
+    'Set one short, specific limit and repeat it in the same words if it is tested',
+    'Offer him a leadership role in the group so that his energy is channelled constructively',
+    'Redirect him to a brief individual session in a quieter area',
+    'Explain in full why the group rules exist, so that he can agree to them',
+    'Ignore the interruptions so that the behaviour is not reinforced'
+  ],
+  answer:[0,2],
+  why:'Harnessing the energy by giving him a role is the answer that sounds most person-centred and is the one most often chosen — in acute mania it amplifies grandiosity and disinhibition and hands him the group. Reasoned explanation exceeds his attention span and invites debate; planned ignoring fails because manic intrusiveness escalates without a limit and other patients are affected in the meantime. What works is the opposite of engagement: fewer words, one concrete limit stated identically each time, and a reduction in stimulation, which usually means taking him out of the group rather than managing him within it.'
+},
+{
+  n:18, mode:'Case', select:1, topic:'Communication · responding to hopelessness',
+  vig:'A severely depressed in-patient with marked psychomotor retardation answers your questions in single words after long pauses. As you set up the session he says quietly, “There is no point in any of this. I will not be here much longer.”',
+  stem:'What is the most appropriate response?',
+  options:[
+    'Note his exact words in your record and hand over to the nurse at the end of your list',
+    'Reassure him that the treatment will work and continue the session as planned',
+    'Avoid pursuing the comment, since asking about suicide may plant the idea',
+    'Ask him directly and calmly what he means and whether he is having thoughts of ending his life, stay with him, and escalate to the nursing and medical team the same day',
+    'Explain that this is outside your role and refer him to his case manager'
+  ],
+  answer:[3],
+  why:'An ambiguous statement like this must be clarified, not filed. The belief that asking about suicide plants the idea is a persistent myth — direct, calm questioning reduces distress and is what allows risk to be assessed at all. Recording the words accurately is necessary but insufficient if it delays the conversation until the end of your list. Reassurance closes the topic down and confirms to him that this is not something he can say out loud here. Referring on is not wrong in principle, but it is not a substitute for asking now and ensuring he is not left alone with it. Every clinician who is present when this is said carries the responsibility to respond.'
+},
+{
+  n:19, mode:'Knowledge', select:1, topic:'Differentiating anxiety disorders',
+  stem:'A patient reports intense anxiety in crowded places. Which single feature would most strongly favour <b>social anxiety disorder</b> over <b>agoraphobia</b>?',
+  options:[
+    'Avoidance has spread to shopping malls, cinemas and the MTR at rush hour',
+    'The fear is centred on being scrutinised, judged or visibly embarrassed in front of others',
+    'The anxiety is accompanied by palpitations, trembling and sweating',
+    'The anxiety is worse when the patient is alone in the crowd',
+    'The patient can enter the situation if accompanied by a trusted person'
+  ],
+  answer:[1],
+  why:'The situations overlap almost completely, so the discriminator is never the place — it is what the patient fears will happen there. In social anxiety the feared outcome is negative evaluation: being watched, judged, seen to shake or sweat. In agoraphobia it is being unable to escape or get help if something happens. That is why two of the distractors point the wrong way: being alone in a crowd is typically worse in agoraphobia and easier in social anxiety, and being able to manage when accompanied is characteristic of agoraphobia. Autonomic symptoms and spreading avoidance are common to both and cannot separate them.'
+},
+{
+  n:20, mode:'Case', select:1, topic:'Differentiating mood disorders · the history that changes everything',
+  vig:'A 32-year-old woman is referred for persistent fatigue and widespread pain. For two months she has had low mood, anhedonia, early morning waking and poor concentration. On questioning she recalls that last year, for about a week, she needed only three hours of sleep, felt unusually energetic and confident, redecorated her whole flat overnight and spent far beyond her means. Her family noticed the change; it settled on its own, she was not admitted and she kept her job.',
+  stem:'Which formulation is most likely, and why does it matter?',
+  options:[
+    'Recurrent depressive disorder — one week of elevated mood without admission is not diagnostically significant',
+    'Generalised anxiety disorder with a somatic presentation',
+    'Cyclothymia — the mood variation is subthreshold in both directions',
+    'A normal psychological reaction to chronic pain and fatigue',
+    'Bipolar affective disorder, current episode depressed — the past hypomanic episode changes both the diagnosis and the treatment, so it must be reported'
+  ],
+  answer:[4],
+  why:'The presenting picture is unipolar depression and would be treated as such if nobody asked about the past year. A distinct period of several days with reduced need for sleep, elevated mood and out-of-character overspending, noticed by others, is hypomania — and hypomania does not require hospitalisation or loss of function, which is exactly why the distractor dismissing it is so plausible. The consequence is concrete: antidepressant monotherapy in bipolar depression can precipitate a switch or rapid cycling, so the diagnosis alters treatment. Her current depressive episode also excludes cyclothymia, which by definition does not meet full episode criteria. Physiotherapists often have long, unhurried contact and hear this history first.'
+},
+{
+  n:21, mode:'Knowledge', select:1, topic:'Delusional disorder versus schizophrenia',
+  stem:'Which single feature would most strongly argue <b>against</b> a diagnosis of delusional disorder?',
+  options:[
+    'A fixed belief that his employer is poisoning his food',
+    'Occasional tactile hallucinations that relate directly to the delusional theme',
+    'Progressive self-neglect with deteriorating occupational function over two years',
+    'Absolute conviction with no insight after eighteen months',
+    'First onset at the age of 55'
+  ],
+  answer:[2],
+  why:'Delusional disorder is defined as much by what is preserved as by what is present: personality, affect and functioning outside the delusional theme remain broadly intact. Progressive global deterioration is therefore the feature that points away from it and towards schizophrenia. The subtle point is the hallucination option — hallucinations are not an absolute exclusion, provided they are not prominent and are thematically tied to the delusion (the classic example being tactile sensations in a delusional infestation). Conviction without insight is the definition of a delusion and is common to both, a non-bizarre persecutory belief is typical of delusional disorder, and onset in middle age is the norm for it rather than an argument against.'
+},
+{
+  n:22, mode:'Case', select:1, topic:'Delusional disorder · when the risk picture changes',
+  vig:'A 55-year-old accountant attending for shoulder rehabilitation tells you calmly, as he has for several sessions, that his neighbour enters his flat to move his belongings. Today he adds that he has bought a knife, has been waiting behind his door in the evenings, and intends to “deal with it once and for all”. He is otherwise coherent, working full time and well groomed.',
+  stem:'What should you do?',
+  options:[
+    'Keep the session brief, document his exact words, and escalate the same day to the responsible psychiatrist and your senior',
+    'Continue the shoulder programme and report the belief to the referring doctor at his next scheduled clinic',
+    'Explore the belief in detail so that you can reassure him it is not true',
+    'Advise him to see his GP and check at the next visit whether he has done so',
+    'Contact the neighbour directly to warn them of the threat'
+  ],
+  answer:[0],
+  why:'Everything in this vignette was previously reportable through routine channels — right up until a weapon, a plan and an identified target appeared. That converts a stable delusional belief into an acute risk situation, and the timeframe collapses from “next clinic” to today. Routine referral and GP advice are the answers that would have been correct last week, which is what makes them the strongest distractors. Exploring the belief to reassure him will not shift a delusion and may position you as an obstacle within it. Contacting the neighbour yourself is not your decision to make: escalate to the responsible clinician and your senior, record his words verbatim, and let the team determine what disclosure is lawful and necessary.'
+},
+{
+  n:23, mode:'Knowledge', select:2, topic:'Substance use disorders · exercise prescription',
+  stem:'Which <b>two</b> statements about exercise prescription in early recovery from alcohol dependence are correct?',
+  options:[
+    'Exercise should be deferred until liver function tests have normalised',
+    'A resting tachycardia during the first week is an expected finding and does not require escalation',
+    'Heart rate is an unreliable guide to intensity, so symptoms and perceived exertion should carry more weight',
+    'Proximal myopathy may limit resisted work before cardiovascular limits are reached',
+    'Thiamine deficiency contributes to fatigue but does not affect balance'
+  ],
+  answer:[2,3],
+  why:'Autonomic instability, withdrawal, deconditioning and any beta-blockade all distort the heart rate–workload relationship, so heart rate is used as one input rather than the target, with symptoms and perceived exertion leading. Chronic alcohol-related proximal myopathy is genuinely common and often the first limiter in resisted work, well before the cardiovascular system is stressed — it is easily mistaken for poor effort. The distractors are the plausible-sounding blanket rules: waiting for liver function to normalise would postpone exercise indefinitely in many patients and forfeit the benefit at the point of greatest relapse risk; a resting tachycardia in week one may be exactly the withdrawal that needs treating; and thiamine deficiency affects the cerebellum and vestibular nuclei, so it very much affects balance.'
+},
+{
+  n:24, mode:'Case', select:1, topic:'Substance use disorders · deciding whether to exercise today',
+  vig:'A 29-year-old man is on day 4 of in-patient detoxification after long-term methamphetamine and alcohol use, and asks to begin training. He is oriented and settled in conversation. Resting HR 104, BP 148/92, mildly tremulous hands, sweaty, poor sleep. His CIWA-Ar score this morning was recorded as 14.',
+  stem:'Which single factor most strongly indicates that moderate-to-vigorous exercise should be deferred today?',
+  options:[
+    'The resting heart rate of 104',
+    'The blood pressure of 148/92',
+    'His history of methamphetamine use',
+    'The CIWA-Ar score of 14, indicating significant ongoing withdrawal',
+    'The poor sleep the previous night'
+  ],
+  answer:[3],
+  why:'Every option is abnormal, which is what makes this hard — the question is which one carries the most information. Tachycardia, hypertension, tremor and sweating are individually non-specific and each has innocent explanations, including simple anxiety before a first session. The composite withdrawal score integrates them, and a score in the mid-teens indicates withdrawal that is still significant and pharmacologically active, in the window where seizures and delirium tremens occur. A stimulant history raises cardiac risk and shapes the whole programme, but it is a background factor rather than a reason to defer today specifically. Knowing that your ward uses a withdrawal score, and how to read it, changes your decision from a guess into a defensible one.'
+},
+{
+  n:25, mode:'Knowledge', select:1, topic:'Alcohol withdrawal · timeline and syndromes',
+  stem:'Which single statement about alcohol withdrawal is correct?',
+  options:[
+    'Delirium tremens typically begins within 12 hours of the last drink',
+    'Withdrawal seizures characteristically occur 6–48 hours after the last drink, before delirium tremens develops',
+    'A fully oriented patient who is seeing insects on the wall at 24 hours has delirium tremens',
+    'Delirium tremens can be excluded while the blood alcohol level remains detectable',
+    'Autonomic features subside once hallucinations appear'
+  ],
+  answer:[1],
+  why:'The syndromes are separated by their timing and by the state of consciousness. Seizures cluster early, at roughly 6–48 hours, and precede delirium tremens, which characteristically emerges at 48–72 hours or later. Hallucinations with a <em>clear sensorium</em> at 24 hours are alcoholic hallucinosis, not delirium tremens — the defining feature of delirium tremens is clouding of consciousness with disorientation, on top of hallucinations, coarse tremor and autonomic storm. A detectable blood alcohol level excludes nothing: in a heavily dependent patient, withdrawal can begin while the level is still falling but well above zero. Autonomic overactivity intensifies rather than settling as the syndrome progresses.'
+},
+{
+  n:26, mode:'Case', select:1, topic:'Delirium tremens · the second diagnosis',
+  vig:'You attend a general ward for a mobility session with a 58-year-old man admitted three days ago after a fall at home. He drinks daily. He is now disoriented to place and time, brushing “insects” off his arms, sweating, HR 128, BP 168/96, with a coarse tremor. You have already stopped the session and put out an urgent call to the nursing and medical staff.',
+  stem:'Besides that escalation, which consideration is most important in this patient?',
+  options:[
+    'He should be walked with two staff, since movement will help to reorientate him',
+    'Oral fluids should be pushed to correct his dehydration',
+    'His agitation is best managed by dimming the lights and leaving him to rest undisturbed',
+    'His usual night sedation should be given early to settle him',
+    'He is at high risk of falling and of an unrecognised head injury from the admission fall, so he must not be mobilised and must not be left unobserved'
+  ],
+  answer:[4],
+  why:'The trap is treating delirium tremens as the whole problem. He was admitted <em>after a fall</em> and drinks daily — a combination that carries a real risk of a chronic subdural haematoma, which presents with exactly the confusion being attributed to withdrawal, and which is missed precisely because a satisfying explanation is already available. So the additional priority is protective: no mobilisation, continuous observation, and making sure the team knows about the head-injury mechanism. Reducing stimulation is right in principle, but leaving him unobserved is unsafe. Pushing oral fluids in a disoriented, agitated patient risks aspiration and is a decision for the medical team, and sedation choice is not ours.'
+},
+{
+  n:27, mode:'Knowledge', select:1, topic:'Body-mind physical therapy · what makes it different',
+  stem:'A patient with a somatoform pain presentation is referred for body-mind physiotherapy. Which single principle most distinguishes this approach from a standard graded exercise programme?',
+  options:[
+    'Movements are performed slowly and passively so that symptoms are not provoked',
+    'The therapist avoids drawing attention to bodily sensations, to prevent symptom focusing',
+    'The focus is on the quality of movement and the patient’s own experience of it, rather than on progressing towards an external performance target',
+    'Progression is determined by the therapist’s objective assessment of postural alignment',
+    'The aim is to reduce awareness of bodily sensations by training the patient to distract from them'
+  ],
+  answer:[2],
+  why:'Body-mind approaches such as Basic Body Awareness Therapy work on the relationship to the ground, the midline, centring, breathing and flow, with the patient noticing and putting words to what they feel; the patient’s experience, not the therapist’s measurement, guides progression. The most attractive distractors invert this. Distraction from bodily sensation is a legitimate pain strategy in other contexts and is the exact opposite of what this approach does, and avoiding sensation altogether would eliminate the mechanism of treatment. The patient is active throughout, so passive movement misses the point, and therapist-judged alignment reintroduces the external target the approach deliberately sets aside.'
+},
+{
+  n:28, mode:'Case', select:1, topic:'Body-mind therapy · relaxation-induced anxiety',
+  vig:'A 40-year-old woman with panic disorder is ten minutes into a relaxation session — supine, eyes closed, lights dimmed, body scan beginning at the chest. She becomes tearful, reports chest tightness and a sense of being detached from herself, and starts breathing fast and shallowly. You settle her with grounding and she recovers before the end of the session.',
+  stem:'Which single modification is most appropriate for the next session?',
+  options:[
+    'Work in sitting or standing with eyes open, begin the awareness work at the feet and the contact with the ground, and keep the exhalation gently prolonged',
+    'Repeat the same protocol so that she habituates to the sensations',
+    'Abandon relaxation, since it is contraindicated in panic disorder, and substitute an aerobic programme',
+    'Keep the supine eyes-closed format but shorten the session to five minutes',
+    'Begin with a breath-holding exercise to demonstrate that her breathing is under her control'
+  ],
+  answer:[0],
+  why:'This is relaxation-induced anxiety with depersonalisation, a recognised reaction in panic disorder rather than a treatment failure. Three elements provoked it and each can be changed: eyes closed in supine removes external anchoring, dim light reduces it further, and starting the body scan at the chest directs attention straight to the site of her feared sensations. Reversing all three — upright, eyes open, starting at the feet — keeps the approach and removes the trigger. Habituation by repetition is a misapplication of exposure principles, since the point is graded tolerable exposure, not repeating an overwhelming one. Relaxation is not contraindicated in panic disorder, only modified, and breath-holding provokes precisely the sensations she fears.'
+},
+{
+  n:29, mode:'Knowledge', select:2, topic:'Severe dementia · treatment approach',
+  stem:'Which <b>two</b> approaches are most appropriate in physiotherapy for a patient with <b>severe</b> dementia?',
+  options:[
+    'Prescribe a formal programme of three sets of ten repetitions, with written instructions for the family to follow',
+    'Draw on preserved procedural and emotional memory by rehearsing familiar functional tasks at the same time and place each day',
+    'Give the full verbal sequence of the task before starting, so the patient knows what to expect',
+    'Check carry-over by asking the patient to recall what was practised in the previous session',
+    'Use hand-under-hand guidance and mirroring in preference to verbal correction'
+  ],
+  answer:[1,4],
+  why:'In severe dementia, new declarative learning and verbal sequencing are largely lost while procedural and emotional memory persist, so treatment relies on familiar tasks, unvarying routine, demonstration and physical guidance rather than instruction and correction. Hand-<em>under</em>-hand is the preferred technique: your hand goes beneath the patient’s so they retain the sense of leading the movement, which is far better tolerated than being manoeuvred. Repetition-based prescriptions and written home programmes assume a capacity for counting, sequencing and independent recall that is not present, and asking a patient to recall the last session tests a memory system that has failed, producing distress without producing information — you assess carry-over by observing performance instead.'
+},
+{
+  n:30, mode:'Case', select:1, topic:'Severe dementia · resistance to care',
+  vig:'An 86-year-old woman with severe dementia pushes your hands away during transfer practice, calls out, and grimaces consistently whenever her right hip is moved. She cannot report pain verbally. Her PAINAD score is 6. Paracetamol is charted as required and was last given three days ago.',
+  stem:'What is the most appropriate next step?',
+  options:[
+    'Continue the transfer with two staff and a handling belt, which will reduce the discomfort',
+    'Ask nursing to give the charted analgesia and plan the next session for 45–60 minutes afterwards, while reporting the hip findings for medical review',
+    'Record that she is resistive to transfers and review her in one week',
+    'Request that a sedative be given before the next session',
+    'Request an urgent hip radiograph before any further handling'
+  ],
+  answer:[1],
+  why:'Resistance to care in severe dementia is most often pain, unmet need, or a frightening approach — and here a positive observational pain score with reproducible grimacing on hip movement, alongside analgesia that has not been given for three days, makes untreated pain the working explanation. The strongest distractor is the radiograph: imaging may well follow, but it is a medical decision, and the correct option already contains the referral that would generate it while also doing something for her today. Using a handling belt to push through does not treat pain, it applies force to it. Sedation manages the observer’s difficulty rather than her problem, and a week of “resistive to transfers” leaves a treatable cause untreated.'
+}
+];
 
-  var QUESTIONS = [
-    {
-      domain:"Knowledge",
-      stem:"Under Hong Kong's Mental Health Ordinance (Cap. 136), an application for a patient's compulsory admission under Section 31 requires that the patient has been examined by a registered medical practitioner within how many days before the application is made?",
-      options:["24 hours","3 days","7 days","14 days","28 days"],
-      correct:[3],
-      explain:"Section 31 of the Mental Health Ordinance requires the applying medical practitioner to have personally examined the patient within the 7 days immediately preceding the application."
-    },
-    {
-      domain:"Case-based",
-      stem:"A 34-year-old man with schizophrenia, recently started on a high dose of haloperidol, is attending a supervised group exercise session. Over 20 minutes he becomes increasingly rigid, his temperature rises to 39.2\u00B0C, his pulse becomes rapid and irregular, and he becomes drowsy and less responsive.\n\nWhat is the most appropriate immediate action?",
-      options:["Encourage him to keep exercising to help lower his temperature","Apply ice packs and continue the session at a reduced pace","Stop the session immediately and escalate for urgent medical assessment","Give him extra water and reassess in 30 minutes","Ask him to rest sitting down and resume the same exercises once his breathing settles"],
-      correct:[3],
-      explain:"This presentation \u2014 rigidity, hyperthermia, autonomic instability and reduced consciousness following recent antipsychotic initiation or dose increase \u2014 is concerning for neuroleptic malignant syndrome, a medical emergency. The session should be stopped immediately and urgent medical review arranged, not continued or self-managed on the ward."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which extrapyramidal side effect of antipsychotic medication is characterised by an inner sense of restlessness with an inability to sit or stand still?",
-      options:["Acute dystonia","Akathisia","Tardive dyskinesia","Drug-induced parkinsonism","Neuroleptic malignant syndrome"],
-      correct:[2],
-      explain:"Akathisia is a subjective feeling of inner restlessness, usually manifesting as an inability to remain still, fidgeting, or pacing \u2014 distinct from the involuntary movements of dystonia and dyskinesia or the rigidity and tremor of parkinsonism."
-    },
-    {
-      domain:"Case-based",
-      stem:"A 76-year-old woman, two days post hip fracture surgery, is more confused than yesterday. Her attention wanders during conversation; she was calm this morning but became agitated and disoriented this evening, and she does not recognise where she is.\n\nWhich physiotherapy approach is most appropriate at this stage?",
-      options:["Proceed with the full standard post-op rehabilitation protocol regardless of her presentation","Postpone all physiotherapy until her cognitive test score returns to baseline","Provide simple reorientation, keep instructions short and consistent, and mobilise cautiously with extra supervision while alerting the team to the change","Physically restrain her hands to prevent her removing lines before starting exercises","Assume this is an expected feature of her age and continue therapy unchanged"],
-      correct:[3],
-      explain:"The acute onset, fluctuating course and inattention described are typical of delirium, which is common post-operatively in older adults. Physiotherapy can usually continue in a modified, safety-focused way \u2014 simple reorientation, short consistent instructions, and closer supervision \u2014 while flagging the change for medical review to identify and treat the underlying cause."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which combination of clinical features is most characteristic of neuroleptic malignant syndrome (NMS)?",
-      options:["Fine resting tremor, weight gain, sedation","Hyperthermia, muscle rigidity, autonomic instability, and altered consciousness","Orofacial dyskinesia, lip smacking, tongue protrusion","Sustained abnormal posturing of the neck and trunk","Symmetrical resting tremor with cogwheel rigidity and shuffling gait"],
-      correct:[2],
-      explain:"NMS classically presents with hyperthermia, severe muscle rigidity, autonomic instability (labile blood pressure, tachycardia, diaphoresis) and altered consciousness, usually with markedly elevated creatine kinase. It is a medical emergency requiring immediate cessation of activity and urgent medical review."
-    },
-    {
-      domain:"Case-based",
-      stem:"A patient with a manic episode becomes increasingly loud and irritable partway through a physiotherapy session, stands up abruptly, and says he wants to leave immediately.\n\nWhich response is most appropriate?",
-      options:["Firmly instruct him to sit back down and finish the exercises as planned","Physically block the doorway so he cannot leave the room","Calmly acknowledge his wish to stop, give him space, and inform the nursing/medical team of the change in behaviour","Ignore the behaviour and continue speaking about the exercise programme","Raise your voice to match his so he takes the instruction seriously"],
-      correct:[3],
-      explain:"Calmly acknowledging the patient's wishes, avoiding confrontation or physical blocking, and promptly informing the ward team allows the situation to be managed safely without escalating his agitation."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Regular blood monitoring is mandatory for patients on clozapine primarily to screen for which potentially life-threatening adverse effect?",
-      options:["Hepatotoxicity","Agranulocytosis","Nephrotoxicity","Thrombocytosis","Hypothyroidism"],
-      correct:[2],
-      explain:"Clozapine carries a risk of agranulocytosis, a severe drop in neutrophils that increases susceptibility to serious infection. Regular full blood count monitoring (frequent initially, then less often once stable) is mandatory throughout treatment."
-    },
-    {
-      domain:"Case-based",
-      stem:"A patient with major depressive disorder repeatedly says exercise 'won't make any difference' and shows little interest in starting a rehabilitation programme.\n\nWhich approach is most likely to support engagement?",
-      options:["Telling the patient they must complete the full programme regardless of how they feel","Cancelling physiotherapy until the psychiatric team confirms the depression has improved","Exploring the patient's own goals and concerns collaboratively, and starting with small, achievable tasks","Focusing sessions only on education, since exercise is not appropriate in depression","Setting an intensive daily exercise target from the outset to demonstrate commitment"],
-      correct:[3],
-      explain:"A collaborative, motivational approach \u2014 exploring the patient's own goals and starting with small, achievable steps to build early success \u2014 supports engagement far more than an unmodified prescriptive target, withholding therapy, or omitting exercise altogether."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which finding in a patient established on lithium therapy should most urgently prompt a check of serum lithium level and medical review?",
-      options:["Mild fine hand tremor present since starting treatment","Occasional mild thirst","A new coarse tremor with unsteady gait and slurred speech","Slight weight gain over several months","Mild nausea after the morning dose"],
-      correct:[3],
-      explain:"A coarse tremor, ataxia and dysarthria are signs suggestive of emerging lithium toxicity and warrant urgent medical assessment and a lithium level check, in contrast to the mild fine tremor and GI symptoms often seen at therapeutic levels."
-    },
-    {
-      domain:"Case-based",
-      stem:"A patient with anorexia nervosa and a low BMI, medically unstable and early in nutritional rehabilitation, asks the physiotherapist for an intensive daily gym programme to 'get fit'.\n\nWhich two considerations should most influence the physiotherapist's decision at this stage? Select 2.",
-      options:["The patient's request and enthusiasm for the programme","Current cardiovascular and electrolyte stability, as confirmed with the medical team","Whether the gym equipment is available at the requested time","The multidisciplinary team's agreed activity plan for her current stage of refeeding","How many calories the programme would burn per session"],
-      correct:[2,4],
-      explain:"Decisions about activity level in medically unstable, malnourished patients should be guided by confirmed cardiovascular/electrolyte stability and the multidisciplinary team's agreed plan for her stage of refeeding \u2014 not by patient enthusiasm, equipment availability, or calorie expenditure, which risk reinforcing unsafe or disordered exercise patterns."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which two of the following are extrapyramidal side effects of antipsychotic medication, resulting from dopamine blockade? Select 2.",
-      options:["Agranulocytosis","Acute dystonia","Tardive dyskinesia","Hyponatraemia","Hepatotoxicity"],
-      correct:[2,3],
-      explain:"Acute dystonia and tardive dyskinesia are both extrapyramidal side effects of antipsychotic medication, arising from dopamine blockade in the nigrostriatal pathway. Agranulocytosis, hyponatraemia and hepatotoxicity are non-extrapyramidal adverse effects associated with other psychotropic medications."
-    },
-    {
-      domain:"Case-based",
-      stem:"A 58-year-old man who has taken a typical antipsychotic for several years presents with a shuffling gait, reduced arm swing, mask-like facial expression and a resting tremor. Symptoms began a few months after his current medication was started.\n\nWhat does this presentation most likely represent?",
-      options:["Idiopathic Parkinson's disease unrelated to his medication","Tardive dyskinesia","Drug-induced parkinsonism secondary to his antipsychotic","Catatonic stupor","Guillain-Barr\u00E9 syndrome"],
-      correct:[3],
-      explain:"Parkinsonian features (shuffling gait, reduced arm swing, hypomimia, resting tremor) appearing after starting or increasing a dopamine-blocking antipsychotic are typical of drug-induced parkinsonism, which may improve with dose adjustment or a change of agent, unlike idiopathic Parkinson's disease."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which of the following is classified as a negative symptom of schizophrenia?",
-      options:["Auditory hallucinations","Persecutory delusions","Avolition","Thought insertion","Disorganised speech"],
-      correct:[3],
-      explain:"Negative symptoms reflect a reduction or loss of normal function \u2014 avolition (reduced motivation to initiate purposeful activity) is a classic example. Hallucinations, delusions, thought insertion and disorganised speech are positive symptoms."
-    },
-    {
-      domain:"Case-based",
-      stem:"A young man is given his first dose of haloperidol in the emergency department. Within hours he develops sudden, sustained twisting of his neck to one side that he cannot voluntarily correct, and looks distressed.\n\nWhat is the most appropriate immediate step?",
-      options:["Reassure him this will resolve on its own within a few days without treatment","Begin gentle passive neck stretching to correct the position","Alert the medical team promptly, as this is likely acute dystonia requiring prompt pharmacological treatment","Apply ice to the neck and reassess in the morning","Encourage active neck range-of-motion exercises against the spasm"],
-      correct:[3],
-      explain:"Sudden, sustained abnormal muscle contraction shortly after starting an antipsychotic is characteristic of acute dystonia, which usually responds quickly to an anticholinergic or antihistaminergic medication. It should be escalated promptly rather than managed with stretching or exercise alone."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which feature most reliably distinguishes delirium from dementia?",
-      options:["Presence of memory impairment","Older age of the patient","Acute onset with fluctuating consciousness and attention","Gradual decline over several years","Difficulty with activities of daily living"],
-      correct:[3],
-      explain:"Delirium is characterised by an acute onset and a fluctuating course, with impaired attention and level of consciousness \u2014 features not typical of dementia, which develops gradually and usually without clouding of consciousness."
-    },
-    {
-      domain:"Case-based",
-      stem:"A patient established on long-term lithium therapy develops a coarse tremor, unsteady gait and slurred speech partway through a physiotherapy session that were not present at the start.\n\nWhat should the physiotherapist do?",
-      options:["Continue the session but reduce the exercise intensity","Attribute this to fatigue and let the patient rest before resuming","Stop the session and refer promptly for medical assessment, as this may indicate lithium toxicity","Encourage the patient to drink more water and carry on","Document the finding and review again at the next scheduled session"],
-      correct:[3],
-      explain:"A new coarse tremor with ataxia and dysarthria in a patient on lithium raises concern for toxicity, which can progress to serious neurological and cardiac complications. The session should stop and prompt medical assessment (including a lithium level) should be arranged rather than continuing or waiting."
-    },
-    {
-      domain:"Knowledge",
-      stem:"In a severely malnourished patient with anorexia nervosa beginning nutritional rehabilitation, which electrolyte disturbance is the hallmark of refeeding syndrome?",
-      options:["Hypercalcaemia","Hyperkalaemia","Hypophosphataemia","Hypernatraemia","Hyperglycaemia"],
-      correct:[3],
-      explain:"Refeeding syndrome is driven primarily by a sharp fall in serum phosphate as carbohydrate reintroduction triggers an insulin surge and a shift of phosphate into cells, which can precipitate cardiac and respiratory complications."
-    },
-    {
-      domain:"Case-based",
-      stem:"During assessment, a patient remains silent and motionless. When the physiotherapist gently repositions her arm, it stays fixed in the new position for a prolonged period before slowly returning, and she does not resist or assist the movement.\n\nWhich physiotherapy approach is most appropriate given this presentation?",
-      options:["Ignore the finding and proceed with active resistance training as planned","Recognise this as a possible sign of catatonia, avoid forcing movement, and alert the medical team promptly","Assume she is being uncooperative and end the session","Ask her to perform maximal voluntary effort testing to confirm weakness","Reassure her the symptoms are not real and continue as normal"],
-      correct:[2],
-      explain:"Waxy flexibility with mutism and immobility suggests catatonia, a condition requiring prompt medical/psychiatric assessment as it can respond well to specific treatment. Physiotherapy should avoid forcing active participation and instead flag the finding to the team rather than labelling it as poor cooperation."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which clinical sign is characteristic of catatonia?",
-      options:["Pill-rolling resting tremor","Waxy flexibility, where a limb held in a posture resists movement then slowly yields","Symmetrical proximal muscle weakness","Cogwheel rigidity that eases with movement repetition","Intention tremor that worsens near the target"],
-      correct:[2],
-      explain:"Waxy flexibility \u2014 a limb maintaining an externally imposed posture with slow, wax-like resistance to repositioning \u2014 is a classic catatonic sign, along with mutism, posturing, and stupor."
-    },
-    {
-      domain:"Case-based",
-      stem:"An older patient on the psychogeriatric ward has moderate dementia, has fallen twice in the past month, and has limited awareness of her own physical limitations.\n\nWhich two of the following are appropriate falls-prevention strategies for this patient? Select 2.",
-      options:["Complete bed rest until her cognition improves","Use of a validated falls-risk assessment tool to guide her care plan","Relying solely on verbal reminders to stay seated","Environmental modification such as a low-low bed and clutter-free floor space","Encouraging fully independent mobility to preserve her function"],
-      correct:[2,4],
-      explain:"A validated falls-risk assessment tool and environmental modifications such as a low-low bed and clear floor space are appropriate, evidence-based strategies for a patient with impaired safety awareness. Bed rest causes deconditioning, verbal reminders alone are unreliable in dementia, and encouraging full independence ignores her documented fall risk."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Before mobilising a psychiatric inpatient recently started on a sedating antipsychotic, which precaution is most important given the medication's common cardiovascular side effect?",
-      options:["Checking lying and standing blood pressure before starting","Restricting fluid intake before the session","Avoiding all mobilisation until the medication is stopped","Using a firm gait belt regardless of the patient's balance","Scheduling the session immediately after the medication is given"],
-      correct:[1],
-      explain:"Many antipsychotics cause orthostatic hypotension. Checking lying and standing blood pressure before mobilising helps identify patients at risk of a postural drop and possible falls, allowing the session to be adapted accordingly."
-    },
-    {
-      domain:"Case-based",
-      stem:"While assessing range of motion, a physiotherapist notices healed linear scars on a patient's forearm, and the patient becomes visibly upset and looks away.\n\nWhat is the most appropriate response?",
-      options:["Point out the scars directly and ask her to explain what happened","Say nothing about the scars, complete the assessment respectfully, and mention the observation to the treating team if clinically relevant","Avoid touching that arm for the rest of her admission without explanation","Reassure her that 'everyone has scars' to minimise the topic","Ask other staff in front of her whether they noticed the scars too"],
-      correct:[2],
-      explain:"A calm, respectful approach that does not press the patient for an explanation in the moment, while passing on clinically relevant observations to the team, respects the patient's dignity and keeps the focus of the physiotherapy encounter appropriate to the physiotherapist's role."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which action best reflects good practice when verbally de-escalating an agitated patient during a physiotherapy session?",
-      options:["Standing directly in front of the patient at close range to maintain control","Speaking in a calm, low, even tone while keeping a respectful distance","Raising your voice slightly to be heard over the patient","Continuing the planned exercise programme to maintain routine","Making direct, unbroken eye contact to assert authority"],
-      correct:[2],
-      explain:"De-escalation is supported by a calm, low, even tone, a non-confrontational stance, and maintaining a respectful physical distance \u2014 reducing perceived threat rather than asserting control through proximity, volume, or continued task demands."
-    },
-    {
-      domain:"Case-based",
-      stem:"A patient with a history of PTSD flinches and becomes tearful when the physiotherapist places a hand on her shoulder without warning to guide a stretch.\n\nWhat should the physiotherapist do differently going forward?",
-      options:["Continue using hands-on techniques as normal, since this is standard practice","Explain each hands-on technique beforehand and ask permission before touching her","Avoid physical contact permanently for all future sessions without discussion","Tell her that reacting this way is not helpful for her rehabilitation","Proceed more quickly through hands-on techniques so she has less time to react"],
-      correct:[2],
-      explain:"Trauma-informed practice involves explaining what will happen and gaining explicit consent before touch, giving the patient a sense of control and predictability \u2014 rather than continuing unchanged, permanently avoiding all contact without discussion, or minimising her reaction."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which two of the following reflect appropriate practice for protecting a psychiatric patient's confidentiality? Select 2.",
-      options:["Discussing relevant clinical details with the treating multidisciplinary team","Leaving the patient's case notes open on an unattended desk","Sharing only clinically necessary details with the family after checking consent","Posting an anonymised but locatable case summary in a private social media group for therapists","Telling curious visitors on the ward general information about the patient's diagnosis"],
-      correct:[1,3],
-      explain:"Discussing relevant details within the treating multidisciplinary team, and sharing information with family only after checking consent and limiting it to what's clinically necessary, are both appropriate. Leaving notes unattended, posting case details externally, or disclosing diagnoses to visitors all breach confidentiality."
-    },
-    {
-      domain:"Case-based",
-      stem:"A patient with a diagnosis of borderline personality disorder asks the physiotherapist for their personal mobile number so she can message for exercise reminders and support between sessions.\n\nWhat is the most appropriate response?",
-      options:["Give the number, since it may improve exercise adherence","Decline politely, explain the professional boundary, and offer an appropriate alternative such as a written home programme or official department contact","Give the number but ask her to only message during office hours","Ignore the request and change the subject","Report the request to security as an incident"],
-      correct:[2],
-      explain:"Maintaining clear professional boundaries while still supporting the patient \u2014 for example, offering a written home programme or the department's official contact channel \u2014 is appropriate and consistent with good practice, rather than sharing personal contact details."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Based on current evidence, which exercise prescription is most appropriate as an adjunct for managing mild-to-moderate depression?",
-      options:["A single maximal-intensity session, as more intensity always produces greater benefit","Moderate-intensity aerobic exercise most days of the week, built up gradually","Strict bed rest until mood symptoms fully resolve","Exercise only once symptoms have completely remitted","High-intensity interval training performed daily regardless of tolerance"],
-      correct:[2],
-      explain:"Guidelines generally support regular moderate-intensity aerobic exercise, introduced gradually and most days of the week, as an effective adjunct for mild-to-moderate depression \u2014 rather than a single intense bout, enforced rest, or delaying exercise until symptoms resolve."
-    },
-    {
-      domain:"Case-based",
-      stem:"During a session, a patient suddenly becomes verbally threatening, clenches his fists and steps toward the physiotherapist.\n\nWhat is the physiotherapist's first priority?",
-      options:["Continue the exercise instructions calmly to de-escalate through routine","Stand your ground to avoid appearing intimidated","Ensure personal safety \u2014 create distance, move toward the exit, and call for assistance","Attempt to physically restrain the patient alone","Try to reason with him about why his behaviour is inappropriate before withdrawing"],
-      correct:[3],
-      explain:"When a patient becomes physically threatening, the immediate priority is personal safety \u2014 creating distance, moving toward an exit, and summoning help \u2014 rather than continuing therapy, standing ground, attempting solo restraint, or delaying withdrawal to reason with the patient."
-    },
-    {
-      domain:"Knowledge",
-      stem:"Which factor is generally regarded as the single strongest predictor of future suicide risk?",
-      options:["Male sex","A previous suicide attempt","Living alone","Older age","Unemployment"],
-      correct:[2],
-      explain:"A previous suicide attempt is consistently identified as the strongest single predictor of future suicide risk, ahead of other contributing demographic and social factors."
-    },
-    {
-      domain:"Case-based",
-      stem:"The ward team is considering physical restraint for an agitated, cognitively impaired elderly patient who keeps trying to climb out of bed unsupervised.\n\nWhat is the most appropriate contribution from the physiotherapist to this discussion?",
-      options:["Support restraint as the first-line option to guarantee safety","Suggest exploring least-restrictive alternatives first \u2014 such as addressing pain or toileting needs, environmental modification, low-low beds, or increased supervision \u2014 reserving restraint for when these are insufficient","Recommend restraint be used continuously until the patient is discharged","Stay silent, since restraint decisions are entirely outside the physiotherapist's scope","Suggest sedating medication as a substitute for restraint without further assessment"],
-      correct:[2],
-      explain:"Good multidisciplinary practice favours identifying and addressing underlying causes of the behaviour and trying least-restrictive alternatives first, with physical restraint reserved as a last resort when safety cannot otherwise be assured. Physiotherapists can meaningfully contribute to this discussion, including advice on mobility, environment and equipment."
-    }
-  ];
+/* ---------- state ---------- */
+/* defensive: drop any empty slot so a stray comma can never stall the paper */
+var ITEMS = QUESTIONS.filter(function(q){ return q && q.options && q.options.length; });
+var TOTAL = ITEMS.length;
+var picks = ITEMS.map(function(){return [];});
+var idx = 0, t0 = 0, tick = null, done = false, staff = '';
+var $ = function(id){return document.getElementById(id);};
 
-  QUESTIONS.forEach(function(q,i){
-    q.id = i;
-    q.numAnswers = q.correct.length;
+function pad(n){return (n<10?'0':'')+n;}
+function fmt(s){return pad(Math.floor(s/60))+':'+pad(s%60);}
+function elapsed(){return Math.floor((Date.now()-t0)/1000);}
+
+/* ---------- rail ---------- */
+function buildRail(){
+  var r = $('rail'); r.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var b = document.createElement('button');
+    b.className='railbtn'; b.type='button'; b.textContent=q.n;
+    b.setAttribute('aria-label','Go to question '+q.n);
+    b.onclick=function(){idx=i;render();};
+    r.appendChild(b);
+  });
+}
+function paintRail(){
+  var kids = $('rail').children;
+  for(var i=0;i<kids.length;i++){
+    var got = (picks[i]||[]).length, need = ITEMS[i].select, cls = 'railbtn';
+    if(got===need) cls += ' done';
+    else if(got>0) cls += ' part';
+    if(i===idx) cls += ' here';
+    kids[i].className = cls;
+    kids[i].title = 'Q'+ITEMS[i].n+' · '+(got===need ? 'answered'
+      : got>0 ? 'incomplete — '+got+' of '+need+' selected' : 'not answered');
+  }
+}
+
+/* ---------- render one question ---------- */
+function render(){
+  var q = ITEMS[idx];
+  if(!q){ return; }
+  $('counter').textContent = 'Question '+(idx+1)+' of '+TOTAL;
+  $('bar').style.width = ((idx+1)/TOTAL*100)+'%';
+  $('qno').textContent = 'Q'+pad(q.n);
+  var got = picks[idx].length;
+  $('qmode').textContent = q.select===2 ? ('Select 2 · '+got+' of 2 chosen') : 'Select 1';
+  $('qmode').className = 'chip hot' + (q.select===2 && got!==2 ? ' pend' : '');
+  $('qtopic').textContent = q.mode+' · '+q.topic;
+  $('stem').innerHTML = (q.vig ? '<span class="vig">'+q.vig+'</span>' : '') + q.stem;
+
+  var box = $('opts'); box.innerHTML='';
+  q.options.forEach(function(text,i){
+    var b = document.createElement('button');
+    b.type='button';
+    b.className='opt'+(q.select===2?' two':'')+(picks[idx].indexOf(i)>-1?' sel':'');
+    b.setAttribute('aria-pressed', picks[idx].indexOf(i)>-1 ? 'true':'false');
+    b.innerHTML = '<b>'+(i+1)+'</b><span>'+text+'</span>';
+    b.onclick=function(){choose(i);};
+    box.appendChild(b);
   });
 
-  var TOTAL = QUESTIONS.length;
-  var PASS_PCT = 60;
-  var current = 0;
-  var answers = {}; // id -> array of selected option numbers (1-based)
-  var startTime = null;
-  var timerInterval = null;
-  var elapsedSeconds = 0;
+  $('prev').disabled = (idx===0);
+  $('next').disabled = (idx===TOTAL-1);
+  paintRail();
+}
 
-  // ---------- element refs ----------
-  var coverScreen = document.getElementById('cover-screen');
-  var quizScreen = document.getElementById('quiz-screen');
-  var resultsScreen = document.getElementById('results-screen');
-  var startBtn = document.getElementById('startBtn');
-  var staffNameInput = document.getElementById('staffName');
+function choose(i){
+  var q = ITEMS[idx], cur = picks[idx], at = cur.indexOf(i);
+  if(q.select===2){
+    if(at>-1){cur.splice(at,1);}
+    else{ if(cur.length>=2){cur.shift();} cur.push(i); }
+  }else{
+    picks[idx] = (at>-1) ? [] : [i];
+  }
+  if(armed){ armed=false; $('warn').classList.add('hidden'); $('submit').textContent='Submit test'; }
+  render();
+}
 
-  var progressLabel = document.getElementById('progressLabel');
-  var timerLabel = document.getElementById('timerLabel');
-  var progressFill = document.getElementById('progressFill');
-  var chipRail = document.getElementById('chipRail');
-  var qIndex = document.getElementById('qIndex');
-  var qDomain = document.getElementById('qDomain');
-  var selectBadge = document.getElementById('selectBadge');
-  var qStem = document.getElementById('qStem');
-  var optionsList = document.getElementById('optionsList');
-  var prevBtn = document.getElementById('prevBtn');
-  var nextBtn = document.getElementById('nextBtn');
-  var submitBtn = document.getElementById('submitBtn');
-  var warnBanner = document.getElementById('warnBanner');
+/* ---------- marking ---------- */
+function isRight(i){
+  var a = ITEMS[i].answer.slice().sort().join(',');
+  var p = picks[i].slice().sort().join(',');
+  return a===p && picks[i].length===ITEMS[i].answer.length;
+}
 
-  function pad(n){ return n<10 ? '0'+n : ''+n; }
-  function fmtTime(sec){
-    var m = Math.floor(sec/60), s = sec%60;
-    return pad(m)+':'+pad(s);
+var armed = false;
+function finish(){
+  var bad = [];
+  picks.forEach(function(p,i){ if(p.length !== ITEMS[i].select){ bad.push(i); } });
+  if(bad.length>0 && !armed){
+    armed = true;
+    var links = bad.map(function(i){
+      var got = picks[i].length, need = ITEMS[i].select;
+      return '<button type="button" class="jump" data-i="'+i+'">Q'+pad(ITEMS[i].n)
+        + (got>0 ? ' – '+got+' of '+need : '') + '</button>';
+    }).join(' ');
+    var w = $('warn');
+    w.innerHTML = '<b>'+bad.length+' question'+(bad.length>1?'s still need':' still needs')+' attention.</b> '
+      + 'Items needing two answers show only one selected, or nothing is selected. '
+      + 'Tap a number to go straight there, or tap “Submit test anyway” to submit — '
+      + 'unfinished items are marked incorrect.<span class="jumps">'+links+'</span>';
+    w.classList.remove('hidden');
+    $('submit').textContent = 'Submit test anyway';
+    return;
   }
 
-  // ---------- build chip rail ----------
-  QUESTIONS.forEach(function(q,i){
-    var chip = document.createElement('button');
-    chip.className = 'chip';
-    chip.type = 'button';
-    chip.textContent = (i+1);
-    chip.setAttribute('aria-label','Go to question '+(i+1));
-    chip.addEventListener('click', function(){ goTo(i); });
-    chipRail.appendChild(chip);
+  done = true; clearInterval(tick);
+  var secs = elapsed(), ok = 0;
+  ITEMS.forEach(function(q,i){ if(isRight(i)) ok++; });
+  var pc = Math.round(ok/TOTAL*100);
+
+  $('quiz').classList.add('hidden');
+  $('results').classList.remove('hidden');
+
+  var pass = pc>=60;
+  var bg = $('badge');
+  bg.textContent = pass ? 'Pass' : 'Below pass mark';
+  bg.className = 'badge '+(pass?'pass':'fail');
+  $('raw').textContent = ok;
+  $('pc').textContent = pc+'%';
+  $('nOk').textContent = ok;
+  $('nNo').textContent = TOTAL-ok;
+  $('tTaken').textContent = fmt(secs);
+  $('staffOut').textContent = staff || '—';
+
+  /* answer sheet */
+  var sh = $('sheet'); sh.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var c = document.createElement('button');
+    c.type='button';
+    c.className = 'cell '+(isRight(i)?'ok':'no');
+    c.textContent = q.n;
+    c.setAttribute('aria-label','Question '+q.n+': '+(isRight(i)?'correct':'incorrect'));
+    c.onclick = function(){
+      var el = $('rev'+q.n);
+      if(el && el.scrollIntoView){ el.scrollIntoView({behavior:'smooth',block:'start'}); }
+    };
+    sh.appendChild(c);
   });
 
-  function refreshChips(){
-    var chips = chipRail.children;
-    for (var i=0;i<chips.length;i++){
-      var c = chips[i];
-      c.classList.toggle('answered', !!(answers[i] && answers[i].length));
-      c.classList.toggle('current', i===current);
-    }
-  }
-
-  function renderQuestion(){
-    var q = QUESTIONS[current];
-    qIndex.textContent = 'Q' + pad(current+1);
-    qDomain.textContent = q.domain;
-    selectBadge.textContent = q.numAnswers > 1 ? ('Select ' + q.numAnswers) : 'Select 1';
-    qStem.textContent = q.stem;
-    progressLabel.textContent = 'Question ' + (current+1) + ' of ' + TOTAL;
-    progressFill.style.width = (((current)/(TOTAL-1)) * 100) + '%';
-
-    optionsList.innerHTML = '';
-    optionsList.className = 'options' + (q.numAnswers > 1 ? ' multi' : '');
-    var selected = answers[q.id] || [];
-
-    q.options.forEach(function(text, idx){
-      var num = idx+1;
-      var li = document.createElement('li');
-      li.className = 'option' + (selected.indexOf(num) > -1 ? ' selected' : '');
-      li.tabIndex = 0;
-      li.setAttribute('role', q.numAnswers>1 ? 'checkbox' : 'radio');
-      li.setAttribute('aria-checked', selected.indexOf(num) > -1 ? 'true':'false');
-
-      var bubble = document.createElement('span');
-      bubble.className = 'bubble';
-      bubble.textContent = num;
-
-      var span = document.createElement('span');
-      span.className = 'option-text';
-      span.textContent = text;
-
-      li.appendChild(bubble);
-      li.appendChild(span);
-      li.addEventListener('click', function(){ toggleOption(q, num); });
-      li.addEventListener('keydown', function(e){
-        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleOption(q, num); }
-      });
-      optionsList.appendChild(li);
-    });
-
-    prevBtn.disabled = (current === 0);
-    var isLast = (current === TOTAL-1);
-    nextBtn.style.display = isLast ? 'none' : 'inline-block';
-    submitBtn.style.display = isLast ? 'inline-block' : 'none';
-    warnBanner.style.display = 'none';
-
-    refreshChips();
-  }
-
-  function toggleOption(q, num){
-    var sel = answers[q.id] ? answers[q.id].slice() : [];
-    var pos = sel.indexOf(num);
-    if (q.numAnswers === 1){
-      sel = (pos > -1) ? [] : [num];
-    } else {
-      if (pos > -1){
-        sel.splice(pos,1);
-      } else {
-        sel.push(num);
-        if (sel.length > q.numAnswers){ sel.shift(); }
-      }
-    }
-    answers[q.id] = sel;
-    renderQuestion();
-  }
-
-  function goTo(i){
-    current = Math.max(0, Math.min(TOTAL-1, i));
-    renderQuestion();
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  prevBtn.addEventListener('click', function(){ goTo(current-1); });
-  nextBtn.addEventListener('click', function(){ goTo(current+1); });
-
-  submitBtn.addEventListener('click', function(){
-    var unanswered = [];
-    QUESTIONS.forEach(function(q,i){
-      if (!answers[q.id] || answers[q.id].length === 0) unanswered.push(i+1);
-    });
-    if (unanswered.length){
-      warnBanner.style.display = 'block';
-      warnBanner.textContent = 'You still have ' + unanswered.length + ' unanswered question' +
-        (unanswered.length>1?'s':'') + ' (Q' + unanswered.join(', Q') + '). Submit anyway, or use the number rail to go back.';
-      var again = document.createElement('div');
-      again.style.marginTop = '8px';
-      var b = document.createElement('button');
-      b.className = 'btn btn-ghost';
-      b.style.padding = '8px 16px';
-      b.style.fontSize = '12px';
-      b.textContent = 'Submit anyway';
-      b.addEventListener('click', finishQuiz);
-      warnBanner.appendChild(again);
-      again.appendChild(b);
-      return;
-    }
-    finishQuiz();
-  });
-
-  function startTimer(){
-    startTime = Date.now();
-    timerInterval = setInterval(function(){
-      elapsedSeconds = Math.floor((Date.now()-startTime)/1000);
-      timerLabel.textContent = fmtTime(elapsedSeconds);
-    }, 1000);
-  }
-  function stopTimer(){
-    if (timerInterval) clearInterval(timerInterval);
-  }
-
-  startBtn.addEventListener('click', function(){
-    coverScreen.style.display = 'none';
-    quizScreen.style.display = 'block';
-    current = 0;
-    renderQuestion();
-    startTimer();
-    window.scrollTo({top:0});
-  });
-
-  function arraysEqualAsSets(a,b){
-    if (a.length !== b.length) return false;
-    var sa = a.slice().sort();
-    var sb = b.slice().sort();
-    for (var i=0;i<sa.length;i++){ if (sa[i]!==sb[i]) return false; }
-    return true;
-  }
-
-  function finishQuiz(){
-    stopTimer();
-    quizScreen.style.display = 'none';
-    resultsScreen.style.display = 'block';
-    window.scrollTo({top:0});
-
-    var correctCount = 0;
-    QUESTIONS.forEach(function(q){
-      var sel = answers[q.id] || [];
-      if (arraysEqualAsSets(sel, q.correct)) correctCount++;
-    });
-
-    var pct = Math.round((correctCount/TOTAL)*100);
-    var pass = pct >= PASS_PCT;
-
-    document.getElementById('stampEl').textContent = pass ? 'Pass' : 'Not yet';
-    document.getElementById('stampEl').className = 'stamp' + (pass ? '' : ' fail');
-    document.getElementById('scoreBig').textContent = correctCount + ' / ' + TOTAL;
-    document.getElementById('scoreSub').textContent = pct + '% \u00B7 pass mark is ' + PASS_PCT + '%';
-    document.getElementById('statCorrect').textContent = correctCount;
-    document.getElementById('statIncorrect').textContent = (TOTAL-correctCount);
-    document.getElementById('statTime').textContent = fmtTime(elapsedSeconds);
-    document.getElementById('statName').textContent = staffNameInput.value.trim() || '\u2014';
-
-    buildAnswerGrid();
-    buildReview();
-  }
-
-  function buildAnswerGrid(){
-    var grid = document.getElementById('answerGrid');
-    grid.innerHTML = '';
-    QUESTIONS.forEach(function(q,i){
-      var sel = answers[q.id] || [];
-      var ok = arraysEqualAsSets(sel, q.correct);
-      var cell = document.createElement('div');
-      cell.className = 'grid-cell ' + (ok ? 'correct' : 'wrong');
-      cell.textContent = (i+1);
-      cell.tabIndex = 0;
-      cell.addEventListener('click', function(){
-        var target = document.querySelector('.review-item[data-idx="'+i+'"]');
-        if (target){
-          target.classList.add('open');
-          target.scrollIntoView({behavior:'smooth', block:'center'});
-        }
-      });
-      grid.appendChild(cell);
-    });
-  }
-
-  function buildReview(){
-    var list = document.getElementById('reviewList');
-    list.innerHTML = '';
-    QUESTIONS.forEach(function(q,i){
-      var sel = answers[q.id] || [];
-      var ok = arraysEqualAsSets(sel, q.correct);
-
-      var item = document.createElement('div');
-      item.className = 'review-item';
-      item.setAttribute('data-idx', i);
-
-      var summary = document.createElement('div');
-      summary.className = 'review-summary';
-      summary.innerHTML =
-        '<span class="r-mark ' + (ok?'correct':'wrong') + '">' + (ok?'\u2713':'\u2717') + '</span>' +
-        '<span class="r-num">Q' + pad(i+1) + '</span>' +
-        '<span class="r-stem-short">' + escapeHtml(q.stem.split('\n')[0]) + '</span>' +
-        '<span class="r-caret">&#8250;</span>';
-      summary.addEventListener('click', function(){ item.classList.toggle('open'); });
-
-      var detail = document.createElement('div');
-      detail.className = 'review-detail';
-
-      var stemFull = document.createElement('div');
-      stemFull.className = 'q-stem-full';
-      stemFull.textContent = q.stem;
-      detail.appendChild(stemFull);
-
-      var optsUl = document.createElement('ul');
-      optsUl.className = 'review-opts';
-      q.options.forEach(function(text, idx){
-        var num = idx+1;
-        var isCorrect = q.correct.indexOf(num) > -1;
-        var wasSelected = sel.indexOf(num) > -1;
-        var li = document.createElement('li');
-        var cls = '';
-        if (isCorrect) cls = 'is-correct';
-        else if (wasSelected && !isCorrect) cls = 'is-user-wrong';
-        li.className = cls;
-
-        var tagHtml = '';
-        if (isCorrect) tagHtml = '<span class="tag correct-tag">Correct</span>';
-        else if (wasSelected) tagHtml = '<span class="tag wrong-tag">Your pick</span>';
-
-        li.innerHTML = '<span>' + num + '.</span><span style="flex:1;">' + escapeHtml(text) + '</span>' + tagHtml;
-        optsUl.appendChild(li);
-      });
-      detail.appendChild(optsUl);
-
-      var explain = document.createElement('div');
-      explain.className = 'explain';
-      explain.innerHTML = '<b>Why:</b> ' + escapeHtml(q.explain);
-      detail.appendChild(explain);
-
-      item.appendChild(summary);
-      item.appendChild(detail);
-      list.appendChild(item);
-    });
-  }
-
-  function escapeHtml(s){
+  /* review */
+  var rv = $('review'); rv.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var right = isRight(i);
     var d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
+    d.className='rev'; d.id='rev'+q.n;
+
+    var head = '<div class="rev-head">'
+      + '<span class="chip">Q'+pad(q.n)+'</span>'
+      + '<span class="chip">'+(q.select===2?'Select 2':'Select 1')+'</span>'
+      + '<span class="verdict-tag '+(right?'ok':'no')+'">'+(right?'Correct':'Incorrect')+'</span>'
+      + '<span class="chip topic">'+q.mode+' · '+q.topic+'</span>'
+      + '</div>';
+
+    var stem = '<p class="stem" style="font-size:15.5px">'
+      + (q.vig?'<span class="vig">'+q.vig+'</span>':'') + q.stem + '</p>';
+
+    var opts = '';
+    q.options.forEach(function(text,k){
+      var isKey = q.answer.indexOf(k)>-1;
+      var isPick = picks[i].indexOf(k)>-1;
+      var cls = 'rop' + (isKey?' key':'') + ((isPick && !isKey)?' picked-wrong':'');
+      var tag = '';
+      if(isKey && isPick) tag = 'Correct · your answer';
+      else if(isKey) tag = 'Correct answer';
+      else if(isPick) tag = 'Your answer';
+      opts += '<div class="'+cls+'"><b>'+(k+1)+'</b><span>'+text+'</span>'
+            + (tag?'<span class="rop-tag">'+tag+'</span>':'') + '</div>';
+    });
+    if(picks[i].length===0){
+      opts += '<div class="rop"><b>–</b><span style="color:var(--ink-faint)">No answer was selected for this question.</span></div>';
+    }
+
+    d.innerHTML = head + stem + '<div style="margin-top:10px">'+opts+'</div>'
+      + '<div class="why"><b>Why</b>'+q.why+'</div>';
+    rv.appendChild(d);
+  });
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- wiring ---------- */
+$('start').onclick = function(){
+  staff = $('who').value.trim();
+  $('intro').classList.add('hidden');
+  $('quiz').classList.remove('hidden');
+  t0 = Date.now();
+  clearInterval(tick);
+  tick = setInterval(function(){ $('clock').textContent = fmt(elapsed()); },1000);
+  buildRail(); render();
+  window.scrollTo({top:0});
+};
+$('prev').onclick = function(){ if(idx>0){idx--;render();} };
+$('next').onclick = function(){ if(idx<TOTAL-1){idx++;render();} };
+$('submit').onclick = finish;
+$('retake').onclick = function(){
+  picks = ITEMS.map(function(){return [];});
+  idx=0; done=false; armed=false;
+  $('warn').classList.add('hidden');
+  $('submit').textContent = 'Submit test';
+  $('results').classList.add('hidden');
+  $('quiz').classList.remove('hidden');
+  t0 = Date.now();
+  clearInterval(tick);
+  tick = setInterval(function(){ $('clock').textContent = fmt(elapsed()); },1000);
+  buildRail(); render();
+  window.scrollTo({top:0});
+};
+$('printout').onclick = function(){ window.print(); };
+$('warn').onclick = function(e){
+  var t = e.target;
+  if(t && t.className === 'jump'){
+    idx = parseInt(t.getAttribute('data-i'),10);
+    render();
+    var box = $('opts');
+    if(box && box.scrollIntoView){ box.scrollIntoView({behavior:'smooth',block:'center'}); }
   }
+};
 
-  document.getElementById('retakeBtn').addEventListener('click', function(){
-    answers = {};
-    current = 0;
-    elapsedSeconds = 0;
-    resultsScreen.style.display = 'none';
-    coverScreen.style.display = 'block';
-    window.scrollTo({top:0});
-  });
-
-  document.getElementById('printBtn').addEventListener('click', function(){
-    window.print();
-  });
-
-})();
+document.addEventListener('keydown', function(e){
+  if(done || $('quiz').classList.contains('hidden')) return;
+  if(e.key>='1' && e.key<='5'){ choose(parseInt(e.key,10)-1); }
+  if(e.key==='ArrowRight' && idx<TOTAL-1){ idx++; render(); }
+  if(e.key==='ArrowLeft' && idx>0){ idx--; render(); }
+});
 </script>
 </body>
 </html>
