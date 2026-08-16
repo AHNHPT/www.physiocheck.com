@@ -1,0 +1,3159 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PaedSim 01 · Nasopharyngeal Suction in a Child with hMPV</title>
+<style>
+:root{
+  --void:#06080B; --bezel:#0C1117; --panel:#111820; --panel2:#0E141B;
+  --rail:#1C2632; --rail2:#2C3B4B;
+  --bone:#E6EDF3; --mute:#8496A8; --dim:#5A6B7C;
+  --cy:#3AD8E6; --cy-d:#1B7C88;
+  --ok:#2FE07A; --warn:#FFC24B; --crit:#FF4D6D;
+  --ecg:#2FE07A; --pleth:#3AD8E6; --resp:#C8A2F0;
+  --spu:#C9B24A; --spu2:#8A7A2E; --milk:#EFE7D6;
+  --ff-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,sans-serif;
+  --ff-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,"JetBrains Mono",Consolas,monospace;
+  --sh:0 10px 30px rgba(0,0,0,.5);
+  --r:10px;
+  --ovw:0px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--void); color:var(--bone);
+  font-family:var(--ff-ui); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 70% -10%, #0D1720 0%, transparent 60%);
+}
+h1,h2,h3{text-wrap:balance;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cy);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--ff-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.hr{height:1px;background:var(--rail);border:0;margin:0}
+
+/* ---------- small-screen notice ---------- */
+#devwarn{position:fixed;inset:0;z-index:300;display:none;place-items:center;padding:22px;
+  background:rgba(4,6,9,.92);backdrop-filter:blur(8px)}
+#devwarn.on{display:grid}
+.dw-card{max-width:410px;width:100%;background:var(--panel);border:1px solid var(--warn);
+  border-radius:14px;padding:24px 22px;box-shadow:0 0 60px rgba(255,194,75,.18)}
+.dw-ic{color:var(--warn);line-height:0;margin-bottom:14px}
+.dw-ic svg{width:34px;height:34px}
+.dw-card h2{font-size:19px;line-height:1.28;letter-spacing:-.015em;margin-bottom:12px}
+.dw-card p{margin:0 0 10px;font-size:14px;line-height:1.55;color:var(--mute)}
+.dw-card .dw-sub{color:var(--dim);font-size:13px}
+.dw-card .btn{width:100%;margin-top:8px}
+
+/* ---------- boot / title ---------- */
+#boot{position:fixed;inset:0;z-index:200;background:var(--void);display:grid;place-items:center;
+  padding:24px;overflow:auto}
+.boot-card{max-width:680px;width:100%}
+.boot-mark{font-family:var(--ff-mono);font-size:11px;letter-spacing:.3em;color:var(--cy);
+  text-transform:uppercase;margin-bottom:18px}
+.boot-card h1{font-size:clamp(30px,5.4vw,46px);line-height:1.05;letter-spacing:-.028em;font-weight:800}
+.boot-card h1 em{font-style:normal;color:var(--mute);display:block;font-weight:500;font-size:.44em;
+  letter-spacing:-.01em;margin-top:14px;line-height:1.4}
+.boot-meta{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 20px}
+.tag{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--rail2);color:var(--mute);padding:5px 9px;border-radius:999px}
+.boot-body{color:var(--mute);font-size:14.5px;max-width:62ch}
+.boot-body b{color:var(--bone);font-weight:600}
+.modepick{display:grid;gap:10px;margin:22px 0 26px}
+.modepick label{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;border:1px solid var(--rail);
+  border-radius:var(--r);cursor:pointer;background:var(--panel2);transition:border-color .15s,background .15s}
+.modepick label:hover{border-color:var(--rail2)}
+.modepick input{margin:4px 0 0;accent-color:var(--cy);flex:none}
+.modepick input:checked ~ .mp-t b{color:var(--cy)}
+.mp-t b{display:block;font-size:14px;font-weight:600}
+.mp-t span{display:block;font-size:13px;color:var(--mute);line-height:1.45}
+
+.btn{border:1px solid var(--rail2);background:var(--panel);border-radius:8px;padding:11px 18px;
+  cursor:pointer;font-size:14px;font-weight:600;transition:background .15s,border-color .15s,transform .06s}
+.btn:hover{background:#16202B;border-color:#3C5062}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--cy);border-color:var(--cy);color:#04161A}
+.btn.pri:hover{background:#54E7F3;border-color:#54E7F3}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.sm{padding:7px 12px;font-size:13px}
+
+/* ---------- top bar ---------- */
+#bar{position:fixed;top:0;left:0;right:var(--ovw);z-index:45;pointer-events:none;
+  transition:right .38s cubic-bezier(.22,.9,.3,1);
+  background:linear-gradient(180deg,rgba(5,8,12,.86) 30%,rgba(5,8,12,0))}
+.bar-in{padding:11px 18px 22px;display:flex;align-items:center;gap:10px}
+.bar-in>*{pointer-events:auto}
+.brand{font-family:var(--ff-mono);font-size:11.5px;letter-spacing:.2em;color:var(--cy);white-space:nowrap}
+.bar-sp{flex:1}
+.chip{font-family:var(--ff-mono);font-size:11.5px;letter-spacing:.06em;color:var(--mute);
+  border:1px solid var(--rail);border-radius:6px;padding:4px 9px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.chip b{color:var(--bone)}
+.chip.alert{border-color:var(--crit);color:var(--crit)}
+.iconbtn{border:1px solid var(--rail);background:transparent;border-radius:6px;width:32px;height:29px;
+  cursor:pointer;font-size:14px;display:grid;place-items:center;color:var(--mute)}
+.iconbtn:hover{color:var(--bone);border-color:var(--rail2)}
+.iconbtn[aria-pressed="true"]{color:var(--cy);border-color:var(--cy-d)}
+#rail{max-width:1320px;margin:0 auto;padding:0 16px 8px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+#rail::-webkit-scrollbar{display:none}
+/* the debrief takes the whole width — the bar and dock have nowhere left to go */
+body.ovwide #bar,body.ovwide #dock{display:none}
+.rstep{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);padding:4px 0 6px;border-top:2px solid var(--rail);flex:1;min-width:62px;
+  white-space:nowrap;transition:color .3s,border-color .3s}
+.rstep.done{color:var(--mute);border-top-color:var(--cy-d)}
+.rstep.now{color:var(--cy);border-top-color:var(--cy)}
+
+/* ---------- the bedside ---------- */
+body.ovopen{--ovw:min(620px,52vw)}
+body.ovopen.ovwide{--ovw:min(1080px,94vw)}
+/* the suction station needs the anatomy and the controls on screen together */
+body.ovopen.ovnarrow{--ovw:min(408px,34vw)}
+#wrap{position:fixed;inset:0;top:0;overflow:hidden}
+#scene{position:absolute;left:0;top:0;bottom:0;right:var(--ovw);
+  transition:right .38s cubic-bezier(.22,.9,.3,1);
+  background:radial-gradient(900px 620px at 52% 34%, #16222C 0%, #0A1119 46%, #05080C 100%)}
+#sceneSvg{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#sceneTag{position:absolute;right:22px;bottom:104px;font-family:var(--ff-mono);font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--dim);pointer-events:none;
+  text-align:center;line-height:1.7;max-width:46ch}
+#sceneTag b{color:var(--cy);font-weight:500}
+
+/* floating instrument panels */
+.fp{position:absolute;z-index:20;border-radius:11px;overflow:hidden;
+  background:rgba(10,15,21,.88);backdrop-filter:blur(14px);
+  border:1px solid var(--rail2);box-shadow:0 18px 46px rgba(0,0,0,.62);
+  transition:box-shadow .2s,border-color .2s}
+.fp.drag{box-shadow:0 26px 60px rgba(0,0,0,.75);border-color:var(--cy-d)}
+.fp-h{display:flex;align-items:center;gap:7px;padding:6px 9px;cursor:grab;
+  background:rgba(12,19,26,.9);border-bottom:1px solid var(--rail);
+  font-family:var(--ff-mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
+  user-select:none;-webkit-user-select:none;touch-action:none}
+.fp-h:active{cursor:grabbing}
+.fp-h .gr{letter-spacing:0;color:var(--rail2);font-size:12px;line-height:1}
+.fp-h .sp{flex:1}
+.fp-x{border:0;background:transparent;color:var(--dim);cursor:pointer;font-size:13px;line-height:1;
+  padding:2px 3px;border-radius:4px}
+.fp-x:hover{color:var(--bone);background:rgba(255,255,255,.07)}
+#fp-mon{left:16px;top:70px;width:286px}
+#fp-suc{left:16px;bottom:96px;width:248px}
+
+/* ---------- monitor ---------- */
+#fp-mon.alarm{border-color:var(--crit);box-shadow:0 0 0 1px var(--crit),0 0 40px rgba(255,77,109,.32)}
+#trace{display:block;width:100%;height:176px;background:#05070A}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rail)}
+.nm{padding:7px 10px 8px;border-right:1px solid var(--rail);border-bottom:1px solid var(--rail);min-width:0}
+.nm:nth-child(3n){border-right:0}
+.nm .k{font-family:var(--ff-mono);font-size:9px;letter-spacing:.13em;color:var(--dim);text-transform:uppercase}
+.nm .v{font-family:var(--ff-mono);font-size:26px;line-height:1.08;font-weight:600;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.nm .u{font-family:var(--ff-mono);font-size:9.5px;color:var(--dim)}
+.nm.c-ecg .v{color:var(--ecg)} .nm.c-spo2 .v{color:var(--pleth)} .nm.c-rr .v{color:var(--resp)}
+.nm.c-t .v{color:#C8D6E2;font-size:20px} .nm.c-bp .v{color:#C8D6E2;font-size:18px}
+.nm.c-w .v{color:#C8D6E2;font-size:18px}
+.nm.warn{background:rgba(255,194,75,.09)} .nm.crit{background:rgba(255,77,109,.13)}
+.nm.crit .v{animation:blink 1s steps(1,end) infinite}
+@keyframes blink{50%{opacity:.28}}
+#alarmtxt{padding:6px 11px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--crit);background:rgba(255,77,109,.12);
+  border-top:1px solid rgba(255,77,109,.3);display:none}
+#alarmtxt.on{display:block}
+#alarmtxt.warn{color:var(--warn);background:rgba(255,194,75,.10);border-top-color:rgba(255,194,75,.3)}
+
+/* ---------- suction unit panel ---------- */
+.sucunit{padding:10px;display:grid;gap:9px}
+.dialrow{display:flex;align-items:center;gap:10px}
+.dialrow .lb{font-family:var(--ff-mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);flex:1}
+.gauge{position:relative;width:100px;height:52px;flex:none}
+.gauge svg{width:100%;height:100%;overflow:visible}
+.gauge .rd{position:absolute;left:-6px;right:-6px;bottom:-3px;text-align:center;font-family:var(--ff-mono);
+  font-size:12.5px;font-weight:600;color:var(--bone);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gauge .rd.hi{color:var(--crit)} .gauge .rd.lo{color:var(--warn)} .gauge .rd.ok{color:var(--ok)}
+.canwrap{display:flex;gap:10px;align-items:flex-end}
+.canbody{position:relative;height:74px;flex:1;border:1.5px solid var(--rail2);border-radius:4px 4px 9px 9px;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));overflow:hidden}
+.canfill{position:absolute;left:0;right:0;bottom:0;height:0%;
+  background:linear-gradient(180deg,var(--spu),var(--spu2));transition:height .35s ease-out}
+.canfill::before{content:"";position:absolute;left:0;right:0;top:-3px;height:6px;border-radius:50%;
+  background:#D8C25C;opacity:.85}
+.canfill.blood{background:linear-gradient(180deg,#B4703C,#7A3D28)}
+.canfill.blood::before{background:#C97F4A}
+.canbody .grad i{position:absolute;right:0;width:8px;height:1px;background:var(--rail2)}
+.canrd{font-family:var(--ff-mono);text-align:right;flex:none}
+.canrd b{display:block;font-size:16px;color:#D8C25C;font-variant-numeric:tabular-nums}
+.canrd span{font-size:8.5px;color:var(--dim);letter-spacing:.1em}
+
+/* ---------- bottom dock ---------- */
+#dock{position:absolute;left:0;right:var(--ovw);bottom:0;z-index:40;padding:9px 14px 12px;
+  transition:right .38s cubic-bezier(.22,.9,.3,1);
+  display:flex;justify-content:flex-start;gap:10px;overflow-x:auto;scrollbar-width:none;
+  background:linear-gradient(0deg,rgba(5,8,12,.94) 45%,rgba(5,8,12,0))}
+#dock::-webkit-scrollbar{display:none}
+#dock>:first-child{margin-left:auto}
+#dock>:last-child{margin-right:auto}
+.dgrp{display:flex;gap:4px;padding:6px;border-radius:15px;
+  background:rgba(14,21,29,.82);backdrop-filter:blur(12px);border:1px solid var(--rail)}
+.dbtn{width:62px;flex:none;background:transparent;border:0;cursor:pointer;padding:3px 2px 4px;
+  border-radius:11px;display:grid;justify-items:center;gap:3px;transition:background .15s}
+.dbtn:hover:not(:disabled){background:rgba(255,255,255,.05)}
+.dbtn .ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;position:relative;
+  border:1.5px solid var(--rail2);color:var(--mute);background:rgba(255,255,255,.03);
+  transition:border-color .2s,color .2s,background .2s,box-shadow .2s}
+.dbtn .ic svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.dbtn .lb{font-family:var(--ff-mono);font-size:8px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--dim);text-align:center;line-height:1.25}
+.dbtn.done .ic{border-color:rgba(47,224,122,.55);color:var(--ok)}
+.dbtn.done .ic::after{content:"";position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;
+  border-radius:50%;background:var(--ok);border:2px solid #0E151D}
+.dbtn.now .ic{border-color:var(--cy);color:var(--cy);background:rgba(58,216,230,.12);
+  box-shadow:0 0 0 3px rgba(58,216,230,.14),0 0 20px rgba(58,216,230,.3)}
+.dbtn.now .lb{color:var(--cy)}
+.dbtn.now .ic::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid var(--cy);
+  opacity:.5;animation:ping 2s cubic-bezier(.2,.7,.4,1) infinite}
+@keyframes ping{0%{transform:scale(.86);opacity:.6}70%,100%{transform:scale(1.24);opacity:0}}
+.dbtn:disabled{cursor:not-allowed}
+.dbtn:disabled .ic{border-color:#16202A;color:#2C3B4B;background:transparent}
+.dbtn:disabled .lb{color:#33424F}
+.vbtn{width:48px;flex:none;background:transparent;border:0;cursor:pointer;padding:3px 2px 4px;
+  border-radius:11px;display:grid;justify-items:center;gap:3px}
+.vbtn .ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;
+  border:1.5px solid var(--rail2);color:var(--mute);transition:all .18s}
+.vbtn .ic svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.vbtn[aria-pressed="true"] .ic{border-color:var(--cy);color:var(--cy);background:rgba(58,216,230,.12)}
+.vbtn .lb{font-family:var(--ff-mono);font-size:7.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.vbtn[aria-pressed="true"] .lb{color:var(--cy)}
+
+/* ---------- station overlay ---------- */
+#ov{position:absolute;z-index:50;right:0;top:0;bottom:0;width:min(620px,52vw);
+  display:flex;flex-direction:column;
+  background:linear-gradient(180deg,rgba(11,17,24,.96),rgba(8,12,17,.97));
+  backdrop-filter:blur(18px);border-left:1px solid var(--rail2);
+  box-shadow:-24px 0 60px rgba(0,0,0,.55);
+  transform:translateX(102%);transition:transform .38s cubic-bezier(.22,.9,.3,1)}
+#ov.on{transform:none}
+#ov.wide{width:min(1080px,94vw)}
+#ov.narrow{width:min(408px,34vw)}
+#ov-h{display:flex;align-items:center;gap:12px;padding:13px 20px 11px;border-bottom:1px solid var(--rail);flex:none}
+#ov-h .t{min-width:0;flex:1}
+#ov-h .eyebrow{margin-bottom:3px}
+#ov-h h2{font-size:18px;letter-spacing:-.015em;font-weight:700}
+#ov-b{flex:1;overflow-y:auto;padding:18px 20px 30px;min-height:0}
+#ov-b>*+*{margin-top:16px}
+#ov-b .pane>*+*{margin-top:16px}
+#ov-b .card{background:none;border:0;box-shadow:none}
+#ov-b .card-h{display:none}
+#ov-b .card-b{padding:0}
+#ov-min{border:1px solid var(--rail2);background:transparent;border-radius:7px;color:var(--mute);
+  cursor:pointer;padding:5px 11px;font-family:var(--ff-mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;flex:none}
+#ov-min:hover{color:var(--bone);border-color:#44596C}
+#ovtab{position:absolute;z-index:45;right:0;top:50%;transform:translateY(-50%);
+  writing-mode:vertical-rl;background:var(--cy);color:#04161A;border:0;cursor:pointer;
+  padding:16px 8px;border-radius:9px 0 0 9px;font-family:var(--ff-mono);font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;font-weight:700;display:none;
+  box-shadow:-6px 0 20px rgba(58,216,230,.3)}
+#ovtab.on{display:block}
+
+.card{background:linear-gradient(180deg,var(--panel) 0%,var(--panel2) 100%);
+  border:1px solid var(--rail);border-radius:var(--r);box-shadow:var(--sh)}
+.card-h{padding:14px 18px 12px;border-bottom:1px solid var(--rail);display:flex;align-items:baseline;
+  gap:12px;flex-wrap:wrap}
+.card-h h2{font-size:18px;letter-spacing:-.015em;font-weight:700}
+.card-b{padding:18px}
+.card-b>*+*{margin-top:14px}
+.lede{color:var(--mute);font-size:14.5px;max-width:68ch}
+.lede b,.lede strong{color:var(--bone);font-weight:600}
+
+/* ---------- options ---------- */
+.opts{display:grid;gap:9px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--panel2);border:1px solid var(--rail);border-radius:9px;padding:12px 14px;
+  cursor:pointer;transition:border-color .14s,background .14s,transform .06s}
+.opt:hover:not(:disabled){border-color:var(--rail2);background:#141C25}
+.opt:active:not(:disabled){transform:translateY(1px)}
+.opt .ltr{font-family:var(--ff-mono);font-size:11px;font-weight:700;flex:none;
+  width:22px;height:22px;border-radius:5px;border:1px solid var(--rail2);
+  display:grid;place-items:center;color:var(--mute);margin-top:1px}
+.opt .tx{flex:1;min-width:0;font-size:14.5px;line-height:1.45}
+.opt .fb{display:none;margin-top:7px;font-size:13px;line-height:1.5;color:var(--mute)}
+.opt.rv .fb{display:block}
+.opt[aria-pressed="true"]{border-color:var(--cy);background:rgba(58,216,230,.07)}
+.opt[aria-pressed="true"] .ltr{border-color:var(--cy);color:var(--cy)}
+.opt.good{border-color:var(--ok);background:rgba(47,224,122,.07)}
+.opt.good .ltr{border-color:var(--ok);color:var(--ok)}
+.opt.bad{border-color:var(--crit);background:rgba(255,77,109,.07)}
+.opt.bad .ltr{border-color:var(--crit);color:var(--crit)}
+.opt.miss{border-color:var(--warn);border-style:dashed}
+.opt.miss .ltr{border-color:var(--warn);color:var(--warn)}
+.opt:disabled{cursor:default}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.hintline{font-size:13px;color:var(--dim);font-family:var(--ff-mono)}
+
+/* ---------- data panels ---------- */
+.scroll{overflow-x:auto}
+table.dat{border-collapse:collapse;width:100%;font-family:var(--ff-mono);font-size:12.5px;
+  font-variant-numeric:tabular-nums}
+table.dat th{text-align:left;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+  font-weight:500;padding:7px 10px;border-bottom:1px solid var(--rail);white-space:nowrap}
+table.dat td{padding:7px 10px;border-bottom:1px solid rgba(28,38,50,.6);white-space:nowrap}
+table.dat tr:last-child td{border-bottom:0}
+td.hi{color:var(--warn)} td.hi2{color:var(--crit)} td.lo{color:var(--pleth)} td.nl{color:var(--mute)}
+td.wrap{white-space:normal;min-width:210px}
+.flag{font-size:10px;padding:1px 5px;border-radius:4px;margin-left:6px;letter-spacing:.06em}
+.flag.h{background:rgba(255,77,109,.16);color:var(--crit)}
+.flag.l{background:rgba(58,216,230,.14);color:var(--pleth)}
+.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.pnl{border:1px solid var(--rail);border-radius:9px;background:var(--panel2);overflow:hidden}
+.pnl>h3{font-family:var(--ff-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
+  padding:9px 12px;border-bottom:1px solid var(--rail);font-weight:500;background:#0B1016}
+.pnl .pb{padding:10px 12px;font-size:13.5px;color:var(--mute)}
+.pnl .pb ul{margin:0;padding-left:17px}
+.pnl .pb li{margin:3px 0}
+.fbbox{border-left:2px solid var(--cy-d);background:rgba(58,216,230,.05);padding:11px 13px;
+  border-radius:0 8px 8px 0;font-size:13.5px;color:var(--mute);line-height:1.55}
+.fbbox .hd{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--cy);margin-bottom:4px}
+.fbbox b{color:var(--bone);font-weight:600}
+.fbbox.g{border-left-color:var(--ok);background:rgba(47,224,122,.06)} .fbbox.g .hd{color:var(--ok)}
+.fbbox.w{border-left-color:var(--warn);background:rgba(255,194,75,.06)} .fbbox.w .hd{color:var(--warn)}
+.fbbox.b{border-left-color:var(--crit);background:rgba(255,77,109,.07)} .fbbox.b .hd{color:var(--crit)}
+
+/* SBAR */
+.sbar{display:grid;gap:0;border:1px solid var(--rail);border-radius:9px;overflow:hidden}
+.sb{display:grid;grid-template-columns:96px 1fr;border-bottom:1px solid var(--rail)}
+.sb:last-child{border-bottom:0}
+.sb dt{font-family:var(--ff-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--cy);padding:12px;background:#0A1015;border-right:1px solid var(--rail)}
+.sb dd{margin:0;padding:12px 14px;font-size:14px;color:var(--mute)}
+.sb dd b{color:var(--bone);font-weight:600}
+@media(max-width:520px){.sb{grid-template-columns:1fr}.sb dt{border-right:0;border-bottom:1px solid var(--rail);padding:8px 12px}}
+
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--rail2);
+  border-radius:3px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;
+  background:var(--cy);cursor:grab;border:2px solid #04161A;box-shadow:0 0 8px rgba(58,216,230,.5)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--cy);
+  cursor:grab;border:2px solid #04161A}
+input[type=range]:disabled::-webkit-slider-thumb{background:var(--dim);box-shadow:none}
+
+/* ---------- auscultation ---------- */
+.ausc{display:grid;grid-template-columns:minmax(0,270px) minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:680px){.ausc{grid-template-columns:1fr}}
+.chestwrap{background:radial-gradient(ellipse at 50% 40%,#0E1A22 0%,#070B0F 70%);
+  border:1px solid var(--rail);border-radius:9px;padding:6px}
+#chest{display:block;width:100%;height:auto}
+.apt{cursor:pointer}
+.apt circle.hit{fill:rgba(58,216,230,.10);stroke:var(--cy);stroke-width:1.2;transition:fill .15s}
+.apt:hover circle.hit{fill:rgba(58,216,230,.28)}
+.apt.heard circle.hit{fill:rgba(58,216,230,.22)}
+.apt.playing circle.hit{fill:rgba(58,216,230,.55);stroke:var(--cy);stroke-width:2.6}
+.apt text{font-family:var(--ff-mono);font-size:8.5px;fill:var(--mute);pointer-events:none}
+.findlog{display:grid;gap:8px;max-height:340px;overflow-y:auto}
+.find{border-left:2px solid var(--cy-d);padding:6px 0 6px 11px;font-size:13.5px;color:var(--mute)}
+.find b{color:var(--bone);font-weight:650}
+.find b.lb{display:block;font-family:var(--ff-mono);font-size:10px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cy);margin-bottom:2px}
+
+/* ---------- prep station: equipment ---------- */
+.eqgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.pick{display:grid;gap:8px;grid-template-columns:repeat(4,1fr)}
+@media(max-width:520px){.pick{grid-template-columns:repeat(2,1fr)}}
+.pk{display:flex;align-items:center;justify-content:center;background:var(--panel2);
+  border:1px solid var(--rail);border-radius:8px;padding:14px 8px;cursor:pointer;width:100%;
+  transition:border-color .14s,background .14s}
+.pk:hover:not(:disabled){border-color:var(--rail2);background:#141C25}
+.pk .fr{font-family:var(--ff-mono);font-size:16px;font-weight:700;color:var(--bone);
+  letter-spacing:.04em;white-space:nowrap}
+.pk[aria-pressed="true"]{border-color:var(--cy);background:rgba(58,216,230,.08)}
+.pk[aria-pressed="true"] .fr{color:var(--cy)}
+.pk.good{border-color:var(--ok);background:rgba(47,224,122,.08)}
+.pk.bad{border-color:var(--crit);background:rgba(255,77,109,.08)}
+.pk:disabled{cursor:default;opacity:.75}
+.vacset{display:grid;gap:9px}
+/* an unmarked scale: the dial gives you the number, not a verdict on it */
+.vacbar{position:relative;height:30px;border-radius:6px;border:1px solid var(--rail2);
+  background:var(--panel2);overflow:hidden}
+.vacbar i{position:absolute;top:0;bottom:0;width:3px;background:var(--bone);
+  box-shadow:0 0 10px rgba(230,237,243,.8);transition:left .1s}
+.vacbar u{position:absolute;top:0;width:1px;background:var(--rail2);text-decoration:none}
+.vacbar u.maj{background:#44596C;width:1.5px}
+.vacscale{position:relative;height:13px}
+.vacscale span{position:absolute;top:0;transform:translateX(-50%);font-family:var(--ff-mono);
+  font-size:9px;color:var(--dim);font-variant-numeric:tabular-nums;pointer-events:none}
+.vacrd{display:flex;align-items:baseline;gap:6px;font-family:var(--ff-mono)}
+.vacrd b{font-size:22px;font-variant-numeric:tabular-nums;color:var(--bone)}
+.vacrd span{font-size:10px;color:var(--dim);letter-spacing:.1em}
+.checks{display:grid;gap:6px}
+.ck{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--dim);line-height:1.45}
+.ck i{flex:none;width:15px;height:15px;border-radius:4px;border:1px solid var(--rail2);margin-top:2px;
+  display:grid;place-items:center;font-style:normal;font-size:10px;line-height:1}
+.ck.on{color:var(--bone)} .ck.on i{background:var(--ok);border-color:var(--ok);color:#04160B}
+.ck.on i::after{content:"✓"}
+.ck.bad{color:var(--crit)} .ck.bad i{background:var(--crit);border-color:var(--crit);color:#2A0410}
+.ck.bad i::after{content:"✕"}
+
+/* ---------- suction station ---------- */
+.sucwrap{display:grid;gap:13px}
+.dreads{display:flex;align-items:baseline;gap:8px}
+.dreads .big{font-family:var(--ff-mono);font-size:34px;font-weight:700;color:var(--bone);
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.zone{font-family:var(--ff-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 9px;border-radius:999px;border:1px solid var(--rail2);color:var(--mute);white-space:nowrap}
+.zone.z-out{border-color:var(--rail2);color:var(--dim)}
+.zone.z-nose{border-color:var(--rail2);color:var(--mute)}
+.zone.z-target{border-color:var(--ok);color:var(--ok);background:rgba(47,224,122,.10)}
+.zone.z-oro{border-color:var(--warn);color:var(--warn);background:rgba(255,194,75,.10)}
+.zone.z-deep{border-color:var(--crit);color:var(--crit);background:rgba(255,77,109,.12)}
+#thumbport{width:100%;border:2px solid var(--rail2);border-radius:12px;background:var(--panel2);
+  color:var(--bone);padding:17px 14px;cursor:pointer;font-family:var(--ff-mono);font-size:13px;
+  letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  transition:all .12s;touch-action:none;user-select:none;-webkit-user-select:none}
+#thumbport:hover:not(:disabled){border-color:#3C5062;background:#141C25}
+#thumbport.on{background:var(--crit);border-color:var(--crit);color:#2A0410;
+  box-shadow:0 0 0 4px rgba(255,77,109,.18),0 0 34px rgba(255,77,109,.45)}
+#thumbport:disabled{opacity:.4;cursor:not-allowed}
+#thumbport small{display:block;font-size:9.5px;letter-spacing:.08em;font-weight:500;
+  text-transform:none;color:var(--dim);margin-top:4px}
+#thumbport.on small{color:rgba(42,4,16,.72)}
+.suctimer{display:flex;align-items:center;gap:10px}
+.suctimer .t{font-family:var(--ff-mono);font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;
+  width:62px;flex:none}
+.suctimer .t.warn{color:var(--warn)} .suctimer .t.crit{color:var(--crit)}
+.bar{flex:1;height:7px;border-radius:4px;background:var(--rail);overflow:hidden;position:relative}
+.bar i{display:block;height:100%;width:0%;background:var(--ok);transition:width .1s linear}
+.bar i.warn{background:var(--warn)} .bar i.crit{background:var(--crit)}
+.bar u{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bone);opacity:.55}
+.secmeter{display:grid;gap:6px}
+.secbar{height:9px;border-radius:5px;background:var(--rail);overflow:hidden}
+.secbar i{display:block;height:100%;background:linear-gradient(90deg,var(--spu2),var(--spu));
+  transition:width .4s ease-out}
+.passlog{display:grid;gap:9px;max-height:260px;overflow-y:auto}
+
+/* ---------- debrief ---------- */
+.scorehead{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.ring{width:112px;height:112px;flex:none;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .pc{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--ff-mono);
+  font-size:27px;font-weight:700;font-variant-numeric:tabular-nums}
+.gradebox{flex:1;min-width:210px}
+.gradebox h3{font-size:21px;letter-spacing:-.015em;margin-bottom:5px}
+.gradebox p{margin:0;color:var(--mute);font-size:14px}
+.dgrid{display:grid;gap:9px}
+.drow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:9px 0;
+  border-bottom:1px solid rgba(28,38,50,.7)}
+.drow:last-child{border-bottom:0}
+.drow .n{font-size:13.5px}
+.drow .sc{font-family:var(--ff-mono);font-size:12.5px;color:var(--mute);white-space:nowrap}
+.dbar{grid-column:1/-1;height:5px;border-radius:3px;background:var(--rail);overflow:hidden}
+.dbar i{display:block;height:100%;background:var(--cy)}
+.dbar i.g{background:var(--ok)} .dbar i.w{background:var(--warn)} .dbar i.b{background:var(--crit)}
+.loglist{display:grid;gap:7px}
+.lg{display:grid;grid-template-columns:52px 1fr;gap:10px;font-size:13.5px;color:var(--mute);
+  padding:7px 0;border-bottom:1px solid rgba(28,38,50,.6);line-height:1.5}
+.lg:last-child{border-bottom:0}
+.lg .tm{font-family:var(--ff-mono);font-size:11px;color:var(--dim)}
+.lg.g{color:#BFE9CE} .lg.w{color:#F0DDB0} .lg.b{color:#F3B9C4}
+.critlist{display:grid;gap:8px}
+.critlist div{border-left:2px solid var(--crit);padding:6px 0 6px 11px;font-size:13.5px;color:#F3B9C4}
+@media print{
+  body{background:#fff;color:#000}
+  #wrap,#bar,#dock,#ovtab,.fp,#boot,#devwarn{display:none!important}
+  #printarea{display:block!important;padding:0}
+}
+#printarea{display:none}
+
+/* ---------- toasts ---------- */
+#toasts{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:120;
+  display:grid;gap:8px;width:min(560px,88vw);pointer-events:none}
+.toast{background:rgba(14,21,29,.96);border:1px solid var(--rail2);border-left-width:3px;
+  border-radius:9px;padding:11px 15px;font-size:13.5px;color:var(--mute);line-height:1.5;
+  box-shadow:0 14px 40px rgba(0,0,0,.6);animation:tin .28s cubic-bezier(.2,.8,.3,1)}
+.toast b{color:var(--bone);font-weight:600}
+.toast.g{border-left-color:var(--ok)} .toast.w{border-left-color:var(--warn)}
+.toast.b{border-left-color:var(--crit)} .toast.i{border-left-color:var(--cy)}
+@keyframes tin{from{opacity:0;transform:translateY(12px)}}
+
+/* ---------- crisis modal ---------- */
+#crisis{position:fixed;inset:0;z-index:150;display:none;place-items:center;padding:22px;
+  background:rgba(4,6,9,.86);backdrop-filter:blur(7px)}
+#crisis.on{display:grid;animation:tin .3s}
+.cr-card{max-width:600px;width:100%;background:var(--panel);border:1px solid var(--crit);
+  border-radius:14px;overflow:hidden;box-shadow:0 0 80px rgba(255,77,109,.28)}
+.cr-h{padding:14px 20px;background:rgba(255,77,109,.14);border-bottom:1px solid rgba(255,77,109,.3);
+  display:flex;align-items:center;gap:12px}
+.cr-h .eyebrow{color:var(--crit);margin:0}
+.cr-h .cd{margin-left:auto;font-family:var(--ff-mono);font-size:19px;font-weight:700;color:var(--crit);
+  font-variant-numeric:tabular-nums}
+.cr-b{padding:18px 20px 20px}
+.cr-b h3{font-size:19px;margin-bottom:9px;letter-spacing:-.015em}
+.cr-b p{margin:0 0 14px;color:var(--mute);font-size:14px}
+</style>
+<div id="devwarn">
+  <div class="dw-card">
+    <div class="dw-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+      stroke-linecap="round"><path d="M12 9v5"/><path d="M12 17.5v.01"/>
+      <path d="M10.3 3.9 1.9 18a2 2 0 0 0 1.7 3h16.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+    <h2>This one really wants a bigger screen</h2>
+    <p>You drag a suction catheter into a nostril while watching a monitor and holding a thumb port.
+       On a phone those three things fight each other.</p>
+    <p class="dw-sub">Use a tablet in landscape or a laptop. You can carry on anyway if you like.</p>
+    <button class="btn" id="dwgo">Continue anyway</button>
+  </div>
+</div>
+
+<div id="boot">
+  <div class="boot-card">
+    <div class="boot-mark">PaedSim 01 · Paediatric respiratory</div>
+    <h1>The nasopharyngeal suction station
+      <em>A 4-year-old with chronic lung disease of prematurity, spastic quadriplegic CP and hMPV
+      bronchiolitis. You have a catheter, a vacuum dial and a child who cannot clear his own secretions.
+      Everything you do to him happens in real time.</em></h1>
+    <div class="boot-meta">
+      <span class="tag">Nasopharyngeal suction</span>
+      <span class="tag">Ex-25 weeker · BPD</span>
+      <span class="tag">CP GMFCS V</span>
+      <span class="tag">PEG fed</span>
+      <span class="tag">hMPV</span>
+      <span class="tag">20–30 min</span>
+    </div>
+    <div class="boot-body">
+      <p>Suction is one of the few things a physiotherapist does that can kill a child in under a minute.
+         Too shallow and you achieve nothing. Too deep and he vomits his feed into his own larynx.
+         Too long and you watch the saturation fall. <b>The technique is the whole treatment.</b></p>
+      <p>You will measure him, choose a catheter, set a vacuum pressure, then drag the catheter into
+         his nostril yourself and hold the thumb port to apply suction — exactly as you would occlude
+         the port with your thumb at the bedside.</p>
+    </div>
+    <div class="modepick">
+      <label><input type="radio" name="mode" value="coach" checked>
+        <span class="mp-t"><b>Coach mode</b><span>Feedback the moment you make an error, target zones
+        shown on the anatomy, and the reasoning explained as you go. Use this first.</span></span></label>
+      <label><input type="radio" name="mode" value="assess">
+        <span class="mp-t"><b>Assessment mode</b><span>No prompts, no target zone shading, no warnings.
+        Everything is scored and you find out at the debrief. This is the one to be assessed on.</span></span></label>
+    </div>
+    <div class="actions">
+      <button class="btn pri" id="bootgo">Take the handover</button>
+      <button class="btn ghost" id="bootsnd" aria-pressed="true">Sound: on</button>
+    </div>
+    <p class="hintline" style="margin-top:18px">Headphones recommended — the monitor tone drops in pitch as he desaturates.</p>
+  </div>
+</div>
+
+<div id="wrap" aria-hidden="false">
+  <div id="scene">
+    <svg id="sceneSvg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"
+         aria-label="Paediatric bedside, bird's eye view, with a mid-sagittal airway cutaway"></svg>
+    <div id="sceneTag"></div>
+  </div>
+
+  <section class="fp" id="fp-mon" aria-label="Bedside monitor">
+    <div class="fp-h"><span class="gr">⣿</span><span>Philips · Bed 7</span><span class="sp"></span>
+      <span id="monmode">PAED</span></div>
+    <div id="mon">
+      <canvas id="trace"></canvas>
+      <div class="nums">
+        <div class="nm c-ecg" id="nm-hr"><div class="k">HR</div><div class="v" id="v-hr">--</div><div class="u">bpm</div></div>
+        <div class="nm c-spo2" id="nm-sp"><div class="k">SpO₂</div><div class="v" id="v-sp">--</div><div class="u">%</div></div>
+        <div class="nm c-rr" id="nm-rr"><div class="k">Resp</div><div class="v" id="v-rr">--</div><div class="u">/min</div></div>
+        <div class="nm c-bp" id="nm-bp"><div class="k">NIBP</div><div class="v" id="v-bp">--</div><div class="u">mmHg</div></div>
+        <div class="nm c-t" id="nm-tp"><div class="k">Temp</div><div class="v" id="v-tp">--</div><div class="u">°C</div></div>
+        <div class="nm c-w" id="nm-o2"><div class="k">O₂ NP</div><div class="v" id="v-o2">--</div><div class="u">L/min</div></div>
+      </div>
+      <div id="alarmtxt"></div>
+    </div>
+  </section>
+
+  <section class="fp" id="fp-suc" aria-label="Wall suction unit" hidden>
+    <div class="fp-h"><span class="gr">⣿</span><span>Wall vacuum · trap</span><span class="sp"></span>
+      <span id="sucstate">IDLE</span></div>
+    <div class="sucunit">
+      <div class="dialrow">
+        <div class="lb">Vacuum<br>set point</div>
+        <div class="gauge"><svg viewBox="0 0 100 62" id="gsvg"></svg><div class="rd" id="grd">—</div></div>
+      </div>
+      <div class="canwrap">
+        <div class="canbody"><div class="canfill" id="canfill"></div>
+          <div class="grad"><i style="bottom:18%"></i><i style="bottom:36%"></i><i style="bottom:54%"></i><i style="bottom:72%"></i></div>
+        </div>
+        <div class="canrd"><b id="canml">0</b><span>mL trap</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="dock"></div>
+
+  <aside id="ov" aria-label="Station">
+    <div id="ov-h">
+      <div class="t"><div class="eyebrow" id="ov-eb">Station</div><h2 id="ov-t">—</h2></div>
+      <button id="ov-min">Bedside</button>
+    </div>
+    <div id="ov-b"></div>
+  </aside>
+  <button id="ovtab">Open station</button>
+</div>
+
+<div id="bar"><div class="bar-in">
+  <span class="brand">PAEDSIM 01</span>
+  <span class="chip" id="c-clock"><b>00:00</b></span>
+  <span class="chip" id="c-mode">COACH</span>
+  <span class="chip" id="c-pass" hidden>Pass <b>0</b>/3</span>
+  <span class="bar-sp"></span>
+  <button class="iconbtn" id="b-snd" aria-pressed="true" title="Sound">♪</button>
+</div><div id="rail"></div></div>
+
+<div id="toasts"></div>
+
+<div id="crisis"><div class="cr-card">
+  <div class="cr-h"><span class="eyebrow" id="cr-eb">Deterioration</span><span class="cd" id="cr-cd">0:20</span></div>
+  <div class="cr-b"><h3 id="cr-t">—</h3><p id="cr-p">—</p><div class="opts" id="cr-o"></div></div>
+</div></div>
+
+<div id="printarea"></div>
+
+<script>
+'use strict';
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+const $  = (s,r)=>(r||document).querySelector(s);
+const $$ = (s,r)=>Array.from((r||document).querySelectorAll(s));
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const el=(tag,cls,html)=>{const n=document.createElement(tag);if(cls)n.className=cls;
+  if(html!=null)n.innerHTML=html;return n;};
+const mmss=s=>{const m=Math.floor(s/60),x=Math.floor(s%60);
+  return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0');};
+const plain=t=>String(t).replace(/<[^>]*>/g,'');
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+const S={
+  mode:'coach', sound:true, t:0, started:false, step:0, over:false,
+  crisisDone:false, ended:false
+};
+const coach=()=>S.mode==='coach';
+
+/* the child */
+const P={
+  /* true arterial saturation, and the number the probe is showing (it lags) */
+  sao2:92, spo2:92,
+  hr:138, rr:42, temp:38.4, map:66,
+  o2lpm:1,
+  secretions:100,      // upper-airway secretion load, 0-100
+  lower:100,           // lower-airway (bronchiolitic) load — suction cannot touch this
+  vagal:0, gag:0, bronchospasm:0, crying:0,
+  suction:false,       // vacuum currently applied
+  apnoea:0,            // seconds of interrupted breathing
+  o2res:0,             // pre-oxygenation reserve, 0-1
+  vomiting:false, vomited:false,
+  bleeding:0,          // 0-1 mucosal trauma
+  frozen:false, arrest:false
+};
+
+/* equipment / preparation, set at the prep station and read by the engine */
+const E={
+  fr:null,             // catheter French size
+  vac:120,             // vacuum set point mmHg
+  measured:null,       // nose-to-tragus measurement in cm
+  measuredOK:false,
+  ppe:false, pegVented:false, positioned:false, explained:false,
+  preOxed:false, consented:false, gloves:false
+};
+
+/* running technique record */
+const T={
+  passes:0, totalVac:0, maxDepth:0, minSpO2:100,
+  deepHits:0, gagHits:0, longPasses:0, shortRest:0, insertSuction:0,
+  vomitEvents:0, bloodPasses:0, dryPasses:0, yieldTotal:0, bestPass:null
+};
+
+/* scoring */
+const DOM={
+  clin:{g:0,m:0,label:'Clinical reasoning'},
+  prep:{g:0,m:0,label:'Preparation & infection control'},
+  equip:{g:0,m:0,label:'Equipment & measurement'},
+  tech:{g:0,m:0,label:'Suction technique'},
+  eval:{g:0,m:0,label:'Evaluation & handover'}
+};
+const LOG=[], CRITICALS=[];
+function award(dom,got,max,text,kind){
+  DOM[dom].g+=got; DOM[dom].m+=max;
+  LOG.push({t:S.t,text,kind:kind||(got>=max?'g':got>0?'w':'b'),got,max});
+}
+function note(text,kind){LOG.push({t:S.t,text,kind:kind||'i',got:0,max:0});}
+function critical(text){if(!CRITICALS.includes(text))CRITICALS.push(text);}
+function totalPct(){
+  let g=0,m=0; for(const k in DOM){g+=DOM[k].g;m+=DOM[k].m;}
+  return m?Math.round(g/m*100):0;
+}
+
+/* toasts — suppressed in assessment mode unless forced */
+function toast(msg,kind,ms,force){
+  if(!coach()&&!force)return;
+  const t=el('div','toast '+(kind||'i'),msg);
+  $('#toasts').appendChild(t);
+  setTimeout(()=>{t.style.transition='opacity .4s,transform .4s';t.style.opacity='0';
+    t.style.transform='translateY(-8px)';setTimeout(()=>t.remove(),420);},ms||4200);
+}
+
+/* =====================================================================
+   AUDIO — everything synthesised, no files
+   ===================================================================== */
+const A={ctx:null,suckSrc:null,suckGain:null,suckFilt:null,gurgle:null,
+         alarmTimer:null,cryOsc:null,cryGain:null,beepT:0};
+function actx(){
+  if(!A.ctx){try{A.ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}
+  if(A.ctx.state==='suspended')A.ctx.resume();
+  return A.ctx;
+}
+function tone(f,dur,vol,type,slideTo){
+  if(!S.sound)return; const c=actx(); if(!c)return;
+  const o=c.createOscillator(),g=c.createGain();
+  o.type=type||'sine'; o.frequency.setValueAtTime(f,c.currentTime);
+  if(slideTo)o.frequency.exponentialRampToValueAtTime(Math.max(40,slideTo),c.currentTime+dur);
+  g.gain.setValueAtTime(0.0001,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(vol,c.currentTime+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+dur);
+  o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+dur+0.02);
+}
+/* the pulse-oximeter beep: pitch falls as saturation falls — the sound of a desat */
+function pulseBeep(){
+  if(!S.sound)return;
+  const f=880*Math.pow(2,(clamp(P.spo2,60,100)-100)/26);
+  tone(f,0.075,0.05,'sine');
+}
+function alarmOn(kind){
+  if(A.alarmTimer)return;
+  const fire=()=>{
+    if(!S.sound)return;
+    tone(kind==='crit'?990:660,0.12,0.07,'square');
+    setTimeout(()=>tone(kind==='crit'?990:660,0.12,0.07,'square'),165);
+    if(kind==='crit')setTimeout(()=>tone(990,0.12,0.07,'square'),330);
+  };
+  fire(); A.alarmTimer=setInterval(fire,kind==='crit'?1300:2400);
+}
+function alarmOff(){if(A.alarmTimer){clearInterval(A.alarmTimer);A.alarmTimer=null;}}
+
+function noiseBuf(sec){
+  const c=actx(); if(!c)return null;
+  const n=Math.floor(c.sampleRate*sec), b=c.createBuffer(1,n,c.sampleRate), d=b.getChannelData(0);
+  for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+  return b;
+}
+/* the vacuum hiss. Its filter opens up and a low gurgle rides on top when the
+   catheter is actually picking secretions up — that difference is a clinical cue. */
+function suckSoundOn(){
+  if(!S.sound)return; const c=actx(); if(!c||A.suckSrc)return;
+  const b=noiseBuf(2.2); if(!b)return;
+  const src=c.createBufferSource(); src.buffer=b; src.loop=true;
+  const bp=c.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1500; bp.Q.value=0.8;
+  const g=c.createGain(); g.gain.value=0.055;
+  src.connect(bp); bp.connect(g); g.connect(c.destination); src.start();
+  A.suckSrc=src; A.suckGain=g; A.suckFilt=bp;
+  const lo=c.createOscillator(), lg=c.createGain();
+  lo.type='sawtooth'; lo.frequency.value=64; lg.gain.value=0;
+  lo.connect(lg); lg.connect(c.destination); lo.start();
+  A.gurgle={osc:lo,gain:lg};
+}
+function suckSoundOff(){
+  if(A.suckSrc){try{A.suckSrc.stop();}catch(e){} A.suckSrc=null;A.suckGain=null;A.suckFilt=null;}
+  if(A.gurgle){try{A.gurgle.osc.stop();}catch(e){} A.gurgle=null;}
+}
+function suckSoundYield(y){                       // y 0..1
+  if(!A.suckGain)return; const c=A.ctx;
+  A.suckFilt.frequency.setTargetAtTime(1500-700*y,c.currentTime,0.08);
+  A.suckGain.gain.setTargetAtTime(0.05+0.035*y,c.currentTime,0.08);
+  A.gurgle.gain.gain.setTargetAtTime(0.03*y,c.currentTime,0.06);
+}
+/* a 4-year-old's cry: a rough sawtooth with vibrato */
+function crySound(dur){
+  if(!S.sound)return; const c=actx(); if(!c)return;
+  const o=c.createOscillator(),g=c.createGain(),v=c.createOscillator(),vg=c.createGain();
+  o.type='sawtooth'; o.frequency.setValueAtTime(430,c.currentTime);
+  o.frequency.linearRampToValueAtTime(560,c.currentTime+dur*0.3);
+  o.frequency.linearRampToValueAtTime(360,c.currentTime+dur);
+  v.type='sine'; v.frequency.value=7.5; vg.gain.value=34;
+  v.connect(vg); vg.connect(o.frequency);
+  const f=c.createBiquadFilter(); f.type='lowpass'; f.frequency.value=2200;
+  g.gain.setValueAtTime(0.0001,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.055,c.currentTime+0.09);
+  g.gain.setValueAtTime(0.055,c.currentTime+dur*0.7);
+  g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+dur);
+  o.connect(f); f.connect(g); g.connect(c.destination);
+  o.start(); v.start(); o.stop(c.currentTime+dur+0.05); v.stop(c.currentTime+dur+0.05);
+}
+function gagSound(){
+  if(!S.sound)return; const c=actx(); if(!c)return;
+  const b=noiseBuf(0.5); if(!b)return;
+  const s=c.createBufferSource(); s.buffer=b;
+  const f=c.createBiquadFilter(); f.type='bandpass'; f.frequency.value=420; f.Q.value=1.4;
+  const g=c.createGain();
+  g.gain.setValueAtTime(0.0001,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.12,c.currentTime+0.05);
+  g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+0.45);
+  s.connect(f); f.connect(g); g.connect(c.destination); s.start(); s.stop(c.currentTime+0.5);
+  tone(150,0.35,0.05,'sawtooth',95);
+}
+function vomitSound(){
+  if(!S.sound)return; const c=actx(); if(!c)return;
+  gagSound();
+  setTimeout(()=>{
+    const b=noiseBuf(1.4); if(!b)return;
+    const s=c.createBufferSource(); s.buffer=b;
+    const f=c.createBiquadFilter(); f.type='lowpass'; f.frequency.value=900;
+    const g=c.createGain();
+    g.gain.setValueAtTime(0.0001,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.16,c.currentTime+0.08);
+    g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+1.25);
+    s.connect(f); f.connect(g); g.connect(c.destination); s.start(); s.stop(c.currentTime+1.4);
+    tone(120,0.9,0.06,'sawtooth',70);
+  },380);
+}
+
+/* =====================================================================
+   PHYSIOLOGY — runs off a wall-clock interval so it keeps going when the
+   tab stops painting
+   ===================================================================== */
+function satTarget(){
+  return clamp(88.6 + P.o2lpm*3.4 + (100-P.secretions)*0.055
+               - P.bronchospasm*5 - (100-P.lower)*0 , 60, 99);
+}
+function physio(dt){
+  if(P.frozen)return;
+
+  /* ---- true arterial saturation ---- */
+  if(P.suction||P.apnoea>0){
+    /* vacuum in the nasopharynx of a small child = an obstructed, interrupted airway.
+       Pre-oxygenation buys time; it does not abolish the fall. */
+    const rate=1.55*(1-0.55*P.o2res)*(1+0.5*P.gag);
+    P.sao2-=rate*dt;
+    P.apnoea=Math.max(0,P.apnoea-dt);
+  }else{
+    const gap=satTarget()-P.sao2;
+    /* recovery is faster on more oxygen, and slow if he is still obstructed */
+    P.sao2+=gap*dt*(gap>0?(0.30+P.o2lpm*0.10):0.9);
+  }
+  if(P.vomiting)P.sao2-=2.4*dt;
+  P.sao2=clamp(P.sao2,45,100);
+  /* the probe lags the arterial blood by a couple of seconds — this is why you
+     stop suctioning on the clock, not on the number */
+  P.spo2+=(P.sao2-P.spo2)*dt*0.55;
+  P.spo2=clamp(P.spo2,45,100);
+  T.minSpO2=Math.min(T.minSpO2,P.spo2);
+
+  P.o2res=clamp(P.o2res-dt/70,0,1);
+
+  /* ---- heart rate: tachycardia with hypoxia, bradycardia with vagal stimulation ---- */
+  const hypox=Math.max(0,90-P.sao2)*1.15;
+  const deepBrady=Math.max(0,74-P.sao2)*2.4;
+  const hrT=clamp(136+hypox-P.vagal*98-deepBrady+P.crying*22,42,205);
+  P.hr+=(hrT-P.hr)*dt*(P.vagal>0.2?2.4:0.6);
+
+  /* ---- respiration ---- */
+  const rrT=P.vomiting?8:(P.suction?12:clamp(40+Math.max(0,90-P.spo2)*0.55+P.crying*10,14,68));
+  P.rr+=(rrT-P.rr)*dt*1.1;
+
+  /* ---- pressure ---- */
+  const mapT=clamp(66-P.vagal*13-Math.max(0,80-P.sao2)*0.4,32,92);
+  P.map+=(mapT-P.map)*dt*0.6;
+
+  /* ---- decays ---- */
+  P.vagal=Math.max(0,P.vagal-dt*0.055);
+  P.gag=Math.max(0,P.gag-dt*0.25);
+  P.bronchospasm=Math.max(0,P.bronchospasm-dt*0.05);
+  P.crying=Math.max(0,P.crying-dt*0.12);
+  P.bleeding=Math.max(0,P.bleeding-dt*0.004);
+}
+
+/* =====================================================================
+   MONITOR
+   ===================================================================== */
+const M={cv:null,ctx:null,W:0,H:0,x:0,prev:[null,null,null],beat:0,tb:99,pulse:99,resp:0,pxs:0};
+function fitCanvas(){
+  const cv=$('#trace'); if(!cv)return;
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const w=cv.clientWidth||300,h=cv.clientHeight||176;
+  cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  M.cv=cv; M.ctx=cv.getContext('2d'); M.ctx.setTransform(dpr,0,0,dpr,0,0);
+  M.W=w; M.H=h; M.x=0; M.prev=[null,null,null]; M.pxs=w/5.2;
+  M.ctx.fillStyle='#05070A'; M.ctx.fillRect(0,0,w,h);
+  drawGrid();
+}
+function drawGrid(){
+  const c=M.ctx; if(!c)return;
+  c.strokeStyle='rgba(255,255,255,.028)'; c.lineWidth=1;
+  for(let y=0;y<M.H;y+=M.H/12){c.beginPath();c.moveTo(0,y+.5);c.lineTo(M.W,y+.5);c.stroke();}
+}
+const gs=(t,mu,sd)=>Math.exp(-Math.pow(t-mu,2)/(2*sd*sd));
+function ecgV(tb){
+  /* paediatric complex: short PR, narrow QRS, prominent T */
+  return  0.11*gs(tb,0.13,0.020)
+        - 0.10*gs(tb,0.214,0.006)
+        + 1.00*gs(tb,0.232,0.0075)
+        - 0.20*gs(tb,0.256,0.010)
+        + 0.24*gs(tb,0.36,0.030);
+}
+function plethV(tp){
+  const a=gs(tp,0.22,0.075), d=0.42*gs(tp,0.46,0.10), n=0.10*gs(tp,0.37,0.022);
+  return (a+d-n)*1.05;
+}
+function advance(dt){
+  const beatDur=60/clamp(P.hr,30,220);
+  M.tb+=dt/beatDur;
+  if(M.tb>=1){M.tb-=1;M.beat++;}
+  M.pulse+=dt/beatDur;
+  if(M.pulse>=1)M.pulse-=1;
+  M.resp+=dt*(P.rr/60);
+  if(M.resp>=1)M.resp-=1;
+}
+function drawTraces(dt){
+  const c=M.ctx; if(!c)return;
+  const steps=Math.max(1,Math.round(M.pxs*dt));
+  const lanes=[
+    {y:M.H*0.19,h:M.H*0.15,col:'#2FE07A'},
+    {y:M.H*0.52,h:M.H*0.13,col:'#3AD8E6'},
+    {y:M.H*0.83,h:M.H*0.11,col:'#C8A2F0'}
+  ];
+  for(let s=0;s<steps;s++){
+    advance(dt/steps);
+    const x=M.x;
+    c.fillStyle='#05070A'; c.fillRect(x,0,7,M.H);
+    c.strokeStyle='rgba(255,255,255,.028)'; c.lineWidth=1;
+    for(let y=0;y<M.H;y+=M.H/12){c.beginPath();c.moveTo(x,y+.5);c.lineTo(x+7,y+.5);c.stroke();}
+    const flat=P.arrest;
+    const v=[
+      flat?0:ecgV(M.tb),
+      flat?0:plethV(M.pulse)*(P.suction?0.62:1)*clamp(P.map/66,0.4,1.2),
+      (P.vomiting?0.15:1)*Math.sin(M.resp*Math.PI*2)*(P.suction?0.25:1)
+    ];
+    for(let i=0;i<3;i++){
+      const yy=lanes[i].y-v[i]*lanes[i].h;
+      c.strokeStyle=lanes[i].col; c.lineWidth=1.6; c.beginPath();
+      if(M.prev[i]!=null){c.moveTo(x-1,M.prev[i]);c.lineTo(x,yy);}else{c.moveTo(x,yy);c.lineTo(x,yy);}
+      c.stroke(); M.prev[i]=yy;
+    }
+    M.x+=1;
+    if(M.x>=M.W){M.x=0;M.prev=[null,null,null];}
+  }
+}
+function setNum(id,box,v,warn,crit){
+  const n=$(id); if(!n)return; n.textContent=v;
+  const b=$(box); b.classList.toggle('warn',!!warn&&!crit); b.classList.toggle('crit',!!crit);
+}
+let lastBeat=-1, bpT=0, bpShown='96/58';
+function paintNumbers(){
+  const sp=Math.round(P.spo2), hr=Math.round(P.hr);
+  setNum('#v-hr','#nm-hr',hr,hr>170||hr<95,hr>190||hr<75);
+  setNum('#v-sp','#nm-sp',sp,sp<92,sp<88);
+  setNum('#v-rr','#nm-rr',Math.round(P.rr),P.rr>55||P.rr<18,P.rr>64||P.rr<12);
+  setNum('#v-tp','#nm-tp',P.temp.toFixed(1),P.temp>38,false);
+  setNum('#v-o2','#nm-o2',P.o2lpm.toFixed(1),false,false);
+  if(S.t-bpT>45){bpT=S.t;bpShown=Math.round(P.map*1.4)+'/'+Math.round(P.map*0.78);}
+  setNum('#v-bp','#nm-bp',bpShown,P.map<55,P.map<45);
+
+  /* alarm banner + audible alarm */
+  const at=$('#alarmtxt'); let msg='',kind='';
+  if(P.vomiting){msg='◆◆◆ VOMITING · AIRWAY AT RISK';kind='crit';}
+  else if(sp<85){msg='◆◆◆ SpO₂ LOW '+sp+'%';kind='crit';}
+  else if(hr<80){msg='◆◆◆ BRADYCARDIA '+hr;kind='crit';}
+  else if(sp<90){msg='◆◆ SpO₂ LOW '+sp+'%';kind='warn';}
+  else if(hr>180){msg='◆◆ TACHYCARDIA '+hr;kind='warn';}
+  at.textContent=msg; at.classList.toggle('on',!!msg);
+  at.classList.toggle('warn',kind==='warn');
+  $('#fp-mon').classList.toggle('alarm',kind==='crit');
+  if(kind==='crit')alarmOn('crit'); else if(kind==='warn')alarmOn('warn'); else alarmOff();
+
+  if(M.beat!==lastBeat){lastBeat=M.beat;pulseBeep();}
+}
+
+/* =====================================================================
+   CLOCK
+   ===================================================================== */
+let lastTick=performance.now();
+function tick(){
+  const now=performance.now();
+  let dt=(now-lastTick)/1000; lastTick=now;
+  dt=clamp(dt,0,0.25);
+  if(!S.started||S.over)return;
+  S.t+=dt;
+  physio(dt);
+  if(typeof suctionTick==='function')suctionTick(dt);
+  $('#c-clock').innerHTML='<b>'+mmss(S.t)+'</b>';
+  paintNumbers();
+}
+setInterval(tick,1000/30);
+
+let rafLast=performance.now();
+function paintLoop(ts){
+  const dt=clamp((ts-rafLast)/1000,0,0.12); rafLast=ts;
+  if(S.started&&!S.over){drawTraces(dt); if(typeof sceneFrame==='function')sceneFrame(dt,ts);}
+  requestAnimationFrame(paintLoop);
+}
+requestAnimationFrame(paintLoop);
+/* =====================================================================
+   THE SCENE
+   Left of x=610: bird's-eye of the cot. Right of x=610: mid-sagittal
+   cutaway of the same child's airway. The catheter exists in both.
+   ===================================================================== */
+const MONO='ui-monospace,SFMono-Regular,Menlo,monospace';
+
+/* the route the catheter takes, in sagittal coordinates:
+   nostril → nasal floor → nasopharynx → oropharynx → laryngeal inlet → trachea */
+/* the nostril sits behind and below the tip of the nose, not at it — the airway
+   group is drawn with the matching translate so face and airway stay in register */
+const ROUTE='M 636 234 C 676 230, 718 234, 750 243 C 767 248, 774 262, 776 283 '
+           +'C 778 309, 774 334, 772 353 C 771 371, 760 381, 753 395 '
+           +'C 746 411, 743 433, 743 463 L 742 533';
+/* the external tubing, bird's-eye: nostril out to the wall unit */
+const TUBE ='M 461 140 C 436 128, 400 118, 366 128 C 330 138, 314 190, 308 250 '
+           +'C 302 320, 300 400, 297 462';
+const MAXCM=16.0;
+const NOSE=[618,232], TRAGUS=[824,268];
+/* the vertical depth gauge on the left of the sagittal panel */
+const GX=954, GW=26, GY0=112, GY1=568;
+const gy=cm=>GY0+clamp(cm,0,MAXCM)/MAXCM*(GY1-GY0);
+
+function sceneSVG(){return `
+<defs>
+  <linearGradient id="skin" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B07A55"/><stop offset=".34" stop-color="#E0AC80"/>
+    <stop offset=".62" stop-color="#D09A6E"/><stop offset="1" stop-color="#9C6A48"/>
+  </linearGradient>
+  <linearGradient id="skinV" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#E3B287"/><stop offset=".55" stop-color="#D29C70"/>
+    <stop offset="1" stop-color="#A87551"/>
+  </linearGradient>
+  <linearGradient id="gown" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#8FB496"/><stop offset=".3" stop-color="#C7E0CA"/>
+    <stop offset=".68" stop-color="#AFCDB5"/><stop offset="1" stop-color="#7FA487"/>
+  </linearGradient>
+  <linearGradient id="sheet" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#C6CFD8"/><stop offset=".35" stop-color="#F1F4F8"/>
+    <stop offset="1" stop-color="#B9C3CD"/>
+  </linearGradient>
+  <linearGradient id="blank" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#A9BDD2"/><stop offset=".4" stop-color="#D6E3EF"/>
+    <stop offset="1" stop-color="#9FB3C8"/>
+  </linearGradient>
+  <linearGradient id="bone" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#E9E0CE"/><stop offset="1" stop-color="#C3B79E"/>
+  </linearGradient>
+  <linearGradient id="muc" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#C97C7C"/><stop offset="1" stop-color="#9C5252"/>
+  </linearGradient>
+  <radialGradient id="vig" cx="50%" cy="42%" r="72%">
+    <stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/>
+  </radialGradient>
+  <!-- ---- the anatomical plate: a lit illustration board, as in a printed atlas ---- -->
+  <radialGradient id="plate" cx="46%" cy="40%" r="78%">
+    <stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F4F8FD"/>
+    <stop offset="1" stop-color="#D3E1F2"/>
+  </radialGradient>
+  <linearGradient id="ghost" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FDFAF6"/><stop offset=".6" stop-color="#F8F2EA"/>
+    <stop offset="1" stop-color="#F1E8DC"/>
+  </linearGradient>
+  <linearGradient id="boneL" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F6EEDA"/><stop offset="1" stop-color="#E2D3B2"/>
+  </linearGradient>
+  <linearGradient id="mucosa" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#E8A9A6"/><stop offset=".55" stop-color="#D08683"/>
+    <stop offset="1" stop-color="#B96B69"/>
+  </linearGradient>
+  <linearGradient id="tongueF" x1="0" y1="0" x2="0.3" y2="1">
+    <stop offset="0" stop-color="#E9A6A0"/><stop offset=".55" stop-color="#DA918B"/>
+    <stop offset="1" stop-color="#C4776F"/>
+  </linearGradient>
+  <linearGradient id="lumen" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#F7EBE6"/><stop offset="1" stop-color="#EEDCD6"/>
+  </linearGradient>
+  <filter id="cathSh" x="-40%" y="-40%" width="180%" height="180%">
+    <feDropShadow dx="0" dy="1.4" stdDeviation="1.6" flood-color="#3A2A22" flood-opacity=".45"/>
+  </filter>
+  <filter id="plateSh" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#6E7C93" flood-opacity=".30"/>
+  </filter>
+  <filter id="cyGlow" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="3.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="redGlow" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="4.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="soft" x="-25%" y="-25%" width="150%" height="150%">
+    <feGaussianBlur stdDeviation="7"/>
+  </filter>
+  <!-- the child's head and neck in profile, hair included: one ghosted silhouette -->
+  <path id="headSilo" d="M 770 88
+    C 848 88, 910 128, 928 202 C 940 252, 936 300, 922 342
+    C 912 374, 890 392, 874 412 C 860 430, 856 460, 856 588
+    L 696 588 C 696 520, 696 452, 694 402
+    C 692 374, 684 356, 668 344 C 656 336, 648 328, 646 316
+    C 644 306, 640 300, 642 292 C 644 284, 636 280, 636 274
+    C 636 268, 630 266, 630 262 C 630 256, 638 254, 638 248
+    C 638 244, 632 244, 626 242 C 620 240, 610 238, 616 230
+    C 622 220, 630 214, 634 204 C 638 194, 640 188, 644 180
+    C 648 168, 646 160, 652 152 C 664 120, 704 90, 762 88 Z"/>
+  <clipPath id="headClip"><use href="#headSilo"/></clipPath>
+</defs>
+
+<!-- ================= BIRD'S EYE : the cot ================= -->
+<g id="bedG">
+  <!-- floor shadow -->
+  <ellipse cx="466" cy="330" rx="180" ry="300" fill="#000" opacity=".38" filter="url(#soft)"/>
+  <!-- frame -->
+  <rect x="332" y="26" width="268" height="580" rx="15" fill="#171F28" stroke="#2C3B4B" stroke-width="2"/>
+  <rect x="346" y="40" width="240" height="552" rx="9" fill="#0E141B"/>
+  <!-- side rails -->
+  <g fill="#D6D2C6" stroke="#8E8A80" stroke-width="1.1" opacity=".92">
+    <rect x="326" y="96" width="16" height="196" rx="6"/>
+    <rect x="326" y="316" width="16" height="196" rx="6"/>
+    <rect x="590" y="96" width="16" height="196" rx="6"/>
+    <rect x="590" y="316" width="16" height="196" rx="6"/>
+  </g>
+  <g fill="#0E141B" opacity=".5">
+    <rect x="330" y="112" width="8" height="52" rx="4"/><rect x="330" y="196" width="8" height="52" rx="4"/>
+    <rect x="330" y="332" width="8" height="52" rx="4"/><rect x="330" y="416" width="8" height="52" rx="4"/>
+    <rect x="594" y="112" width="8" height="52" rx="4"/><rect x="594" y="196" width="8" height="52" rx="4"/>
+    <rect x="594" y="332" width="8" height="52" rx="4"/><rect x="594" y="416" width="8" height="52" rx="4"/>
+  </g>
+  <!-- head/foot boards -->
+  <rect x="322" y="14" width="288" height="20" rx="9" fill="#CFC9BA" stroke="#94907F" stroke-width="1.2"/>
+  <rect x="322" y="598" width="288" height="20" rx="9" fill="#CFC9BA" stroke="#94907F" stroke-width="1.2"/>
+  <!-- mattress / sheet -->
+  <rect x="348" y="42" width="236" height="548" rx="8" fill="url(#sheet)"/>
+  <g stroke="#B4BFCA" stroke-width="1" fill="none" opacity=".55">
+    <path d="M 360 210 C 400 202, 460 216, 500 206 C 540 198, 566 210, 574 204"/>
+    <path d="M 358 300 C 396 292, 452 306, 496 296 C 534 288, 566 298, 574 292"/>
+    <path d="M 360 392 C 402 384, 456 398, 502 388"/>
+  </g>
+  <!-- pillow -->
+  <rect x="358" y="50" width="216" height="128" rx="16" fill="#FBFCFD" stroke="#C9D2DB" stroke-width="1.2"/>
+  <path d="M 372 62 C 400 56, 452 60, 470 58" stroke="#DCE3EA" stroke-width="2" fill="none"/>
+  <path d="M 372 166 C 420 172, 500 164, 560 168" stroke="#DCE3EA" stroke-width="2" fill="none"/>
+
+  <!-- blanket over the legs -->
+  <path d="M 350 486 L 582 486 L 582 588 Q 582 592 576 592 L 356 592 Q 350 592 350 588 Z"
+        fill="url(#blank)" stroke="#8FA3B8" stroke-width="1"/>
+  <path d="M 350 486 L 582 486 L 582 498 L 350 498 Z" fill="#EDF3F9" opacity=".75"/>
+
+  <!-- ---------------- the child ---------------- -->
+  <g id="kid">
+    <!-- legs: adducted, internally rotated, knees together, equinus feet -->
+    <g id="legs">
+      <path d="M 446 400 C 440 440, 444 470, 452 500 C 458 524, 456 546, 452 560"
+            stroke="url(#skinV)" stroke-width="30" fill="none" stroke-linecap="round"/>
+      <path d="M 492 400 C 498 440, 494 470, 486 500 C 480 524, 482 546, 486 560"
+            stroke="url(#skinV)" stroke-width="30" fill="none" stroke-linecap="round"/>
+      <!-- feet, plantarflexed and inverted -->
+      <path d="M 452 558 C 442 570, 436 584, 442 592 C 448 598, 460 592, 462 580 L 462 562 Z" fill="url(#skinV)"/>
+      <path d="M 486 558 C 496 570, 502 584, 496 592 C 490 598, 478 592, 476 580 L 476 562 Z" fill="url(#skinV)"/>
+      <g stroke="#A87551" stroke-width="1" fill="none" opacity=".7">
+        <path d="M 440 586 l 4 -5"/><path d="M 448 590 l 4 -5"/>
+        <path d="M 498 586 l -4 -5"/><path d="M 490 590 l -4 -5"/>
+      </g>
+      <!-- knee highlights -->
+      <ellipse cx="452" cy="486" rx="13" ry="9" fill="#E3B287" opacity=".5"/>
+      <ellipse cx="486" cy="486" rx="13" ry="9" fill="#E3B287" opacity=".5"/>
+    </g>
+
+    <!-- gown -->
+    <path d="M 412 186 C 400 200, 396 240, 398 290 C 400 350, 404 396, 410 424
+             L 522 424 C 528 396, 532 350, 534 290 C 536 240, 532 200, 520 186
+             C 500 178, 432 178, 412 186 Z" fill="url(#gown)"/>
+    <path d="M 466 188 L 466 424" stroke="#7FA487" stroke-width="1.4" opacity=".8"/>
+    <path d="M 466 188 C 452 214, 446 250, 450 300 C 452 344, 456 392, 458 424 L 410 424
+             C 404 396, 400 350, 398 290 C 396 240, 400 200, 412 186 Z" fill="#FFF" opacity=".10"/>
+    <g stroke="#7FA487" stroke-width="1" fill="none" opacity=".55">
+      <path d="M 408 250 C 428 258, 440 250, 452 258"/>
+      <path d="M 480 300 C 500 308, 514 300, 528 306"/>
+      <path d="M 406 330 C 424 338, 438 330, 450 336"/>
+    </g>
+    <!-- gown open over the chest for the electrodes -->
+    <path d="M 466 190 C 452 196, 444 214, 442 238 C 440 268, 448 296, 460 314
+             C 470 328, 478 322, 484 306 C 492 284, 494 250, 490 224 C 486 202, 478 192, 466 190 Z"
+          fill="url(#skinV)"/>
+
+    <!-- chest, breathing -->
+    <g id="chestG">
+      <ellipse cx="466" cy="252" rx="26" ry="42" fill="#E3B287" opacity=".22"/>
+      <!-- ribs, faintly, of a very small child -->
+      <g stroke="#A87551" stroke-width="1.1" fill="none" opacity=".45">
+        <path d="M 448 232 C 458 228, 476 228, 486 232"/>
+        <path d="M 446 248 C 458 244, 476 244, 488 248"/>
+        <path d="M 446 264 C 458 260, 476 260, 488 264"/>
+      </g>
+      <!-- ECG electrodes -->
+      <g id="ecgDots">
+        <circle cx="446" cy="228" r="8.5" fill="#F2F4F6" stroke="#B9C3CD" stroke-width="1"/>
+        <circle cx="446" cy="228" r="3.2" fill="#8496A8"/>
+        <circle cx="488" cy="228" r="8.5" fill="#F2F4F6" stroke="#B9C3CD" stroke-width="1"/>
+        <circle cx="488" cy="228" r="3.2" fill="#8496A8"/>
+        <circle cx="466" cy="296" r="8.5" fill="#F2F4F6" stroke="#B9C3CD" stroke-width="1"/>
+        <circle cx="466" cy="296" r="3.2" fill="#8496A8"/>
+      </g>
+      <g fill="none" stroke-width="2.6" stroke-linecap="round">
+        <path d="M 446 228 C 480 218, 540 226, 578 258" stroke="#D94A4A"/>
+        <path d="M 488 228 C 520 230, 552 244, 578 266" stroke="#E5C84A"/>
+        <path d="M 466 296 C 500 296, 548 282, 578 274" stroke="#4AB562"/>
+      </g>
+    </g>
+
+    <!-- PEG button + extension set, left upper abdomen -->
+    <g id="pegG">
+      <circle cx="440" cy="352" r="11" fill="#EDEFF2" stroke="#9AA6B2" stroke-width="1.4"/>
+      <circle cx="440" cy="352" r="4.6" fill="#C9CFD6"/>
+      <path d="M 440 352 C 412 356, 388 372, 372 396 C 360 414, 356 440, 358 462"
+            stroke="#DCE3EA" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M 440 352 C 412 356, 388 372, 372 396 C 360 414, 356 440, 358 462"
+            stroke="#F6F8FA" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85"/>
+      <rect id="pegClamp" x="366" y="404" width="15" height="10" rx="3" fill="#5C6B7A"/>
+      <g id="pegSyr" opacity="0">
+        <rect x="326" y="452" width="52" height="22" rx="4" fill="#E8ECF0" stroke="#9AA6B2" stroke-width="1.2"/>
+        <rect x="330" y="456" width="28" height="14" rx="2" fill="#CFE0CF"/>
+        <rect x="374" y="458" width="22" height="10" rx="3" fill="#B9C3CD"/>
+        <text x="352" y="446" text-anchor="middle" font-family="${MONO}" font-size="8.5" fill="#2FE07A"
+              letter-spacing="1">VENTED</text>
+      </g>
+      <text id="pegLbl" x="440" y="374" text-anchor="middle" font-family="${MONO}" font-size="8"
+            fill="#8496A8" letter-spacing="1.4">PEG</text>
+    </g>
+
+    <!-- arms: adducted, elbows flexed, hands fisted -->
+    <g id="arms">
+      <path d="M 414 200 C 396 224, 388 250, 392 268" stroke="url(#skinV)" stroke-width="22"
+            fill="none" stroke-linecap="round"/>
+      <path d="M 392 268 C 400 254, 412 246, 422 244" stroke="url(#skinV)" stroke-width="19"
+            fill="none" stroke-linecap="round"/>
+      <circle cx="424" cy="243" r="12.5" fill="url(#skinV)"/>
+      <g stroke="#A87551" stroke-width="1" fill="none" opacity=".65">
+        <path d="M 416 238 l 15 2"/><path d="M 415 244 l 16 1"/><path d="M 417 250 l 14 0"/>
+      </g>
+      <path d="M 518 200 C 536 224, 544 250, 540 268" stroke="url(#skinV)" stroke-width="22"
+            fill="none" stroke-linecap="round"/>
+      <path d="M 540 268 C 532 254, 520 246, 510 244" stroke="url(#skinV)" stroke-width="19"
+            fill="none" stroke-linecap="round"/>
+      <circle cx="508" cy="243" r="12.5" fill="url(#skinV)"/>
+      <g stroke="#A87551" stroke-width="1" fill="none" opacity=".65">
+        <path d="M 516 238 l -15 2"/><path d="M 517 244 l -16 1"/><path d="M 515 250 l -14 0"/>
+      </g>
+      <!-- SpO2 probe on the right hand -->
+      <g id="probeG">
+        <path d="M 500 232 C 494 236, 494 250, 500 254 C 510 258, 520 254, 521 243
+                 C 522 233, 510 228, 500 232 Z" fill="#3E4A5A" stroke="#5A6B7C" stroke-width="1"/>
+        <rect x="497" y="238" width="7" height="10" rx="2" fill="#FF4D6D" opacity=".85" id="probeLed"/>
+        <path d="M 520 250 C 544 262, 566 286, 578 316" stroke="#4A5666" stroke-width="3.4" fill="none"/>
+      </g>
+    </g>
+
+    <!-- neck + head -->
+    <path d="M 448 168 L 484 168 L 488 196 L 444 196 Z" fill="url(#skinV)"/>
+    <g id="headG">
+      <!-- ears -->
+      <path d="M 424 108 C 414 108, 410 122, 416 132 C 420 138, 428 136, 429 128 Z" fill="#C08A62"/>
+      <path d="M 508 108 C 518 108, 522 122, 516 132 C 512 138, 504 136, 503 128 Z" fill="#C08A62"/>
+      <!-- face -->
+      <ellipse cx="466" cy="112" rx="42" ry="54" fill="url(#skin)"/>
+      <!-- hair -->
+      <path d="M 424 104 C 424 70, 442 56, 466 56 C 490 56, 508 70, 508 104
+               C 508 92, 498 82, 484 84 C 472 86, 462 82, 452 84 C 438 86, 426 92, 424 104 Z"
+            fill="#2A2119"/>
+      <path d="M 430 92 C 438 74, 452 66, 466 66 C 480 66, 494 74, 502 92" fill="none"
+            stroke="#3D3125" stroke-width="2.5" opacity=".8"/>
+      <!-- eyes -->
+      <g id="eyesG">
+        <ellipse cx="450" cy="116" rx="7.2" ry="4.2" fill="#F4F1EC"/>
+        <ellipse cx="482" cy="116" rx="7.2" ry="4.2" fill="#F4F1EC"/>
+        <circle cx="450" cy="116" r="3.1" fill="#3A2A1C"/><circle cx="482" cy="116" r="3.1" fill="#3A2A1C"/>
+        <path d="M 442 110 C 448 106, 456 106, 459 110" stroke="#2A2119" stroke-width="1.8" fill="none"/>
+        <path d="M 473 110 C 478 106, 486 106, 490 110" stroke="#2A2119" stroke-width="1.8" fill="none"/>
+      </g>
+      <!-- nose -->
+      <path d="M 466 122 C 461 128, 458 136, 461 140 L 471 140 C 474 136, 471 128, 466 122 Z"
+            fill="#C99268" opacity=".85"/>
+      <ellipse id="nosL" cx="461.5" cy="141" rx="3.4" ry="2.4" fill="#6E4630"/>
+      <ellipse cx="470.5" cy="141" rx="3.4" ry="2.4" fill="#6E4630"/>
+      <!-- mouth -->
+      <path id="mouth" d="M 454 154 C 460 158, 472 158, 478 154" stroke="#8E4A44" stroke-width="2.4"
+            fill="none" stroke-linecap="round"/>
+      <!-- cheeks, flushed with fever -->
+      <ellipse cx="440" cy="132" rx="9" ry="6" fill="#C4705C" opacity=".30"/>
+      <ellipse cx="492" cy="132" rx="9" ry="6" fill="#C4705C" opacity=".30"/>
+      <!-- nasal cannula -->
+      <g id="cannula">
+        <path d="M 461 138 L 461 133" stroke="#DCE3EA" stroke-width="3.4" stroke-linecap="round"/>
+        <path d="M 471 138 L 471 133" stroke="#DCE3EA" stroke-width="3.4" stroke-linecap="round"/>
+        <path d="M 456 133 C 462 129, 470 129, 476 133" stroke="#DCE3EA" stroke-width="4" fill="none"/>
+        <path d="M 456 133 C 442 136, 430 128, 424 118" stroke="#DCE3EA" stroke-width="4" fill="none"/>
+        <path d="M 476 133 C 490 136, 502 128, 508 118" stroke="#DCE3EA" stroke-width="4" fill="none"/>
+        <path d="M 424 118 C 418 140, 428 166, 448 178" stroke="#DCE3EA" stroke-width="4" fill="none"/>
+        <path d="M 508 118 C 514 140, 504 166, 484 178" stroke="#DCE3EA" stroke-width="4" fill="none"/>
+        <path d="M 448 178 C 458 184, 476 184, 484 178" stroke="#DCE3EA" stroke-width="4" fill="none"/>
+        <path d="M 466 182 C 500 196, 552 200, 582 190" stroke="#DCE3EA" stroke-width="4" fill="none"/>
+      </g>
+      <!-- vomit, hidden until it happens -->
+      <g id="vomitG" opacity="0"></g>
+      <!-- blood at the nostril -->
+      <g id="nosebleed" opacity="0">
+        <path d="M 461 143 C 459 150, 458 158, 460 164 C 462 168, 466 166, 466 160 C 466 152, 464 146, 461 143 Z"
+              fill="#8E2230"/>
+        <ellipse cx="462" cy="166" rx="3.6" ry="2.4" fill="#7A1C28"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- suction tubing, bird's-eye -->
+  <g id="tubeG">
+    <!-- corrugated suction tubing, from the connector back to the wall unit -->
+    <path id="tubePath" d="${TUBE}" stroke="#46525F" stroke-width="10" fill="none"
+          stroke-linecap="round" stroke-dasharray="0 356 260"/>
+    <path d="${TUBE}" stroke="#6D7D8C" stroke-width="4" fill="none"
+          stroke-linecap="round" stroke-dasharray="0 356 260" opacity=".5"/>
+    <!-- the catheter itself: thin and clear, so you can see what is coming up it -->
+    <path d="${TUBE}" stroke="#0B1016" stroke-width="6" fill="none"
+          stroke-linecap="round" stroke-dasharray="356 900" opacity=".55"/>
+    <path d="${TUBE}" stroke="#C8D6E2" stroke-width="4.4" fill="none"
+          stroke-linecap="round" stroke-dasharray="356 900" opacity=".55"/>
+    <g id="tubeSpu"></g>
+    <g id="connG"></g>
+    <g id="cmTicks"></g>
+    <g id="grip" opacity="0">
+      <ellipse cx="0" cy="0" rx="15" ry="11" fill="#9FD6DC" opacity=".9" stroke="#5FB6C0" stroke-width="1.4"/>
+      <ellipse cx="0" cy="0" rx="7" ry="5" fill="#7CC3CB"/>
+    </g>
+    <text x="300" y="486" text-anchor="middle" font-family="${MONO}" font-size="9"
+          fill="#5A6B7C" letter-spacing="1.6">TO WALL VACUUM</text>
+  </g>
+</g>
+
+<!-- ================= SAGITTAL CUTAWAY =================
+     Drawn the way an anatomy atlas does it: the head and hair are ghosted back
+     almost to paper, and the airway is cut through in full colour. -->
+<g id="sagG">
+  <rect x="608" y="34" width="386" height="566" rx="12" fill="#080D13" stroke="#1C2632" stroke-width="1"/>
+  <text x="622" y="56" font-family="${MONO}" font-size="9.5" fill="#3AD8E6" letter-spacing="2.2">
+    MID-SAGITTAL AIRWAY</text>
+  <text id="dragHint" x="982" y="56" text-anchor="end" font-family="${MONO}" font-size="9.5"
+        fill="#5A6B7C" letter-spacing="1.6">◀ DRAG THE CATHETER</text>
+  <line x1="622" y1="64" x2="982" y2="64" stroke="#1C2632" stroke-width="1"/>
+
+  <!-- the illustration board -->
+  <rect x="616" y="72" width="328" height="516" rx="8" fill="url(#plate)" filter="url(#plateSh)"/>
+
+  <!-- vertical depth gauge, on the dark chrome beside the board -->
+  <g id="gaugeG"></g>
+
+  <!-- ---------- the ghosted head ---------- -->
+  <g id="headArt">
+    <use href="#headSilo" fill="url(#ghost)"/>
+    <!-- hair: a soft mass over the cranium, then strands following the scalp -->
+    <path d="M 778 88 C 852 90, 912 126, 932 200 C 940 240, 941 276, 936 310
+             C 928 276, 926 236, 912 204 C 892 156, 842 132, 776 133
+             C 716 134, 674 152, 650 178 C 654 142, 690 94, 750 89 C 760 88, 770 88, 778 88 Z"
+          fill="#F0E7D6" opacity=".9"/>
+    <g fill="none" stroke="#E2D5BE" stroke-width="1" opacity=".62">
+      ${Array.from({length:9},(_,i)=>{
+        const t=i/8, rx=106+t*42+(i%2?4:0), ry=100+t*38+(i%3?3:0), cx=778, cy=216;
+        const pts=[];
+        for(let k=0;k<=8;k++){
+          const a=(-176+k*(156/8))*Math.PI/180;
+          const j=1+(k%2?0.012:-0.012);
+          pts.push([(cx+Math.cos(a)*rx*j).toFixed(0),(cy+Math.sin(a)*ry*j).toFixed(0)]);
+        }
+        return `<path d="M ${pts[0][0]} ${pts[0][1]} `+
+          pts.slice(1).map(p=>`L ${p[0]} ${p[1]}`).join(' ')+`"/>`;
+      }).join('')}
+    </g>
+    <!-- hairline -->
+    <path d="M 650 180 C 676 150, 716 134, 776 133 C 842 132, 894 158, 914 208"
+          fill="none" stroke="#D9C9AE" stroke-width="1.3"/>
+  </g>
+
+  <!-- ---------- the airway, cut through ----------
+       Translated back off the skin by the same offset as the route, so there is
+       lip, chin and cheek between the profile and the oral cavity. -->
+  <g id="airwayArt" transform="translate(16,8)">
+    <!-- anterior skull base and clivus: the bony roof of the nose and back wall of the nasopharynx -->
+    <path d="M 630 222 C 664 210, 706 206, 738 212 C 756 216, 766 228, 770 248
+             C 774 268, 778 282, 786 292 L 808 288 C 798 266, 794 240, 786 218
+             C 776 190, 748 178, 706 180 C 668 182, 638 194, 624 206 Z"
+          fill="url(#boneL)" stroke="#CDBB95" stroke-width="1.2"/>
+    <!-- nasal cavity air space -->
+    <path d="M 622 230 C 654 218, 700 214, 734 222 C 750 226, 758 236, 758 250
+             L 758 258 L 634 262 C 624 256, 618 240, 622 230 Z" fill="url(#lumen)"/>
+    <!-- turbinates: three scrolls off the lateral wall -->
+    <g fill="url(#mucosa)" stroke="#B06E6B" stroke-width=".9">
+      <path d="M 650 248 C 668 242, 690 244, 696 250 C 700 256, 686 260, 668 259
+               C 656 258, 646 254, 650 248 Z"/>
+      <path d="M 656 234 C 676 228, 700 230, 706 236 C 710 242, 694 246, 676 245
+               C 664 244, 652 239, 656 234 Z"/>
+      <path d="M 686 222 C 704 218, 722 220, 726 225 C 729 230, 714 233, 700 232
+               C 691 231, 683 226, 686 222 Z"/>
+    </g>
+    <!-- hard palate -->
+    <path d="M 628 258 C 660 254, 706 254, 744 257 L 746 269 C 706 267, 660 267, 628 271 Z"
+          fill="url(#boneL)" stroke="#CDBB95" stroke-width="1.2"/>
+    <!-- soft palate and uvula, hanging in front of the nasopharynx -->
+    <path d="M 742 256 C 752 262, 756 276, 754 292 C 753 302, 748 310, 743 308
+             C 738 306, 736 298, 738 288 C 741 274, 738 266, 730 262 Z"
+          fill="#D08A87" stroke="#B06E6B" stroke-width="1.1"/>
+    <!-- pharyngeal mucosa: the warm band from nasopharynx to larynx -->
+    <path d="M 754 232 C 778 238, 790 258, 792 292 C 794 328, 790 358, 782 382
+             C 774 404, 762 418, 750 426 L 736 424 C 748 408, 756 386, 760 358
+             C 764 326, 762 282, 752 254 Z"
+          fill="url(#mucosa)" stroke="#AC6462" stroke-width="1.1"/>
+    <!-- posterior pharyngeal wall highlight, as in the plate -->
+    <path d="M 776 244 C 788 264, 794 296, 792 330 C 790 364, 782 392, 772 412"
+          fill="none" stroke="#9B5FA6" stroke-width="1.9" opacity=".55"/>
+    <!-- the pharyngeal air column -->
+    <path d="M 748 240 C 768 248, 778 268, 780 296 C 782 326, 778 354, 770 376
+             C 762 396, 752 410, 744 416 L 736 410 C 746 396, 752 376, 756 350
+             C 760 320, 758 282, 746 252 Z" fill="url(#lumen)"/>
+    <!-- the oral cavity: a real gap between the lips and the tongue -->
+    <path d="M 626 250 C 640 246, 656 246, 668 250 L 668 296 C 654 300, 638 296, 628 288 Z"
+          fill="url(#lumen)"/>
+    <!-- tongue, sitting back behind the teeth as it does in life -->
+    <path d="M 650 274 C 674 262, 708 260, 734 270 C 756 278, 768 296, 768 318
+             C 768 340, 758 356, 744 362 C 718 372, 682 364, 664 346
+             C 650 332, 644 304, 650 274 Z"
+          fill="url(#tongueF)" stroke="#B7716A" stroke-width="1.2"/>
+    <!-- radiating intrinsic muscle fibres -->
+    <g fill="none" stroke="#BE756E" stroke-width=".95" opacity=".72">
+      ${(()=>{const dest=[[652,292],[652,278],[662,268],[676,263],[692,261],[708,262],
+        [722,266],[734,272],[746,280],[756,290],[763,302],[766,316]];
+        return dest.map((d,i)=>{const t=i/(dest.length-1);
+          const ox=746-16*t, oy=356-6*t;
+          const mx=(ox+d[0])/2+(d[0]-ox)*0.10-9, my=(oy+d[1])/2+15;
+          return `<path d="M ${ox.toFixed(0)} ${oy.toFixed(0)} Q ${mx.toFixed(0)} ${my.toFixed(0)} ${d[0]} ${d[1]}"/>`;
+        }).join('');})()}
+    </g>
+    <path d="M 656 306 C 686 294, 720 296, 746 312" fill="none" stroke="#B7716A"
+          stroke-width="1.2" opacity=".6"/>
+    <!-- mandible in cross-section, with cancellous bone -->
+    <ellipse cx="638" cy="306" rx="15" ry="12" fill="url(#boneL)" stroke="#CDBB95" stroke-width="1.4"/>
+    <g fill="#D9C6A2" opacity=".85">
+      ${Array.from({length:12},(_,i)=>{
+        const a=i*2.399, r=Math.sqrt(i/12)*8.6;
+        return `<circle cx="${(638+Math.cos(a)*r*1.2).toFixed(1)}" cy="${(306+Math.sin(a)*r).toFixed(1)}" r="${(1.3+(i%3)*0.4).toFixed(1)}"/>`;
+      }).join('')}
+    </g>
+    <!-- upper and lower lip in section -->
+    <ellipse cx="626" cy="248" rx="6" ry="6.5" fill="#E4A8A0" stroke="#B7716A" stroke-width="1"/>
+    <ellipse cx="628" cy="282" rx="6.5" ry="7.5" fill="#E4A8A0" stroke="#B7716A" stroke-width="1"/>
+    <!-- epiglottis -->
+    <path d="M 734 358 C 723 364, 716 377, 720 390 C 724 401, 736 401, 740 390
+             C 744 377, 742 362, 734 358 Z" fill="#DFA09C" stroke="#B06E6B" stroke-width="1.2"/>
+    <!-- hyoid -->
+    <ellipse cx="702" cy="362" rx="10" ry="6.5" fill="url(#boneL)" stroke="#CDBB95" stroke-width="1.2"/>
+    <!-- thyroid cartilage and cricoid -->
+    <path d="M 700 378 C 691 392, 690 412, 697 427 L 718 427 L 718 376 Z"
+          fill="url(#boneL)" stroke="#CDBB95" stroke-width="1.3"/>
+    <path d="M 699 429 C 695 436, 697 445, 703 449 L 720 449 L 720 429 Z"
+          fill="url(#boneL)" stroke="#CDBB95" stroke-width="1.2"/>
+    <!-- laryngeal inlet and the cords -->
+    <path d="M 720 392 C 731 396, 740 404, 743 414 L 743 430 C 734 422, 723 417, 718 415 Z"
+          fill="url(#lumen)"/>
+    <path d="M 718 412 L 745 412" stroke="#F0DCD2" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M 718 412 L 745 412" stroke="#B7716A" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+    <!-- trachea: lumen, then the ring cartilages cut in section -->
+    <path d="M 715 432 C 713 470, 713 520, 713 586 L 747 586 C 747 520, 747 470, 745 432 Z"
+          fill="url(#lumen)"/>
+    <g fill="url(#boneL)" stroke="#CDBB95" stroke-width="1.1">
+      ${Array.from({length:8},(_,i)=>{const y=442+i*18;
+        return `<rect x="703" y="${y}" width="13" height="11" rx="4.5"/>`+
+               `<rect x="744" y="${y}" width="10" height="11" rx="4"/>`;}).join('')}
+    </g>
+    <!-- oesophagus, collapsed behind the trachea -->
+    <path d="M 752 410 C 749 460, 749 520, 749 586 L 772 586 C 772 520, 772 460, 769 410 Z"
+          fill="#C87F7C" stroke="#A85E5A" stroke-width="1.1"/>
+    <path d="M 760 422 C 757 470, 757 530, 759 582" fill="none" stroke="#9C5350" stroke-width="1.4"/>
+    <!-- the feed sitting in the stomach, waiting to come back up -->
+    <g id="feedG" opacity=".9">
+      <path d="M 750 522 C 749 552, 749 574, 749 586 L 772 586 C 772 574, 772 552, 770 522 Z"
+            fill="#F3EDDE" opacity=".85"/>
+      <g fill="#E2D8BE"><circle cx="756" cy="542" r="3"/><circle cx="765" cy="558" r="2.6"/>
+        <circle cx="757" cy="572" r="2.2"/></g>
+    </g>
+    <!-- cervical vertebrae with intervertebral discs -->
+    <g>
+      ${Array.from({length:7},(_,i)=>{const y=316+i*38, x=780+i*1.4;
+        return `<rect x="${x.toFixed(0)}" y="${y}" width="44" height="28" rx="5"
+                  fill="url(#boneL)" stroke="#C4B187" stroke-width="1.3"/>`+
+               (i<6?`<rect x="${(x+3).toFixed(0)}" y="${y+28}" width="38" height="10" rx="3"
+                  fill="#DCCBAC" stroke="#C4B187" stroke-width=".9"/>`:'');}).join('')}
+    </g>
+  </g>
+
+  <!-- the ear sits on the surface, over the upper neck -->
+  <g id="tragusG">
+      <path d="M 812 240 C 810 214, 830 200, 852 206 C 874 212, 884 238, 878 266
+               C 872 294, 858 314, 844 320 C 830 326, 818 316, 816 300
+               C 814 282, 812 258, 812 240 Z" fill="#F6E7DC" stroke="#C7A88E" stroke-width="1.5"/>
+      <path d="M 822 244 C 820 222, 836 212, 852 218 C 868 224, 874 244, 870 266
+               C 866 288, 856 306, 846 310" fill="none" stroke="#D2AE94" stroke-width="1.4"/>
+      <path d="M 836 240 C 848 240, 854 250, 852 264 C 850 278, 842 288, 834 290"
+            fill="none" stroke="#D8B79E" stroke-width="1.3"/>
+      <path d="M 830 286 C 838 290, 846 294, 850 302" fill="none" stroke="#D8B79E" stroke-width="1.2"/>
+      <!-- tragus: the landmark you measure to -->
+      <path d="M 820 256 C 812 254, 807 262, 809 272 C 811 282, 819 284, 825 278
+               C 829 272, 826 258, 820 256 Z" fill="#EFDCCE" stroke="#C09076" stroke-width="1.3"/>
+      <circle cx="${TRAGUS[0]}" cy="${TRAGUS[1]}" r="2.6" fill="#B07A55" opacity=".9"/>
+  </g>
+
+  <!-- ---------- the face, drawn last so the airway never paints over it ---------- -->
+  <g id="faceArt">
+    <use href="#headSilo" fill="none" stroke="#A87F58" stroke-width="2.2"/>
+    <!-- closed eye, lashes and brow -->
+    <path d="M 650 190 C 660 184, 674 184, 684 190" fill="none" stroke="#9E7250" stroke-width="2"/>
+    <path d="M 648 186 C 658 178, 676 177, 688 184" fill="none" stroke="#C9A98C" stroke-width="1.3"/>
+    <g stroke="#96694A" stroke-width="1.15" stroke-linecap="round">
+      <path d="M 652 191 l -3 4"/><path d="M 659 193 l -2 4"/><path d="M 667 194 l -1 5"/>
+      <path d="M 675 193 l 1 4"/><path d="M 682 191 l 3 3"/>
+    </g>
+    <path d="M 644 170 C 656 164, 676 163, 690 168" fill="none" stroke="#C4A98A" stroke-width="2.3"/>
+    <!-- ala and nostril -->
+    <path d="M 626 236 C 634 234, 642 236, 646 242" fill="none" stroke="#B08862" stroke-width="1.4"/>
+    <path d="M 628 243 C 634 246, 640 246, 644 244" fill="none" stroke="#7E5A3E" stroke-width="2.6"
+          stroke-linecap="round" opacity=".8"/>
+    <!-- philtrum and lips -->
+    <path d="M 640 249 L 641 254" fill="none" stroke="#C6A488" stroke-width="1"/>
+    <path d="M 632 262 C 640 260, 648 260, 655 262" fill="none" stroke="#AE6E5E" stroke-width="1.9"/>
+    <path d="M 636 255 C 643 252, 650 252, 655 255" fill="none" stroke="#CFA492" stroke-width="1.2"/>
+    <path d="M 637 271 C 644 274, 651 274, 657 271" fill="none" stroke="#CFA492" stroke-width="1.2"/>
+    <!-- mentolabial crease and jawline -->
+    <path d="M 644 288 C 651 291, 659 291, 665 288" fill="none" stroke="#C4A88C" stroke-width="1.3"/>
+    <path d="M 648 314 C 668 330, 694 342, 716 344" fill="none" stroke="#C4A88C" stroke-width="1.3"/>
+  </g>
+
+  <!-- labels -->
+  <g font-family="${MONO}" font-size="7.5" letter-spacing=".9" fill="#4A3B2E"
+     paint-order="stroke" stroke="#FFFFFF" stroke-width="2.9" stroke-opacity=".88">
+    <text x="700" y="222" text-anchor="middle">TURBINATES</text>
+    <text x="716" y="256" text-anchor="middle">HARD PALATE</text>
+    <text x="696" y="340" text-anchor="middle">TONGUE</text>
+    <text x="936" y="356" text-anchor="end">NASOPHARYNX</text>
+    <text x="936" y="418" text-anchor="end">OROPHARYNX</text>
+    <text x="936" y="492" text-anchor="end">OESOPHAGUS</text>
+    <g text-anchor="end">
+      <text x="688" y="398">SOFT PALATE</text>
+      <text x="688" y="430">EPIGLOTTIS</text>
+      <text x="688" y="462">VOCAL CORDS</text>
+      <text x="688" y="530">TRACHEA</text>
+    </g>
+  </g>
+  <g stroke="#8A7A66" stroke-width=".9" fill="none" opacity=".75">
+    <path d="M 692 395 L 756 306"/>
+    <path d="M 692 427 L 734 396"/>
+    <path d="M 692 459 L 730 424"/>
+    <path d="M 692 527 L 722 520"/>
+    <path d="M 862 352 L 802 310"/>
+    <path d="M 862 414 L 798 386"/>
+    <path d="M 862 488 L 776 480"/>
+  </g>
+
+  <g id="zoneG" opacity="0"></g>
+  <!-- the route itself (hidden guide) -->
+  <path id="routePath" d="${ROUTE}" fill="none" stroke="none"/>
+  <!-- the catheter -->
+  <g id="cathG" filter="url(#cathSh)">
+    <path id="cathExt" d="M 636 234 C 628 240, 622 250, 616 264" stroke="#0E7C8E" stroke-width="5.4"
+          fill="none" stroke-linecap="round"/>
+    <path id="cathIn" d="${ROUTE}" stroke="#0E7C8E" stroke-width="5.4" fill="none"
+          stroke-linecap="round" stroke-dasharray="0 9999"/>
+    <g id="cathSpu"></g>
+    <circle id="cathTip" cx="636" cy="234" r="4.6" fill="#0E7C8E"/>
+  </g>
+  <!-- measuring caliper -->
+  <g id="caliperG" opacity="0">
+    <line id="calLine" x1="${NOSE[0]}" y1="${NOSE[1]}" x2="${TRAGUS[0]}" y2="${TRAGUS[1]}"
+          stroke="#0E7C8E" stroke-width="2.2" stroke-dasharray="5 4"/>
+    <circle cx="${NOSE[0]}" cy="${NOSE[1]}" r="5" fill="#0E7C8E" stroke="#FFF" stroke-width="1.6"/>
+    <circle id="calEnd" cx="760" cy="240" r="9.5" fill="#0E7C8E" stroke="#FFF" stroke-width="2.2"
+            style="cursor:grab" filter="url(#cathSh)"/>
+    <text id="calTxt" x="770" y="222" font-family="${MONO}" font-size="13" fill="#0B5F6D"
+          font-weight="600" letter-spacing="1" paint-order="stroke" stroke="#FFF"
+          stroke-width="3" stroke-opacity=".9">0.0 cm</text>
+  </g>
+</g>
+`;}
+
+/* ---------------------------------------------------------------- */
+let RP=null, RPLEN=0, UPC=31, TP=null, TPLEN=0;
+function buildScene(){
+  $('#sceneSvg').innerHTML=sceneSVG();
+  RP=$('#routePath'); RPLEN=RP.getTotalLength(); UPC=RPLEN/MAXCM;
+  TP=$('#tubePath');  TPLEN=TP.getTotalLength();
+  buildZones(); buildTicks(); paintCatheter();
+}
+function segDash(a,b){return `0 ${a*UPC} ${(b-a)*UPC} ${RPLEN}`;}
+/* Each band carries two colours: one for the pale illustration board, one for the
+   dark chrome the depth gauge sits on. The same band washes out on one and glares
+   on the other if you try to use a single value. */
+function zoneBands(){
+  const md=E.measured||7.9;
+  return [
+    {a:0.4,    b:md-2.2, cl:'#8496A8', cd:'#5A6B7C'},   // nasal passage
+    {a:md-2.2, b:md+0.8, cl:'#1B9E52', cd:'#2FE07A'},   // nasopharynx — the target
+    {a:md+0.8, b:md+2.8, cl:'#D89012', cd:'#FFC24B'},   // oropharynx — gagging
+    {a:md+2.8, b:MAXCM,  cl:'#C9243F', cd:'#FF4D6D'}    // laryngeal / tracheal
+  ];
+}
+function buildZones(){
+  const md=E.measured||7.9, p=RP.getPointAtLength(md*UPC);
+  $('#zoneG').innerHTML=zoneBands().map(z=>
+    `<path d="${ROUTE}" fill="none" stroke="${z.cl}" stroke-width="16" stroke-linecap="butt"
+      opacity=".34" stroke-dasharray="${segDash(z.a,z.b)}"/>`).join('')
+   +`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="11"
+      fill="none" stroke="#1B9E52" stroke-width="2.2"/>`;
+  buildGauge();
+}
+/* the vertical depth gauge on the right of the sagittal panel */
+function buildGauge(){
+  const md=E.measured, H=GY1-GY0;
+  let h=`<text id="gtxt" x="${GX+GW/2}" y="${GY0-18}" text-anchor="middle" font-family="${MONO}"
+          font-size="14" font-weight="600" fill="#E6EDF3">0.0</text>
+         <text x="${GX+GW/2}" y="${GY0-7}" text-anchor="middle" font-family="${MONO}"
+          font-size="8" fill="#5A6B7C" letter-spacing="1.4">cm DEEP</text>
+         <rect x="${GX}" y="${GY0}" width="${GW}" height="${H}" rx="4"
+          fill="#0B1016" stroke="#1C2632" stroke-width="1"/>`;
+  /* the coloured zones are a coaching aid — in assessment mode you get the scale only */
+  if(coach()){
+    h+=zoneBands().map(z=>
+      `<rect x="${GX+1}" y="${gy(z.a).toFixed(1)}" width="${GW-2}"
+        height="${(gy(z.b)-gy(z.a)).toFixed(1)}" fill="${z.cd}" opacity=".34"/>`).join('');
+  }
+  for(let cm=0;cm<=MAXCM;cm++){
+    const maj=cm%2===0, y=gy(cm);
+    h+=`<line x1="${GX}" y1="${y.toFixed(1)}" x2="${GX+(maj?9:5)}" y2="${y.toFixed(1)}"
+         stroke="#3A4A5A" stroke-width="${maj?1.3:1}"/>`;
+    if(maj)h+=`<text x="${GX-5}" y="${(y+3.2).toFixed(1)}" text-anchor="end" font-family="${MONO}"
+         font-size="8.5" fill="#5A6B7C">${cm}</text>`;
+  }
+  /* the depth the learner measured — their own limit, shown in both modes */
+  if(md){
+    h+=`<line x1="${GX-3}" y1="${gy(md).toFixed(1)}" x2="${GX+GW+3}" y2="${gy(md).toFixed(1)}"
+         stroke="#2FE07A" stroke-width="2"/>
+        <text x="${GX+GW/2}" y="${(gy(md)-5).toFixed(1)}" text-anchor="middle" font-family="${MONO}"
+         font-size="7.5" fill="#2FE07A" letter-spacing=".6">LIMIT</text>`;
+  }
+  h+=`<g id="gptr"><path d="M 0 0 L 10 -6 L 10 6 Z" fill="#E6EDF3"/>
+       <rect x="-${GW+2}" y="-1.2" width="${GW+2}" height="2.4" fill="#E6EDF3" opacity=".85"/></g>`;
+  $('#gaugeG').innerHTML=h;
+}
+/* graduation marks on the bird's-eye catheter — they vanish into the nostril */
+function buildTicks(){
+  let h='';
+  for(let cm=1;cm<=14;cm++){
+    h+=`<g class="ctk" data-cm="${cm}" opacity="0">
+      <line x1="-6" y1="0" x2="6" y2="0" stroke="#0E141B" stroke-width="${cm%5===0?3:1.8}"/></g>`;
+  }
+  $('#cmTicks').innerHTML=h;
+}
+
+/* =====================================================================
+   SUCTION ENGINE
+   ===================================================================== */
+const SUC={
+  depth:0, vacOn:false, active:false,
+  passVac:0, passMax:0, passYield:0, passBlood:false, passStart:0,
+  lastEnd:-999, lastDepth:0, vomitRisk:0, canML:0,
+  running:false, ended:false, warned5:false, warned8:false, gagWarned:false,
+  boluses:[], hintTimer:0, sinceYield:0
+};
+function zoneOf(d){
+  const md=E.measured||7.9;
+  if(d<0.4)return['Outside the nose','z-out',0];
+  if(d<md-2.2)return['Nasal passage','z-nose',1];
+  if(d<=md+0.8)return['Nasopharynx · target','z-target',2];
+  if(d<=md+2.8)return['Oropharynx · gagging','z-oro',3];
+  return['Laryngeal / tracheal','z-deep',4];
+}
+/* The secretions pool in the nasopharynx. The nasal passage the catheter travels
+   through on the way there holds very little — which is why a catheter that stops
+   short brings back nothing, however long you suction for. */
+function yieldFactor(){
+  const z=zoneOf(SUC.depth)[2];
+  const zf=[0, 0.08, 1, 0.75, 0.45][z];
+  const vf=E.vac<60?0.14:E.vac<80?0.55:1;
+  const cf=E.fr===6?0.42:E.fr===10?0.88:E.fr===8?1:0.7;
+  return zf*vf*cf*(P.secretions/100);
+}
+function paintCatheter(){
+  if(!RP)return;
+  const d=clamp(SUC.depth,0,MAXCM), L=d*UPC;
+  const tip=RP.getPointAtLength(L);
+  /* dark teal at rest, crimson under vacuum — both read against pale tissue,
+     where the old white-on-dark catheter disappeared */
+  const col=SUC.vacOn?'#C81E43':'#0E7C8E';
+  const ci=$('#cathIn');
+  ci.setAttribute('stroke-dasharray',`${L} ${RPLEN}`);
+  ci.setAttribute('stroke',col);
+  $('#cathExt').setAttribute('stroke',col);
+  const t=$('#cathTip');
+  t.setAttribute('cx',tip.x); t.setAttribute('cy',tip.y);
+  t.setAttribute('r',SUC.vacOn?6.2:4.6); t.setAttribute('fill',col);
+
+  /* bird's-eye: graduation marks slide into the nostril */
+  $$('.ctk').forEach(g=>{
+    const cm=+g.dataset.cm, out=(cm-d)*24;      // 24 units per cm on the tubing
+    if(out<6||out>TPLEN-10){g.setAttribute('opacity','0');return;}
+    const p=TP.getPointAtLength(out);
+    const p2=TP.getPointAtLength(Math.min(TPLEN,out+2));
+    const ang=Math.atan2(p2.y-p.y,p2.x-p.x)*180/Math.PI;
+    g.setAttribute('opacity','.85');
+    g.setAttribute('transform',`translate(${p.x},${p.y}) rotate(${ang+90})`);
+  });
+  const gp=TP.getPointAtLength(clamp(2.4*24,0,TPLEN));
+  const gr=$('#grip');
+  gr.setAttribute('opacity',d>0.3?'.95':'0');
+  gr.setAttribute('transform',`translate(${gp.x},${gp.y})`);
+  /* the connector where the catheter meets the corrugated tubing */
+  const cp=TP.getPointAtLength(Math.min(356,TPLEN));
+  $('#connG').innerHTML=`<rect x="${(cp.x-7).toFixed(1)}" y="${(cp.y-6).toFixed(1)}" width="14"
+    height="12" rx="3" fill="#8FA0B0" stroke="#46525F" stroke-width="1"/>`;
+
+  /* the vertical depth gauge */
+  const ptr=$('#gptr'), gt=$('#gtxt');
+  if(ptr)ptr.setAttribute('transform',`translate(${GX+GW+2},${gy(d).toFixed(1)})`);
+  if(gt){gt.textContent=d.toFixed(1);
+    gt.setAttribute('fill',SUC.vacOn?'#FF4D6D':'#E6EDF3');}
+
+  const z=zoneOf(d);
+  const dn=$('#dnum'), dz=$('#dzone');
+  if(dn)dn.textContent=d.toFixed(1);
+  if(dz){dz.textContent=z[0];dz.className='zone '+z[1];}
+  const kn=$('#cathTip');
+  kn.setAttribute('aria-valuenow',d.toFixed(1));
+}
+function setDepth(v,src){
+  const nv=clamp(v,0,MAXCM);
+  const adv=nv>SUC.depth+0.02;
+  if(SUC.vacOn&&adv&&SUC.depth>0.4){
+    if(!SUC._insFlag){
+      SUC._insFlag=true; T.insertSuction++;
+      toast('You are advancing the catheter <b>with the vacuum on</b>. Suction on the way out, never on the way in — you are stripping mucosa and stealing oxygen the whole way down.','b',6500);
+      note('Applied suction while advancing the catheter.','b');
+      critical('Applied suction on insertion.');
+      P.bleeding=Math.min(1,P.bleeding+0.18);
+    }
+  }
+  SUC.depth=nv;
+  /* start the pass first, so a single fast drag straight to depth is still recorded */
+  if(nv>=1.0&&!SUC.active&&SUC.running)startPass();
+  if(SUC.active){
+    SUC.passMax=Math.max(SUC.passMax,nv);
+    T.maxDepth=Math.max(T.maxDepth,nv);
+  }
+  if(nv<0.5&&SUC.active)endPass();
+  paintCatheter();
+}
+/* ---- passes ---- */
+function startPass(){
+  /* _insFlag is deliberately NOT reset here: the catheter is already past the
+     nostril by the time a pass registers, so resetting would fire the
+     suction-on-insertion warning a second time inside the same pass. */
+  SUC.active=true; SUC.passVac=0; SUC.passMax=SUC.depth; SUC.passYield=0;
+  SUC.passBlood=false; SUC.passStart=S.t;
+  SUC.warned5=false; SUC.warned8=false; SUC.gagWarned=false;
+  const rest=S.t-SUC.lastEnd;
+  if(T.passes>0){
+    if(rest<30){T.shortRest++;note('Started pass '+(T.passes+1)+' only '+Math.round(rest)+' s after the last one.','b');
+      toast('Only '+Math.round(rest)+' seconds since the last pass. He has not recovered — his saturation is still '+Math.round(P.spo2)+'%.','w',5200);}
+    if(P.spo2<92){note('Started a pass with SpO₂ still '+Math.round(P.spo2)+'%.','b');}
+  }
+  if(!E.preOxed||S.t-(E.preOxT||-999)>120){
+    note('Started a pass without pre-oxygenating.','w');
+  }
+  $('#c-pass').hidden=false;
+  $('#c-pass').innerHTML='Pass <b>'+(T.passes+1)+'</b>/3';
+  const pl=$('#passlb'); if(pl)pl.textContent='Pass '+(T.passes+1)+' · in progress';
+}
+function endPass(){
+  if(!SUC.active)return;
+  SUC.active=false; T.passes++; SUC.lastEnd=S.t; SUC._insFlag=false;
+  if(SUC.vacOn)vacOff();
+  const dur=SUC.passVac, y=SUC.passYield;
+  T.totalVac+=dur; T.yieldTotal+=y;
+  if(dur>8)T.longPasses++;
+  if(y<0.5)T.dryPasses++;
+  if(SUC.passBlood)T.bloodPasses++;
+  if(T.bestPass===null||y>T.bestPass)T.bestPass=y;
+
+  const vol=y<1.2?'a small amount of':y<2.6?'a moderate amount of':'a good volume of';
+  const desc=y<0.5
+    ?'<b>Almost nothing comes back.</b> '+(SUC.passMax<(E.measured||7.9)-2.2
+        ?'The tip never got past the nasal passage — the secretions pool in the nasopharynx, behind and below where you stopped.'
+        :E.fr===6?'An 6 Fr catheter is too narrow to move secretions this thick — it is a straw in a milkshake.'
+        :E.vac<80?'The vacuum is set too low to lift secretions of this consistency.'
+        :'You were in the right place but barely applied any suction.')
+    :'You clear '+vol+' <b style="color:#C9B24A">thick yellow-green secretions</b>'
+      +(SUC.passBlood?' <b style="color:var(--crit)">streaked with fresh blood</b>':'')+'.';
+  const box=el('div','fbbox '+(SUC.passBlood?'b':y<0.25?'w':'g'));
+  box.innerHTML='<span class="hd">Pass '+T.passes+' · '+dur.toFixed(1)+' s of vacuum · max depth '
+    +SUC.passMax.toFixed(1)+' cm</span>'+desc
+    +(SUC.passBlood?' Blood means mucosal trauma — from vacuum pressure, from catheter size, or from suctioning on the way in.':'')
+    +' SpO₂ nadir this pass '+Math.round(SUC.passMin||P.spo2)+'%.';
+  const lg=$('#passlog'); if(lg)lg.insertBefore(box,lg.firstChild);
+
+  $('#c-pass').innerHTML='Pass <b>'+T.passes+'</b>/3';
+  if(T.passes>=3){
+    toast('Three passes. Stop and reassess — beyond this you are causing more harm than you are clearing.','w',6500,true);
+  }
+  SUC.passMin=100;
+  if(typeof onPassEnd==='function')onPassEnd();
+}
+/* ---- vacuum ---- */
+function vacOn(){
+  if(!SUC.running||P.vomiting)return;
+  SUC.vacOn=true; P.suction=true;
+  const b=$('#thumbport'); if(b){b.classList.add('on');b.innerHTML='VACUUM APPLIED<small>release to stop</small>';}
+  $('#sucstate').textContent='SUCTION';
+  suckSoundOn(); paintCatheter();
+}
+function vacOff(){
+  if(!SUC.vacOn)return;
+  SUC.vacOn=false; P.suction=false;
+  const b=$('#thumbport'); if(b){b.classList.remove('on');
+    b.innerHTML='HOLD THE THUMB PORT<small>occlude to apply vacuum · or hold SPACE</small>';}
+  $('#sucstate').textContent='IDLE';
+  suckSoundOff(); paintCatheter();
+}
+/* ---- per-frame engine ---- */
+function suctionTick(dt){
+  if(!SUC.running)return;
+  const d=SUC.depth, md=E.measured||7.9, z=zoneOf(d)[2];
+
+  /* gag reflex builds whenever the tip is past the nasopharynx, vacuum or not */
+  if(z>=3){
+    P.gag=Math.min(1,P.gag+dt*(z===4?0.85:0.42));
+    if(!SUC.gagWarned&&P.gag>0.25){
+      SUC.gagWarned=true; T.gagHits++;
+      gagSound(); P.crying=Math.min(1,P.crying+0.5);
+      toast(z===4
+        ?'He retches hard against the catheter. You are past the larynx — this is not nasopharyngeal suction any more.'
+        :'He gags. The tip is in the oropharynx, deeper than the distance you measured.','w',5200);
+      note('Provoked a gag at '+d.toFixed(1)+' cm.','w');
+      animateGag();
+    }
+    /* vagal stimulation from the posterior pharynx and larynx. Depth alone can make him
+       bradycardic but not asystolic — the big vagal hit comes with the vomit itself. */
+    P.vagal=Math.min(0.55,P.vagal+dt*(z===4?0.14:0.05));
+    /* the vomiting clock. An unvented PEG with feed sitting in the stomach is the
+       difference between a retch and a mouthful of milk: roughly four seconds of grace
+       at the larynx with the feed running, against about fifteen with it vented. */
+    const peg=E.pegVented?0.42:1.55;
+    SUC.vomitRisk+=dt*(z===4?0.10:0.025)*peg*(1+P.gag*0.6);
+    if(SUC.vomitRisk>=1&&!P.vomiting&&!P.vomited)doVomit();
+  }else{
+    SUC.vomitRisk=Math.max(0,SUC.vomitRisk-dt*0.12);
+  }
+  if(z===4&&d>md+4.5){
+    if(!SUC._trachFlag){SUC._trachFlag=true;
+      critical('Advanced the catheter into the trachea during nasopharyngeal suction.');
+      note('Catheter entered the trachea at '+d.toFixed(1)+' cm.','b');
+      P.vagal=Math.min(1,P.vagal+0.45); P.bronchospasm=Math.min(2,P.bronchospasm+1.1);
+      toast('The catheter has gone through the cords. He is coughing, bradycardic and bronchospastic — this is a tracheal suction you did not intend and did not prepare for.','b',7000,true);
+    }
+  }
+
+  if(SUC.vacOn){
+    SUC.passVac+=dt; T.totalVac+=0;
+    SUC.passMin=Math.min(SUC.passMin===undefined?100:SUC.passMin,P.spo2);
+
+    /* --- yield ---
+       Below the threshold the catheter is simply not where the secretions are, or
+       cannot move them: nothing appears in the tubing and nothing reaches the trap.
+       Volume and visible sputum are driven off the same number so the trap can never
+       fill while the catheter looks empty. */
+    const yf=yieldFactor();
+    const eff=yf>0.12?yf:0;
+    const ml=eff*1.35*dt;
+    SUC.passYield+=ml; SUC.canML+=ml;
+    P.secretions=Math.max(18,P.secretions-ml*11);
+    suckSoundYield(clamp(eff,0,1));
+    if(eff>0){
+      SUC.sinceYield+=dt;
+      if(SUC.sinceYield>0.30){SUC.sinceYield=0;spawnBolus(eff);}
+    }
+    /* --- trauma --- */
+    let tr=0;
+    if(E.vac>150)tr=0.085; else if(E.vac>120)tr=0.028; else if(E.vac>100)tr=0.006;
+    if(E.fr===10)tr*=1.7;
+    if(z===1)tr*=1.35;                       // vacuum against bare nasal mucosa
+    P.bleeding=Math.min(1,P.bleeding+tr*dt*3.2);
+    if(P.bleeding>0.34&&!SUC.passBlood){
+      SUC.passBlood=true;
+      $('#nosebleed').setAttribute('opacity','.9');
+      toast('Fresh blood in the catheter. '+(E.vac>150
+        ?'Your vacuum is set at '+E.vac+' mmHg — that is adult pressure in a 4-year-old\'s nose.'
+        :'The mucosa is stripping.'),'b',6000);
+      note('Blood-streaked secretions — mucosal trauma.','b');
+      critical('Caused mucosal trauma with blood-streaked secretions.');
+    }
+    /* --- duration --- */
+    if(SUC.passVac>5&&!SUC.warned5){
+      SUC.warned5=true;
+      toast('<b>Five seconds.</b> Come out. In a child this size the saturation is already falling — the probe just has not caught up yet.','w',5000);
+    }
+    if(SUC.passVac>8&&!SUC.warned8){
+      SUC.warned8=true;
+      note('Applied vacuum for more than 8 s in a single pass.','b');
+      critical('Single suction pass longer than 8 seconds.');
+      toast('Over eight seconds of continuous vacuum. Take the catheter out.','b',5500,true);
+    }
+  }else{
+    suckSoundYield(0);
+  }
+  advanceBoluses(dt);
+  paintCanister();
+}
+/* ---- sputum boluses ---- */
+function spawnBolus(str){
+  SUC.boluses.push({stage:0, s:SUC.depth*UPC, r:2.2+Math.random()*1.9+str*1.5,
+                    blood:SUC.passBlood, w:0.7+Math.random()*0.5});
+}
+function advanceBoluses(dt){
+  const sp=250;   // units per second travelling up the tubing
+  for(const b of SUC.boluses){
+    if(b.stage===0){
+      b.s-=sp*dt;
+      if(b.s<=0){b.stage=1;b.s=0;}
+    }else{
+      b.s+=sp*dt*0.9;
+      if(b.s>=TPLEN){b.stage=2;}
+    }
+  }
+  SUC.boluses=SUC.boluses.filter(b=>b.stage<2);
+  if(SUC.boluses.length>90)SUC.boluses.splice(0,SUC.boluses.length-90);
+  drawBoluses();
+}
+function drawBoluses(){
+  let a='',b2='';
+  for(const b of SUC.boluses){
+    const fill=b.blood?'#A34A3C':'#C9B24A';
+    if(b.stage===0){
+      const p=RP.getPointAtLength(clamp(b.s,0,RPLEN));
+      a+=`<ellipse cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" rx="${Math.min(2.3,b.r*b.w).toFixed(1)}"
+           ry="${Math.min(2.6,b.r).toFixed(1)}" fill="${fill}"/>`;
+    }else{
+      const p=TP.getPointAtLength(clamp(b.s,0,TPLEN));
+      b2+=`<ellipse cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" rx="${(b.r*1.25).toFixed(1)}"
+           ry="${(b.r*0.95).toFixed(1)}" fill="${fill}" opacity=".95"/>`;
+    }
+  }
+  $('#cathSpu').innerHTML=a; $('#tubeSpu').innerHTML=b2;
+}
+function paintCanister(){
+  const pct=clamp(SUC.canML/12*100,0,100);
+  const f=$('#canfill'); if(!f)return;
+  f.style.height=pct+'%';
+  f.classList.toggle('blood',T.bloodPasses>0||SUC.passBlood);
+  $('#canml').textContent=SUC.canML.toFixed(1);
+}
+
+/* =====================================================================
+   EVENTS: gag, vomit
+   ===================================================================== */
+let headBase=0;                     // degrees; non-zero once he has been turned
+function animateGag(){
+  const h=$('#headG'); if(!h)return;
+  h.style.transition='transform .12s'; let n=0;
+  h.style.transformOrigin='466px 150px';
+  const iv=setInterval(()=>{
+    h.style.transform=`rotate(${headBase+(n%2?-2.5:2.5)}deg)`;
+    if(++n>5){clearInterval(iv);h.style.transform=`rotate(${headBase}deg)`;}
+  },110);
+  const m=$('#mouth');
+  if(m){m.setAttribute('d','M 452 152 C 460 166, 474 166, 480 152');
+    setTimeout(()=>m.setAttribute('d','M 454 154 C 460 158, 472 158, 478 154'),900);}
+}
+/* turning him head-down on his side is the intervention that actually protects
+   the airway, so it is worth seeing it happen */
+function turnHead(){
+  const h=$('#headG'); if(!h)return;
+  headBase=-30;
+  h.style.transition='transform .7s cubic-bezier(.3,.8,.3,1)';
+  h.style.transformOrigin='466px 150px';
+  h.style.transform='rotate(-30deg)';
+  const v=$('#vomitG');
+  if(v){v.style.transition='transform .7s cubic-bezier(.3,.8,.3,1)';
+    v.style.transformOrigin='466px 150px'; v.style.transform='rotate(-14deg) translate(-10px,10px)';}
+  note('Turned him side-lying, head down.','g');
+}
+function doVomit(){
+  P.vomiting=true; P.vomited=true; T.vomitEvents++;
+  vacOff();
+  P.vagal=Math.min(1,P.vagal+0.5); P.crying=1;
+  vomitSound();
+  critical('Provoked vomiting of undigested feed with the catheter too deep.');
+  note('VOMITED undigested milk feed at a catheter depth of '+SUC.depth.toFixed(1)+' cm.','b');
+  award('tech',0,4,'Kept the catheter shallow enough not to provoke vomiting','b');
+
+  /* the mouth opens and undigested feed pours out onto the pillow */
+  const g=$('#vomitG');
+  g.innerHTML=`
+    <path d="M 452 150 C 458 174, 476 174, 482 150 C 476 146, 458 146, 452 150 Z" fill="#4A211E"/>
+    <g stroke="#B9A886" stroke-width="1.6">
+      <path d="M 456 164 C 448 188, 428 208, 404 218 C 382 226, 366 224, 360 212
+               C 354 198, 368 186, 390 178 C 414 168, 440 162, 456 164 Z" fill="#E9DFC8"/>
+      <path d="M 470 166 C 476 190, 494 210, 516 218 C 536 224, 550 220, 552 208
+               C 554 194, 538 184, 516 178 C 496 170, 480 164, 470 166 Z" fill="#E2D7BE"/>
+    </g>
+    <g fill="#F6F1E4" opacity=".92">
+      <ellipse cx="394" cy="208" rx="16" ry="9"/><ellipse cx="524" cy="206" rx="14" ry="8"/>
+    </g>
+    <g fill="#CFBF9C">
+      <ellipse cx="424" cy="196" rx="7" ry="4.5"/><ellipse cx="500" cy="194" rx="6" ry="4"/>
+      <ellipse cx="378" cy="212" rx="5" ry="3.4"/><ellipse cx="538" cy="210" rx="4.5" ry="3"/>
+      <ellipse cx="446" cy="180" rx="4" ry="2.8"/><ellipse cx="486" cy="178" rx="3.6" ry="2.6"/>
+    </g>`;
+  g.setAttribute('opacity','0');
+  let o=0; const iv=setInterval(()=>{o+=0.12;g.setAttribute('opacity',Math.min(1,o));
+    if(o>=1)clearInterval(iv);},40);
+  animateGag();
+  /* the feed disappears from the stomach */
+  $('#feedG').setAttribute('opacity','.15');
+
+  openCrisis();
+  setTimeout(()=>{P.vomiting=false;},9000);
+}
+
+/* the timed airway-protection decision */
+function openCrisis(){
+  const m=$('#crisis'); if(!m)return;
+  S.crisisDone=true;
+  $('#cr-eb').textContent='Airway emergency';
+  $('#cr-t').textContent='He has vomited undigested milk feed';
+  $('#cr-p').innerHTML='He is supine, gagging, with feed in his mouth and pharynx. '
+    +'The saturation is falling and he cannot clear it himself. <b>You have seconds.</b>';
+  const opts=[
+    {t:'Turn him onto his side head-down, remove the catheter, and suction the <b>oropharynx</b> under direct vision',
+     good:true, sc:4,
+     fb:'Correct, and in that order. Gravity does more than the catheter: side-lying with a head-down tilt takes the feed away from the larynx. Only then do you clear the mouth — under vision, not blindly, and not with the nasopharyngeal catheter you have just contaminated.'},
+    {t:'Keep him supine and suction the mouth immediately — speed matters most',
+     good:false, sc:0,
+     fb:'Supine is exactly the position that lets gastric contents run into the larynx. You are suctioning one end while gravity feeds the other. Turn him first; it takes a second and it is the intervention that actually protects the airway.',
+     crit:'Left the child supine during active vomiting.'},
+    {t:'Increase the oxygen to 100% and continue the suction pass — he needs the secretions out',
+     good:false, sc:0,
+     fb:'Oxygen does not protect an airway that is being soiled, and continuing the pass is what caused this. Stop, position, clear.',
+     crit:'Continued suctioning through an active vomit.'},
+    {t:'Stop, stand back and call for the nurse before touching him',
+     good:false, sc:1,
+     fb:'Call for help by all means — but shout for it while you are turning him. A child aspirating is not a situation where you wait for someone else to arrive before acting.'}
+  ];
+  const box=$('#cr-o'); box.innerHTML='';
+  let done=false, left=20;
+  const cd=$('#cr-cd'); cd.textContent='0:20';
+  const iv=setInterval(()=>{
+    left--; cd.textContent='0:'+String(Math.max(0,left)).padStart(2,'0');
+    if(left<=0&&!done){finish(null);}
+  },1000);
+  function finish(o){
+    if(done)return; done=true; clearInterval(iv);
+    if(o&&o.good){
+      award('tech',o.sc,4,'Positioned him side-lying head-down and cleared the oropharynx','g');
+      P.sao2=Math.min(100,P.sao2+3);
+      turnHead();
+    }else if(o){
+      award('tech',o.sc,4,'Managed the vomit: '+plain(o.t).slice(0,54)+'…',o.sc?'w':'b');
+      if(o.crit)critical(o.crit);
+      P.sao2-=4;
+    }else{
+      award('tech',0,4,'Did not act while he was vomiting','b');
+      critical('Froze during an active vomit — no airway protection.');
+      P.sao2-=7;
+    }
+    box.querySelectorAll('.opt').forEach((b,i)=>{
+      b.disabled=true; b.classList.add('rv');
+      if(opts[i].good)b.classList.add('good');
+      else if(o===opts[i])b.classList.add('bad');
+    });
+    setTimeout(()=>{m.classList.remove('on');},o?2600:1800);
+    if(o)toast(o.fb,o.good?'g':'b',9000,true);
+  }
+  opts.forEach((o,i)=>{
+    const b=el('button','opt');
+    b.innerHTML='<span class="ltr">'+'ABCD'[i]+'</span><span class="tx">'+o.t
+      +'<span class="fb">'+o.fb+'</span></span>';
+    b.onclick=()=>{if(done)return;b.classList.add(o.good?'good':'bad');finish(o);};
+    box.appendChild(b);
+  });
+  m.classList.add('on');
+}
+
+/* =====================================================================
+   SCENE ANIMATION
+   ===================================================================== */
+let breathPh=0, blinkT=0;
+function sceneFrame(dt,ts){
+  const cg=$('#chestG'); if(!cg)return;
+  breathPh+=dt*(P.rr/60)*Math.PI*2;
+  const amp=(P.suction?0.004:0.012)*clamp(P.rr/40,0.6,1.6);
+  cg.setAttribute('transform',`translate(466,258) scale(${1+Math.sin(breathPh)*amp}) translate(-466,-258)`);
+  /* pulse oximeter LED */
+  const led=$('#probeLed');
+  if(led)led.setAttribute('opacity',(0.45+0.45*Math.abs(Math.sin(M.pulse*Math.PI))).toFixed(2));
+  /* blink */
+  blinkT-=dt;
+  if(blinkT<=0){
+    blinkT=2.4+Math.random()*3.4;
+    const e=$('#eyesG'); if(e){e.style.transform='scaleY(.12)';e.style.transformOrigin='466px 116px';
+      e.style.transition='transform .09s'; setTimeout(()=>{e.style.transform='';},110);}
+  }
+  /* cyanosis wash as he desaturates */
+  const cy=clamp((92-P.spo2)/16,0,1);
+  const m=$('#mouth');
+  if(m)m.setAttribute('stroke',cy>0.05?`rgb(${Math.round(142-60*cy)},${Math.round(74-10*cy)},${Math.round(68+60*cy)})`:'#8E4A44');
+  const hg=$('#headG');
+  if(hg)hg.style.filter=cy>0.05?`saturate(${1-0.25*cy}) hue-rotate(${-14*cy}deg)`:'';
+}
+/* =====================================================================
+   FLOATING PANELS
+   ===================================================================== */
+function makeDraggable(p){
+  const h=$('.fp-h',p); if(!h)return; let st=null;
+  h.addEventListener('pointerdown',e=>{
+    if(e.target.closest('.fp-x'))return;
+    const r=p.getBoundingClientRect();
+    st={dx:e.clientX-r.left,dy:e.clientY-r.top};
+    p.style.left=r.left+'px'; p.style.top=r.top+'px';
+    p.style.right='auto'; p.style.bottom='auto';
+    p.classList.add('drag');
+    try{h.setPointerCapture(e.pointerId);}catch(err){}
+  });
+  h.addEventListener('pointermove',e=>{
+    if(!st)return;
+    p.style.left=clamp(e.clientX-st.dx,-40,window.innerWidth-90)+'px';
+    p.style.top =clamp(e.clientY-st.dy,0,window.innerHeight-40)+'px';
+  });
+  const end=()=>{st=null;p.classList.remove('drag');};
+  h.addEventListener('pointerup',end); h.addEventListener('pointercancel',end);
+}
+function drawGauge(){
+  const g=$('#gsvg'); if(!g)return;
+  const v=E.vac, a0=-210, a1=30, f=clamp((v-40)/(220-40),0,1);
+  const ang=a0+(a1-a0)*f, rad=ang*Math.PI/180;
+  const arc=(from,to,col,w)=>{
+    const r=38, cx=50, cy=52;
+    const p0=[cx+r*Math.cos(from*Math.PI/180), cy+r*Math.sin(from*Math.PI/180)];
+    const p1=[cx+r*Math.cos(to*Math.PI/180),   cy+r*Math.sin(to*Math.PI/180)];
+    const la=Math.abs(to-from)>180?1:0;
+    return `<path d="M ${p0[0].toFixed(1)} ${p0[1].toFixed(1)} A ${r} ${r} 0 ${la} 1 ${p1[0].toFixed(1)} ${p1[1].toFixed(1)}"
+            fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="butt"/>`;
+  };
+  const at=v0=>a0+(a1-a0)*clamp((v0-40)/180,0,1);
+  /* a plain faceplate — gradations only. No coloured "correct" band, or the dial
+     would hand the learner the answer the adjuster deliberately withholds. */
+  let ticks='';
+  for(let v0=40;v0<=220;v0+=20){
+    const t=at(v0)*Math.PI/180, maj=v0%60===40;
+    const r0=maj?31:34, r1=38;
+    ticks+=`<line x1="${(50+r0*Math.cos(t)).toFixed(1)}" y1="${(52+r0*Math.sin(t)).toFixed(1)}"
+      x2="${(50+r1*Math.cos(t)).toFixed(1)}" y2="${(52+r1*Math.sin(t)).toFixed(1)}"
+      stroke="${maj?'#8496A8':'#3A4A5A'}" stroke-width="${maj?1.6:1}"/>`;
+  }
+  g.innerHTML=
+     arc(a0,a1,'#2C3B4B',6)
+    +ticks
+    +`<line x1="50" y1="52" x2="${(50+33*Math.cos(rad)).toFixed(1)}" y2="${(52+33*Math.sin(rad)).toFixed(1)}"
+       stroke="#E6EDF3" stroke-width="2.4" stroke-linecap="round"/>`
+    +`<circle cx="50" cy="52" r="4" fill="#E6EDF3"/>`;
+  const rd=$('#grd');
+  rd.textContent=v+' mmHg';
+  rd.className='rd';
+}
+
+/* =====================================================================
+   OVERLAY / STATION MACHINERY
+   ===================================================================== */
+const STEPS=[
+  {id:'handover',label:'Handover', sub:'Ward 8B',        title:'Take the handover',       render:stHandover},
+  {id:'assess',  label:'Assess',   sub:'At the cot',     title:'Assess before you touch', render:stAssess},
+  {id:'prep',    label:'Prepare',  sub:'Set-up',         title:'Prepare and measure',     render:stPrep},
+  {id:'suction', label:'Suction',  sub:'The technique',  title:'Nasopharyngeal suction',  render:stSuction},
+  {id:'after',   label:'Reassess', sub:'Did it work?',   title:'Evaluate the treatment',  render:stAfter},
+  {id:'debrief', label:'Debrief',  sub:'Scored',         title:'Debrief',                 render:stDebrief}
+];
+/* size: 'wide' for the debrief, 'narrow' for the suction station so the anatomy
+   stays on screen next to the thumb port, anything else for the default panel */
+const ovSize=id=>id==='debrief'?'wide':id==='suction'?'narrow':'';
+function openOverlay(size){
+  document.body.classList.add('ovopen');
+  document.body.classList.toggle('ovwide',size==='wide');
+  document.body.classList.toggle('ovnarrow',size==='narrow');
+  $('#ov').classList.add('on');
+  $('#ov').classList.toggle('wide',size==='wide');
+  $('#ov').classList.toggle('narrow',size==='narrow');
+  $('#ovtab').classList.remove('on');
+  setTimeout(fitCanvas,400);
+}
+function closeOverlay(){
+  document.body.classList.remove('ovopen','ovwide','ovnarrow');
+  $('#ov').classList.remove('on','wide','narrow');
+  $('#ovtab').classList.add('on');
+  setTimeout(fitCanvas,400);
+}
+/* Each station is rendered once and its DOM kept. Walking back through the dock
+   re-attaches that same pane, so a completed station is a record of what you did
+   rather than a fresh, re-answerable — and re-scorable — copy of itself. */
+const PANES=[];
+function goStep(i){
+  if(i>=STEPS.length)return;
+  S.step=i; const st=STEPS[i];
+  $('#ov-eb').textContent='Station '+(i+1)+' of '+STEPS.length+' · '+st.sub;
+  $('#ov-t').textContent=st.title;
+  const b=$('#ov-b'); b.innerHTML='';
+  const first=!PANES[i];
+  if(first){PANES[i]=el('div','pane');}
+  b.appendChild(PANES[i]);
+  /* the engine only re-arms if this is the suction station AND the treatment
+     has not already been ended and scored */
+  SUC.running=(st.id==='suction'&&!SUC.ended);
+  $('#fp-suc').hidden=(i<2);
+  $('#zoneG').setAttribute('opacity',(coach()&&(st.id==='suction'||st.id==='prep'))?'1':'0');
+  $('#dragHint').setAttribute('opacity',SUC.running?'1':'0');
+  if(first)st.render(PANES[i]);
+  openOverlay(ovSize(st.id));
+  if(st.id==='suction')drawGauge();
+  paintRail(); buildDock();
+  b.scrollTop=0;
+}
+function nextStep(){goStep(S.step+1);}
+function paintRail(){
+  $('#rail').innerHTML=STEPS.map((s,i)=>
+    `<div class="rstep ${i<S.step?'done':i===S.step?'now':''}">${s.label}</div>`).join('');
+}
+const ICONS={
+  handover:'<path d="M4 5h16v11H8l-4 4z"/>',
+  assess:'<path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/>',
+  prep:'<path d="M3 7h13l5 5-5 5H3z"/><path d="M8 12h6"/>',
+  suction:'<path d="M12 3v10"/><path d="M8.5 9.5 12 13l3.5-3.5"/><rect x="5" y="16" width="14" height="5" rx="1.6"/>',
+  after:'<path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 4v5h-5"/>',
+  debrief:'<path d="M6 3h9l5 5v13H6z"/><path d="M15 3v5h5"/><path d="M9 13h7M9 17h5"/>'
+};
+function buildDock(){
+  const d=$('#dock'); d.innerHTML='';
+  const g=el('div','dgrp');
+  STEPS.forEach((s,i)=>{
+    const b=el('button','dbtn'+(i<S.step?' done':i===S.step?' now':''));
+    b.innerHTML=`<span class="ic"><svg viewBox="0 0 24 24">${ICONS[s.id]}</svg></span>
+                 <span class="lb">${s.label}</span>`;
+    b.disabled=i>S.step;
+    b.onclick=()=>{if(i<=S.step)goStep(i);};
+    g.appendChild(b);
+  });
+  d.appendChild(g);
+}
+function card(host,eyebrow,title,sub){
+  const c=el('div','card'), h=el('div','card-h'), b=el('div','card-b');
+  if(title)h.innerHTML=`<h2>${title}</h2>`;
+  c.appendChild(h); c.appendChild(b); host.appendChild(c);
+  if(sub){const p=el('p','lede',sub); b.appendChild(p);}
+  return b;
+}
+function nextBtn(host,label,fn){
+  const a=el('div','actions'), b=el('button','btn pri',label);
+  b.onclick=()=>{b.disabled=true;(fn||nextStep)();};
+  a.appendChild(b); host.appendChild(a); return b;
+}
+function shuffled(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}return x;}
+
+/* single-best-answer */
+function mcq(host,cfg){
+  const wrap=el('div'); host.appendChild(wrap);
+  wrap.appendChild(el('p','lede',cfg.q));
+  const box=el('div','opts'); wrap.appendChild(box);
+  const opts=shuffled(cfg.opts);
+  let done=false;
+  opts.forEach((o,i)=>{
+    const b=el('button','opt');
+    b.innerHTML=`<span class="ltr">${'ABCDE'[i]}</span><span class="tx">${o.t}
+      <span class="fb">${o.fb}</span></span>`;
+    b.onclick=()=>{
+      if(done)return; done=true;
+      box.querySelectorAll('.opt').forEach((x,j)=>{
+        x.disabled=true; x.classList.add('rv');
+        if(opts[j].p===cfg.max)x.classList.add('good');
+        else if(opts[j]===o)x.classList.add('bad');
+      });
+      award(cfg.dom,o.p,cfg.max,cfg.log,o.p===cfg.max?'g':o.p>0?'w':'b');
+      if(o.crit)critical(o.crit);
+      if(cfg.after)cfg.after(o);
+      nextBtn(wrap,cfg.next||'Continue',cfg.go);
+    };
+    box.appendChild(b);
+  });
+}
+/* select-all-that-apply */
+function multi(host,cfg){
+  const wrap=el('div'); host.appendChild(wrap);
+  wrap.appendChild(el('p','lede',cfg.q));
+  const box=el('div','opts'); wrap.appendChild(box);
+  const opts=shuffled(cfg.opts);
+  const sel=new Set();
+  opts.forEach((o,i)=>{
+    const b=el('button','opt');
+    b.innerHTML=`<span class="ltr">${'ABCDEFGH'[i]}</span><span class="tx">${o.t}
+      <span class="fb">${o.fb}</span></span>`;
+    b.setAttribute('aria-pressed','false');
+    b.onclick=()=>{
+      if(b.disabled)return;
+      const on=b.getAttribute('aria-pressed')==='true';
+      b.setAttribute('aria-pressed',String(!on));
+      if(on)sel.delete(o); else sel.add(o);
+    };
+    box.appendChild(b);
+  });
+  const act=el('div','actions');
+  const go=el('button','btn pri',cfg.cta||'Confirm');
+  act.appendChild(go); wrap.appendChild(act);
+  go.onclick=()=>{
+    go.disabled=true;
+    let got=0;
+    opts.forEach((o,j)=>{
+      const b=box.children[j];
+      b.disabled=true; b.classList.add('rv');
+      if(o.good){ if(sel.has(o)){b.classList.add('good');got+=o.w||1;} else b.classList.add('miss'); }
+      else if(sel.has(o)){ b.classList.add('bad'); got-=o.pen||0; if(o.crit)critical(o.crit); }
+    });
+    const max=opts.reduce((n,o)=>n+(o.good?(o.w||1):0),0);
+    award(cfg.dom,clamp(got,0,max),max,cfg.log);
+    if(cfg.after)cfg.after(sel);
+    nextBtn(wrap,cfg.next||'Continue',cfg.go);
+  };
+}
+
+/* =====================================================================
+   STATION 1 · HANDOVER
+   ===================================================================== */
+function stHandover(host){
+  const b=card(host,'','',
+    'Ward 8B, 09:40. The night nurse hands over before you go in. He is in a cubicle on '
+    +'droplet and contact precautions.');
+  const s=el('div','sbar');
+  s.innerHTML=`
+   <div class="sb"><dt>Situation</dt><dd><b>4-year-old boy, 12.4 kg.</b> Day 2 of admission with fever
+     and desaturation. Nasopharyngeal aspirate is positive for <b>human metapneumovirus</b>.
+     He is on 1 L/min nasal prongs, saturating 92%, and the nurses are suctioning his nose
+     roughly every two hours. They have asked you to review and to teach the mother.</dd></div>
+   <div class="sb"><dt>Background</dt><dd>Ex-<b>25 week</b> preterm. <b>Bronchopulmonary dysplasia</b> —
+     home oxygen until age two, baseline saturation 90–92% in air. <b>Spastic quadriplegic cerebral
+     palsy, GMFCS V</b> — no independent sitting, no head control, no functional cough.
+     Global developmental delay, non-verbal but responds to his mother's voice.
+     <b>PEG fed</b> since age two for unsafe swallow; known silent aspiration on videofluoroscopy.
+     Two previous PICU admissions with RSV and with influenza A.</dd></div>
+   <div class="sb"><dt>Assessment</dt><dd>Febrile 38.4 °C, HR 138, RR 42 with subcostal and
+     intercostal recession. Audible upper-airway rattle you can hear from the door.
+     Chest: widespread coarse crackles and expiratory wheeze, worse on the right.
+     <b>Continuous PEG feed is running and was last checked 40 minutes ago.</b>
+     He is irritable and cries with handling. Mother is at the bedside.</dd></div>
+   <div class="sb"><dt>Recommendation</dt><dd>"He sounds full of it. Can you suction him and show
+     mum how to do it at home?"</dd></div>`;
+  b.appendChild(s);
+
+  mcq(b,{dom:'clin',max:3,log:'Decided what the rattle actually represents',
+    q:'You can hear the rattle from the doorway. Before you reach for a catheter — what is the single most important thing that noise tells you, and what does it not tell you?',
+    opts:[
+      {t:'It is <b>transmitted upper-airway noise</b>. It tells me there are secretions I may be able to reach in the nose and pharynx — it tells me nothing about what is happening in his lower airways.',p:3,
+       fb:'Exactly right, and this distinction governs the whole treatment. A palpable, audible rattle at the mouth and nose is upper-airway secretion — a nasopharyngeal catheter can reach it. The bronchiolitic crackles and wheeze of hMPV are in airways no catheter will ever see. If you do not separate the two before you start, you will keep passing the catheter deeper and deeper chasing a noise that was never going to move.'},
+      {t:'It means his lower airways are full of secretions and he needs deep suction to the trachea',p:0,
+       fb:'No — and this is the reasoning that leads to the harm this station is about. hMPV is a bronchiolitis: the pathology is small-airway inflammation, oedema and mucus plugging at a level no suction catheter reaches. Deep suctioning a child with unsafe swallow and a running PEG feed to chase that noise is how you cause the vomit.',
+       crit:'Believed the rattle indicated a need for deep tracheal suction.'},
+      {t:'It means he is about to arrest and needs urgent airway clearance before anything else',p:0,
+       fb:'A rattle is a common, chronic finding in a child with GMFCS V cerebral palsy — many of these children rattle at baseline. Urgency is set by his work of breathing, saturation and mental state, not by the noise.'},
+      {t:'It confirms he has aspirated his feed and the PEG should be stopped permanently',p:1,
+       fb:'He does silently aspirate, and the feed does matter — but a rattle alone does not diagnose an acute aspiration, and stopping enteral feeding permanently is not your call from the doorway. Holding the feed around the treatment, however, is very much your call.'}
+    ]});
+}
+
+/* =====================================================================
+   STATION 2 · ASSESSMENT (with auscultation)
+   ===================================================================== */
+function stAssess(host){
+  const b=card(host,'','',
+    'He is supine, head slightly to the right, eyes open, working hard. Mother is holding his hand. '
+    +'Assess before you decide anything.');
+  auscBlock(b);
+}
+/* --- synthesised chest sounds --- */
+function lungBuffer(kind){
+  const c=actx(); if(!c)return null;
+  const sr=c.sampleRate, cyc=1.45, sec=cyc*2.2, n=Math.floor(sr*sec);
+  const buf=c.createBuffer(1,n,sr), d=buf.getChannelData(0);
+  let lp=0,bp=0;
+  const svf=(x,f,q)=>{const F=2*Math.sin(Math.PI*Math.min(f,sr*0.45)/sr),Q=1/q;
+    const hp=x-lp-Q*bp; bp+=F*hp; lp+=F*bp; return {lp,bp,hp};};
+  for(let i=0;i<n;i++){
+    const t=(i/sr)%cyc, ph=t/cyc;
+    const insp=ph<0.42?Math.sin(ph/0.42*Math.PI):0;
+    const exp =ph>=0.42?Math.sin((ph-0.42)/0.58*Math.PI):0;
+    let env=insp*1.0+exp*0.55, x=(Math.random()*2-1);
+    let f=380, q=0.7, g=0.10;
+    if(kind==='rattle'){ f=180+120*env; q=1.5; g=0.30; }
+    if(kind==='crackle'){ f=520; q=0.9; g=0.11; }
+    if(kind==='wheeze'){ f=420; q=0.8; g=0.09; }
+    const o=svf(x,f,q);
+    let v=(kind==='crackle'?o.bp:o.lp)*env*g;
+    if(kind==='rattle'){
+      /* the coarse, low, position-dependent gurgle of secretion in a big airway */
+      v+=Math.sin(i/sr*2*Math.PI*(52+18*Math.sin(i/sr*3.1)))*env*0.06;
+    }
+    if(kind==='wheeze'&&exp>0.1){
+      v+=Math.sin(i/sr*2*Math.PI*(330+40*Math.sin(i/sr*1.7)))*exp*0.055;
+    }
+    d[i]=clamp(v,-1,1);
+  }
+  /* crackles: sharp discontinuous pops through inspiration */
+  if(kind==='crackle'||kind==='rattle'){
+    const count=kind==='rattle'?26:34;
+    for(let k=0;k<count;k++){
+      const cy=Math.floor(Math.random()*2), base=cy*cyc;
+      const at=base+(0.10+Math.random()*0.32)*cyc;
+      const st=Math.floor(at*sr), len=Math.floor(sr*(kind==='rattle'?0.010:0.0045));
+      const amp=(kind==='rattle'?0.55:0.34)*(0.5+Math.random()*0.6);
+      for(let i=0;i<len&&st+i<n;i++){
+        d[st+i]+=Math.sin(i/len*Math.PI*(kind==='rattle'?4:9))*Math.exp(-i/len*3.2)*amp;
+      }
+    }
+  }
+  return buf;
+}
+function playLung(kind){
+  const c=actx(); if(!c||!S.sound)return null;
+  const b=lungBuffer(kind); if(!b)return null;
+  const src=c.createBufferSource(); src.buffer=b; src.loop=true;
+  const g=c.createGain(); g.gain.value=0.9;
+  src.connect(g); g.connect(c.destination); src.start();
+  return src;
+}
+let auscSrc=null;
+function stopLung(){if(auscSrc){try{auscSrc.stop();}catch(e){}auscSrc=null;}}
+
+const ZONES=[
+  {id:'nose', x:100,y:26, lb:'Nose / mouth', kind:'rattle',
+   f:'A loud, coarse, low-pitched <b>rattle</b> that changes character between breaths and with head position. You can feel it through your fingertips on his chest wall. <b>This is the sound a nasopharyngeal catheter can remove.</b>'},
+  {id:'ul', x:66,y:88, lb:'Upper L', kind:'wheeze',
+   f:'Air entry present. Widespread <b>expiratory wheeze</b> with a prolonged expiratory phase. This is small-airway narrowing from the viral bronchiolitis — inflammation and oedema, not secretion you can reach.'},
+  {id:'ur', x:134,y:88, lb:'Upper R', kind:'wheeze',
+   f:'Expiratory wheeze, similar to the left, with transmitted upper-airway noise on top of it. The transmitted component is loudest here because it is closest to the trachea.'},
+  {id:'ll', x:62,y:150, lb:'Lower L', kind:'crackle',
+   f:'Fine and medium <b>inspiratory crackles</b> throughout. Bronchiolitic small-airway disease. No amount of nasopharyngeal suction will change this.'},
+  {id:'lr', x:138,y:150, lb:'Lower R', kind:'crackle',
+   f:'<b>Coarser crackles, more numerous than the left</b>, with reduced air entry at the base. This is his dependent side and his known aspiration side — the right lower lobe. Antibiotics, positioning and time, not a catheter.'}
+];
+function auscBlock(host){
+  const wrap=el('div','ausc'); host.appendChild(wrap);
+  const cw=el('div','chestwrap');
+  cw.innerHTML=`<svg id="chest" viewBox="0 0 200 200">
+    <ellipse cx="100" cy="112" rx="52" ry="66" fill="#1B2730" stroke="#2C3B4B" stroke-width="1.4"/>
+    <path d="M 100 46 C 84 46, 74 56, 74 68 L 126 68 C 126 56, 116 46, 100 46 Z" fill="#1B2730" stroke="#2C3B4B" stroke-width="1.2"/>
+    <circle cx="100" cy="30" r="16" fill="#1B2730" stroke="#2C3B4B" stroke-width="1.2"/>
+    <path d="M 100 68 L 100 150" stroke="#2C3B4B" stroke-width="1.2"/>
+    <g stroke="#22303C" stroke-width="1" fill="none">
+      <path d="M 62 88 C 78 82, 122 82, 138 88"/><path d="M 60 106 C 78 100, 122 100, 140 106"/>
+      <path d="M 60 124 C 78 118, 122 118, 140 124"/><path d="M 64 142 C 80 136, 120 136, 136 142"/>
+    </g>
+    ${ZONES.map(z=>`<g class="apt" data-id="${z.id}">
+      <circle class="hit" cx="${z.x}" cy="${z.y}" r="15"/>
+      <text x="${z.x}" y="${z.y+3}" text-anchor="middle">${z.lb.split(' ')[0]}</text></g>`).join('')}
+    <text x="100" y="192" text-anchor="middle" font-family="${MONO}" font-size="8"
+      fill="#5A6B7C" letter-spacing="1.4">TAP TO LISTEN</text>
+  </svg>`;
+  wrap.appendChild(cw);
+  const right=el('div');
+  right.innerHTML='<p class="lede" style="margin-bottom:10px">Listen at each point. '
+    +'You are deciding one thing: <b>which of these noises can a catheter in his nose actually change?</b></p>';
+  const log=el('div','findlog'); right.appendChild(log); wrap.appendChild(right);
+
+  const heard=new Set();
+  let playing=null;
+  $$('.apt',cw).forEach(g=>{
+    g.onclick=()=>{
+      const id=g.dataset.id, z=ZONES.find(x=>x.id===id);
+      if(playing===id){stopLung();playing=null;g.classList.remove('playing');return;}
+      stopLung(); $$('.apt',cw).forEach(x=>x.classList.remove('playing'));
+      auscSrc=playLung(z.kind); playing=id; g.classList.add('playing','heard');
+      if(!heard.has(id)){
+        heard.add(id);
+        const f=el('div','find');
+        f.innerHTML=`<b class="lb">${z.lb}</b>${z.f}`;
+        log.insertBefore(f,log.firstChild);
+      }
+      if(heard.size===ZONES.length&&!$('#auscnext'))finishAusc();
+    };
+  });
+  const skip=el('div','actions');
+  const sk=el('button','btn ghost sm','I have heard enough');
+  sk.onclick=()=>{finishAusc();sk.disabled=true;};
+  skip.appendChild(sk); host.appendChild(skip);
+
+  function finishAusc(){
+    if($('#auscnext'))return;
+    stopLung();
+    award('clin',heard.size>=4?3:heard.size>=2?2:0,3,
+      'Auscultated '+heard.size+' of 5 zones before treating',heard.size>=4?'g':'w');
+    if(heard.size<4)note('Went ahead having listened to only '+heard.size+' zones.','w');
+    const nx=el('div'); nx.id='auscnext'; host.appendChild(nx);
+    mcq(nx,{dom:'clin',max:3,log:'Set a realistic expectation for what suction will achieve',
+      q:'You are about to suction his nasopharynx. Before you start — what should you expect to have changed when you finish?',
+      opts:[
+        {t:'The <b>rattle and the transmitted upper-airway noise</b> should reduce. The wheeze and the crackles will be unchanged.',p:3,
+         fb:'This is the whole point of the station. Set the expectation before you start, because the expectation is what tells you when to stop. If you expect the crackles to clear, you will keep going — pass after pass, deeper and deeper, on a child who desaturates and vomits. A treatment that achieves exactly what it is capable of achieving is a success, not a partial failure.'},
+        {t:'The chest should sound essentially clear if the suction is done properly',p:0,
+         fb:'It will not, and believing it should is dangerous here. Bronchiolitic crackles and wheeze come from airways a catheter cannot reach. Chasing them is precisely how learners end up at 12 cm with a vomiting child.',
+         crit:'Expected nasopharyngeal suction to clear bronchiolitic crackles and wheeze.'},
+        {t:'The crackles should clear at the right base where they are worst',p:0,
+         fb:'The right base is his aspiration lobe — consolidation and small-airway disease. That is an antibiotic, positioning and time problem. A nasopharyngeal catheter stops in the pharynx, about 20 cm short.'},
+        {t:'His saturation should rise by at least 5% immediately',p:1,
+         fb:'It may rise a little once the upper airway is clear, but suction transiently <i>drops</i> saturation and the recovery takes minutes. Judging success on an immediate 5% jump will push you into repeat passes you do not need.'}
+      ]});
+  }
+}
+
+/* =====================================================================
+   STATION 3 · PREPARE AND MEASURE
+   ===================================================================== */
+let measureMode=false;
+function stPrep(host){
+  const b=card(host,'','',
+    'Everything you decide here changes what happens when the catheter goes in. '
+    +'The trolley is at the bedside.');
+
+  /* --- safety checklist --- */
+  multi(b,{dom:'prep',log:'Prepared the child and the environment before suctioning',
+    cta:'Do these things',
+    q:'<b>Before the catheter is anywhere near him</b> — select everything you will do.',
+    opts:[
+      {t:'Apron, gloves, <b>and eye protection</b> — hMPV is droplet and contact spread, and suctioning generates droplets',good:true,w:2,
+       fb:'Correct, and the eye protection is the bit people skip. Suctioning a coughing, gagging child sprays your face. Gloves and apron alone are not adequate for a droplet-precaution respiratory virus during an aerosol-generating procedure.'},
+      {t:'<b>Stop the continuous PEG feed and vent the gastric tube</b> to decompress his stomach',good:true,w:3,
+       fb:'This is the single most protective thing on this list. A stomach full of running feed plus a catheter provoking a gag equals vomiting and aspiration in a child with a known unsafe swallow. Stopping the feed and venting the PEG lowers intragastric pressure and dramatically reduces what there is to vomit.'},
+      {t:'Position him <b>side-lying</b> with the head of the bed slightly elevated',good:true,w:2,
+       fb:'Right. Side-lying protects the airway if he does vomit, is easier on the spastic tone than forced supine, and improves the mechanics of his dependent lung. Supine is the worst position for a child with an unsafe swallow.'},
+      {t:'Explain to him and to his mother what you are about to do, and ask her to comfort him',good:true,w:1,
+       fb:'He is non-verbal, not unaware. He responds to his mother\'s voice, and a distressed, fighting child desaturates faster and is harder to suction safely. This is also the teaching opportunity the ward asked you for.'},
+      {t:'Check the suction unit works and the tubing is patent <b>before</b> you open the catheter',good:true,w:1,
+       fb:'Standard, and worth the five seconds. Finding a disconnected tube with a catheter already in his nose is not the moment to discover it.'},
+      {t:'Lie him <b>flat and supine</b> and have an assistant hold his arms firmly still',good:false,pen:2,
+       fb:'No. Supine is the aspiration position, and forced restraint in spastic quadriplegia increases tone, increases distress and increases oxygen consumption. Support and comfort, do not pin.',
+       crit:'Chose supine positioning with restraint in a child with unsafe swallow.'},
+      {t:'Give a saline nebuliser first to loosen the secretions',good:false,pen:1,
+       fb:'Nebulised saline before suction has no consistent evidence in viral bronchiolitis, and in a child who silently aspirates it adds fluid to an airway he cannot protect. It also delays the treatment he does need.'},
+      {t:'Pre-oxygenate by increasing the nasal prong flow before the pass',good:true,w:2,
+       fb:'Yes. In a child with BPD and a low baseline reserve, a period of higher oxygen before the pass buys you the seconds the pass will cost. Give it a minute to take effect — it is not instant.'}
+    ],
+    after:(sel)=>{
+      const has=t=>Array.from(sel).some(o=>o.t.indexOf(t)>=0);
+      E.ppe        = has('Apron, gloves');
+      E.pegVented  = has('vent the gastric');
+      E.positioned = has('side-lying');
+      E.explained  = has('Explain to him');
+      if(has('Pre-oxygenate')){
+        E.preOxed=true; E.preOxT=S.t; P.o2lpm=2.5; P.o2res=1;
+        note('Pre-oxygenated: nasal prong flow increased to 2.5 L/min.','g');
+      }
+      if(E.pegVented){
+        $('#pegSyr').setAttribute('opacity','1');
+        $('#pegClamp').setAttribute('fill','#2FE07A');
+        $('#feedG').setAttribute('opacity','.25');
+        note('PEG feed stopped and gastric tube vented.','g');
+      }else{
+        note('Left the continuous PEG feed running.','b');
+      }
+      if(E.positioned)note('Positioned side-lying with head elevated.','g');
+      if(!E.ppe)note('Suctioned a droplet-precaution patient without full PPE.','b');
+    },
+    next:'Choose the equipment', go:()=>equipBlock(host)
+  });
+}
+function equipBlock(host){
+  const b=card(host,'','','Now the equipment. Two numbers and one measurement decide most of what happens next.');
+
+  /* --- catheter --- */
+  b.appendChild(el('p','lede','<b>Choose a suction catheter.</b> He is 4 years old and small for his age.'));
+  const pk=el('div','pick');
+  const cats=[
+    {fr:6, good:false,
+     fb:'Too narrow. A 6 Fr will pass easily and traumatise nothing, but thick tenacious secretions will not move through that lumen — you will do three passes, get almost nothing, and conclude wrongly that there was nothing there.'},
+    {fr:8, good:true,
+     fb:'Correct. 8 Fr is the right calibre for a child of this age: wide enough to move thick secretions, narrow enough that it does not occlude the nasal airway or shear the mucosa. The general rule is that the catheter should occupy no more than about half the diameter of the airway it is entering.'},
+    {fr:10, good:false,
+     fb:'Too large for this child. A 10 Fr in a 4-year-old\'s nose occludes the airway it is passing through, so he cannot entrain air around it, and the larger contact area strips more mucosa. Faster clearance is not worth an obstructed nostril and epistaxis.'},
+    {fr:12, good:false,
+     fb:'This is an adult catheter. It will not pass a 4-year-old\'s nasal passage without force, and forcing it is how you cause a significant bleed.'}
+  ];
+  cats.forEach(c=>{
+    const bt=el('button','pk');
+    bt.innerHTML=`<span class="fr">${c.fr} Fr</span>`;
+    bt.setAttribute('aria-pressed','false');
+    bt.onclick=()=>{
+      if(E.fr)return;
+      E.fr=c.fr;
+      $$('.pk',pk).forEach((x,i)=>{
+        x.disabled=true;
+        if(cats[i].good)x.classList.add('good');
+        else if(cats[i].fr===c.fr)x.classList.add('bad');
+      });
+      award('equip',c.good?3:c.fr===10?1:0,3,'Selected a '+c.fr+' Fr catheter',c.good?'g':'b');
+      if(!c.good&&c.fr>=12)critical('Selected an adult-sized suction catheter for a 4-year-old.');
+      const fb=el('div','fbbox '+(c.good?'g':'b'));
+      fb.innerHTML='<span class="hd">'+c.fr+' Fr</span>'+c.fb;
+      b.insertBefore(fb,pk.nextSibling);
+      note('Catheter: '+c.fr+' Fr.',c.good?'g':'w');
+    };
+    pk.appendChild(bt);
+  });
+  b.appendChild(pk);
+
+  /* --- vacuum ---
+     The gradations, the marker and the slider are all driven off one value→percent
+     function, so the scale can never drift out of step with the number displayed. */
+  const VMIN=40, VMAX=220, VSTEP=5;
+  const vpct=v=>(v-VMIN)/(VMAX-VMIN)*100;
+  let marks='', scale='';
+  for(let v=VMIN;v<=VMAX;v+=10){
+    const maj=(v-VMIN)%40===0;
+    marks+=`<u class="${maj?'maj':''}" style="left:${vpct(v).toFixed(3)}%;height:${maj?13:7}px"></u>`;
+    if(maj)scale+=`<span style="left:${vpct(v).toFixed(3)}%">${v}</span>`;
+  }
+  const vb=el('div','vacset');
+  vb.innerHTML=`<p class="lede" style="margin-top:6px"><b>Set the wall vacuum.</b>
+    The dial has been left at 200 mmHg by whoever used it last.</p>
+    <div class="vacrd"><b id="vacn">200</b><span>mmHg</span></div>
+    <div class="vacbar">${marks}<i id="vacpin"></i></div>
+    <div class="vacscale">${scale}</div>
+    <input type="range" id="vacsl" min="${VMIN}" max="${VMAX}" step="${VSTEP}" value="200"
+      aria-label="Vacuum pressure in millimetres of mercury">`;
+  b.appendChild(vb);
+  E.vac=200;
+  const paintVac=()=>{
+    $('#vacn').textContent=E.vac;
+    $('#vacpin').style.left=vpct(E.vac).toFixed(3)+'%';
+    drawGauge();
+  };
+  $('#vacsl',vb).addEventListener('input',e=>{E.vac=+e.target.value;paintVac();});
+  paintVac();
+
+  /* --- measurement --- */
+  const mb=el('div');
+  mb.innerHTML=`<p class="lede" style="margin-top:6px"><b>Measure how far the catheter may go.</b>
+    On the sagittal view, drag the marker from the tip of his nose to the <b>tragus of his ear</b>.
+    That distance is the depth that reaches the nasopharynx — and it is the depth you must not exceed.</p>`;
+  const ma=el('div','actions');
+  const mbtn=el('button','btn','Start measuring');
+  const skipm=el('button','btn ghost','Skip — I will estimate it');
+  ma.appendChild(mbtn); ma.appendChild(skipm); mb.appendChild(ma);
+  b.appendChild(mb);
+
+  mbtn.onclick=()=>{
+    measureMode=true; mbtn.disabled=true; skipm.disabled=true;
+    $('#caliperG').setAttribute('opacity','1');
+    closeOverlay();
+    toast('Drag the cyan marker on the sagittal view to the tragus of his ear.','i',7000,true);
+    window._onMeasured=(cm,ok)=>{
+      measureMode=false;
+      E.measured=cm; E.measuredOK=ok;
+      buildZones();
+      openOverlay();
+      award('equip',ok?3:1,3,'Measured nose-to-tragus before insertion ('+cm.toFixed(1)+' cm)',ok?'g':'w');
+      const fb=el('div','fbbox '+(ok?'g':'w'));
+      fb.innerHTML='<span class="hd">Measured '+cm.toFixed(1)+' cm</span>'+(ok
+        ?'Good. The nose-to-tragus distance is the standard landmark for nasopharyngeal suction: it reaches the nasopharynx, where the secretions pool, and stops short of the larynx. Mark it on the catheter — most paediatric catheters carry centimetre graduations for exactly this reason. On the anatomy view your target band is now shaded green.'
+        :'Your marker was not on the tragus, so the number you are working from is wrong. Measuring to the wrong landmark is worse than not measuring, because it gives you false confidence about a depth that is not safe. The tragus is the small cartilage flap in front of the ear canal.');
+      mb.appendChild(fb);
+      finishPrep();
+    };
+  };
+  skipm.onclick=()=>{
+    mbtn.disabled=true; skipm.disabled=true;
+    E.measured=7.9; E.measuredOK=false;
+    award('equip',0,3,'Did not measure before insertion','b');
+    note('Went in without measuring nose-to-tragus.','b');
+    critical('Inserted a nasopharyngeal catheter without measuring the depth first.');
+    buildZones();
+    const fb=el('div','fbbox b');
+    fb.innerHTML='<span class="hd">No measurement</span>Estimating is how catheters end up in the larynx. '
+      +'The nose-to-tragus distance takes three seconds and is the only thing standing between nasopharyngeal '
+      +'suction and inadvertent tracheal suction in a child who cannot tell you it hurts. '
+      +'You will go in without a target band on the anatomy view.';
+    mb.appendChild(fb);
+    finishPrep();
+  };
+
+  function finishPrep(){
+    if($('#prepdone'))return;
+    const d=el('div'); d.id='prepdone'; b.appendChild(d);
+    award('equip',E.vac>=80&&E.vac<=120?3:E.vac<=150?1:0,3,
+      'Set the vacuum to '+E.vac+' mmHg',E.vac>=80&&E.vac<=120?'g':'b');
+    if(E.vac>150)critical('Set the vacuum to '+E.vac+' mmHg — adult pressure in a small child.');
+    note('Vacuum set to '+E.vac+' mmHg.',E.vac>=80&&E.vac<=120?'g':'w');
+    const sum=el('div','pnl');
+    sum.innerHTML=`<h3>Ready to suction</h3><div class="pb"><div class="checks">
+      ${ck(E.ppe,'Full PPE including eye protection')}
+      ${ck(E.pegVented,'PEG feed stopped and stomach vented')}
+      ${ck(E.positioned,'Side-lying, head elevated')}
+      ${ck(E.preOxed,'Pre-oxygenated')}
+      ${ck(!!E.fr,'Catheter '+(E.fr||'—')+' Fr')}
+      ${ck(E.vac>=80&&E.vac<=120,'Vacuum '+E.vac+' mmHg')}
+      ${ck(E.measuredOK,'Measured '+(E.measured?E.measured.toFixed(1)+' cm':'—'))}
+    </div></div>`;
+    d.appendChild(sum);
+    if(!E.fr){E.fr=8;note('No catheter chosen — an 8 Fr was handed to you.','w');}
+    nextBtn(d,'Go to the cot',()=>nextStep());
+  }
+  const ck=(on,t)=>`<div class="ck ${on?'on':'bad'}"><i></i><span>${t}</span></div>`;
+}
+
+/* =====================================================================
+   STATION 4 · THE SUCTION PASS
+   ===================================================================== */
+function stSuction(host){
+  SUC.passMin=100;
+  const b=card(host,'','',
+    'He is on the bed in front of you and the anatomy view on the right shows exactly where your '
+    +'catheter tip is. <b>Drag the catheter</b> into his nostril. <b>Hold the thumb port</b> — or the '
+    +'space bar — to apply vacuum, and remember which direction you should be moving when you do.');
+
+  const g=el('div','sucwrap');
+  g.innerHTML=
+     '<div class="pnl"><h3>Catheter tip</h3><div class="pb">'
+    +'<div class="dreads"><span class="big" id="dnum">0.0</span><span class="eyebrow">cm</span>'
+    +'<span class="zone z-out" id="dzone" style="margin-left:auto">Outside the nose</span></div>'
+    +'<div class="hintline" style="margin-top:8px">Measured limit '
+      +(E.measured?E.measured.toFixed(1):'—')+' cm'+(E.measuredOK?'':' (unverified)')+'</div>'
+    +'</div></div>'
+    +'<button id="thumbport">HOLD THE THUMB PORT<small>occlude to apply vacuum · or hold SPACE</small></button>'
+    +'<div class="suctimer"><span class="t" id="stime">0.0s</span>'
+    +'<div class="bar"><i id="sbar"></i><u style="left:50%"></u><u style="left:80%"></u></div>'
+    +'<span class="eyebrow" id="passlb">Pass 0 / 3</span></div>'
+    +'<div class="pnl"><h3>Upper airway secretion load</h3><div class="pb"><div class="secmeter">'
+    +'<div class="secbar"><i id="secb" style="width:100%"></i></div>'
+    +'<div class="eyebrow" id="seclb">Loud rattle · large volume</div></div></div></div>'
+    +'<div class="passlog" id="passlog"></div>'
+    +'<button class="btn pri" id="fin">End the treatment and reassess</button>';
+  b.appendChild(g);
+
+  const tp=$('#thumbport',g);
+  tp.addEventListener('pointerdown',e=>{e.preventDefault();
+    try{tp.setPointerCapture(e.pointerId);}catch(err){} vacOn();});
+  tp.addEventListener('pointerup',vacOff);
+  tp.addEventListener('pointercancel',vacOff);
+  tp.addEventListener('pointerleave',vacOff);
+  $('#fin',g).onclick=()=>{
+    if(SUC.ended)return;                       // a second click must not score again
+    if(T.passes===0&&!confirmNoPass())return;
+    endSuction();
+  };
+  function confirmNoPass(){
+    toast('You have not completed a pass yet. Drag the catheter into his nostril first.','w',4200,true);
+    return false;
+  }
+  window._sucUI=true;
+  toast('Drag the catheter on the anatomy view. Hold the thumb port only on the way <b>out</b>.','i',6500,true);
+}
+function onPassEnd(){
+  const sb=$('#secb'); if(sb)sb.style.width=P.secretions+'%';
+  const sl=$('#seclb');
+  if(sl)sl.textContent=P.secretions>80?'Loud rattle · large volume'
+    :P.secretions>55?'Rattle reduced · moderate volume'
+    :P.secretions>35?'Much quieter · small volume left'
+    :'Upper airway essentially clear';
+  $('#passlb') && ($('#passlb').textContent='Pass '+T.passes+' / 3');
+}
+function endSuction(){
+  if(SUC.ended)return;
+  SUC.ended=true; SUC.running=false; vacOff(); setDepth(0);
+  window._sucUI=false;
+  /* freeze the controls so the cached pane reads as a record of the treatment */
+  const tp=$('#thumbport'), fin=$('#fin');
+  if(tp){tp.disabled=true;tp.innerHTML='TREATMENT ENDED<small>this pass is scored</small>';}
+  if(fin){fin.disabled=true;fin.textContent='Treatment ended';}
+  scoreTechnique();
+  goStep(S.step+1);
+}
+function scoreTechnique(){
+  const md=E.measured||7.9;
+  /* depth control */
+  let dg,dt;
+  if(T.maxDepth>md+2.8){dg=0;dt='Went to '+T.maxDepth.toFixed(1)+' cm — past the larynx';}
+  else if(T.maxDepth>md+0.8){dg=2;dt='Went to '+T.maxDepth.toFixed(1)+' cm — into the oropharynx';}
+  else if(T.maxDepth<md-2.2){dg=1;dt='Never got past the nasal passage ('+T.maxDepth.toFixed(1)+' cm)';}
+  else {dg=5;dt='Kept the tip in the nasopharynx at the measured depth';}
+  award('tech',dg,5,dt,dg>=5?'g':dg>0?'w':'b');
+  if(T.maxDepth>md+2.8)critical('Advanced the catheter past the larynx.');
+
+  /* duration */
+  const avg=T.passes?T.totalVac/T.passes:0;
+  let ug=T.longPasses>0?0:avg>5?2:4;
+  award('tech',ug,4,'Mean vacuum time per pass '+avg.toFixed(1)+' s'
+    +(T.longPasses?' — '+T.longPasses+' pass(es) over 8 s':''),ug>=4?'g':ug>0?'w':'b');
+
+  /* suction on withdrawal only */
+  award('tech',T.insertSuction?0:3,3,'Applied vacuum only on withdrawal',T.insertSuction?'b':'g');
+
+  /* passes and recovery */
+  let pg=3;
+  if(T.passes>3)pg=1;
+  if(T.shortRest>0)pg=Math.min(pg,1);
+  award('tech',pg,3,T.passes+' pass(es), '+(T.shortRest?T.shortRest+' without adequate recovery':'each with recovery time'),pg>=3?'g':'w');
+
+  /* effectiveness */
+  const yg=T.yieldTotal>3.5?3:T.yieldTotal>1.5?2:0;
+  award('tech',yg,3,'Cleared '+T.yieldTotal.toFixed(1)+' mL of secretion',yg>=3?'g':yg>0?'w':'b');
+
+  /* trauma */
+  award('tech',T.bloodPasses?0:2,2,T.bloodPasses?'Caused mucosal bleeding':'No mucosal trauma',
+    T.bloodPasses?'b':'g');
+
+  /* desaturation */
+  const sg=T.minSpO2>=88?3:T.minSpO2>=82?1:0;
+  award('tech',sg,3,'Lowest SpO₂ during treatment '+Math.round(T.minSpO2)+'%',sg>=3?'g':sg>0?'w':'b');
+  if(T.minSpO2<80)critical('Allowed the saturation to fall below 80% during suction.');
+}
+
+/* =====================================================================
+   STATION 5 · REASSESS
+   ===================================================================== */
+function stAfter(host){
+  P.o2lpm=1;
+  const b=card(host,'','',
+    'The catheter is out and in the bin, your gloves are off, and he has settled against his mother. '
+    +'Give him a minute and look again.');
+  const t=el('div','scroll');
+  t.innerHTML=`<table class="dat"><thead><tr><th>Measure</th><th>Before</th><th>Now</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>SpO₂ on 1 L NP</td><td>92%</td><td class="${P.spo2>=93?'lo':'hi'}">${Math.round(P.spo2)}%</td>
+        <td class="nl">nadir ${Math.round(T.minSpO2)}% during treatment</td></tr>
+      <tr><td>Heart rate</td><td>138</td><td class="${P.hr>160?'hi':'nl'}">${Math.round(P.hr)}</td>
+        <td class="nl">${P.hr>160?'still settling':'settled'}</td></tr>
+      <tr><td>Respiratory rate</td><td>42</td><td class="nl">${Math.round(P.rr)}</td><td class="nl">recession unchanged</td></tr>
+      <tr><td>Upper airway rattle</td><td>Loud</td>
+        <td class="${P.secretions<55?'lo':'hi'}">${P.secretions>80?'Loud':P.secretions>55?'Reduced':P.secretions>35?'Much quieter':'Absent'}</td>
+        <td class="nl">${T.yieldTotal.toFixed(1)} mL cleared</td></tr>
+      <tr><td>Wheeze and crackles</td><td>Widespread</td><td class="nl">Widespread</td>
+        <td class="nl">unchanged, as expected</td></tr>
+      <tr><td>Mucosal trauma</td><td>None</td>
+        <td class="${T.bloodPasses?'hi2':'nl'}">${T.bloodPasses?'Blood-streaked':'None'}</td><td class="nl"></td></tr>
+      <tr><td>Vomiting</td><td>None</td>
+        <td class="${T.vomitEvents?'hi2':'nl'}">${T.vomitEvents?'Yes — undigested feed':'None'}</td><td class="nl"></td></tr>
+    </tbody></table>`;
+  b.appendChild(t);
+
+  mcq(b,{dom:'eval',max:3,log:'Interpreted the post-treatment picture',
+    q:'The rattle has changed but the wheeze and crackles have not. What do you document and what do you do next?',
+    opts:[
+      {t:'Record the volume and character of what came out, that the transmitted noise reduced and the chest signs did not, and that <b>no further suction is indicated until he rattles again</b>',p:3,
+       fb:'Correct on both counts. You treated the upper airway and you document the upper airway. Recording that the chest signs were unchanged is not an admission of failure — it is the evidence that stops the next clinician repeating the pass expecting something different. Suction in bronchiolitis is done on clinical need, not on a schedule.'},
+      {t:'Book him for two-hourly suction for the next 24 hours so the secretions do not build up again',p:0,
+       fb:'Routine scheduled suctioning is exactly what this child does not need. Every pass costs oxygen, risks the mucosa and risks a vomit. Suction when the rattle returns and the work of breathing rises — not by the clock.',
+       crit:'Prescribed routine two-hourly suction rather than clinically indicated suction.'},
+      {t:'Repeat the suction now, deeper, to try to reach the crackles',p:0,
+       fb:'No. This is the error the whole station is built around. Those crackles are in airways a nasopharyngeal catheter cannot reach, and going deeper only reaches the larynx and his stomach contents.',
+       crit:'Planned a deeper pass to chase bronchiolitic crackles.'},
+      {t:'Document that the treatment failed because the chest still sounds abnormal',p:0,
+       fb:'It did not fail. It did precisely what nasopharyngeal suction can do. Recording it as a failure invites someone to escalate to something more invasive that this child does not need.'}
+    ],
+    next:'Hand over',
+    go:()=>{
+      const c=card(host,'','','One more thing before you leave the cubicle.');
+      multi(c,{dom:'eval',log:'Handed over and taught appropriately',cta:'Hand over',
+        q:'Select what belongs in your handover and your teaching to his mother.',
+        opts:[
+          {t:'The <b>measured nose-to-tragus depth</b>, written on the care plan, so everyone suctions to the same depth',good:true,w:2,
+           fb:'This is the highest-value thing you can leave behind. The measurement is child-specific and it is what prevents the next person going too deep. Write it down.'},
+          {t:'That the <b>feed must be stopped and the PEG vented</b> before suctioning, every time',good:true,w:2,
+           fb:'Essential in a child with unsafe swallow and a continuous feed. This is the link between technique and the vomiting risk, and it is the part families most often are not told.'},
+          {t:'The signs that mean <b>stop</b>: colour change, bradycardia, vomiting, or blood',good:true,w:2,
+           fb:'Teaching a parent when to stop matters more than teaching them how to start. A mother suctioning at home needs clear, concrete stopping rules.'},
+          {t:'That suction is for the <b>audible upper-airway rattle</b>, not for the wheeze or the cough',good:true,w:2,
+           fb:'Right — the indication is the thing you can actually change. Without this, home suctioning drifts into being done for every noise and every cough.'},
+          {t:'That she should suction every two hours through the night to keep him clear',good:false,pen:2,
+           fb:'No. Scheduled suctioning in a child with bronchiolitis increases distress, hypoxaemia and trauma without improving outcome. Suction on clinical indication.',
+           crit:'Taught the parent to suction on a fixed two-hourly schedule.'},
+          {t:'That if he gags she should push a little deeper to get past it',good:false,pen:3,
+           fb:'This is dangerous advice and the direct route to the vomiting and aspiration this child is already at high risk of. A gag means the catheter is too deep — withdraw.',
+           crit:'Taught the parent to advance past a gag.'}
+        ],
+        next:'See the debrief', go:()=>nextStep()});
+    }
+  });
+}
+
+/* =====================================================================
+   STATION 6 · DEBRIEF
+   ===================================================================== */
+function grade(p){
+  if(p>=85)return['Safe and effective','He got the treatment he needed, at the depth he could tolerate, for as short a time as it took.'];
+  if(p>=70)return['Competent, with rough edges','The technique worked. The gaps are the kind that matter more in a smaller or sicker child than this one.'];
+  if(p>=55)return['Unsafe in places','Parts of this were sound, but there is at least one habit here that will hurt a child.'];
+  return['Not safe to do this unsupervised','Work through this again in coach mode before you suction a child on the ward.'];
+}
+function stDebrief(host){
+  S.over=true; alarmOff(); suckSoundOff(); stopLung();
+  const pct=totalPct(), gr=grade(pct);
+  const b=card(host,'','','');
+  const head=el('div','scorehead');
+  const circ=2*Math.PI*48;
+  head.innerHTML=`
+    <div class="ring"><svg width="112" height="112" viewBox="0 0 112 112">
+      <circle cx="56" cy="56" r="48" fill="none" stroke="#1C2632" stroke-width="9"/>
+      <circle cx="56" cy="56" r="48" fill="none" stroke="${pct>=70?'#2FE07A':pct>=55?'#FFC24B':'#FF4D6D'}"
+        stroke-width="9" stroke-linecap="round"
+        stroke-dasharray="${(circ*pct/100).toFixed(1)} ${circ.toFixed(1)}"/>
+    </svg><div class="pc">${pct}%</div></div>
+    <div class="gradebox"><h3>${gr[0]}</h3><p>${gr[1]}</p></div>`;
+  b.appendChild(head);
+
+  const dg=el('div','dgrid');
+  for(const k in DOM){
+    const d=DOM[k]; if(!d.m)continue;
+    const p=Math.round(d.g/d.m*100);
+    const r=el('div','drow');
+    r.innerHTML=`<span class="n">${d.label}</span><span class="sc">${d.g.toFixed(0)} / ${d.m}</span>
+      <span class="dbar"><i class="${p>=80?'g':p>=55?'w':'b'}" style="width:${p}%"></i></span>`;
+    dg.appendChild(r);
+  }
+  b.appendChild(el('h3','',' ').cloneNode()); b.appendChild(dg);
+
+  /* technique numbers */
+  const tb=el('div','pnl');
+  const md=E.measured||7.9;
+  tb.innerHTML=`<h3>What your catheter actually did</h3><div class="pb"><div class="scroll">
+    <table class="dat"><tbody>
+      <tr><td>Passes</td><td class="${T.passes>3?'hi':'nl'}">${T.passes}</td><td class="nl">3 or fewer</td></tr>
+      <tr><td>Deepest point reached</td>
+        <td class="${T.maxDepth>md+2.8?'hi2':T.maxDepth>md+0.8?'hi':'lo'}">${T.maxDepth.toFixed(1)} cm</td>
+        <td class="nl">measured limit ${md.toFixed(1)} cm</td></tr>
+      <tr><td>Total vacuum time</td><td class="nl">${T.totalVac.toFixed(1)} s</td>
+        <td class="nl">${T.passes?'mean '+(T.totalVac/T.passes).toFixed(1)+' s per pass':''}</td></tr>
+      <tr><td>Passes over 8 s</td><td class="${T.longPasses?'hi2':'lo'}">${T.longPasses}</td><td class="nl">0</td></tr>
+      <tr><td>Suction applied on insertion</td><td class="${T.insertSuction?'hi2':'lo'}">${T.insertSuction?'Yes':'No'}</td><td class="nl">withdrawal only</td></tr>
+      <tr><td>Gags provoked</td><td class="${T.gagHits?'hi':'lo'}">${T.gagHits}</td><td class="nl">0</td></tr>
+      <tr><td>Vomiting</td><td class="${T.vomitEvents?'hi2':'lo'}">${T.vomitEvents?'Yes':'No'}</td>
+        <td class="nl">${E.pegVented?'PEG vented beforehand':'PEG feed left running'}</td></tr>
+      <tr><td>Blood-streaked secretions</td><td class="${T.bloodPasses?'hi2':'lo'}">${T.bloodPasses?'Yes':'No'}</td>
+        <td class="nl">vacuum ${E.vac} mmHg, ${E.fr} Fr</td></tr>
+      <tr><td>Lowest SpO₂</td><td class="${T.minSpO2<85?'hi2':T.minSpO2<90?'hi':'lo'}">${Math.round(T.minSpO2)}%</td>
+        <td class="nl">stay above 88%</td></tr>
+      <tr><td>Secretion cleared</td><td class="nl">${T.yieldTotal.toFixed(1)} mL</td>
+        <td class="nl">rattle ${P.secretions<55?'reduced':'unchanged'}</td></tr>
+    </tbody></table></div></div>`;
+  b.appendChild(tb);
+
+  if(CRITICALS.length){
+    const c=el('div','pnl');
+    c.innerHTML='<h3 style="color:var(--crit)">Critical errors</h3><div class="pb"><div class="critlist">'
+      +CRITICALS.map(x=>'<div>'+x+'</div>').join('')+'</div></div>';
+    b.appendChild(c);
+  }
+
+  const lp=el('div','pnl');
+  lp.innerHTML=`<h3>The four numbers that make this safe</h3><div class="pb"><ul>
+    <li><b>Depth = nose to tragus.</b> Measure it on the child in front of you, write it on the care plan,
+        and never exceed it. In this boy that was about ${md.toFixed(1)} cm. Beyond it is the oropharynx,
+        then the larynx, then his stomach contents.</li>
+    <li><b>Vacuum 80–120 mmHg.</b> Paediatric range. Above 150 you strip mucosa; below 80 you cannot
+        lift thick secretions and you will do extra passes to compensate — which costs more oxygen
+        than the pressure ever saved you.</li>
+    <li><b>Five seconds of applied vacuum.</b> Not ten, and not "until it stops coming".
+        The oximeter lags the arterial blood by seconds, so by the time the number falls you are
+        already further behind than you think. Come out on the clock, not on the number.</li>
+    <li><b>Catheter no more than half the airway diameter</b> — 8 Fr for a child this age.
+        Too narrow moves nothing; too wide occludes the nostril it is passing through.</li>
+  </ul></div>`;
+  b.appendChild(lp);
+
+  const lp2=el('div','pnl');
+  lp2.innerHTML=`<h3>Why this child in particular</h3><div class="pb"><ul>
+    <li><b>Ex-25 weeker with BPD.</b> A low baseline saturation and almost no reserve. He desaturates
+        faster than a well child and takes far longer to come back. Pre-oxygenation is not optional courtesy.</li>
+    <li><b>Spastic quadriplegic CP, GMFCS V.</b> No functional cough — he cannot clear what you mobilise,
+        which is why suction is indicated at all. Forced supine positioning and restraint raise tone,
+        distress and oxygen consumption.</li>
+    <li><b>PEG fed with known silent aspiration.</b> A continuous feed plus a gag is a vomit, and a vomit
+        in a child who cannot protect his airway is an aspiration. <b>Stopping the feed and venting the
+        gastric tube is a suction-technique decision</b>, not a nursing afterthought.</li>
+    <li><b>hMPV bronchiolitis.</b> The wheeze and crackles are small-airway disease. Suction treats the
+        rattle. Expecting it to treat the chest is what drives the catheter too deep — and it is
+        a droplet and contact precaution, so eye protection during an aerosol-generating procedure.</li>
+  </ul></div>`;
+  b.appendChild(lp2);
+
+  const ll=el('div','pnl');
+  ll.innerHTML='<h3>Session log</h3><div class="pb"><div class="loglist">'
+    +LOG.map(l=>`<div class="lg ${l.kind}"><span class="tm">${mmss(l.t)}</span><span>${l.text}</span></div>`).join('')
+    +'</div></div>';
+  b.appendChild(ll);
+
+  const a=el('div','actions');
+  const pr=el('button','btn','Print / save this debrief');
+  pr.onclick=()=>{buildPrint();window.print();};
+  const rs=el('button','btn ghost','Run it again');
+  rs.onclick=()=>location.reload();
+  a.appendChild(pr); a.appendChild(rs); b.appendChild(a);
+}
+function buildPrint(){
+  const pct=totalPct(), gr=grade(pct);
+  $('#printarea').innerHTML=`<h1>PaedSim 01 — Nasopharyngeal suction debrief</h1>
+    <p><b>Score ${pct}% — ${gr[0]}</b> · mode: ${S.mode} · elapsed ${mmss(S.t)}</p>
+    <h2>Domains</h2><ul>${Object.keys(DOM).filter(k=>DOM[k].m)
+      .map(k=>`<li>${DOM[k].label}: ${DOM[k].g.toFixed(0)}/${DOM[k].m}</li>`).join('')}</ul>
+    <h2>Technique</h2><ul>
+      <li>Passes: ${T.passes}; deepest ${T.maxDepth.toFixed(1)} cm (limit ${(E.measured||7.9).toFixed(1)} cm)</li>
+      <li>Total vacuum ${T.totalVac.toFixed(1)} s; passes over 8 s: ${T.longPasses}</li>
+      <li>Catheter ${E.fr} Fr at ${E.vac} mmHg; lowest SpO₂ ${Math.round(T.minSpO2)}%</li>
+      <li>Vomiting: ${T.vomitEvents?'yes':'no'}; blood-streaked: ${T.bloodPasses?'yes':'no'}</li></ul>
+    ${CRITICALS.length?'<h2>Critical errors</h2><ul>'+CRITICALS.map(c=>'<li>'+c+'</li>').join('')+'</ul>':''}
+    <h2>Log</h2><ol>${LOG.map(l=>`<li>${mmss(l.t)} — ${plain(l.text)}</li>`).join('')}</ol>`;
+}
+
+/* =====================================================================
+   POINTER INTERACTION ON THE SCENE
+   ===================================================================== */
+function svgPt(e){
+  const svg=$('#sceneSvg'), p=svg.createSVGPoint();
+  p.x=e.clientX; p.y=e.clientY;
+  const m=svg.getScreenCTM(); if(!m)return {x:0,y:0};
+  return p.matrixTransform(m.inverse());
+}
+function nearestOnRoute(pt){
+  let best=0, bd=1e9;
+  for(let i=0;i<=240;i++){
+    const l=RPLEN*i/240, p=RP.getPointAtLength(l);
+    const d=(p.x-pt.x)**2+(p.y-pt.y)**2;
+    if(d<bd){bd=d;best=l;}
+  }
+  return {len:best, dist:Math.sqrt(bd)};
+}
+function initPointer(){
+  const svg=$('#sceneSvg');
+  let dragging=null;
+  svg.addEventListener('pointerdown',e=>{
+    const pt=svgPt(e);
+    if(measureMode){
+      const ce=$('#calEnd');
+      const dx=pt.x-(+ce.getAttribute('cx')), dy=pt.y-(+ce.getAttribute('cy'));
+      if(Math.sqrt(dx*dx+dy*dy)<44||pt.x>620){dragging='cal';moveCal(pt);
+        try{svg.setPointerCapture(e.pointerId);}catch(err){} e.preventDefault();}
+      return;
+    }
+    if(!SUC.running)return;
+    const n=nearestOnRoute(pt);
+    if(n.dist<64){
+      dragging='cath'; setDepth(n.len/UPC);
+      try{svg.setPointerCapture(e.pointerId);}catch(err){}
+      e.preventDefault();
+    }
+  });
+  svg.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    const pt=svgPt(e);
+    if(dragging==='cal')moveCal(pt);
+    else setDepth(nearestOnRoute(pt).len/UPC);
+  });
+  const up=()=>{
+    if(dragging==='cal')commitCal();
+    dragging=null;
+  };
+  svg.addEventListener('pointerup',up);
+  svg.addEventListener('pointercancel',up);
+
+  /* keyboard: the catheter tip is a slider */
+  const tip=$('#cathTip');
+  tip.setAttribute('tabindex','0'); tip.setAttribute('role','slider');
+  tip.setAttribute('aria-label','Catheter depth in centimetres');
+  tip.setAttribute('aria-valuemin','0'); tip.setAttribute('aria-valuemax',String(MAXCM));
+  document.addEventListener('keydown',e=>{
+    if(!SUC.running)return;
+    if(e.key===' '){e.preventDefault();if(!e.repeat)vacOn();return;}
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();setDepth(SUC.depth+0.25);}
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();setDepth(SUC.depth-0.25);}
+    if(e.key==='Escape'){setDepth(0);}
+  });
+  document.addEventListener('keyup',e=>{if(e.key===' ')vacOff();});
+}
+function moveCal(pt){
+  const x=clamp(pt.x,NOSE[0],960), y=clamp(pt.y,120,420);
+  const ce=$('#calEnd'); ce.setAttribute('cx',x); ce.setAttribute('cy',y);
+  const ln=$('#calLine'); ln.setAttribute('x2',x); ln.setAttribute('y2',y);
+  const cm=Math.hypot(x-NOSE[0],y-NOSE[1])/UPC;
+  const t=$('#calTxt');
+  t.setAttribute('x',x+14); t.setAttribute('y',y-12);
+  t.textContent=cm.toFixed(1)+' cm';
+}
+function commitCal(){
+  const ce=$('#calEnd');
+  const x=+ce.getAttribute('cx'), y=+ce.getAttribute('cy');
+  const off=Math.hypot(x-TRAGUS[0],y-TRAGUS[1]);
+  const cm=Math.hypot(x-NOSE[0],y-NOSE[1])/UPC;
+  const ok=off<34;
+  if(!window._calTimer){
+    window._calTimer=setTimeout(()=>{
+      window._calTimer=null;
+      $('#caliperG').setAttribute('opacity','.35');
+      if(window._onMeasured){const f=window._onMeasured;window._onMeasured=null;f(cm,ok);}
+    },900);
+  }else{
+    clearTimeout(window._calTimer);
+    window._calTimer=setTimeout(()=>{
+      window._calTimer=null;
+      $('#caliperG').setAttribute('opacity','.35');
+      if(window._onMeasured){const f=window._onMeasured;window._onMeasured=null;f(cm,ok);}
+    },900);
+  }
+}
+
+/* =====================================================================
+   TIMER / UI PAINTING FOR THE SUCTION STATION
+   ===================================================================== */
+setInterval(()=>{
+  if(!window._sucUI)return;
+  const t=$('#stime'), bar=$('#sbar');
+  if(!t||!bar)return;
+  const v=SUC.active?SUC.passVac:0;
+  t.textContent=v.toFixed(1)+'s';
+  t.className='t'+(v>8?' crit':v>5?' warn':'');
+  const pct=clamp(v/10*100,0,100);
+  bar.style.width=pct+'%';
+  bar.className=v>8?'crit':v>5?'warn':'';
+},100);
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+function scaleCheck(){
+  const small=window.innerWidth<900||window.innerHeight<560;
+  $('#devwarn').classList.toggle('on',small&&!window._dwok);
+}
+$('#dwgo').onclick=()=>{window._dwok=true;$('#devwarn').classList.remove('on');};
+$('#bootsnd').onclick=e=>{
+  S.sound=!S.sound;
+  e.target.setAttribute('aria-pressed',String(S.sound));
+  e.target.textContent='Sound: '+(S.sound?'on':'off');
+};
+$('#b-snd').onclick=e=>{
+  S.sound=!S.sound;
+  e.currentTarget.setAttribute('aria-pressed',String(S.sound));
+  if(!S.sound){alarmOff();suckSoundOff();stopLung();}
+};
+$('#ov-min').onclick=closeOverlay;
+$('#ovtab').onclick=()=>openOverlay(ovSize(STEPS[S.step].id));
+$('#bootgo').onclick=()=>{
+  S.mode=$('input[name=mode]:checked').value;
+  $('#c-mode').textContent=S.mode==='coach'?'COACH':'ASSESSED';
+  $('#boot').style.display='none';
+  S.started=true; lastTick=performance.now();
+  actx();
+  buildScene(); initPointer();
+  ['#fp-mon','#fp-suc'].forEach(s=>makeDraggable($(s)));
+  fitCanvas(); drawGauge();
+  $('#sceneTag').innerHTML='';
+  goStep(0);
+  note('Session started in '+S.mode+' mode.','i');
+};
+window.addEventListener('resize',()=>{fitCanvas();scaleCheck();});
+scaleCheck();
+</script>
