@@ -537,7 +537,9 @@ input[type=range]:disabled::-webkit-slider-thumb{background:var(--dim);box-shado
       <button class="btn pri" id="bootgo">Take the handover</button>
       <button class="btn ghost" id="bootsnd" aria-pressed="true">Sound: on</button>
     </div>
-    <p class="hintline" style="margin-top:18px">Headphones recommended — the monitor tone drops in pitch as he desaturates.</p>
+    <p class="hintline" style="margin-top:18px">Headphones recommended — the monitor tone drops in pitch as he desaturates.
+    <br><br>This is a AI generated teaching simulation. The patient, results and images are fabricated for education and must not be used for clinical decision-making. Follow your own unit's protocols. <br>© 2026 AHNH PTD. All rights reserved. Simulator developed by Mr Thomas Mak, Ms Stephy Lau.
+    </p>
   </div>
 </div>
 
@@ -606,7 +608,7 @@ input[type=range]:disabled::-webkit-slider-thumb{background:var(--dim);box-shado
 <div id="toasts"></div>
 
 <div id="crisis"><div class="cr-card">
-  <div class="cr-h"><span class="eyebrow" id="cr-eb">Deterioration</span><span class="cd" id="cr-cd">0:20</span></div>
+  <div class="cr-h"><span class="eyebrow" id="cr-eb">Deterioration</span><span class="cd" id="cr-cd">0:30</span></div>
   <div class="cr-b"><h3 id="cr-t">—</h3><p id="cr-p">—</p><div class="opts" id="cr-o"></div></div>
 </div></div>
 
@@ -2045,8 +2047,9 @@ function openCrisis(){
      fb:'Call for help by all means — but shout for it while you are turning him. A child aspirating is not a situation where you wait for someone else to arrive before acting.'}
   ];
   const box=$('#cr-o'); box.innerHTML='';
-  let done=false, left=20;
-  const cd=$('#cr-cd'); cd.textContent='0:20';
+  const CRISIS_SECS=30;
+  let done=false, left=CRISIS_SECS;
+  const cd=$('#cr-cd'); cd.textContent='0:'+String(CRISIS_SECS).padStart(2,'0');
   const iv=setInterval(()=>{
     left--; cd.textContent='0:'+String(Math.max(0,left)).padStart(2,'0');
     if(left<=0&&!done){finish(null);}

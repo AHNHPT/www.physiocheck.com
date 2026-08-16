@@ -414,7 +414,7 @@ body.mob #sceneTag{top:auto;bottom:6px}
     <ul>
       <li>The <b>patient monitor and ventilator</b> stack below the scene instead of sitting beside it, so you cannot watch him and the numbers at the same time.</li>
       <li>The <b>mobilisation ladder</b> and the room lose most of their detail.</li>
-      <li>The deteriorations give you <b>eighteen seconds</b> to choose — scrolling a phone costs you several of them.</li>
+      <li>The deteriorations give you <b>thirty seconds</b> to choose — scrolling a phone costs you several of them.</li>
     </ul>
     <p>A tablet in <b>landscape</b> is fine. A laptop is better.</p>
     <div class="sw-act">
@@ -454,7 +454,9 @@ body.mob #sceneTag{top:auto;bottom:6px}
       <button class="btn pri" id="startbtn">Take the handover</button>
       <button class="btn ghost" id="sndpre" aria-pressed="true">Sound is on</button>
     </div>
-    <p class="quiet" style="margin-top:18px">Best on a laptop or tablet in landscape. Headphones recommended — the ventilator, the alarms and his breathing are all synthesised live.</p>
+    <p class="quiet" style="margin-top:18px">Best on a laptop or tablet in landscape. Headphones recommended — the ventilator, the alarms and his breathing are all synthesised live.
+    <br><br>This is AI generated teaching simulation. The patient, results and images are fabricated for education and must not be used for clinical decision-making. Follow your own unit's protocols. <br>© 2026 AHNH PTD. All rights reserved. Simulator developed by Mr Thomas Mak, Mr Eric Chan.
+    </p>
   </div>
 </div>
 
@@ -3140,10 +3142,10 @@ const CRISES={
 };
 function openCrisis(kind){
   const C=CRISES[kind];const m=$('#crisis');
-  const sel=new Set();let left=18,timer;
+  const sel=new Set();let left=30,timer;
   m.innerHTML='<div class="crisis-c"><div class="crisis-h"><div class="t">'+C.tag+'</div>'
     +'<h2 id="crisis-t">'+C.head+'</h2><div class="sub">'+C.sub+'</div></div>'
-    +'<div class="cdown"><span class="n" id="cd">18</span>'
+    +'<div class="cdown"><span class="n" id="cd">30</span>'
     +'<span class="hintline" style="font-size:12px">seconds to act · choose up to four actions, in any order</span></div>'
     +'<div class="card-b"><div class="opts" id="copts"></div>'
     +'<div class="actions"><button class="btn pri" id="cgo">Act now</button></div></div></div>';
@@ -3173,8 +3175,8 @@ function openCrisis(kind){
     const hit=C.key.filter(k=>ids.has(k)).length;
     const good=hit>=2&&got>=9&&!chosen.some(o=>o.p<=-5);
     if(timedOut){
-      critical('Froze during an acute deterioration — no action taken within eighteen seconds.');
-      note('No action taken within eighteen seconds.','b');got=0;
+      critical('Froze during an acute deterioration — no action taken within thirty seconds.');
+      note('No action taken within thirty seconds.','b');got=0;
     }
     got=clamp(got,0,20);
     award('crisis',got,20,(timedOut?'No response to the ':'Response to the ')
@@ -3449,7 +3451,7 @@ $('#sndbtn').onclick=()=>setSound(!A.on);
 $('#sndpre').onclick=()=>setSound(!A.on);
 
 /* A phone will run this, but badly: the instruments stack, the scene shrinks,
-   and eighteen seconds is not long enough to scroll. Say so once, then let
+   and thirty seconds is not long enough to scroll. Say so once, then let
    them through — a tablet held in landscape is genuinely fine. */
 function isPhone(){
   const coarse=matchMedia('(pointer:coarse)').matches||matchMedia('(hover:none)').matches;
