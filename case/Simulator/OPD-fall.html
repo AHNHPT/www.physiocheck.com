@@ -525,7 +525,7 @@ body.peek #ovShow{display:flex;animation:tabin .3s cubic-bezier(.2,.9,.3,1)}
 
     <div class="boot-body">
       <p><b>Mrs. Chan Yuk-lan, 72</b>, day 18 after a left total knee replacement, attending out-patient physiotherapy for gait re-training. You have her in the parallel bars practising step-through with a stair block. Her toe catches on the edge of the block, she goes over, and she strikes the left side of her head on the end handle of the near rail on the way down.</p>
-      <p>She is on the floor and she is <b>completely lucid</b> — no black-out, no confusion, apologising for the fuss and asking to get up. She complains of two things: <b>pain in the middle of the back of her neck, and pain in the operated knee.</b> Her observations will all come back normal.</p>
+      <p>She is on the floor and she is <b>completely lucid</b> — no black-out, no confusion, apologising for the fuss and asking to get up...</p>
       <p>This simulator follows the department's <b>Emergency Workflow</b>: primary survey → secondary survey → PA call and management → handover and documentation.</p>
     </div>
 
@@ -2404,7 +2404,7 @@ async function stFall(){
     type:'pick', pts:6,
     opts:[
       {t:'Stay with her, do not move her, and start the primary survey — shouting for help as you go',
-       s:'Kneel at her head, keep her exactly as she landed, and begin D-R-A-B-C while calling your colleague over.',
+       s:'Kneel at her head, keep her exactly as she landed, and call your colleague over.',
        good:true, fb:'Correct, and the order matters. She fell from standing and struck her head — you must assume a cervical spine injury until you have excluded one. Starting the primary survey where she lies, while shouting for help rather than leaving to fetch it, is the whole basis of the department workflow.',
        act:()=>{ drawStaff('colleague'); S.flags.team_crowd=true; }},
       {t:'Help her sit up and get her onto the chair so you can assess her properly',
@@ -2490,7 +2490,7 @@ async function stDanger(){
     html:`<div class="hint">Select all that apply — you will be marked on what you do and on what you leave out.</div>`,
     type:'multi', min:2,
     opts:[
-      {t:'Put on gloves before any contact with her', s:'There is visible blood and you are about to put your hands in it.',
+      {t:'Put on gloves before any contact with her',
        good:true, pts:3, must:true, critTitle:'No gloves before contact with blood',
        fb:'Body-substance isolation is part of D, not an afterthought. She is bleeding briskly, you will be applying direct pressure, and you have no idea of her blood-borne virus status.',
        act:()=>{ S.gloves=true; }},
@@ -2501,7 +2501,7 @@ async function stDanger(){
        good:true, pts:2, fb:'The route out has to be clear before the trolley arrives, not while it is arriving.'},
       {t:'Leave everything exactly as it is so the scene can be photographed for the incident report',
        pts:-2, fb:'This is not a police investigation. Patient safety comes first; you describe the scene in words in the incident report. Do not photograph a patient on a personal device.'},
-      {t:'Note what the floor was like and what she was wearing on her feet', s:'Contributing factors, for the report and for preventing the next one.',
+      {t:'Note what the floor was like and what she was wearing on her feet',
        good:true, pts:2, fb:'Good practice. Wet floor, footwear and the exact activity at the time are the details that make an incident report useful rather than decorative.'},
       {t:'Mop the blood up straight away so nobody slips',
        pts:-1, fb:'Not now, and not by you. You are the only person doing the primary survey. Cordon it, delegate the spill to be dealt with afterwards under the department’s body-fluid spill procedure.'},
@@ -2619,12 +2619,12 @@ async function stHelp(){
   const FRAG=[
     {t:'“Physiotherapy Department, gym area, at the parallel bars.”', g:true, k:'Where'},
     {t:'“Patient fall with a head injury.”', g:true, k:'What'},
-    {t:'“Alert and fully orientated, GCS 15, but she has central neck pain and I cannot clear her spine.”', g:true, k:'How bad'},
+    {t:'“Alert and fully orientated, GCS 15, but she has central neck pain and I cannot clear her spine.”', g:true, k:'How'},
     {t:'“I need the first-aid trolley, BP set, SpO₂ probe and a trolley for transfer.”', g:true, k:'What I need'},
     {t:'“Please send two more staff and inform the physiotherapist in charge.”', g:true, k:'Who I need'},
-    {t:'“Activate the CPR Response.”', g:false, k:'Wrong call', crit:true},
-    {t:'“Someone call an ambulance.”', g:false, k:'Wrong route'},
-    {t:'“Can somebody come and help when you get a moment.”', g:false, k:'Too vague'},
+    {t:'“Activate the CPR Response.”', g:false, k:'CPR', crit:true},
+    {t:'“Someone call an ambulance.”', g:false, k:'Help'},
+    {t:'“Can somebody come and help when you get a moment.”', g:false, k:'Who I need'},
   ];
   await ask({
     station:'help', stationLabel:'Calling for help', sub:'Escalation', title:'Compose the announcement.',
