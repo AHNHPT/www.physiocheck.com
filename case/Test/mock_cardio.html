@@ -3,945 +3,1135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cardiopulmonary &amp; Pediatric PT Competency Check</title>
+<title>Cardiorespiratory Physiotherapy Competency Check</title>
 <style>
   :root{
-    --bg:#F5F7F8;
-    --surface:#FFFFFF;
-    --ink:#16232E;
-    --muted:#5B6B77;
-    --line:#E1E7EA;
-    --teal:#0E7C7B;
-    --teal-dim:#E4F1F1;
-    --plum:#5B4B8A;
-    --plum-dim:#EDE9F5;
-    --coral:#E4572E;
-    --coral-dim:#FCEAE3;
-    --green:#2F9E44;
-    --green-dim:#E6F5E9;
-    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --paper:#F6EEF4;
+    --paper-dim:#ECE0EA;
+    --card:#FFFFFF;
+    --ink:#2F2640;
+    --ink-soft:#5C4F6E;
+    --ink-faint:#948AA3;
+    --line:#C7CBE5;
+    --line-soft:#DEE1F1;
+    --brand:#7D76B8;
+    --brand-dark:#5C5490;
+    --brand-tint:#ECECF7;
+    --rose:#C4677A;
+    --rose-line:#EFB3BC;
+    --rose-tint:#FBEBEE;
+    --deep:#870080;
+    --deep-tint:#F6E0F4;
+    --correct:#1F8A4C;
+    --correct-tint:#E4F5EC;
+    --danger:#B23A48;
+    --danger-tint:#F9E7E9;
+    --radius:2px;
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
   }
-
   *{box-sizing:border-box;}
-
-  html,body{
-    margin:0;
-    padding:0;
-    background:var(--bg);
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
     color:var(--ink);
     font-family:var(--sans);
+    line-height:1.5;
     -webkit-font-smoothing:antialiased;
-  }
-
-  body{
     min-height:100vh;
-    padding-top:10px;
   }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px);
+    background-size: 100% 42px;
+    opacity:.35;
+    pointer-events:none;
+    z-index:0;
+  }
+  .wrap{position:relative; z-index:1; max-width:840px; margin:0 auto; padding:0 20px 80px;}
 
-  /* ---------- ECG progress strip ---------- */
-  .ecg-wrap{
-    position:sticky;
-    top:0;
-    z-index:10;
-    background:var(--bg);
-    border-bottom:1px solid var(--line);
-    padding:10px 0 6px;
-  }
-  .ecg-inner{
-    max-width:760px;
-    margin:0 auto;
-    padding:0 20px;
-  }
-  .ecg-svg{
-    width:100%;
-    height:46px;
-    display:block;
-    overflow:visible;
-  }
-  .ecg-track{
-    fill:none;
-    stroke:var(--line);
-    stroke-width:2;
-  }
-  .ecg-fill{
-    fill:none;
-    stroke:var(--coral);
-    stroke-width:2.25;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-  }
-  .ecg-blip{
-    fill:var(--coral);
-    r:4.5;
-  }
-  .ecg-meta{
-    display:flex;
-    justify-content:space-between;
-    font-family:var(--mono);
-    font-size:11.5px;
-    color:var(--muted);
-    letter-spacing:.03em;
-    margin-top:2px;
-  }
+  a{color:inherit;}
+  button{font-family:inherit;}
 
-  @keyframes pulse{
-    0%,100%{opacity:1; r:4.5;}
-    50%{opacity:.55; r:6.5;}
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 20px;
+    max-width:840px; margin:0 auto;
+    position:relative; z-index:2;
   }
-  .ecg-blip{animation:pulse 1.4s ease-in-out infinite;}
-  @media (prefers-reduced-motion: reduce){
-    .ecg-blip{animation:none;}
-  }
-
-  /* ---------- Layout ---------- */
-  .page{
-    max-width:760px;
-    margin:0 auto;
-    padding:22px 20px 60px;
-  }
-
-  header.masthead{
-    margin-bottom:22px;
-  }
-  .eyebrow{
+  .brand{
     font-family:var(--mono);
     font-size:12px;
-    letter-spacing:.08em;
+    letter-spacing:.12em;
     text-transform:uppercase;
-    color:var(--teal);
-    margin:0 0 8px;
+    color:var(--ink-soft);
+  }
+  .brand b{color:var(--deep);}
+  .pill{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    padding:5px 10px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    color:var(--ink-soft);
+    background:var(--card);
+  }
+
+  /* ---------- Cover ---------- */
+  .cover-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:44px 40px 40px;
+    margin-top:6px;
+  }
+  .exam-code{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--deep);
+    letter-spacing:.1em;
+    margin-bottom:18px;
   }
   h1{
-    font-size:28px;
-    line-height:1.2;
-    margin:0 0 8px;
-    font-weight:700;
-    letter-spacing:-0.01em;
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(28px,4.4vw,40px);
+    line-height:1.15;
+    margin:0 0 10px;
+    letter-spacing:-.01em;
   }
-  .sub{
-    color:var(--muted);
-    font-size:14.5px;
-    line-height:1.5;
-    margin:0;
-    max-width:56ch;
-  }
-  .legend{
-    display:flex;
-    gap:10px;
-    margin-top:14px;
-    flex-wrap:wrap;
-  }
-  .tag{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    font-size:12px;
-    font-family:var(--mono);
-    padding:4px 10px;
-    border-radius:20px;
-    font-weight:600;
-  }
-  .tag.cardio{background:var(--teal-dim); color:var(--teal);}
-  .tag.peds{background:var(--plum-dim); color:var(--plum);}
-  .tag .dot{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block;}
-
-  /* ---------- Quiz card ---------- */
-  .card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:26px 26px 22px;
-    box-shadow:0 1px 2px rgba(22,35,46,0.04);
-  }
-
-  .qhead{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:16px;
-    gap:10px;
-    flex-wrap:wrap;
-  }
-  .qnum{
-    font-family:var(--mono);
-    font-size:13px;
-    color:var(--muted);
-    letter-spacing:.03em;
-  }
-  .qtext{
-    font-size:18px;
-    line-height:1.5;
-    font-weight:600;
-    margin:0 0 20px;
-  }
-
-  .options{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .opt{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-    text-align:left;
-    width:100%;
-    padding:13px 16px;
-    border-radius:10px;
-    border:1.5px solid var(--line);
-    background:var(--surface);
-    font-family:var(--sans);
+  .subtitle{
+    color:var(--ink-soft);
     font-size:15px;
-    line-height:1.45;
-    color:var(--ink);
+    max-width:58ch;
+    margin:0 0 28px;
+  }
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-bottom:32px;
+  }
+  .meta-chip{
+    border:1px solid var(--line);
+    padding:10px 14px;
+    flex:1 1 140px;
+    min-width:130px;
+  }
+  .meta-chip .num{
+    font-family:var(--mono);
+    font-size:20px;
+    color:var(--brand-dark);
+    display:block;
+  }
+  .meta-chip .lbl{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink-faint);
+  }
+
+  .instructions{
+    border:1px solid var(--line);
+    border-left:3px solid var(--deep);
+    padding:22px 24px;
+    margin-bottom:28px;
+    background:var(--paper-dim);
+  }
+  .instructions h2{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:17px;
+    margin:0 0 12px;
+  }
+  .instructions ol{
+    margin:0 0 18px; padding-left:20px;
+    font-size:14px; color:var(--ink-soft);
+  }
+  .instructions li{margin-bottom:7px;}
+  .instructions li b{color:var(--ink);}
+
+  .marksheet-demo{
+    display:flex; gap:28px; flex-wrap:wrap;
+    padding-top:14px; border-top:1px dashed var(--line);
+  }
+  .demo-block{font-size:12px; color:var(--ink-soft);}
+  .demo-block .demo-title{
+    font-family:var(--mono); font-size:11px; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--ink-faint); margin-bottom:8px;
+  }
+  .demo-bubbles{display:flex; gap:6px;}
+  .demo-bubble{
+    width:22px; height:22px; border:1.5px solid var(--ink-soft);
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:11px; color:var(--ink-soft);
+  }
+  .demo-bubble.filled{ background:var(--brand); border-color:var(--brand); color:#fff; }
+  .demo-bubble.sq{ border-radius:3px; }
+
+  .name-field{margin-bottom:26px;}
+  .name-field label{
+    display:block; font-size:11px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--ink-faint); margin-bottom:6px;
+  }
+  .name-field input{
+    width:100%; max-width:340px;
+    font-family:var(--sans); font-size:15px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    background:#fff; color:var(--ink);
+    border-radius:0;
+  }
+  .name-field input:focus{outline:2px solid var(--deep); outline-offset:1px;}
+
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    font-family:var(--sans); font-weight:600; font-size:14px;
+    letter-spacing:.02em;
+    padding:14px 26px;
+    border-radius:2px;
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .btn:focus-visible{outline:3px solid var(--deep); outline-offset:2px;}
+  .btn-primary{
+    background:var(--deep); color:#fff;
+  }
+  .btn-primary:hover{background:#6b0064;}
+  .btn-primary:active{transform:translateY(1px);}
+  .btn-ghost{
+    background:transparent; color:var(--ink); border:1px solid var(--line);
+  }
+  .btn-ghost:hover{border-color:var(--ink);}
+  .btn-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+  .btn[disabled]{opacity:.4; cursor:not-allowed;}
+
+  /* ---------- Quiz ---------- */
+  #quiz-screen{display:none;}
+  .quiz-head{
+    position:sticky; top:0; z-index:5;
+    background:var(--paper);
+    padding-top:10px; padding-bottom:12px;
+    margin-bottom:10px;
+  }
+  .quiz-head::after{
+    content:""; display:block; height:1px; background:var(--line);
+    margin-top:12px;
+  }
+  .progress-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .progress-row .timer{color:var(--ink-faint);}
+  .progress-track{
+    height:4px; background:var(--line-soft); width:100%; overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; background:var(--brand); width:0%;
+    transition:width .25s ease;
+  }
+  .chip-rail{
+    display:flex; gap:6px; overflow-x:auto;
+    padding:12px 2px 4px;
+    scrollbar-width:thin;
+  }
+  .chip{
+    flex:0 0 auto;
+    width:30px; height:30px;
+    border:1px solid var(--line);
+    background:#fff;
+    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .chip:hover{border-color:var(--ink);}
+  .chip.answered{background:var(--brand-tint); border-color:var(--brand); color:var(--brand-dark);}
+  .chip.current{outline:2px solid var(--ink); outline-offset:1px;}
+  .chip:focus-visible{outline:2px solid var(--deep);}
+
+  .q-card{
+    background:var(--card); border:1px solid var(--line);
+    padding:32px 32px 28px;
+  }
+  .q-eyebrow{
+    display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  }
+  .q-index{
+    font-family:var(--mono); font-size:13px; color:var(--ink-faint);
+  }
+  .select-badge{
+    font-family:var(--mono); font-size:11px; letter-spacing:.05em;
+    padding:3px 9px; border:1px solid var(--rose-line); color:var(--rose);
+    background:var(--rose-tint);
+  }
+  .q-stem{
+    font-family:var(--serif);
+    font-size:19px; line-height:1.5;
+    white-space:pre-line;
+    margin:0 0 26px;
+  }
+  /* ---------- Question media (images / ECG strips / data panels) ---------- */
+  .q-media{
+    margin:0 0 26px;
+  }
+  .q-media figure{margin:0;}
+  .q-media img{
+    display:block; width:100%; max-width:520px; height:auto;
+    margin:0 auto;
+    border:1px solid var(--line);
+    background:#000;
+  }
+  .q-media .ecg-strip{
+    display:block; width:100%; height:auto;
+    border:1px solid var(--line);
+    background:#FFF8F8;
+  }
+  .q-media figcaption{
+    font-family:var(--mono); font-size:11px; letter-spacing:.05em;
+    color:var(--ink-faint); text-align:center;
+    margin-top:8px;
+  }
+  /* simple lab / ABG table */
+  .data-panel{
+    border:1px solid var(--line); background:var(--brand-tint);
+    padding:16px 18px;
+  }
+  .data-panel .dp-title{
+    font-family:var(--mono); font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--ink-faint);
+    margin-bottom:10px;
+  }
+  .data-panel table{
+    width:100%; border-collapse:collapse;
+    font-family:var(--mono); font-size:13px;
+  }
+  .data-panel td{
+    padding:5px 6px; border-bottom:1px solid var(--line-soft);
+    vertical-align:baseline;
+  }
+  .data-panel tr:last-child td{border-bottom:none;}
+  .data-panel td.dp-val{font-weight:700; color:var(--deep); white-space:nowrap;}
+  .data-panel td.dp-ref{color:var(--ink-faint); text-align:right; white-space:nowrap;}
+  .options{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .option{
+    display:flex; align-items:flex-start; gap:14px;
+    padding:13px 16px;
+    border:1px solid var(--line);
     cursor:pointer;
     transition:border-color .12s ease, background .12s ease;
   }
-  .opt:hover{border-color:var(--teal);}
-  .opt:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
-  .opt.selected{
-    border-color:var(--teal);
-    background:var(--teal-dim);
-  }
-  .opt .letter{
-    font-family:var(--mono);
-    font-weight:700;
-    color:var(--teal);
+  .option:hover{border-color:var(--ink-soft);}
+  .option.selected{border-color:var(--brand); background:var(--brand-tint);}
+  .option:focus-visible{outline:2px solid var(--deep); outline-offset:2px;}
+  .bubble{
     flex:0 0 auto;
-    width:1.4em;
+    width:26px; height:26px;
+    border:1.5px solid var(--ink-soft);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+    background:#fff;
   }
-  .opt.selected .letter{color:var(--teal);}
+  .option.selected .bubble{background:var(--brand); border-color:var(--brand); color:#fff;}
+  .options.multi .bubble{border-radius:4px;}
+  .option-text{font-size:15px; padding-top:3px; color:var(--ink);}
 
-  .navrow{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:24px;
+  .nav-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:26px; gap:12px; flex-wrap:wrap;
   }
-  button.nav{
-    font-family:var(--sans);
-    font-weight:600;
-    font-size:14px;
-    padding:10px 18px;
-    border-radius:8px;
-    border:1.5px solid var(--line);
-    background:var(--surface);
-    color:var(--ink);
-    cursor:pointer;
-  }
-  button.nav:hover:not(:disabled){border-color:var(--ink);}
-  button.nav:disabled{opacity:.35; cursor:not-allowed;}
-  button.primary{
-    background:var(--teal);
-    border-color:var(--teal);
-    color:#fff;
-  }
-  button.primary:hover{background:#0B6362;}
-  button.primary:disabled{opacity:.4; cursor:not-allowed; background:var(--teal); border-color:var(--teal);}
-
-  .jump-hint{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--muted);
-  }
+  .nav-row .right-group{display:flex; gap:10px;}
 
   /* ---------- Results ---------- */
-  .results{display:none;}
-  .score-block{
-    text-align:center;
-    padding:34px 20px 26px;
-  }
-  .score-num{
-    font-family:var(--mono);
-    font-size:64px;
-    font-weight:700;
-    letter-spacing:-0.02em;
-    line-height:1;
-  }
-  .score-num span{font-size:28px; color:var(--muted); font-weight:600;}
-  .score-pct{
-    font-family:var(--mono);
-    font-size:15px;
-    color:var(--muted);
+  #results-screen{display:none;}
+  .result-hero{
+    background:var(--card); border:1px solid var(--line);
+    padding:40px 36px; text-align:center; position:relative; overflow:hidden;
     margin-top:6px;
   }
-  .verdict{
+  .stamp{
     display:inline-block;
-    margin-top:16px;
-    padding:7px 18px;
-    border-radius:20px;
+    font-family:var(--serif);
     font-weight:700;
-    font-size:14px;
-    letter-spacing:.02em;
-  }
-  .verdict.pass{background:var(--green-dim); color:var(--green);}
-  .verdict.fail{background:var(--coral-dim); color:var(--coral);}
-
-  .breakdown{
-    display:flex;
-    gap:14px;
-    justify-content:center;
-    margin-top:22px;
-    flex-wrap:wrap;
-  }
-  .bstat{
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:10px 18px;
-    min-width:140px;
-  }
-  .bstat .label{
-    font-family:var(--mono);
-    font-size:11px;
+    font-size:15px;
+    letter-spacing:.18em;
     text-transform:uppercase;
-    letter-spacing:.06em;
-    color:var(--muted);
+    padding:10px 26px;
+    border:3px solid var(--correct);
+    color:var(--correct);
+    transform:rotate(-4deg);
+    margin-bottom:18px;
   }
-  .bstat .val{
+  .stamp.fail{border-color:var(--danger); color:var(--danger);}
+  .score-big{
     font-family:var(--mono);
-    font-size:20px;
-    font-weight:700;
-    margin-top:2px;
-  }
-
-  .review-toggle{
-    display:block;
-    margin:26px auto 0;
-    background:none;
-    border:1.5px solid var(--line);
-    border-radius:8px;
-    padding:10px 20px;
-    font-family:var(--sans);
-    font-weight:600;
-    font-size:14px;
-    cursor:pointer;
+    font-size:56px;
     color:var(--ink);
+    margin:6px 0 2px;
   }
-  .review-toggle:hover{border-color:var(--ink);}
+  .score-sub{color:var(--ink-soft); font-size:14px; margin-bottom:22px;}
+  .stat-row{
+    display:flex; justify-content:center; gap:26px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+    padding-top:18px; border-top:1px dashed var(--line);
+  }
+  .stat-row .stat b{display:block; color:var(--ink); font-size:16px;}
 
-  .review-list{
-    display:none;
-    margin-top:24px;
-    padding-top:20px;
-    border-top:1px solid var(--line);
+  .sheet-title{
+    font-family:var(--mono); font-size:11px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--ink-faint);
+    margin:34px 0 10px;
   }
-  .review-item{
-    padding:16px 0;
-    border-bottom:1px solid var(--line);
+  .answer-grid{
+    display:grid; grid-template-columns:repeat(15,1fr); gap:5px;
   }
-  .review-item:last-child{border-bottom:none;}
-  .review-item .rihead{
-    display:flex;
-    gap:10px;
-    align-items:baseline;
-    margin-bottom:8px;
-    flex-wrap:wrap;
-  }
-  .review-item .rinum{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--muted);
-  }
-  .review-item .rimark{
-    font-family:var(--mono);
-    font-size:12px;
-    font-weight:700;
-    padding:2px 8px;
-    border-radius:12px;
-  }
-  .rimark.correct{background:var(--green-dim); color:var(--green);}
-  .rimark.wrong{background:var(--coral-dim); color:var(--coral);}
-  .review-item .riq{
-    font-size:14.5px;
-    font-weight:600;
-    margin:0 0 8px;
-    line-height:1.5;
-  }
-  .review-item .riopt{
-    font-size:13.5px;
-    line-height:1.5;
-    margin:2px 0;
-    color:var(--muted);
-  }
-  .review-item .riopt.is-correct{color:var(--green); font-weight:600;}
-  .review-item .riopt.is-user-wrong{color:var(--coral); font-weight:600;}
-
-  .restart{
-    display:block;
-    margin:28px auto 0;
-    background:var(--ink);
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    padding:11px 24px;
-    font-family:var(--sans);
-    font-weight:600;
-    font-size:14px;
+  .grid-cell{
+    aspect-ratio:1; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:10px; color:#fff;
     cursor:pointer;
   }
-  .restart:hover{background:#0B141C;}
+  .grid-cell.correct{background:var(--correct);}
+  .grid-cell.wrong{background:var(--danger);}
+  .grid-cell:focus-visible{outline:2px solid var(--deep); outline-offset:2px;}
 
-  footer{
-    text-align:center;
-    margin-top:30px;
-    font-size:12px;
-    color:var(--muted);
-    line-height:1.6;
+  .review-list{margin-top:36px;}
+  .review-item{
+    border:1px solid var(--line); border-top:none;
+    padding:0;
+  }
+  .review-item:first-child{border-top:1px solid var(--line);}
+  .review-summary{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 18px; cursor:pointer;
+    background:#fff;
+  }
+  .review-summary:hover{background:var(--paper-dim);}
+  .r-mark{
+    flex:0 0 auto; width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:12px; color:#fff;
+  }
+  .r-mark.correct{background:var(--correct);}
+  .r-mark.wrong{background:var(--danger);}
+  .r-stem-short{
+    font-size:14px; color:var(--ink);
+    flex:1;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .r-num{font-family:var(--mono); font-size:12px; color:var(--ink-faint);}
+  .r-caret{font-family:var(--mono); color:var(--ink-faint); transition:transform .15s ease;}
+  .review-item.open .r-caret{transform:rotate(90deg);}
+  .review-detail{
+    display:none;
+    padding:6px 18px 22px 52px;
+    border-top:1px solid var(--line-soft);
+    background:var(--paper-dim);
+  }
+  .review-item.open .review-detail{display:block;}
+  .review-detail .q-stem-full{
+    font-family:var(--serif); font-size:15px; margin:14px 0 12px; white-space:pre-line;
+  }
+  .review-detail .q-media{margin:0 0 14px; max-width:460px;}
+  .review-detail .q-media img{max-width:100%;}
+  .review-opts{list-style:none; margin:0 0 14px; padding:0; font-size:13.5px;}
+  .review-opts li{
+    padding:7px 10px; margin-bottom:5px; border:1px solid var(--line-soft);
+    display:flex; gap:8px; align-items:flex-start;
+    background:#fff;
+  }
+  .review-opts li.is-correct{border-color:var(--correct); background:var(--correct-tint);}
+  .review-opts li.is-user-wrong{border-color:var(--danger); background:var(--danger-tint);}
+  .tag{
+    font-family:var(--mono); font-size:10px; padding:1px 6px; border-radius:2px;
+    flex:0 0 auto;
+  }
+  .tag.correct-tag{background:var(--correct); color:#fff;}
+  .tag.wrong-tag{background:var(--danger); color:#fff;}
+  .explain{
+    font-size:13.5px; color:var(--ink-soft);
+    border-left:2px solid var(--ink-soft); padding-left:12px;
+  }
+  .explain b{color:var(--ink);}
+
+  .footer-actions{
+    display:flex; gap:12px; justify-content:center; margin-top:36px; flex-wrap:wrap;
+  }
+  .warn-banner{
+    background:var(--rose-tint); border:1px solid var(--rose-line); color:var(--ink);
+    padding:10px 14px; font-size:13px; margin-bottom:14px; display:none;
   }
 
-  @media (max-width:480px){
-    h1{font-size:23px;}
-    .card{padding:20px 16px 18px;}
-    .qtext{font-size:16.5px;}
-    .score-num{font-size:50px;}
+  footer.pagefoot{
+    text-align:center; font-family:var(--mono); font-size:11px; color:var(--ink-faint);
+    padding:34px 20px 10px;
+  }
+
+  @media (max-width:600px){
+    .cover-card{padding:30px 20px;}
+    .q-card{padding:24px 18px;}
+    .instructions{padding:18px;}
+    .answer-grid{grid-template-columns:repeat(10,1fr);}
+    .result-hero{padding:30px 18px;}
+    .score-big{font-size:44px;}
+    .nav-row{flex-direction:column; align-items:stretch;}
+    .nav-row .btn-row{width:100%; justify-content:space-between;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important; animation:none !important;}
   }
 </style>
 </head>
 <body>
 
-  <div class="ecg-wrap">
-    <div class="ecg-inner">
-      <svg class="ecg-svg" viewBox="0 0 700 46" preserveAspectRatio="none" aria-hidden="true">
-        <path class="ecg-track" d="M0,23 L60,23 L72,23 L78,5 L86,40 L94,23 L110,23 L700,23"/>
-        <path id="ecgFill" class="ecg-fill" d="M0,23 L60,23 L72,23 L78,5 L86,40 L94,23 L110,23 L700,23" stroke-dasharray="1000" stroke-dashoffset="1000"/>
-        <circle id="ecgBlip" class="ecg-blip" cx="0" cy="23"></circle>
-      </svg>
-      <div class="ecg-meta">
-        <span id="progLabel">QUESTION 1 / 30</span>
-        <span id="progPct">0%</span>
+<div class="topbar">
+  <div class="brand">PT&#8209;COMP&#8209;CHECK · <b>Cardiorespiratory Set</b></div>
+  <div class="pill" id="modePill">30Q · Pass 60%</div>
+</div>
+
+<div class="wrap">
+
+  <!-- ===================== COVER ===================== -->
+  <section id="cover-screen">
+    <div class="cover-card">
+      <div class="exam-code">HA PHYSIOTHERAPY · JUNIOR STAFF TRAINING · CARDIORESPIRATORY MODULE</div>
+      <h1>Cardiorespiratory Physiotherapy Competency Check</h1>
+      <p class="subtitle">A 30-item self-assessment covering cardiorespiratory physiotherapy practice —
+      lung function testing, chest physiotherapy, pulmonary and cardiac rehabilitation, GOLD staging,
+      asthma and COPD management, chest X-ray, arterial blood gas and ECG interpretation,
+      exercise-prescription safety limits, and paediatric respiratory care.</p>
+
+      <div class="meta-row">
+        <div class="meta-chip"><span class="num">30</span><span class="lbl">Questions</span></div>
+        <div class="meta-chip"><span class="num">15 / 15</span><span class="lbl">Knowledge / Case-based</span></div>
+        <div class="meta-chip"><span class="num">60%</span><span class="lbl">Pass mark (18/30)</span></div>
+        <div class="meta-chip"><span class="num">1&ndash;5</span><span class="lbl">Options per item</span></div>
       </div>
-    </div>
-  </div>
 
-  <div class="page">
-
-    <header class="masthead">
-      <p class="eyebrow">Staff Competency Check</p>
-      <h1>Cardiopulmonary &amp; Pediatric PT Knowledge Test</h1>
-      <p class="sub">30 questions adapted from the Taiwan Physiotherapist Licensing Examination (Cardiopulmonary &amp; Pediatric Diseases in Physical Therapy paper). Passing score: 60% (18 / 30).</p>
-      <div class="legend">
-        <span class="tag cardio"><span class="dot"></span>Cardiopulmonary</span>
-        <span class="tag peds"><span class="dot"></span>Pediatric</span>
-      </div>
-    </header>
-
-    <div class="card" id="quizCard">
-      <div class="qhead">
-        <span class="qnum" id="qNumLabel">Q01 / 30</span>
-        <span class="tag" id="qCatTag"></span>
-      </div>
-      <p class="qtext" id="qText"></p>
-      <div class="options" id="qOptions"></div>
-
-      <div class="navrow">
-        <button class="nav" id="prevBtn">&larr; Previous</button>
-        <span class="jump-hint" id="answeredHint"></span>
-        <button class="nav primary" id="nextBtn">Next &rarr;</button>
-      </div>
-    </div>
-
-    <div class="card results" id="resultsCard">
-      <div class="score-block">
-        <p class="eyebrow" style="text-align:center;">Result</p>
-        <div class="score-num"><span id="scoreCount">0</span><span>/30</span></div>
-        <p class="score-pct" id="scorePct">0%</p>
-        <div class="verdict" id="verdict"></div>
-
-        <div class="breakdown">
-          <div class="bstat">
-            <div class="label">Cardiopulmonary</div>
-            <div class="val" id="cardioScore">0/15</div>
+      <div class="instructions">
+        <h2>Before you begin</h2>
+        <ol>
+          <li>Each question has <b>five options (1&ndash;5)</b>. Most questions require you to select
+            <b>one</b> answer; questions marked <b>&ldquo;Select 2&rdquo;</b> require exactly two.</li>
+          <li>Selecting the wrong number of answers on a &ldquo;Select 2&rdquo; item will be marked
+            as incorrect for that item.</li>
+          <li>You may move freely between questions using the number rail or the Previous/Next
+            buttons before submitting.</li>
+          <li>Once you submit, you'll see your score, a marked answer sheet, and a full explanation
+            for every question.</li>
+        </ol>
+        <div class="marksheet-demo">
+          <div class="demo-block">
+            <div class="demo-title">Example &middot; Select 1</div>
+            <div class="demo-bubbles">
+              <div class="demo-bubble filled">1</div>
+              <div class="demo-bubble">2</div>
+              <div class="demo-bubble">3</div>
+            </div>
           </div>
-          <div class="bstat">
-            <div class="label">Pediatric</div>
-            <div class="val" id="pedsScore">0/15</div>
+          <div class="demo-block">
+            <div class="demo-title">Example &middot; Select 2</div>
+            <div class="demo-bubbles">
+              <div class="demo-bubble sq filled">1</div>
+              <div class="demo-bubble sq">2</div>
+              <div class="demo-bubble sq filled">3</div>
+            </div>
           </div>
         </div>
-
-        <button class="review-toggle" id="reviewToggle">Show full answer review</button>
       </div>
 
-      <div class="review-list" id="reviewList"></div>
+      <div class="name-field">
+        <label for="staffName">Staff name (optional, shown on your results)</label>
+        <input type="text" id="staffName" placeholder="e.g. Chan Tai Man">
+      </div>
 
-      <button class="restart" id="restartBtn">Retake test</button>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="startBtn">Begin assessment &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="quiz-screen">
+    <div class="quiz-head">
+      <div class="progress-row">
+        <span id="progressLabel">Question 1 of 30</span>
+        <span class="timer" id="timerLabel">00:00</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="chip-rail" id="chipRail"></div>
     </div>
 
-    <footer>
-      Source items adapted from the 113年第一次 Taiwan Physiotherapist Licensing Examination, subject 3311 (心肺疾病與小兒疾病物理治療學). For internal staff training use only.
-    </footer>
+    <div class="warn-banner" id="warnBanner"></div>
 
-  </div>
+    <div class="q-card">
+      <div class="q-eyebrow">
+        <span class="q-index" id="qIndex">Q01</span>
+        <span class="select-badge" id="selectBadge">Select 1</span>
+      </div>
+      <p class="q-stem" id="qStem"></p>
+      <div class="q-media" id="qMedia" style="display:none;"></div>
+      <ul class="options" id="optionsList"></ul>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" id="prevBtn">&larr; Previous</button>
+      <div class="right-group">
+        <button class="btn btn-ghost" id="nextBtn">Next &rarr;</button>
+        <button class="btn btn-primary" id="submitBtn" style="display:none;">Submit test</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RESULTS ===================== -->
+  <section id="results-screen">
+    <div class="result-hero">
+      <div class="stamp" id="stampEl">Pass</div>
+      <div class="score-big" id="scoreBig">0 / 30</div>
+      <div class="score-sub" id="scoreSub">0% &middot; pass mark is 60%</div>
+      <div class="stat-row">
+        <div class="stat"><b id="statCorrect">0</b>Correct</div>
+        <div class="stat"><b id="statIncorrect">0</b>Incorrect</div>
+        <div class="stat"><b id="statTime">00:00</b>Time taken</div>
+        <div class="stat"><b id="statName">&mdash;</b>Staff</div>
+      </div>
+    </div>
+
+    <div class="sheet-title">Marked answer sheet &middot; click a cell to jump to that question below</div>
+    <div class="answer-grid" id="answerGrid"></div>
+
+    <div class="sheet-title">Question-by-question review</div>
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="footer-actions">
+      <button class="btn btn-ghost" id="retakeBtn">Retake this set</button>
+      <button class="btn btn-primary" id="printBtn">Print / save results</button>
+    </div>
+  </section>
+
+  <footer class="pagefoot">AI generated question set for internal HA physiotherapy training use only · not an official examination<br>Validated by Ms Jessie Ma, Mr Thomas Mak</footer>
+</div>
 
 <script>
 (function(){
+  "use strict";
 
-  const questions = [
-    // ---------------- CARDIOPULMONARY (15) ----------------
+  var QUESTIONS = [
     {
-      cat:"cardio",
-      q:"Which statement about measuring Functional Residual Capacity (FRC) is accurate?",
-      opts:[
-        "Body plethysmography (based on Boyle's law) gives an average adult FRC of roughly 2500 mL",
-        "A simple flow-based spirometer gives an average adult FRC of roughly 5000 mL",
-        "Body plethysmography (based on Boyle's law) shows FRC making up roughly 25% of Total Lung Capacity",
-        "A simple flow-based spirometer shows FRC making up roughly 50% of Total Lung Capacity"
-      ],
-      correct:0
+      stem:"A patient's spirometry shows an FEV1/FVC ratio of 0.62 and an FVC of 88% predicted.\n\nWhich pattern does this most likely represent?",
+      options:["Obstructive ventilatory defect","Restrictive ventilatory defect","Mixed obstructive-restrictive defect","Normal spirometry with an isolated diffusion defect","An obstructive defect with a superimposed restrictive component"],
+      correct:[1],
+      explain:"A reduced FEV1/FVC ratio with a normal FVC is a pure obstructive pattern. A mixed pattern, or an obstructive defect with a superimposed restrictive component, would also require a reduced FVC — which is not the case here, since FVC is within the normal range."
     },
     {
-      cat:"cardio",
-      q:"Which of these claims about normal pulmonary function values in healthy adults does NOT hold up?",
-      opts:[
-        "During maximal respiratory effort, alveolar pressure may swing as high as \u00b1200 mmHg",
-        "Anatomic dead space \u2014 airway volume not involved in gas exchange \u2014 usually falls between 145 and 155 mL",
-        "The ratio of dead space to tidal volume (VD/VT) reflects how effective mechanical ventilation is, and typically sits around 25\u201340%",
-        "Elastance, the inverse of compliance, typically falls between 2.5 and 8.5 cmH2O/L"
-      ],
-      correct:0
+      stem:"A 70-year-old man with GOLD 2 COPD (mMRC dyspnoea score 3, CAT score 24) has been clinically stable for the past 6 weeks, with no exacerbations in that time and no unstable cardiac disease. He is keen to improve his exercise tolerance and breathlessness.\n\nWhich of the following is the most appropriate next step?",
+      options:["Refer him to a pulmonary rehabilitation (PR) programme now, since he is symptomatic and currently stable","Defer referral, as PR should only be offered once he has been free of exacerbations for a full 12 months","Refer him, but restrict the programme to education sessions only, excluding exercise training given his high symptom burden","Decline referral, since a CAT score of 20 or above means his disease is too advanced for exercise-based rehabilitation","Refer him, but only after a further 4-week waiting period beyond his current stable window"],
+      correct:[1],
+      explain:"He meets standard criteria for PR referral: symptomatic, disabling breathlessness (mMRC \u22652, high CAT score) in a patient who is currently clinically stable with no recent exacerbation. Exercise training is a core, evidence-based component of PR regardless of symptom burden — it is not excluded for more symptomatic patients, nor is a high CAT score or age a contraindication, and there is no requirement to wait a further 12 months or additional weeks once a patient is already stable."
     },
     {
-      cat:"cardio",
-      q:"Which of the following reflects sound technique when assessing breath sounds?",
-      opts:[
-        "Out of respect for patient privacy, breath sounds should be listened to over the clothing rather than the skin",
-        "Since it's less tiring for the patient, breath sounds are best assessed with them lying flat on their back",
-        "When sounds come across faint or distant, having the patient take a few deep breaths helps confirm the finding",
-        "Only the front of the chest needs auscultation; comparing it with the back isn't necessary"
-      ],
-      correct:2
+      stem:"A patient on regular metoprolol tartrate (Lopressor) is undergoing an exercise training programme.\n\nWhich parameter is most appropriate for monitoring and prescribing exercise intensity in this patient?",
+      options:["Karvonen (heart rate reserve) method using his predicted maximal heart rate","Borg Rating of Perceived Exertion (RPE) scale","Target heart rate set at 60-80% of his age-predicted maximal heart rate","Sweat rate < 0.5L/hr","A fixed target heart rate 20 bpm above his resting heart rate"],
+      correct:[2],
+      explain:"All of the heart-rate-based methods — Karvonen/HRR, a percentage of age-predicted maximum, heart-rate recovery, or a fixed increment above resting heart rate — are compromised by beta-blockade, which blunts the normal heart-rate response to exertion. The Borg RPE scale does not depend on heart rate and remains valid for prescribing and monitoring intensity in these patients."
     },
     {
-      cat:"cardio",
-      q:"Some people with asthma have no symptoms and normal lung function between flare-ups. Severity grading for asthma mainly relies on which measures?",
-      opts:[
-        "Peak expiratory flow, along with daytime and nighttime symptom frequency",
-        "FEV1 and FVC",
-        "How much rescue medication is used, plus a perceived-exertion scale",
-        "Maximal inspiratory and expiratory pressures"
-      ],
-      correct:0
+      stem:"A 24-year-old known asthmatic presents to the physiotherapy-led pulmonary clinic with increasing breathlessness over 2 days, using her salbutamol reliever inhaler more than 6 times a day, and waking at night with wheeze. Peak expiratory flow is 55% of her personal best.\n\nWhat is the most appropriate immediate action?",
+      options:["Give her extra chest physiotherapy airway clearance techniques and review again tomorrow","Advise her to double her inhaled corticosteroid (preventer) dose herself and continue routine follow-up in 2 weeks","Refer/escalate her urgently for medical review, as this represents a moderate-to-severe exacerbation","Increase the intensity of her exercise programme, since exercise can help improve airway clearance","Reassure her that nocturnal symptoms are a normal feature of asthma and no action is required"],
+      correct:[3],
+      explain:"Increasing reliever use, nocturnal symptoms, and a peak flow of 55% of personal best indicate a moderate-to-severe exacerbation requiring urgent medical review for treatment escalation (e.g. oral corticosteroids) — not simply self-titrating her preventer, routine chest physiotherapy, increased exercise, or reassurance, all of which under-treat a deteriorating exacerbation."
     },
     {
-      cat:"cardio",
-      q:"A patient with COPD shows FEV1 = 65%, DLCO = 65%, and FVC = 70% predicted. Under the AMA's respiratory disability classification, where does this land?",
-      opts:["Class 1","Class 2","Class 3","Class 4"],
-      correct:1
+      stem:"During a supervised exercise session, which two of the following findings would be an indication to stop exercise immediately? Select 2.",
+      options:["A systolic blood pressure of 220 mmHg","A diastolic blood pressure of 100 mmHg","A fall in systolic blood pressure of \u226510 mmHg despite an increasing workload","A heart rate 15 bpm below the calculated target training heart rate","An SpO2 of 92% in a patient whose resting baseline on room air is 90%"],
+      correct:[1,3],
+      explain:"A systolic blood pressure of about 220 mmHg or higher, or a fall in systolic blood pressure of \u226510 mmHg despite an increasing workload (suggesting cardiac decompensation or ischaemia), are recognised indications to stop exercise immediately. A diastolic pressure of 100 mmHg is below the ~110-115 mmHg threshold typically used to stop, a heart rate below target simply means the workload can be increased rather than being unsafe, and an SpO2 of 92% is actually above this patient's own resting baseline of 90% and is not itself an indication to stop."
     },
     {
-      cat:"cardio",
-      q:"During pulmonary rehab, a patient with asthma reports needing a rescue bronchodilator on almost every day this past week. What's the most fitting response from the physiotherapist?",
-      opts:[
-        "Scale back the intensity of exercise training",
-        "Bump up the pre-exercise dose of inhaled bronchodilator",
-        "Pause training and arrange further medical review",
-        "Step up oxygen saturation monitoring during exercise"
-      ],
-      correct:2
+      stem:"A patient is 3 days post-uncomplicated ST-elevation myocardial infarction (STEMI), Trop I has peaked for 2days and has been referred for inpatient cardiac rehabilitation. On assessment, his resting heart rate is 78 bpm, blood pressure 118/76 mmHg, and he reports no chest pain, dizziness, or dyspnoea at rest.\n\nWhich of the following would be an appropriate action?",
+      options:["Delay any mobilisation until a symptom-limited exercise stress test has been performed to clear him for activity","Begin low-intensity mobilisation (e.g. sitting, standing, short walks) with symptom and RPE-guided progression, without needing a pre-mobilisation exercise stress test","Begin exercise at 70-85% of his predicted maximal heart rate to accelerate his recovery","Restrict him to bed rest with passive range-of-motion exercises only, pending formal cardiology clearance","Begin unsupervised ambulation on the ward, without monitoring of vital signs or symptoms"],
+      correct:[2],
+      explain:"With stable vital signs and no symptoms at rest, low-intensity, symptom/RPE-guided mobilisation can begin as part of phase I inpatient cardiac rehabilitation without waiting for a formal exercise stress test — that test is typically used later to guide outpatient (phase II) exercise prescription. Starting at 70-85% of predicted maximal heart rate is far too vigorous this early, prolonged bed rest is now avoided because of deconditioning risk, and mobilisation at this stage should always be supervised and monitored."
     },
     {
-      cat:"cardio",
-      q:"Which of these does NOT influence stroke volume?",
-      opts:["Preload","Myocardial contractility","Afterload","How many atrioventricular valves are present"],
-      correct:3
+      stem:"When performing manual chest percussion on a neonate, which modification is appropriate compared with the technique used in adults?",
+      options:["Using a full cupped adult hand technique, but at a slower rate","Using fingertips, a small padded percussion cup, or vibration, applying much lighter force than in adults","Using a mechanical percussor set to the standard adult intensity","Applying percussion only over the posterior chest wall, avoiding all other regions","Percussing only during the expiratory phase, using high force to maximise clearance"],
+      correct:[2],
+      explain:"In neonates and infants, percussion is applied with much lighter force — using fingertips, a small percussion cup, or vibration — rather than simply slowing the rate of an adult cupped-hand technique, because their chest wall is thinner and far more compliant than an adult's."
     },
     {
-      cat:"cardio",
-      q:"During exercise, which physiological factor drives the largest share of the rise in cardiac output?",
-      opts:["Heart rate","Stroke volume","Mean arterial pressure","Peripheral vascular resistance"],
-      correct:0
+      stem:"A 75-year-old man with known COPD is admitted with an acute exacerbation. He is on controlled oxygen therapy (not intubated or ventilated), has copious purulent secretions, and appears fatigued with a weak cough, but is otherwise haemodynamically stable.\n\nWhich two of the following are appropriate physiotherapy actions at this stage? Select 2.",
+      options:["Manual hyperinflation (bagging) via the ventilator circuit as first-line secretion clearance","Airway clearance techniques (e.g. active cycle of breathing technique, manual techniques) with monitoring of oxygen saturation","Positioning with the more affected lung dependent to maximise secretion drainage from that side","Early, low-intensity mobilisation as tolerated","An independent non-invasive ventilation (NIV) weaning trial without medical input"],
+      correct:[2,4],
+      explain:"Priorities are airway clearance techniques with SpO2 monitoring, plus early low-intensity mobilisation as tolerated to limit deconditioning. Manual hyperinflation is delivered via a ventilator circuit and only applies to intubated, mechanically ventilated patients — not this patient on standard oxygen therapy. Postural drainage should target the specific bronchopulmonary segment(s) involved rather than follow a blanket 'more affected lung down' rule, and NIV weaning is a medical decision made collaboratively, not by physiotherapy alone."
     },
     {
-      cat:"cardio",
-      q:"Regarding how exercise test results get applied clinically, which statement doesn't hold up?",
-      opts:[
-        "Because cardiac patients are on beta-blockers, their exercise heart rate won't reflect true exercise intensity",
-        "A symptom-limited maximal test can establish a patient's peak heart rate and peak exercise capacity",
-        "Among cardiac patients, the angina threshold tracks positively with myocardial oxygen consumption",
-        "The angina threshold is calculated as heart rate multiplied by mean arterial pressure (HR \u00d7 MAP)"
-      ],
-      correct:3
+      stem:"In a patient with unilateral pneumonia affecting the right lung, which side-lying position is generally recommended to optimise ventilation-perfusion (V/Q) matching and oxygenation?",
+      options:["Right side-lying (affected lung down), since gravity will aid drainage of secretions from the diseased lung","Left side-lying (unaffected lung down), since perfusion preferentially follows gravity to the better-ventilated lung","Supine, since positional changes make little difference to oxygenation in unilateral disease","Prone, since this position always optimises oxygenation regardless of the side of disease","Right side-lying, since this reduces the work of breathing on the unaffected side"],
+      correct:[2],
+      explain:"Positioning with the unaffected ('good') lung dependent optimises V/Q matching for oxygenation, since perfusion preferentially follows gravity to the better-ventilated lung. Affected-lung-down positioning can aid secretion drainage from that lung, but that is a different goal from optimising oxygenation, which is what this question asks about — a common point of confusion."
     },
     {
-      cat:"cardio",
-      q:"Which biomarker is the most specific indicator of myocardial injury?",
-      opts:["Creatine phosphokinase (CPK)","Lactate dehydrogenase (LDH)","Serum glutamic oxaloacetic transaminase (SGOT)","Troponin I or T"],
-      correct:3
+      stem:"A 32-year-old man is referred for chest physiotherapy assessment. He has had 6 weeks of fever, drenching night sweats, loss of appetite, 7 kg of weight loss and a dry cough. His PA chest radiograph is shown below.\n\nWhich diagnosis do the radiographic appearances most strongly suggest?",
+      media:"<figure><img src=\"image/cardio1.jpg\" alt=\"PA chest radiograph of a young adult\"><figcaption>PA chest radiograph &middot; tap or zoom to enlarge</figcaption></figure>",
+      options:["Right middle lobe consolidation from lobar pneumonia","Miliary tuberculosis","A large left-sided pleural effusion","Acute pulmonary oedema from left ventricular failure","Sarcoidosis with bilateral hilar lymphadenopathy"],
+      correct:[2],
+      explain:"The film shows very widespread, randomly distributed, innumerable tiny nodules throughout both lungs — the classic “miliary” (millet-seed) pattern. There is no consolidation and no pleural fluid, which excludes lobar pneumonia and a pleural effusion, and there is no mediastinal or hilar nodal enlargement, which would be expected with sarcoidosis. Pulmonary oedema would instead show perihilar (bat's-wing) shadowing, upper-lobe blood diversion, septal (Kerley B) lines and often effusions, and would not fit a 6-week history of fever, night sweats and weight loss. That systemic history plus a uniform miliary nodular pattern is miliary tuberculosis — haematogenous dissemination of TB. Practically, this means airborne precautions (fit-tested N95 respirator, negative-pressure or single-room isolation) must be in place before any airway-clearance, nebulisation or cough-provoking treatment, as these are aerosol-generating."
     },
     {
-      cat:"cardio",
-      q:"A patient with ischemic heart disease records a VO2max of 25 mL/kg/min. Applying METs-based risk classification from relevant cardiac and pulmonary rehabilitation guidelines, which risk tier fits?",
-      opts:["No risk","Low risk","Moderate risk","High risk"],
-      correct:1
+      stem:"When teaching a patient correct metered-dose inhaler (MDI) technique using a spacer device, which instruction is correct?",
+      options:["Actuate the inhaler, then inhale as rapidly and forcefully as possible to maximise drug deposition","Actuate the inhaler once, then breathe in slowly and deeply through the spacer, followed by a breath-hold of about 5-10 seconds","Actuate the inhaler, then take several rapid, shallow pants through the spacer rather than one full breath","Actuate the inhaler twice in quick succession into the spacer before taking a single slow breath in","Actuate the inhaler, inhale slowly, then exhale immediately with no breath-hold"],
+      correct:[2],
+      explain:"A single actuation followed by a slow, deep inhalation and a 5-10 second breath-hold allows optimal drug particle deposition in the lower airways. Rapid or shallow breathing, firing multiple actuations together before inhaling, and omitting the breath-hold all reduce effective lung deposition."
     },
     {
-      cat:"cardio",
-      q:"Working as a home-care physiotherapist, which of these medication precautions is inaccurate?",
-      opts:[
-        "A patient on Coumadin (warfarin) should avoid bumps or knocks that might trigger bleeding during sessions",
-        "A patient on Inderal (propranolol) shouldn't have exercise intensity set using heart rate",
-        "A patient on Nitroglycerin should be watched for chest tightness and signs of cardiac ischemia",
-        "A patient on Bosmin (epinephrine) may experience exercise-induced asthma as a result"
-      ],
-      correct:3
+      stem:"During a supervised cardiac rehab exercise session, the ECG monitor shows an irregularly irregular rhythm with no discernible, consistent P waves and a narrow QRS complex.\n\nWhich rhythm does this most likely represent?",
+      options:["Atrial flutter, given sawtooth flutter waves at a regular ventricular rate","Atrial fibrillation, given the irregularly irregular rhythm and absent P waves","Multifocal atrial tachycardia, given multiple P wave morphologies preceding each QRS","Sinus arrhythmia, given a regular cyclical variation in R-R interval with respiration","Second-degree heart block (Mobitz I), given progressive PR interval lengthening before a dropped beat"],
+      correct:[2],
+      explain:"An irregularly irregular rhythm without any discernible, consistent P waves and a narrow QRS complex is the classic description of atrial fibrillation. Atrial flutter typically has a regular ventricular rate with sawtooth flutter waves, multifocal atrial tachycardia shows varying P wave morphologies (not absent P waves), sinus arrhythmia is a regular cyclical variation rather than irregularly irregular, and Mobitz I shows progressive PR prolongation with normal P waves throughout."
     },
     {
-      cat:"cardio",
-      q:"Which combination correctly lists absolute contraindications to a symptom-limited maximal exercise test? \u2460 Ongoing unstable angina \u2461 Moderate aortic stenosis \u2462 Systolic BP of 180 mmHg \u2463 Active endocarditis",
-      opts:["\u2460\u2463","\u2461\u2462","\u2460\u2461\u2462","\u2461\u2462\u2463"],
-      correct:0
+      stem:"Which cardiac biomarker is most specific for confirming myocardial infarction and typically remains elevated for the longest duration after the event?",
+      options:["CK-MB","Myoglobin","Troponin I/T","Total creatine kinase (CK)","C-reactive protein (CRP)"],
+      correct:[3],
+      explain:"Cardiac troponin (I or T) is both the most specific biomarker for myocardial injury and remains elevated the longest — up to 7-14 days. CK-MB's claim is actually true (its faster return to baseline does make it useful for detecting reinfarction), but it is neither the most specific marker nor the longest-lasting, so it does not answer what is being asked. Myoglobin rises earliest but is not cardiac-specific, total CK is not cardiac-specific, and CRP is a non-specific inflammatory marker, not a marker of myocardial necrosis."
     },
     {
-      cat:"cardio",
-      q:"What's the most likely acute danger tied to vigorous physical exertion?",
-      opts:["Coronary artery aneurysm","Acute myocardial infarction","Atherosclerosis","Osteoporosis"],
-      correct:1
+      stem:"A 64-year-old woman with COPD has a post-bronchodilator FEV1 of 68% predicted, an mMRC dyspnoea score of 1, and has had two moderate exacerbations treated with oral corticosteroids in the community over the past year, with no hospital admissions.\n\nUsing the GOLD ABE classification, which group does she fall into?",
+      options:["GOLD 2, Group A","GOLD 2, Group B","GOLD 2, Group E","GOLD 3, Group B","GOLD 3, Group E"],
+      correct:[3],
+      explain:"An FEV1 of 68% predicted falls within GOLD 2 (50-79% predicted), ruling out the GOLD 3 options. Two moderate exacerbations in the past year meets the threshold (\u22652 moderate, or \u22651 leading to hospitalisation) for Group E, regardless of her relatively low mMRC/CAT symptom burden, which would otherwise have suggested Group A."
     },
     {
-      cat:"cardio",
-      q:"Concerning exercise testing for patients with hypertension, which statement is accurate?",
-      opts:[
-        "A resting BP of \u2265200/110 mmHg is itself grounds to proceed with testing",
-        "Well-controlled hypertension means the patient can go straight into vigorous exercise",
-        "For a diagnostic test, there's no need to hold antihypertensive medication beforehand",
-        "When the goal is designing an exercise prescription, medically supervised testing doesn't require holding antihypertensive medication"
-      ],
-      correct:3
-    },
-
-    // ---------------- PEDIATRIC (15) ----------------
-    {
-      cat:"peds",
-      q:"Per motor learning theory, a child with cerebral palsy repeatedly walks on a treadmill in a quiet, undisturbed treatment room. What category of motor task does this represent?",
-      opts:["Continuous\u2013open task","Discrete\u2013open task","Continuous\u2013closed task","Discrete\u2013closed task"],
-      correct:2
+      stem:"Using the standard age-predicted maximal heart rate formula, what is the estimated maximal heart rate for a 60-year-old patient?",
+      options:["150 bpm","155 bpm","160 bpm","165 bpm","170 bpm"],
+      correct:[3],
+      explain:"Using the formula HRmax = 220 - age, a 60-year-old patient has an estimated maximal heart rate of 160 beats per minute (220 - 60 = 160)."
     },
     {
-      cat:"peds",
-      q:"Using Cech and Martin's postural control framework, a therapist has a child practice walking across varied surfaces \u2014 wood floor, mats, sand. Which postural control skill is the focus here?",
-      opts:["Static","Reactive","Anticipatory","Adaptive"],
-      correct:3
+      stem:"A patient has a mucus plug and secretion retention localised to the right middle lobe, confirmed on chest X-ray.\n\nWhich postural drainage position is most appropriate to target this lobe?",
+      options:["Prone with the foot of the bed elevated","Supine, rotated one-quarter turn to the left, with the foot of the bed elevated","Supine, rotated one-quarter turn to the right, with the foot of the bed elevated","Side-lying flat on the right side, with no head-down tilt","Sitting upright, leaning forward"],
+      correct:[2],
+      explain:"Right middle lobe drainage is achieved supine, rotated a quarter turn to the left (away from the affected side), with the foot of the bed elevated. Rotating to the right with a similar head-down tilt is instead the position used to drain the lingula — a common mix-up, since the two positions are mirror images of each other for opposite sides of the chest."
     },
     {
-      cat:"peds",
-      q:"A team is building a new developmental screening tool and validates it against an already-established standardized checklist. What type of validity does this test?",
-      opts:["Predictive validity","Content validity","Concurrent validity","Face validity"],
-      correct:2
+      stem:"According to standard exercise-prescription guidelines, high-intensity (vigorous) aerobic exercise generally corresponds to which percentage range of heart rate reserve (HRR)?",
+      options:["30-39% HRR","40-59% HRR","55-74% HRR","60-89% HRR","\u226590% HRR"],
+      correct:[4],
+      explain:"Vigorous/high-intensity aerobic exercise corresponds to roughly 60-89% of heart rate reserve, moderate intensity to 40-59% HRR, and light intensity to below 40% HRR, while near-maximal/maximal effort is classified as \u226590% HRR. A '55-74%' band is not part of the standard intensity classification, which is defined by the fixed bands above."
     },
     {
-      cat:"peds",
-      q:"A roughly two-year-old watches her mother feed a younger sibling, then grabs a toy bottle and pretends to feed her doll. Which Piagetian stage does this behaviour belong to?",
-      opts:["Reflex stage","Primary circular reactions","Secondary circular reactions","Invention of new means through mental combination"],
-      correct:3
+      stem:"A 66-year-old man on long-term bisoprolol (Concor) for heart failure is starting a cardiac rehabilitation exercise programme. His resting heart rate is 58 bpm and his heart rate only rises to 85 bpm even at what he reports as a hard, breathless effort.\n\nHow should exercise intensity best be monitored and prescribed for this patient?",
+      options:["Using the Karvonen (heart rate reserve) formula based on his predicted maximal heart rate","Using the Borg RPE scale, since bisoprolol (Concor) blunts his heart rate response to exercise","Prescribing a fixed target of 70-85% of his age-predicted maximal heart rate (220 minus age)","Using heart rate recovery at 2 minutes post-exercise as the primary intensity marker","Withholding exercise training altogether, since beta-blockers are a contraindication to exercise"],
+      correct:[2],
+      explain:"As seen here, his heart rate response to a hard, breathless effort is markedly blunted, making any heart-rate-based target unreliable and unachievably low. The Borg RPE scale is unaffected by beta-blockade and is the preferred method to guide and monitor his exercise intensity. Beta-blockers are not a contraindication to exercise — in fact they are standard therapy in stable heart failure and cardiac rehabilitation is still indicated."
     },
     {
-      cat:"peds",
-      q:"Which tool would best help a school-based physiotherapist brief a PE teacher on a student with Down syndrome's coordination and balance?",
-      opts:[
-        "Gross Motor Function Measure (GMFM-66)",
-        "Movement Assessment Battery for Children, 2nd Edition (MABC-2)",
-        "School Function Assessment (SFA)",
-        "Pediatric Evaluation of Disability Inventory (PEDI)"
-      ],
-      correct:1
+      stem:"A patient's cardiopulmonary exercise test shows a peak VO2 of 14 mL/kg/min. Converting this to metabolic equivalents (METs, where 1 MET is approximately 3.5 mL/kg/min), which activity level is this patient most likely limited to?",
+      options:["Marathon-pace running","Brisk stair climbing or heavy yard work","Level-ground walking at a slow pace, ~2 mph","Walking at a moderate pace (~3-4 mph) or golfing while carrying clubs","Cycling at a moderate pace, ~10 mph"],
+      correct:[4],
+      explain:"A peak VO2 of 14 mL/kg/min equates to about 4 METs (14 divided by 3.5). This functional capacity is broadly consistent with activities such as walking at a moderate pace or golfing while carrying clubs — below the demands of moderate cycling (~6 METs) or heavy yard work (~8 METs), but above slow-paced walking (~2.5 METs). This kind of conversion is used clinically to guide activity recommendations and perioperative risk stratification."
     },
     {
-      cat:"peds",
-      q:"Regarding gait changes seen with gastrocnemius\u2013soleus weakness, which statement doesn't fit?",
-      opts:[
-        "Gait speed drops",
-        "During stance, the hamstrings are what keeps the trunk upright",
-        "Terminal stance shows excess knee flexion",
-        "Clearing the foot during swing is difficult, requiring extra help from the hip flexors"
-      ],
-      correct:1
+      stem:"A 4-month-old infant is admitted with bronchiolitis, moderate respiratory distress, and thick secretions, but has been assessed as clinically stable with no signs of respiratory failure.\n\nWhich of the following is most appropriate?",
+      options:["Routine, vigorous percussion and postural drainage as first-line treatment for all infants with bronchiolitis","Gentle positioning and clearance techniques reserved for infants with significant secretion retention, avoiding routine vigorous techniques","Vibration only (no percussion), applied routinely to every infant with bronchiolitis regardless of secretion load","Percussion and postural drainage, provided it is performed by a senior physiotherapist rather than a junior","Nasal suction performed independently by the physiotherapist as the definitive airway clearance technique, replacing medical/nursing input"],
+      correct:[2],
+      explain:"Current evidence does not support routine chest physiotherapy — whether percussion, postural drainage, or routine vibration — for uncomplicated bronchiolitis, as it has not been shown to improve outcomes and may cause distress; the seniority of the therapist performing it does not change this. Gentle positioning and clearance techniques are reserved for infants with clinically significant secretion retention, applied judiciously rather than routinely."
     },
     {
-      cat:"peds",
-      q:"Which sequence correctly orders typical toilet-training milestones, earliest to latest? \u2460 Shows discomfort after a bowel movement \u2461 Manages the toilet independently except for wiping \u2462 Can indicate they've already gone \u2463 Announces the need to go beforehand",
-      opts:["\u2460\u2461\u2462\u2463","\u2460\u2462\u2463\u2461","\u2462\u2460\u2463\u2461","\u2463\u2460\u2461\u2462"],
-      correct:1
+      stem:"Which of the following would be expected to increase stroke volume?",
+      options:["A reduction in end-diastolic volume (preload)","An increase in afterload (e.g. severe aortic stenosis)","An increase in myocardial contractility","Tachycardia sufficient to shorten diastolic filling time","Acute hypovolaemia from haemorrhage"],
+      correct:[3],
+      explain:"Increased myocardial contractility (positive inotropy) raises stroke volume for a given preload and afterload. A reduced preload, an increased afterload, hypovolaemia, and a tachycardia fast enough to shorten diastolic filling time (reducing ventricular filling) would all tend to reduce, not increase, stroke volume."
     },
     {
-      cat:"peds",
-      q:"Which of these is NOT one of the developmental theories that currently guide early intervention for high-risk newborns?",
-      opts:["Dynamic systems theory","Family-centered care theory","Classical conditioning theory","Co-development / synactive theory"],
-      correct:2
+      stem:"A 74-year-old man with known COPD is admitted with an infective exacerbation. He is drowsy but rousable, on a 28% Venturi mask. His arterial blood gas is shown below.\n\nHow would you interpret this blood gas?",
+      media:"<div class=\"data-panel\"><div class=\"dp-title\">Arterial blood gas &middot; on 28% O&#8322; via Venturi mask</div><table><tr><td>pH</td><td class=\"dp-val\">7.27</td><td class=\"dp-ref\">7.35 &ndash; 7.45</td></tr><tr><td>PaCO&#8322;</td><td class=\"dp-val\">9.1 kPa (68 mmHg)</td><td class=\"dp-ref\">4.7 &ndash; 6.0 kPa</td></tr><tr><td>PaO&#8322;</td><td class=\"dp-val\">7.2 kPa (54 mmHg)</td><td class=\"dp-ref\">10.0 &ndash; 13.3 kPa</td></tr><tr><td>HCO&#8323;&#8315;</td><td class=\"dp-val\">30 mmol/L</td><td class=\"dp-ref\">22 &ndash; 26 mmol/L</td></tr><tr><td>Base excess</td><td class=\"dp-val\">+4 mmol/L</td><td class=\"dp-ref\">&minus;2 &ndash; +2 mmol/L</td></tr><tr><td>SaO&#8322;</td><td class=\"dp-val\">87%</td><td class=\"dp-ref\">&mdash;</td></tr></table></div>",
+      options:["Uncompensated metabolic acidosis","Fully compensated respiratory acidosis with type 1 respiratory failure","Partially compensated (acute-on-chronic) respiratory acidosis with type 2 respiratory failure","Acute respiratory alkalosis with type 1 respiratory failure","Metabolic alkalosis with partial respiratory compensation"],
+      correct:[3],
+      explain:"Work through it in order. The pH of 7.27 is acidotic. The PaCO₂ is high at 9.1 kPa and moves in the same direction as the acidosis, so the primary problem is respiratory, not metabolic — which rules out both metabolic answers. The HCO₃⁻ of 30 mmol/L with a base excess of +4 shows renal retention of bicarbonate, i.e. compensation is under way, but it has not brought the pH back into the normal range, so it is partial rather than full compensation (a fully compensated picture would have a pH of 7.35 or above). That combination — a raised bicarbonate suggesting long-standing CO₂ retention, together with a pH that has fallen acutely — is the typical acute-on-chronic picture of a COPD exacerbation. The PaO₂ of 7.2 kPa (below 8 kPa) with a simultaneously raised PaCO₂ defines type 2 (hypercapnic) respiratory failure, not type 1. Clinically this patient is tiring and hypercapnic with a falling pH: he needs urgent medical review for non-invasive ventilation, and physiotherapy should focus on airway clearance and positioning alongside, not instead of, that escalation."
     },
     {
-      cat:"peds",
-      q:"Concerning the neuromotor structure and function of premature infants with no major brain injury, which claim is false?",
-      opts:[
-        "Lower-limb primitive reflexes emerge before upper-limb ones",
-        "Limb flexor tone develops in a proximal-to-distal direction",
-        "Compared to full-term infants, preterm infants at term-equivalent age show weaker flexor tone",
-        "Compared to full-term infants, preterm infants at term-equivalent age show less mature white/grey matter differentiation"
-      ],
-      correct:1
+      stem:"Which two of the following conditions typically produce a systolic murmur? Select 2.",
+      options:["Mitral regurgitation","Aortic stenosis","Mitral stenosis","Aortic regurgitation","Patent ductus arteriosus"],
+      correct:[1,2],
+      explain:"Mitral regurgitation (pansystolic) and aortic stenosis (ejection systolic) are classic causes of a systolic murmur. Mitral stenosis and aortic regurgitation are diastolic murmurs, and a patent ductus arteriosus produces a continuous ('machinery') murmur spanning both systole and diastole, rather than a murmur confined to systole."
     },
     {
-      cat:"peds",
-      q:"Regarding assistive technology use for children with cerebral palsy, which statement is inaccurate?",
-      opts:[
-        "Within the ICF model, assistive technology counts as an environmental factor",
-        "A hip dislocation rate of \u226550% is one contraindication for a prone/supine stander",
-        "Among children who walk independently, less restrictive lower-limb orthoses tend to yield better gross motor gains than more restrictive ones",
-        "Children at GMFCS levels IV\u2013V, given their non-ambulatory prognosis, don't need functional mobility devices considered"
-      ],
-      correct:3
+      stem:"A 78-year-old man is referred to the cardiac rehabilitation clinic. Over the past 2 weeks he has had several episodes of light-headedness and one brief blackout while walking. At rest he is alert, blood pressure 104/62 mmHg, and his pulse is 38 bpm and regular. His lead II rhythm strip is shown below.\n\nWhich rhythm abnormality does the tracing show?",
+      media:"<figure><svg class=\"ecg-strip\" viewBox=\"0 0 600 160\" width=\"100%\" preserveAspectRatio=\"xMidYMid meet\" role=\"img\" aria-label=\"Lead II rhythm strip\"> <defs> <pattern id=\"ecgSmall\" width=\"4.0\" height=\"4.0\" patternUnits=\"userSpaceOnUse\"> <path d=\"M 4.0 0 L 0 0 0 4.0\" fill=\"none\" stroke=\"#F0C4C8\" stroke-width=\"0.5\"/> </pattern> <pattern id=\"ecgBig\" width=\"20.0\" height=\"20.0\" patternUnits=\"userSpaceOnUse\"> <rect width=\"20.0\" height=\"20.0\" fill=\"url(#ecgSmall)\"/> <path d=\"M 20.0 0 L 0 0 0 20.0\" fill=\"none\" stroke=\"#E08A92\" stroke-width=\"1\"/> </pattern> </defs> <rect width=\"600\" height=\"160\" fill=\"#FFF8F8\"/> <rect width=\"600\" height=\"160\" fill=\"url(#ecgBig)\"/> <polyline points=\"0.0,104.0 11.9,103.6 13.1,102.6 14.1,101.0 16.8,94.2 17.4,93.2 17.9,92.8 18.4,92.9 18.9,93.5 19.8,95.4 21.6,100.4 22.6,102.3 24.1,103.6 51.9,103.5 54.6,101.6 55.1,100.9 55.5,100.1 55.9,98.9 56.1,97.9 56.4,96.6 56.6,95.0 56.9,93.2 57.1,91.2 57.5,87.9 59.0,72.7 59.5,68.0 59.9,64.9 60.2,62.2 60.5,60.7 60.8,59.3 61.0,58.2 61.3,57.3 61.5,56.7 61.8,56.4 62.0,56.3 62.3,56.5 62.5,57.0 62.7,57.8 63.0,58.8 63.2,60.0 63.5,61.6 63.7,63.3 64.1,66.3 64.5,69.6 65.0,74.6 67.0,96.2 67.5,101.2 68.0,105.8 68.4,108.8 68.8,111.5 69.1,113.8 69.5,115.7 69.9,117.2 70.2,118.2 70.6,118.9 71.0,119.1 71.4,119.1 71.9,118.5 72.5,117.1 75.0,109.6 76.0,107.3 77.1,105.8 81.4,104.0 82.5,102.7 84.8,98.4 85.4,97.7 85.9,97.7 86.4,98.1 86.9,99.1 87.5,100.9 89.9,109.8 90.8,112.4 91.9,114.8 93.8,116.8 96.6,117.5 110.6,105.5 148.2,103.6 149.5,102.6 150.5,100.9 153.1,94.2 153.8,93.2 154.2,92.8 154.8,92.9 155.2,93.5 156.1,95.4 158.0,100.4 159.0,102.3 160.5,103.6 213.9,103.5 216.2,101.8 216.9,100.8 217.2,100.0 217.6,98.9 217.9,97.8 218.1,96.5 218.4,95.0 218.6,93.1 218.9,90.9 219.1,88.5 219.4,85.8 219.7,81.3 221.0,65.2 221.4,60.7 221.6,58.0 221.9,55.5 222.1,53.2 222.4,51.3 222.6,49.7 222.9,48.4 223.1,47.5 223.4,46.9 223.6,46.7 223.9,46.8 224.1,47.3 224.4,48.1 224.6,49.2 224.9,50.6 225.1,52.3 225.4,54.2 225.7,57.5 226.1,61.2 226.6,66.7 228.8,91.5 229.4,98.2 229.9,103.1 230.3,106.4 230.6,109.4 231.0,112.0 231.4,114.3 231.8,116.1 232.1,117.5 232.5,118.4 232.9,119.0 233.2,119.2 233.6,119.0 234.1,118.3 234.9,116.5 237.1,109.7 238.1,107.4 239.2,105.9 241.2,105.0 247.4,108.1 255.8,116.8 258.8,117.6 272.9,105.5 284.9,103.4 286.0,102.4 287.0,100.6 289.4,94.4 290.0,93.3 290.5,92.9 291.0,92.9 291.5,93.4 292.2,94.8 294.4,100.5 295.4,102.3 296.9,103.6 352.6,103.6 354.0,102.6 355.0,101.0 357.6,94.3 358.2,93.2 358.8,92.8 359.2,92.9 359.8,93.5 360.5,95.0 362.5,100.3 363.5,102.2 365.0,103.6 376.1,103.5 378.9,101.7 379.5,100.8 379.9,100.0 380.1,99.2 380.4,98.2 380.6,97.0 380.9,95.5 381.1,93.8 381.4,91.8 381.8,88.6 383.4,72.2 383.9,67.6 384.2,64.5 384.6,61.9 384.9,60.4 385.1,59.1 385.4,58.0 385.6,57.2 385.9,56.6 386.1,56.3 386.4,56.3 386.6,56.6 386.9,57.1 387.1,57.9 387.4,59.0 387.6,60.3 387.9,61.9 388.1,63.7 388.5,66.7 388.9,70.1 389.5,76.4 391.2,95.5 391.8,100.5 392.2,105.1 392.6,108.2 393.0,111.0 393.4,113.4 393.8,115.3 394.1,116.9 394.5,118.1 394.9,118.8 395.2,119.1 395.6,119.1 396.1,118.6 396.8,117.3 399.4,109.4 400.4,107.3 401.5,105.8 403.7,105.0 410.1,108.7 417.9,116.8 420.0,117.4 421.3,116.9 422.1,115.8 422.9,114.3 423.8,111.8 425.9,104.1 426.5,102.3 427.0,101.4 427.5,101.0 428.0,101.0 428.7,101.8 430.9,105.1 432.1,106.0 489.1,103.6 490.4,102.6 491.4,101.0 494.0,94.3 494.6,93.2 495.1,92.8 495.6,92.9 496.1,93.5 496.9,95.0 498.9,100.4 499.9,102.2 501.4,103.6 538.2,103.5 541.1,101.6 541.6,100.9 542.0,100.1 542.4,98.9 542.6,97.8 542.9,96.5 543.1,94.9 543.4,93.1 543.6,91.1 544.0,87.7 545.5,72.6 546.0,67.9 546.4,64.8 546.8,62.1 547.0,60.6 547.2,59.2 547.5,58.1 547.8,57.3 548.0,56.7 548.2,56.4 548.5,56.3 548.8,56.5 549.0,57.0 549.2,57.8 549.5,58.8 549.8,60.1 550.0,61.6 550.2,63.4 550.6,66.4 551.0,69.8 551.5,74.7 553.4,95.1 554.0,101.3 554.5,105.9 554.9,108.9 555.2,111.5 555.6,113.8 556.0,115.7 556.4,117.1 556.8,118.0 557.1,118.6 557.5,118.6 557.9,118.3 558.2,117.6 558.6,116.5 559.1,114.5 559.8,111.5 561.6,100.8 562.1,98.5 562.5,97.0 562.9,95.8 563.2,95.0 563.6,94.6 564.0,94.6 564.5,95.0 565.1,96.3 567.5,102.7 568.9,105.2 580.0,116.8 583.0,117.6 597.2,105.5 600.0,104.6\" fill=\"none\" stroke=\"#1B1B1B\" stroke-width=\"1.6\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/> <text x=\"6\" y=\"16\" font-family=\"Helvetica, Arial, sans-serif\" font-size=\"11\" fill=\"#5C4F6E\">II</text> <text x=\"594\" y=\"154\" text-anchor=\"end\" font-family=\"Helvetica, Arial, sans-serif\" font-size=\"9\" fill=\"#948AA3\">25 mm/s &#183; 10 mm/mV</text> </svg><figcaption>Lead II rhythm strip &middot; 25 mm/s, 10 mm/mV</figcaption></figure>",
+      options:["Sinus bradycardia","Second-degree AV block, Mobitz type I (Wenckebach)","Complete (third-degree) AV block","Atrial fibrillation with a slow ventricular response","Sinus rhythm with frequent ventricular ectopics"],
+      correct:[3],
+      explain:"The strip shows two independent, regular rhythms. The P waves are regular at roughly 90/min and can be seen marching straight through the QRS complexes and T waves; the QRS complexes are also regular but far slower, at about 35-40/min, and are broad — an escape rhythm. Crucially the PR interval is different for every beat, so no P wave is conducting: this is complete AV dissociation, i.e. third-degree (complete) heart block. Sinus bradycardia would show one P wave for every QRS with a constant PR interval; Wenckebach shows progressive PR lengthening before a dropped beat, but the conducted beats retain a fixed P-QRS relationship; atrial fibrillation has no organised P waves and an irregularly irregular ventricular response, whereas here the atrial activity is clearly organised and regular; and ventricular ectopics would interrupt an otherwise normal-rate sinus rhythm rather than form the entire slow rhythm. This man is symptomatic (dizziness and syncope) with a haemodynamically marginal escape rate, so exercise must not be commenced — he needs urgent medical/cardiology referral for consideration of pacing."
     },
     {
-      cat:"peds",
-      q:"Based on research into motor development among children with Autism Spectrum Disorder, which statement is incorrect?",
-      opts:[
-        "Some children also show motor impairment or developmental coordination disorder",
-        "Some show delayed motor development as early as 6 months old",
-        "Children not diagnosed with ASD until school age display hypertonic postural muscles from early on",
-        "Some repeatedly show stereotyped motor patterns, like spinning their whole body"
-      ],
-      correct:2
+      stem:"According to the GOLD classification, a post-bronchodilator FEV1 of 45% predicted (with FEV1/FVC below 0.70) corresponds to which spirometric grade?",
+      options:["GOLD 1 (Mild)","GOLD 2 (Moderate)","GOLD 3 (Severe)","GOLD 4 (Very Severe)","Not classifiable as COPD"],
+      correct:[3],
+      explain:"GOLD 3 (Severe) is defined as FEV1 30-49% predicted, GOLD 2 (Moderate) as 50-79%, GOLD 1 (Mild) as 80% or above, and GOLD 4 (Very Severe) as below 30% predicted — all with a post-bronchodilator FEV1/FVC below 0.70. An FEV1 of 45% falls within the GOLD 3 band."
     },
     {
-      cat:"peds",
-      q:"A child cries loudly and gags when angry, seeking adult attention. The parent and therapist agree that when this happens, the adults will step out of the child's sight and return once the crying eases. Which behavioural principle does this apply?",
-      opts:[
-        "Positive reinforcement (adding a positive stimulus)",
-        "Negative reinforcement (removing a negative stimulus)",
-        "Punishment (adding a negative stimulus)",
-        "Extinction / time-out (removing a positive reinforcer)"
-      ],
-      correct:3
+      stem:"A patient with decompensated heart failure has a markedly dilated, poorly contracting left ventricle on echocardiogram, with a reduced ejection fraction.\n\nWhich physiological change best explains his reduced exercise tolerance?",
+      options:["Increased stroke volume from compensatory hyperdynamic contractility","Reduced stroke volume due to impaired myocardial contractility, limiting cardiac output during exertion","A compensatory increase in maximal heart rate response that fully offsets the reduced contractility","Reduced afterload that paradoxically worsens forward flow","Increased coronary perfusion pressure during exercise that restores normal output"],
+      correct:[2],
+      explain:"A poorly contracting, dilated ventricle has impaired contractility and reduced stroke volume; since cardiac output equals stroke volume multiplied by heart rate, this limits the rise in cardiac output needed to meet the demands of exercise. Heart failure patients typically cannot mount a heart-rate response large enough to fully compensate, afterload reduction (not increase) is actually beneficial in heart failure, and coronary perfusion does not simply 'restore' normal cardiac output in this setting."
     },
     {
-      cat:"peds",
-      q:"Regarding treatment principles for Duchenne Muscular Dystrophy, which statement is wrong?",
-      opts:[
-        "Work on strengthening remaining muscle capacity",
-        "Respiratory training can help slow the decline in breathing function",
-        "Suitable resistance exercise can begin early after diagnosis",
-        "In the late ambulatory stage, active movement should be emphasized while passive stretching is avoided"
-      ],
-      correct:3
+      stem:"A COPD patient scores 22 on the COPD Assessment Test (CAT), which has a maximum possible score of 40.\n\nWhat does this score generally indicate?",
+      options:["A score of 22 falls in the \"low impact\" band","A score of 22 falls in the \"medium impact\" band","A score of 22 falls in the \"high impact\" band","A score of 22 falls in the \"very high impact\" band","The CAT score cannot be interpreted without concurrent spirometry results"],
+      correct:[3],
+      explain:"CAT scores are commonly banded as 0-10 low impact, 11-20 medium impact, 21-30 high impact, and 31-40 very high impact. A score of 22 falls within the high-impact band, reflecting significant symptom burden on daily life, and the CAT is designed to be interpreted on its own as a symptom measure, independent of spirometry."
     },
     {
-      cat:"peds",
-      q:"Concerning typical cardiopulmonary development in full-term infants and children, which claim is false?",
-      opts:[
-        "Respiratory rate starts around 35/min at birth and falls to about 20/min by age 8",
-        "Heart rate starts around 80/min at 5 minutes after birth and rises to about 100/min by age 8",
-        "PaO2 starts around 62\u201386 mmHg at 5 hours after birth and rises to 80\u2013100 mmHg by adolescence",
-        "Alveolar count starts around 25 million at birth and exceeds 250 million by age 8"
-      ],
-      correct:1
+      stem:"A COPD patient's CAT score has risen from 14 at his last pulmonary rehabilitation review to 27 at today's visit, with no other new symptoms or recent exacerbation reported.\n\nWhat is the most appropriate interpretation and action?",
+      options:["The change is not clinically meaningful and needs no action, since the CAT's minimal clinically important difference is only about 2 points and this rise is far larger","Ignore the score, since spirometry is the only true objective measure of COPD status","This represents a clinically important worsening in health status (the CAT's minimal clinically important difference is about 2 points) and warrants further clinical review","Reduce his physiotherapy input, since a higher score means he requires less rehabilitation","Automatically refer for lung transplant assessment based on this score alone"],
+      correct:[3],
+      explain:"The minimal clinically important difference for the CAT is approximately 2 points; a rise from 14 to 27 (13 points) is well beyond this and reflects a clinically significant deterioration in health status, warranting further clinical review even without a clearly reported precipitant. The first option cites the correct MCID figure but draws the wrong conclusion from it — a rise this much larger than the MCID is clinically meaningful, not dismissible."
     },
     {
-      cat:"peds",
-      q:"Using functional strength testing, which observation would earn a \u201cfair\u201d grade for trunk extensor strength in a 10-month-old?",
-      opts:[
-        "In quadruped, the back stays in a straight line without lumbar sway",
-        "Holding onto a table while standing, can bend forward and touch the floor with one hand",
-        "From sitting, can reach forward for an object and return upright without pushing off the floor with the hands",
-        "In prone, held at the pelvis, can hold an airplane/superman position for 16 seconds"
-      ],
-      correct:2
+      stem:"Which of the following is a contraindication to chest percussion and postural drainage?",
+      options:["Cystic fibrosis with thick secretions","Untreated pneumothorax","Osteoporosis with previous vertebral compression fractures","Retained secretions after abdominal surgery","Atelectasis due to mucus plugging"],
+      correct:[2],
+      explain:"An untreated pneumothorax is a contraindication to percussion and postural drainage, since the mechanical forces involved may worsen an air leak. Osteoporosis with vertebral fractures generally calls for a gentler, modified technique rather than being an absolute contraindication, and the remaining conditions are common indications for chest physiotherapy."
+    },
+    {
+      stem:"A patient with progressive exertional dyspnoea undergoes spirometry: FVC is 60% predicted, FEV1 is 65% predicted, and the FEV1/FVC ratio is 0.85.\n\nWhich ventilatory pattern does this most likely represent?",
+      options:["Obstructive pattern (e.g. COPD), since both FVC and FEV1 are reduced","Restrictive pattern (e.g. pulmonary fibrosis or chest wall disease), since FVC is reduced with a preserved FEV1/FVC ratio","Mixed obstructive-restrictive pattern, since both FVC and FEV1/FVC are reduced","Normal spirometry, since the FEV1/FVC ratio is above 0.70","Isolated small airways disease, since FEV1 is reduced out of proportion to FVC"],
+      correct:[2],
+      explain:"A reduced FVC with a preserved (or increased) FEV1/FVC ratio is the classic restrictive pattern. A reduced FEV1 alone does not signal obstruction when it is simply tracking a proportionally reduced FVC, the FEV1/FVC ratio here is not reduced (ruling out a mixed or obstructive pattern), and 'normal spirometry' overlooks the reduced FVC — the ratio being above 0.70 does not by itself mean spirometry is normal."
     }
   ];
 
-  const TOTAL = questions.length;
-  const PASS_PCT = 0.6;
-  const letters = ["A","B","C","D"];
+  QUESTIONS.forEach(function(q,i){
+    q.id = i;
+    q.numAnswers = q.correct.length;
+  });
 
-  let current = 0;
-  const answers = new Array(TOTAL).fill(null);
+  var TOTAL = QUESTIONS.length;
+  var PASS_PCT = 60;
+  var current = 0;
+  var answers = {}; // id -> array of selected option numbers (1-based)
+  var startTime = null;
+  var timerInterval = null;
+  var elapsedSeconds = 0;
 
-  const qNumLabel = document.getElementById('qNumLabel');
-  const qCatTag = document.getElementById('qCatTag');
-  const qText = document.getElementById('qText');
-  const qOptions = document.getElementById('qOptions');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const answeredHint = document.getElementById('answeredHint');
-  const quizCard = document.getElementById('quizCard');
-  const resultsCard = document.getElementById('resultsCard');
-  const progLabel = document.getElementById('progLabel');
-  const progPct = document.getElementById('progPct');
-  const ecgFill = document.getElementById('ecgFill');
-  const ecgBlip = document.getElementById('ecgBlip');
+  // ---------- element refs ----------
+  var coverScreen = document.getElementById('cover-screen');
+  var quizScreen = document.getElementById('quiz-screen');
+  var resultsScreen = document.getElementById('results-screen');
+  var startBtn = document.getElementById('startBtn');
+  var staffNameInput = document.getElementById('staffName');
 
-  function catLabel(cat){
-    return cat === 'cardio' ? 'Cardiopulmonary' : 'Pediatric';
+  var progressLabel = document.getElementById('progressLabel');
+  var timerLabel = document.getElementById('timerLabel');
+  var progressFill = document.getElementById('progressFill');
+  var chipRail = document.getElementById('chipRail');
+  var qIndex = document.getElementById('qIndex');
+  var selectBadge = document.getElementById('selectBadge');
+  var qStem = document.getElementById('qStem');
+  var qMedia = document.getElementById('qMedia');
+  var optionsList = document.getElementById('optionsList');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var submitBtn = document.getElementById('submitBtn');
+  var warnBanner = document.getElementById('warnBanner');
+
+  function pad(n){ return n<10 ? '0'+n : ''+n; }
+  function fmtTime(sec){
+    var m = Math.floor(sec/60), s = sec%60;
+    return pad(m)+':'+pad(s);
+  }
+
+  // ---------- build chip rail ----------
+  QUESTIONS.forEach(function(q,i){
+    var chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.type = 'button';
+    chip.textContent = (i+1);
+    chip.setAttribute('aria-label','Go to question '+(i+1));
+    chip.addEventListener('click', function(){ goTo(i); });
+    chipRail.appendChild(chip);
+  });
+
+  function refreshChips(){
+    var chips = chipRail.children;
+    for (var i=0;i<chips.length;i++){
+      var c = chips[i];
+      c.classList.toggle('answered', !!(answers[i] && answers[i].length));
+      c.classList.toggle('current', i===current);
+    }
   }
 
   function renderQuestion(){
-    const item = questions[current];
-    qNumLabel.textContent = 'Q' + String(current+1).padStart(2,'0') + ' / ' + TOTAL;
-    qCatTag.className = 'tag ' + item.cat;
-    qCatTag.innerHTML = '<span class="dot"></span>' + catLabel(item.cat);
-    qText.textContent = item.q;
+    var q = QUESTIONS[current];
+    qIndex.textContent = 'Q' + pad(current+1);
+    selectBadge.textContent = q.numAnswers > 1 ? ('Select ' + q.numAnswers) : 'Select 1';
+    qStem.textContent = q.stem;
+    if (q.media){
+      qMedia.innerHTML = q.media;
+      qMedia.style.display = 'block';
+    } else {
+      qMedia.innerHTML = '';
+      qMedia.style.display = 'none';
+    }
+    progressLabel.textContent = 'Question ' + (current+1) + ' of ' + TOTAL;
+    progressFill.style.width = (((current)/(TOTAL-1)) * 100) + '%';
 
-    qOptions.innerHTML = '';
-    item.opts.forEach((optText, idx) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'opt' + (answers[current] === idx ? ' selected' : '');
-      btn.innerHTML = '<span class="letter">' + letters[idx] + '</span><span>' + optText + '</span>';
-      btn.addEventListener('click', () => {
-        answers[current] = idx;
-        renderQuestion();
+    optionsList.innerHTML = '';
+    optionsList.className = 'options' + (q.numAnswers > 1 ? ' multi' : '');
+    var selected = answers[q.id] || [];
+
+    q.options.forEach(function(text, idx){
+      var num = idx+1;
+      var li = document.createElement('li');
+      li.className = 'option' + (selected.indexOf(num) > -1 ? ' selected' : '');
+      li.tabIndex = 0;
+      li.setAttribute('role', q.numAnswers>1 ? 'checkbox' : 'radio');
+      li.setAttribute('aria-checked', selected.indexOf(num) > -1 ? 'true':'false');
+
+      var bubble = document.createElement('span');
+      bubble.className = 'bubble';
+      bubble.textContent = num;
+
+      var span = document.createElement('span');
+      span.className = 'option-text';
+      span.textContent = text;
+
+      li.appendChild(bubble);
+      li.appendChild(span);
+      li.addEventListener('click', function(){ toggleOption(q, num); });
+      li.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleOption(q, num); }
       });
-      qOptions.appendChild(btn);
+      optionsList.appendChild(li);
     });
 
-    prevBtn.disabled = current === 0;
-    const isLast = current === TOTAL - 1;
-    nextBtn.textContent = isLast ? 'Submit test \u2192' : 'Next \u2192';
-    nextBtn.disabled = answers[current] === null;
+    prevBtn.disabled = (current === 0);
+    var isLast = (current === TOTAL-1);
+    nextBtn.style.display = isLast ? 'none' : 'inline-block';
+    submitBtn.style.display = isLast ? 'inline-block' : 'none';
+    warnBanner.style.display = 'none';
 
-    const answeredCount = answers.filter(a => a !== null).length;
-    answeredHint.textContent = answeredCount + ' / ' + TOTAL + ' answered';
-
-    updateProgress();
+    refreshChips();
   }
 
-  function updateProgress(){
-    const frac = current / (TOTAL - 1);
-    const pct = Math.round(((current+1) / TOTAL) * 100);
-    progLabel.textContent = 'QUESTION ' + (current+1) + ' / ' + TOTAL;
-    progPct.textContent = pct + '%';
-
-    const pathLen = 1000;
-    const offset = pathLen - (pathLen * frac);
-    ecgFill.style.strokeDashoffset = offset;
-
-    // move blip roughly along the track's x-range (0 to 700)
-    const x = frac * 700;
-    ecgBlip.setAttribute('cx', x.toFixed(1));
-  }
-
-  prevBtn.addEventListener('click', () => {
-    if(current > 0){
-      current--;
-      renderQuestion();
-    }
-  });
-
-  nextBtn.addEventListener('click', () => {
-    if(answers[current] === null) return;
-    if(current < TOTAL - 1){
-      current++;
-      renderQuestion();
+  function toggleOption(q, num){
+    var sel = answers[q.id] ? answers[q.id].slice() : [];
+    var pos = sel.indexOf(num);
+    if (q.numAnswers === 1){
+      sel = (pos > -1) ? [] : [num];
     } else {
-      showResults();
-    }
-  });
-
-  function showResults(){
-    let score = 0;
-    let cardioTotal = 0, cardioCorrect = 0, pedsTotal = 0, pedsCorrect = 0;
-
-    questions.forEach((item, i) => {
-      const correct = answers[i] === item.correct;
-      if(correct) score++;
-      if(item.cat === 'cardio'){
-        cardioTotal++;
-        if(correct) cardioCorrect++;
+      if (pos > -1){
+        sel.splice(pos,1);
       } else {
-        pedsTotal++;
-        if(correct) pedsCorrect++;
+        sel.push(num);
+        if (sel.length > q.numAnswers){ sel.shift(); }
       }
+    }
+    answers[q.id] = sel;
+    renderQuestion();
+  }
+
+  function goTo(i){
+    current = Math.max(0, Math.min(TOTAL-1, i));
+    renderQuestion();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current-1); });
+  nextBtn.addEventListener('click', function(){ goTo(current+1); });
+
+  submitBtn.addEventListener('click', function(){
+    var unanswered = [];
+    QUESTIONS.forEach(function(q,i){
+      if (!answers[q.id] || answers[q.id].length === 0) unanswered.push(i+1);
+    });
+    if (unanswered.length){
+      warnBanner.style.display = 'block';
+      warnBanner.textContent = 'You still have ' + unanswered.length + ' unanswered question' +
+        (unanswered.length>1?'s':'') + ' (Q' + unanswered.join(', Q') + '). Submit anyway, or use the number rail to go back.';
+      var again = document.createElement('div');
+      again.style.marginTop = '8px';
+      var b = document.createElement('button');
+      b.className = 'btn btn-ghost';
+      b.style.padding = '8px 16px';
+      b.style.fontSize = '12px';
+      b.textContent = 'Submit anyway';
+      b.addEventListener('click', finishQuiz);
+      warnBanner.appendChild(again);
+      again.appendChild(b);
+      return;
+    }
+    finishQuiz();
+  });
+
+  function startTimer(){
+    startTime = Date.now();
+    timerInterval = setInterval(function(){
+      elapsedSeconds = Math.floor((Date.now()-startTime)/1000);
+      timerLabel.textContent = fmtTime(elapsedSeconds);
+    }, 1000);
+  }
+  function stopTimer(){
+    if (timerInterval) clearInterval(timerInterval);
+  }
+
+  startBtn.addEventListener('click', function(){
+    coverScreen.style.display = 'none';
+    quizScreen.style.display = 'block';
+    current = 0;
+    renderQuestion();
+    startTimer();
+    window.scrollTo({top:0});
+  });
+
+  function arraysEqualAsSets(a,b){
+    if (a.length !== b.length) return false;
+    var sa = a.slice().sort();
+    var sb = b.slice().sort();
+    for (var i=0;i<sa.length;i++){ if (sa[i]!==sb[i]) return false; }
+    return true;
+  }
+
+  function finishQuiz(){
+    stopTimer();
+    quizScreen.style.display = 'none';
+    resultsScreen.style.display = 'block';
+    window.scrollTo({top:0});
+
+    var correctCount = 0;
+    QUESTIONS.forEach(function(q){
+      var sel = answers[q.id] || [];
+      if (arraysEqualAsSets(sel, q.correct)) correctCount++;
     });
 
-    const pct = score / TOTAL;
-    document.getElementById('scoreCount').textContent = score;
-    document.getElementById('scorePct').textContent = Math.round(pct*100) + '%';
-    document.getElementById('cardioScore').textContent = cardioCorrect + '/' + cardioTotal;
-    document.getElementById('pedsScore').textContent = pedsCorrect + '/' + pedsTotal;
+    var pct = Math.round((correctCount/TOTAL)*100);
+    var pass = pct >= PASS_PCT;
 
-    const verdict = document.getElementById('verdict');
-    if(pct >= PASS_PCT){
-      verdict.textContent = 'PASS';
-      verdict.className = 'verdict pass';
-    } else {
-      verdict.textContent = 'BELOW PASSING (60%)';
-      verdict.className = 'verdict fail';
-    }
+    document.getElementById('stampEl').textContent = pass ? 'Pass' : 'Not yet';
+    document.getElementById('stampEl').className = 'stamp' + (pass ? '' : ' fail');
+    document.getElementById('scoreBig').textContent = correctCount + ' / ' + TOTAL;
+    document.getElementById('scoreSub').textContent = pct + '% \u00B7 pass mark is ' + PASS_PCT + '%';
+    document.getElementById('statCorrect').textContent = correctCount;
+    document.getElementById('statIncorrect').textContent = (TOTAL-correctCount);
+    document.getElementById('statTime').textContent = fmtTime(elapsedSeconds);
+    document.getElementById('statName').textContent = staffNameInput.value.trim() || '\u2014';
 
+    buildAnswerGrid();
     buildReview();
+  }
 
-    quizCard.style.display = 'none';
-    resultsCard.style.display = 'block';
-    document.querySelector('.ecg-wrap').style.display = 'none';
-    window.scrollTo({top:0, behavior:'smooth'});
+  function buildAnswerGrid(){
+    var grid = document.getElementById('answerGrid');
+    grid.innerHTML = '';
+    QUESTIONS.forEach(function(q,i){
+      var sel = answers[q.id] || [];
+      var ok = arraysEqualAsSets(sel, q.correct);
+      var cell = document.createElement('div');
+      cell.className = 'grid-cell ' + (ok ? 'correct' : 'wrong');
+      cell.textContent = (i+1);
+      cell.tabIndex = 0;
+      cell.addEventListener('click', function(){
+        var target = document.querySelector('.review-item[data-idx="'+i+'"]');
+        if (target){
+          target.classList.add('open');
+          target.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      });
+      grid.appendChild(cell);
+    });
   }
 
   function buildReview(){
-    const list = document.getElementById('reviewList');
+    var list = document.getElementById('reviewList');
     list.innerHTML = '';
-    questions.forEach((item, i) => {
-      const userIdx = answers[i];
-      const isCorrect = userIdx === item.correct;
+    QUESTIONS.forEach(function(q,i){
+      var sel = answers[q.id] || [];
+      var ok = arraysEqualAsSets(sel, q.correct);
 
-      const wrap = document.createElement('div');
-      wrap.className = 'review-item';
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.setAttribute('data-idx', i);
 
-      const head = document.createElement('div');
-      head.className = 'rihead';
-      head.innerHTML =
-        '<span class="rinum">Q' + String(i+1).padStart(2,'0') + '</span>' +
-        '<span class="tag ' + item.cat + '"><span class="dot"></span>' + catLabel(item.cat) + '</span>' +
-        '<span class="rimark ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? 'CORRECT' : 'INCORRECT') + '</span>';
-      wrap.appendChild(head);
+      var summary = document.createElement('div');
+      summary.className = 'review-summary';
+      summary.innerHTML =
+        '<span class="r-mark ' + (ok?'correct':'wrong') + '">' + (ok?'\u2713':'\u2717') + '</span>' +
+        '<span class="r-num">Q' + pad(i+1) + '</span>' +
+        '<span class="r-stem-short">' + escapeHtml(q.stem.split('\n')[0]) + '</span>' +
+        '<span class="r-caret">&#8250;</span>';
+      summary.addEventListener('click', function(){ item.classList.toggle('open'); });
 
-      const qp = document.createElement('p');
-      qp.className = 'riq';
-      qp.textContent = item.q;
-      wrap.appendChild(qp);
+      var detail = document.createElement('div');
+      detail.className = 'review-detail';
 
-      item.opts.forEach((optText, idx) => {
-        const p = document.createElement('p');
-        let cls = 'riopt';
-        let prefix = letters[idx] + '. ';
-        if(idx === item.correct){
-          cls += ' is-correct';
-          prefix += '';
-        }
-        if(idx === userIdx && !isCorrect){
-          cls += ' is-user-wrong';
-        }
-        let suffix = '';
-        if(idx === item.correct) suffix = '  \u2713 correct answer';
-        if(idx === userIdx && !isCorrect) suffix = '  \u2717 your answer';
-        p.className = cls;
-        p.textContent = prefix + optText + suffix;
-        wrap.appendChild(p);
+      var stemFull = document.createElement('div');
+      stemFull.className = 'q-stem-full';
+      stemFull.textContent = q.stem;
+      detail.appendChild(stemFull);
+
+      if (q.media){
+        var mediaBox = document.createElement('div');
+        mediaBox.className = 'q-media';
+        mediaBox.innerHTML = q.media;
+        detail.appendChild(mediaBox);
+      }
+
+      var optsUl = document.createElement('ul');
+      optsUl.className = 'review-opts';
+      q.options.forEach(function(text, idx){
+        var num = idx+1;
+        var isCorrect = q.correct.indexOf(num) > -1;
+        var wasSelected = sel.indexOf(num) > -1;
+        var li = document.createElement('li');
+        var cls = '';
+        if (isCorrect) cls = 'is-correct';
+        else if (wasSelected && !isCorrect) cls = 'is-user-wrong';
+        li.className = cls;
+
+        var tagHtml = '';
+        if (isCorrect) tagHtml = '<span class="tag correct-tag">Correct</span>';
+        else if (wasSelected) tagHtml = '<span class="tag wrong-tag">Your pick</span>';
+
+        li.innerHTML = '<span>' + num + '.</span><span style="flex:1;">' + escapeHtml(text) + '</span>' + tagHtml;
+        optsUl.appendChild(li);
       });
+      detail.appendChild(optsUl);
 
-      list.appendChild(wrap);
+      var explain = document.createElement('div');
+      explain.className = 'explain';
+      explain.innerHTML = '<b>Why:</b> ' + escapeHtml(q.explain);
+      detail.appendChild(explain);
+
+      item.appendChild(summary);
+      item.appendChild(detail);
+      list.appendChild(item);
     });
   }
 
-  document.getElementById('reviewToggle').addEventListener('click', function(){
-    const list = document.getElementById('reviewList');
-    const showing = list.style.display === 'block';
-    list.style.display = showing ? 'none' : 'block';
-    this.textContent = showing ? 'Show full answer review' : 'Hide full answer review';
-  });
+  function escapeHtml(s){
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
 
-  document.getElementById('restartBtn').addEventListener('click', function(){
+  document.getElementById('retakeBtn').addEventListener('click', function(){
+    answers = {};
     current = 0;
-    for(let i=0;i<TOTAL;i++) answers[i] = null;
-    quizCard.style.display = 'block';
-    resultsCard.style.display = 'none';
-    document.querySelector('.ecg-wrap').style.display = 'block';
-    document.getElementById('reviewList').style.display = 'none';
-    document.getElementById('reviewToggle').textContent = 'Show full answer review';
-    renderQuestion();
-    window.scrollTo({top:0, behavior:'smooth'});
+    elapsedSeconds = 0;
+    resultsScreen.style.display = 'none';
+    coverScreen.style.display = 'block';
+    window.scrollTo({top:0});
   });
 
-  renderQuestion();
+  document.getElementById('printBtn').addEventListener('click', function(){
+    window.print();
+  });
+
 })();
 </script>
-
 </body>
 </html>
