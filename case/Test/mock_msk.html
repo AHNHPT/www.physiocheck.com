@@ -153,19 +153,90 @@
 
   /* ---------- progress (filmstrip) ---------- */
   .filmstrip{
-    display:flex; gap:4px; margin:0 0 18px;
+    display:flex; gap:4px; margin:0 0 14px;
   }
   .frame{
-    flex:1; height:6px; border-radius:3px;
-    background:#233b5c;
+    flex:1; height:20px; padding:0; border:0; background:transparent;
+    display:flex; align-items:center; cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
   }
-  .frame.done{background:var(--amber);}
-  .frame.current{background:#8fa6c2;}
+  .frame .bar{
+    display:block; width:100%; height:6px; border-radius:3px;
+    background:#c4ced6;
+    transition:background .12s ease, height .12s ease;
+  }
+  .frame:hover .bar{background:#9fb0bd; height:9px;}
+  .frame:focus-visible{outline:2px solid var(--amber); outline-offset:2px; border-radius:4px;}
+  .frame.done .bar{background:var(--amber);}
+  .frame.current .bar{background:var(--navy-panel); height:10px;}
   .progress-text{
     font-family:'IBM Plex Mono', monospace;
-    font-size:12px; color:#A9B7C6; margin:0 0 8px;
-    display:flex; justify-content:space-between;
+    font-size:12px; color:var(--muted); margin:0 0 8px;
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
   }
+  .jump-toggle{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;
+    background:transparent; border:1.5px solid var(--film-line);
+    color:var(--muted); border-radius:20px; padding:5px 11px;
+    cursor:pointer; white-space:nowrap;
+    transition:background .12s ease, border-color .12s ease, color .12s ease;
+  }
+  .jump-toggle:hover{border-color:var(--amber-dim); color:var(--ink);}
+  .jump-toggle[aria-expanded="true"]{background:var(--ink); border-color:var(--ink); color:#F3F0E6;}
+  .jump-toggle:focus-visible{outline:3px solid var(--amber); outline-offset:2px;}
+
+  /* ---------- jump-to grid ---------- */
+  .jump-panel{
+    background:#e2e8ec;
+    border:1px solid var(--film-line);
+    border-radius:8px;
+    padding:12px;
+    margin:0 0 16px;
+  }
+  .jump-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(40px, 1fr));
+    gap:6px;
+  }
+  .jump-cell{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px; font-weight:600;
+    min-height:38px;
+    display:flex; align-items:center; justify-content:center;
+    background:#fff; color:var(--muted);
+    border:1.5px solid var(--film-line);
+    border-radius:6px; cursor:pointer;
+    transition:border-color .12s ease, background .12s ease, color .12s ease;
+  }
+  .jump-cell:hover{border-color:var(--amber-dim); color:var(--ink);}
+  .jump-cell:focus-visible{outline:3px solid var(--amber); outline-offset:1px;}
+  .jump-cell.done{background:#fdf3e2; border-color:var(--amber); color:var(--ink);}
+  .jump-cell.current{background:var(--ink); border-color:var(--ink); color:#F3F0E6;}
+  .jump-legend{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--muted);
+    display:flex; gap:16px; flex-wrap:wrap;
+    margin:12px 0 0;
+  }
+  .jump-legend span{display:flex; align-items:center; gap:6px;}
+  .dot{
+    width:11px; height:11px; border-radius:3px; display:inline-block;
+    border:1.5px solid var(--film-line); background:#fff;
+  }
+  .dot.done{background:#fdf3e2; border-color:var(--amber);}
+  .dot.current{background:var(--ink); border-color:var(--ink);}
+
+  /* ---------- finish-early bar ---------- */
+  .submit-row{margin-top:10px;}
+  .btn.subtle{
+    width:100%;
+    background:transparent; color:var(--muted);
+    border:1.5px dashed var(--film-line);
+    font-size:13.5px; font-weight:500; padding:11px 16px;
+  }
+  .btn.subtle:hover{background:#f7f4ec; border-color:var(--amber-dim); color:var(--ink);}
 
   /* ---------- question ---------- */
   .case-id{
@@ -316,9 +387,10 @@
 
     <ul class="intro-list">
       <li><span class="num">01</span><span>30 single-best-answer questions covering the cervical, thoracic and lumbar spine, shoulder, elbow, hand, hip, knee, ankle/foot, gait, and integumentary/wound topics.</span></li>
-      <li><span class="num">02</span><span>Select one answer per question, then move to the next. You can revisit a question before submitting.</span></li>
-      <li><span class="num">03</span><span>A score of 18/30 (60%) or higher is a pass.</span></li>
-      <li><span class="num">04</span><span>A full answer review with category breakdown is shown at the end.</span></li>
+      <li><span class="num">02</span><span>Answer in any order — skip a question and come back to it, or use the progress bar or the <strong>Jump to</strong> grid to move straight to any question. Answers can be changed until you submit.</span></li>
+      <li><span class="num">03</span><span>Unanswered questions are counted as incorrect, so check the progress bar before submitting.</span></li>
+      <li><span class="num">04</span><span>A score of 18/30 (60%) or higher is a pass.</span></li>
+      <li><span class="num">05</span><span>A full answer review with category breakdown is shown at the end.</span></li>
     </ul>
 
     <button class="btn full" id="start-btn">Begin assessment</button>
@@ -329,8 +401,18 @@
     <div class="progress-text">
       <span id="progress-label">Question 1 of 30</span>
       <span id="progress-answered">0 answered</span>
+      <button class="jump-toggle" id="jump-toggle" type="button" aria-expanded="false" aria-controls="jump-panel">Jump to</button>
     </div>
     <div class="filmstrip" id="filmstrip"></div>
+
+    <div class="jump-panel hidden" id="jump-panel">
+      <div class="jump-grid" id="jump-grid"></div>
+      <p class="jump-legend">
+        <span><i class="dot current"></i>Current</span>
+        <span><i class="dot done"></i>Answered</span>
+        <span><i class="dot"></i>Not answered</span>
+      </p>
+    </div>
 
     <p class="case-id" id="case-id">CASE 01</p>
     <span class="tag" id="case-tag">Cervical Spine</span>
@@ -339,7 +421,10 @@
 
     <div class="nav-row">
       <button class="btn ghost" id="prev-btn">Back</button>
-      <button class="btn" id="next-btn" disabled>Next</button>
+      <button class="btn" id="next-btn">Next</button>
+    </div>
+    <div class="submit-row hidden" id="submit-row">
+      <button class="btn subtle" id="submit-early-btn" type="button">Submit assessment now</button>
     </div>
   </div>
 
@@ -377,16 +462,16 @@ const QUESTIONS = [
   {n:4, cat:"Thoracic / Posture", q:"A 47-year-old office worker reports chronic aching across the back of the neck and shoulders. Examination shows a pronounced \"dowager's hump\" (excessive upper-thoracic kyphosis) together with a forward-head posture. Which intervention would be LEAST suitable?", opts:{A:"Mobilize the thoracic spine into extension",B:"Mobilize the upper cervical spine into extension",C:"Strengthen the thoracic and upper-back extensors",D:"Stretch the pectoral muscle group"}, ans:"B", exp:"In a dowager's hump / forward-head posture, the lower cervical spine sits flexed while the upper cervical spine (occiput-C1-C2) is already held in relative extension to keep the eyes level. Mobilising the upper cervical spine further into extension would reinforce this compensatory pattern rather than correct it, making it the least suitable choice. Thoracic extension mobilisation, thoracic extensor strengthening and pectoral stretching all address the true source of the deformity."},
   {n:6, cat:"TMJ", q:"Which pair of muscles act together as the prime movers for opening the jaw?", opts:{A:"Medial pterygoid and anterior temporalis",B:"Lateral pterygoid and masseter",C:"Medial pterygoid and geniohyoid",D:"Lateral pterygoid and the anterior belly of digastric"}, ans:"D", exp:"Jaw opening is produced primarily by the lateral pterygoid (which pulls the condyle and disc forward) working together with the anterior belly of digastric (which depresses the mandible), assisted by the geniohyoid and mylohyoid. The medial pterygoid, masseter and temporalis are jaw-closing (elevator) muscles."},
   {n:9, cat:"Headache / Cervical", q:"A 32-year-old graphic designer who spends long hours at a computer reports stiffness on both sides of the upper neck that sometimes spreads over the back of the skull to the crown of the head, with a tight, band-like sensation across the forehead. Symptoms are absent on waking but build through the afternoon. Which is the most likely diagnosis?", opts:{A:"Tension-type headache",B:"Cervicogenic headache",C:"Migraine",D:"Cervical facet joint pain"}, ans:"A", exp:"Bilateral, band-like, non-throbbing head pain that builds through the day, spares the patient on waking, and arises from prolonged postural/visual strain is the classic pattern of tension-type headache. Cervicogenic headache is typically one-sided and reproducible with cervical movement/palpation, while migraine is usually unilateral, throbbing and associated with photophobia/nausea."},
-  {n:11, cat:"Lumbar Spine", q:"When differentiating causes of mechanical low back pain, which pairing of pathology and clinical behavior is correct?", opts:{A:"Muscle strain: pain centered in the back, aggravated by standing or bending forward, eased by sitting",B:"Lumbar facet osteoarthritis: pain centered in the back, eased by standing, aggravated by sitting or forward bending",C:"Scoliosis: pain centered in the back, eased by standing or sitting, aggravated by forward bending",D:"Spondylolisthesis: pain centered in the back, eased by standing, aggravated by sitting"}, ans:"A", exp:"Simple muscular strain classically produces central back pain that is worsened by sustained postures such as prolonged standing or forward bending and eased by sitting/rest, without the directional preference patterns seen in facet arthropathy (worse sitting/flexion, eased by extension/standing) or spondylolisthesis (worse with extension/standing)."},
+  {n:11, cat:"Lumbar Spine", q:"When differentiating mechanical low back pain, which pairing of a pain source with its typical symptom behaviour is correct?", opts:{A:"Discogenic pain — worse with prolonged standing and repeated lumbar extension, eased by sitting and forward bending",B:"Degenerative spondylolisthesis — worse with prolonged sitting, eased by standing and extension-based activity",C:"Lumbar facet joint osteoarthritis — worse with prolonged standing, walking and extension, eased by sitting and forward bending",D:"Acute lumbar muscle strain — worst on waking and easing steadily as the day goes on, with no clear relationship to posture or movement"}, ans:"C", exp:"Facet (zygapophyseal) joint osteoarthritis is an extension-sensitive presentation: prolonged standing, walking and extension compress the posterior elements and provoke pain, while sitting and forward flexion unload the joints and ease it. The other three pairings are reversed or belong to a different pattern — discogenic pain is classically worse with sitting, flexion and Valsalva and eased by extension; spondylolisthesis and segmental instability are worse with standing and extension and eased by sitting; and a muscle strain is provoked by specific movements and sustained postures rather than showing the morning-stiffness-easing-with-activity pattern that should raise suspicion of an inflammatory cause."},
   {n:14, cat:"Lumbar Radiculopathy", q:"A patient with low back pain also reports altered sensation over the lateral calf, weakness of the gluteus medius and ankle dorsiflexors, a diminished ankle reflex, a limited straight-leg raise on one side, and pain reproduced by neck flexion. Which nerve root is most likely involved?", opts:{A:"L3",B:"L4",C:"L5",D:"S1"}, ans:"C", exp:"Weakness of ankle dorsiflexion (tibialis anterior) and hip abduction (gluteus medius) together with sensory change over the lateral calf are the hallmark motor/sensory findings of an L5 radiculopathy, and a positive slump/SLR with neck flexion indicates dural/neural tension consistent with nerve root irritation. (The Achilles reflex is more classically an S1 finding, but the combination of dorsiflexor and glut medius weakness with lateral calf numbness points most strongly to L5.)"},
   {n:17, cat:"Lumbar Spine / Imaging", q:"Which radiographic view best demonstrates a defect or fracture of the pars interarticularis in the lumbar spine?", opts:{A:"Anterior-posterior view",B:"Posterior-anterior view",C:"Lateral view",D:"Oblique view"}, ans:"D", exp:"The oblique lumbar spine view profiles the pars interarticularis as the neck of the classic \"Scotty dog\" — a defect here (spondylolysis) appears as a collar/fracture line across the dog's neck. AP, PA and lateral views do not isolate this region as clearly."},
   {n:19, cat:"Hip", q:"Which of the following operation is most indicated for Graden IV Hip Fracture?", opts:{A:"Screw fixation",B:"Dynamic hip screw",C:"Gamma nail",D:"Bipolar hip arthoplasty"}, ans:"D", exp:"A Garden IV fracture is a fully displaced intracapsular femoral neck fracture with high risk of disrupting the blood supply to the femoral head, so internal fixation carries a high failure/avascular necrosis rate. Arthroplasty (in this case bipolar hip arthroplasty) bypasses this risk and is the preferred operative choice for displaced femoral neck fractures, particularly Garden III/IV."},
   {n:22, cat:"Thoracic Spine", q:"Which of the following statements about thoracic postural dysfunction is INCORRECT?", opts:{A:"Rib restrictions linked to frozen shoulder or limited shoulder motion are most often found at ribs 4 through 8",B:"After a sternotomy for coronary artery bypass surgery, reduced rib cage mobility can be addressed with rib and vertebral mobilization",C:"Once a vertebral compression fracture from osteoporosis has healed, postural correction exercise can be introduced",D:"Manual therapy may be used to address thoracic postural issues in patients with chronic obstructive pulmonary disease"}, ans:"A", exp:"Rib restrictions associated with frozen shoulder or reduced shoulder mobility are most classically found at the upper ribs (around ribs 1-3), related to scalene and serratus posterior superior attachments and their mechanical link to the shoulder girdle — not ribs 4-8 — which is why statement A is the one to flag as incorrect. The other statements about post-sternotomy mobilisation, exercise after a healed compression fracture, and manual therapy in COPD are accurate."},
-  {n:23, cat:"Posture", q:"Which postural presentation is most likely to leave the one-joint hip flexors in a lengthened, weakened position?", opts:{A:"Exaggerated lordosis",B:"Sway back",C:"Round back",D:"Scoliosis"}, ans:"B", exp:"In sway-back posture the pelvis translates forward relative to the line of gravity while the trunk leans back, putting the hip joint into relative extension. This places the one-joint hip flexors (e.g. iliacus) on stretch in a lengthened, weakened position, in contrast to exaggerated lordosis, which tends to shorten and tighten the hip flexors."},
+  {n:23, cat:"Posture", q:"A patient stands with a sway-back posture. Which pattern of muscle imbalance best fits this posture?", opts:{A:"Short and strong iliopsoas and lumbar erector spinae; lengthened and weak gluteus maximus and abdominals",B:"Short and strong hamstrings and upper fibres of internal oblique; lengthened and weak one-joint hip flexors and external oblique",C:"Short and strong rectus femoris and rectus abdominis; lengthened and weak hamstrings and thoracic extensors",D:"Short and strong hip adductors and iliacus; lengthened and weak hip abductors and hamstrings"}, ans:"B", exp:"In sway-back posture the forward-shifted, posteriorly tilted pelvis holds the hips in relative extension, so the hamstrings sit shortened and test strong while the one-joint hip flexors (iliacus) are held lengthened and test weak. The backward-displaced thorax with its long kyphosis shortens the upper fibres of internal oblique and elongates the external oblique; the upper back extensors and neck flexors are also typically weak. Option A describes the classic lordotic (lower-crossed) pattern, which shows the opposite hip flexor–hamstring relationship, so treatment aimed at the wrong pattern would reinforce the deformity."},
   {n:25, cat:"Shoulder / Peripheral Nerve", q:"Regarding nerve injuries affecting the shoulder region, which pairing is LEAST accurate?", opts:{A:"Repetitive overhead work such as prolonged chainsaw or logging use can damage the long thoracic nerve, weakening serratus anterior and producing scapular winging",B:"Prolonged axillary crutch use can compress the suprascapular nerve, weakening supraspinatus and limiting shoulder abduction",C:"Anterior shoulder dislocation can damage the musculocutaneous nerve, reducing biceps brachii strength",D:"A fracture of the humeral neck can damage the axillary nerve, weakening teres minor and limiting external rotation"}, ans:"B", exp:"Prolonged axillary crutch use classically compresses the radial nerve (or brachial plexus cords) in the axilla — \"crutch palsy\" — not the suprascapular nerve. Suprascapular nerve entrapment (weakening supraspinatus/infraspinatus) is more typically caused by repetitive overhead activity, direct trauma, or a spinoglenoid notch ganglion, making pairing B the least accurate."},
   {n:27, cat:"Shoulder", q:"A 52-year-old presents with insidious-onset left shoulder pain, difficulty lifting the arm, restricted and painful range of motion, and disturbed sleep. During assessment, raising the arm below 90° triggers a shrugging compensation with pain. With the arm resting at the side, resisted strength testing in every direction is graded 4/5 and pain-free. What is the most probable diagnosis, and which test should be performed first?", opts:{A:"Adhesive capsulitis; passive range-of-motion testing to check for a capsular pattern of restriction",B:"Rotator cuff pathology; empty can test",C:"Glenohumeral instability; drop arm test",D:"Glenoid labral tear; clunk test"}, ans:"A", exp:"The insidious onset, painful and progressively restricted active and passive range of motion, sleep disturbance, and a global, pain-limited (rather than isolated) reduction in resisted strength with a scapulohumeral \"shrug\" compensation below 90° of elevation are classic for adhesive capsulitis (frozen shoulder). The first step is to confirm the capsular pattern of restriction (external rotation most limited, then abduction, then internal rotation) with passive range-of-motion testing."},
   {n:29, cat:"Thoracic Outlet Syndrome", q:"Which of the following is NOT an appropriate treatment approach for thoracic outlet syndrome?", opts:{A:"Coach the patient on correct posture and build control and endurance of the postural muscles",B:"Strengthen the scalene muscles so the shoulder girdle is held in an elevated position, reducing neural tension",C:"Teach diaphragmatic breathing",D:"Apply neural mobilization when neurodynamic testing is positive and tension signs are present"}, ans:"B", exp:"The scalene muscles form part of the thoracic outlet and, when tight or hypertonic, contribute to neurovascular compression against the first rib. Strengthening (rather than releasing/lengthening) the scalenes would tend to worsen compression, making this an inappropriate treatment approach — unlike postural correction, diaphragmatic breathing, and targeted neural mobilisation once tension signs are confirmed."},
-  {n:31, cat:"Shoulder / Special Test", q:"Which statement correctly describes the shoulder jerk test?", opts:{A:"It is used to detect anterior instability of the glenohumeral joint",B:"With the shoulder flexed and internally rotated and the elbow bent to 90°, the examiner pushes along the axis of the humerus while passively guiding the arm into horizontal adduction, then returns it to the start position",C:"A positive result is reproduction of pain at the front of the shoulder",D:"It is also called the horizontal adduction test and can double as a screen for the acromioclavicular joint"}, ans:"B", exp:"The shoulder jerk test is used to detect posterosuperior labral (SLAP) pathology, not primarily anterior instability. With the shoulder flexed and internally rotated and the elbow at 90°, the examiner loads the humerus axially while guiding the arm into horizontal adduction and then back — a positive test is a palpable or visible jerk/clunk (with or without pain) as the humeral head shifts over a torn labrum, rather than simple reproduction of anterior shoulder pain."},
+  {n:31, cat:"Shoulder / Special Test", q:"A patient's shoulder jerk test is positive. While the shoulder remains irritable, which precaution should the physiotherapist advise?", opts:{A:"Avoid end-range external rotation in abduction — throwing, reaching back for a seat belt, and sleeping with the arm overhead",B:"Avoid sustained work above 90° of abduction with the arm internally rotated, such as overhead painting or hanging laundry",C:"Avoid axial loading of the arm in flexion, horizontal adduction and internal rotation — bench press, push-ups, pushing heavy doors, and lying on the affected side with the arm across the body",D:"Avoid downward traction on the arm — carrying heavy shopping bags at the side or hanging from a bar"}, ans:"C", exp:"A positive jerk test indicates a posteroinferior labral lesion with posterior instability. The test itself reproduces the provocative mechanism: with the elbow at 90° the flexed, internally rotated arm is loaded along the axis of the humerus and guided into horizontal adduction, driving the humeral head posteriorly over the torn labrum. Advice therefore centres on avoiding functional loads in that same position — pressing and pushing with the arm in front of the body, push-ups and bench press, and side-lying with the arm across the chest — while posterior cuff and scapular stabiliser strengthening is progressed within a pain-free range. Option A is the precaution for anterior instability, B for subacromial impingement, and D for inferior instability or a positive sulcus sign."},
   {n:35, cat:"Thoracic Outlet Syndrome", q:"A university student notices that carrying a heavy backpack brings on left shoulder pain along with weakness, tingling, coolness, puffiness, and pallor of the left hand. Which condition should be suspected first?", opts:{A:"Carpal tunnel syndrome",B:"Acromioclavicular joint sprain",C:"Thoracic outlet syndrome",D:"Cervical radiculopathy"}, ans:"C", exp:"Coolness, pallor, puffiness, weakness, and tingling of the hand provoked by a heavy shoulder-strap load are signs of vascular and/or neurological compression at the thoracic outlet (subclavian vessels/brachial plexus compressed between the clavicle, first rib and scalene muscles), pointing to thoracic outlet syndrome rather than a purely local wrist, AC joint, or cervical nerve root problem."},
   {n:39, cat:"Elbow", q:"Which finding is characteristic of lateral epicondylitis?", opts:{A:"Pain with resisted wrist extension",B:"Pain with passive wrist extension while the elbow is kept straight",C:"Pain triggered by repeated wrist flexion",D:"Numbness over ulnar forearm"}, ans:"A", exp:"Lateral epicondylitis (tennis elbow) involves the common extensor origin, principally extensor carpi radialis brevis, so resisted wrist extension reproducibly loads and reproduces pain at the lateral epicondyle. Passive wrist extension and resisted wrist flexion stress the wrist extensors/flexors differently and are not the classic provocation tests for this condition."},
   {n:40, cat:"Elbow / Nerve", q:"Elbow trauma most commonly results in injury to which nerve?", opts:{A:"Musculocutaneous nerve",B:"Median nerve",C:"Ulnar nerve",D:"Radial nerve"}, ans:"C", exp:"The ulnar nerve runs superficially behind the medial epicondyle in the cubital tunnel, making it the nerve most vulnerable to direct trauma, fracture, or dislocation at the elbow (e.g. supracondylar fractures, \"funny bone\" injuries), more so than the median, radial, or musculocutaneous nerves at this level."},
@@ -399,7 +484,7 @@ const QUESTIONS = [
   {n:54, cat:"Knee / Special Test", q:"<img src='image/msk1.png' width='80%' align='center'><br>An student performing a anterior drawer test on this patient with knee instability reports a positive result. Which of the following best explains finding?", opts:{A:"Hemarthrosis of the knee",B:"A tear of the medial meniscus",C:"Rupture of the anterior cruciate ligament",D:"Rupture of the posterior cruciate ligament"}, ans:"D", exp:"The image shows a posterior sag of the tibia at rest (posterior sag sign) — the tibia has already subluxed posteriorly on the femur, which is the classic sign of a PCL rupture. When an \"anterior drawer\" is then performed on a knee that starts from this posteriorly-sagged position, pulling the tibia forward simply reduces it back toward its normal (neutral) position rather than producing true anterior translation beyond neutral. This creates a false-positive anterior drawer test that is actually explained by PCL rupture, not an ACL tear — a well-known pitfall in knee ligament examination."},
   {n:57, cat:"Ankle", q:"According to Ottawa Ankle Rule, which of the following structure will NOT be examed?", opts:{A:"Posterior edge of the lateral malleolus",B:"Posterior edge of the medial malleolus",C:"Calcaneus tuberosity",D:"Navicular"}, ans:"C", exp:"The Ottawa Ankle Rules direct examination to the posterior edge/tip of the distal 6 cm of the lateral and medial malleoli, the base of the 5th metatarsal, and the navicular. The calcaneal tuberosity is not part of the rule's bony tenderness points."},
   {n:58, cat:"Ankle", q:"Which statement about the medial ankle is INCORRECT?", opts:{A:"The spring ligament is another name for the plantar calcaneonavicular ligament",B:"The posterior tibiotalar, tibiocalcaneal, and tibionavicular ligaments together make up the deltoid ligament",C:"The sustentaculum tali, a projection of the calcaneus, helps support the talus",D:"Sectioning the deltoid ligament would allow the talus to shift into inversion relative to the tibia"}, ans:"D", exp:"The deltoid (medial collateral) ligament of the ankle resists eversion/valgus stress. Sectioning it would allow the talus to shift into greater EVERSION relative to the tibia, not inversion, which is why statement D is the incorrect one. The spring ligament naming, the deltoid's three components, and the sustentaculum tali's supporting role are all accurate."},
-  {n:61, cat:"Leg / Nerve", q:"Anterior compartment syndrome of the leg most commonly compromises which nerve?", opts:{A:"Deep peroneal nerve",B:"Superficial peroneal nerve",C:"Tibial nerve",D:"Sural nerve"}, ans:"A", exp:"The anterior compartment of the leg houses tibialis anterior, extensor hallucis longus, extensor digitorum longus, and the deep peroneal nerve, which supplies sensation to the first dorsal web space and motor function to these dorsiflexor/extensor muscles. Compartment syndrome here most commonly compromises the deep (not superficial) peroneal nerve."},
+  {n:61, cat:"Leg / Nerve", q:"In an anterior compartment syndrome of the leg, which combination of neurological findings would you most expect on examination?", opts:{A:"Weak ankle eversion with altered sensation over the dorsum of the foot, dorsiflexion intact",B:"Weak ankle dorsiflexion and great-toe extension with altered sensation confined to the first dorsal web space",C:"Weak ankle plantarflexion and toe flexion with altered sensation over the sole of the foot",D:"Altered sensation over the posterolateral calf and lateral border of the foot with no motor weakness"}, ans:"B", exp:"The anterior compartment contains tibialis anterior, extensor hallucis longus, extensor digitorum longus and the deep peroneal nerve, so rising compartment pressure produces weak dorsiflexion and great-toe/toe extension together with sensory loss over the deep peroneal nerve's small autonomous zone — the first dorsal web space. Weak eversion with numbness over the dorsum of the foot (A) implicates the superficial peroneal nerve in the lateral compartment; weak plantarflexion and toe flexion with a numb sole (C) points to the tibial nerve in the deep posterior compartment; and isolated posterolateral calf and lateral foot sensory change without weakness (D) is a purely sensory sural nerve pattern. Note that pain out of proportion to the injury, pain on passive stretch of the compartment muscles, and a tense, tender compartment all precede these sensory and motor findings."},
   {n:63, cat:"Gait Analysis", q:"On gait assessment, the affected foot strikes the ground abruptly with an audible \"slap\" at initial contact. This finding is most consistent with weakness of which muscle group?", opts:{A:"Tibialis anterior on the involved side",B:"Gastrocnemius-soleus on the involved side",C:"Gluteus maximus on the uninvolved side",D:"Quadriceps on the uninvolved side"}, ans:"A", exp:"An audible foot \"slap\" at initial contact reflects loss of controlled, eccentric lowering of the foot after heel strike, which is the job of tibialis anterior (dorsiflexors) on the involved side. Weakness elsewhere (gastrocnemius-soleus, gluteus maximus, quadriceps) produces different gait deviations (e.g. excessive dorsiflexion in stance, trunk lurch, or knee buckling) rather than a slap foot."},
   {n:68, cat:"Spine / Osteoporosis", q:"Regarding exercise prescription for a patient with an osteoporotic vertebral compression fracture, which combination of statements is correct? ① Spinal exercise should generally be avoided so as not to increase load on the spine ② Postural correction exercise may still be needed for a kyphotic posture even without pain ③ Extension-biased spinal exercise can be appropriate ④ Scapular stabilization work can help maintain posture or slow further postural decline", opts:{A:"①②",B:"③④",C:"①④",D:"②③④"}, ans:"D", exp:"Total avoidance of spinal exercise after an osteoporotic compression fracture is outdated advice (statement ①) — controlled, extension-biased exercise is actually protective because flexion loading increases the risk of further vertebral fracture. Postural correction and scapular stabilisation exercises remain valuable for maintaining alignment and slowing further kyphotic decline even in the absence of ongoing pain, making ②③④ the correct combination."},
   {n:75, cat:"Integumentary / Burns", q:"Which statement about burn classification is INCORRECT?", opts:{A:"First-degree burns affect only the epidermis, cause redness, warmth, and blistering, and are counted toward total body surface area estimates",B:"Superficial second-degree burns involve part of the dermis, are quite painful, and generally heal on their own within about 10-20 days",C:"Deep second-degree burns involve most of the dermis and commonly leave scarring",D:"Third-degree burns invariably require skin grafting"}, ans:"A", exp:"First-degree (superficial/epidermal) burns cause redness, warmth and pain but do NOT blister, and by convention they are excluded from total body surface area (TBSA) calculations used to grade burn severity — only partial- and full-thickness (2nd/3rd degree) burns count toward TBSA. This makes statement A the incorrect one. The descriptions of superficial and deep second-degree burns and the near-universal need for grafting in third-degree burns are accurate."}
@@ -421,26 +506,69 @@ document.getElementById('start-btn').addEventListener('click', () => {
   renderQuestion();
 });
 
+function goTo(index){
+  if (index < 0 || index > QUESTIONS.length - 1) return;
+  state.current = index;
+  renderQuestion();
+  updateFilmstrip();
+}
+
 function buildFilmstrip(){
   const strip = document.getElementById('filmstrip');
   strip.innerHTML = '';
   QUESTIONS.forEach((_, i) => {
-    const f = document.createElement('div');
+    const f = document.createElement('button');
     f.className = 'frame';
+    f.type = 'button';
     f.id = 'frame-' + i;
+    f.title = 'Go to question ' + (i + 1);
+    f.setAttribute('aria-label', 'Go to question ' + (i + 1));
+    f.innerHTML = '<span class="bar"></span>';
+    f.addEventListener('click', () => goTo(i));
     strip.appendChild(f);
   });
+
+  const grid = document.getElementById('jump-grid');
+  grid.innerHTML = '';
+  QUESTIONS.forEach((_, i) => {
+    const c = document.createElement('button');
+    c.className = 'jump-cell';
+    c.type = 'button';
+    c.id = 'cell-' + i;
+    c.textContent = i + 1;
+    c.setAttribute('aria-label', 'Go to question ' + (i + 1));
+    c.addEventListener('click', () => {
+      goTo(i);
+      toggleJumpPanel(false);
+    });
+    grid.appendChild(c);
+  });
+
   updateFilmstrip();
 }
 
 function updateFilmstrip(){
   QUESTIONS.forEach((_, i) => {
-    const f = document.getElementById('frame-' + i);
-    f.classList.remove('done', 'current');
-    if (state.answers[i] !== null) f.classList.add('done');
-    if (i === state.current) f.classList.add('current');
+    const answered = state.answers[i] !== null;
+    [document.getElementById('frame-' + i), document.getElementById('cell-' + i)].forEach(el => {
+      if (!el) return;
+      el.classList.remove('done', 'current');
+      if (answered) el.classList.add('done');
+      if (i === state.current) el.classList.add('current');
+    });
   });
 }
+
+function toggleJumpPanel(force){
+  const panel = document.getElementById('jump-panel');
+  const toggle = document.getElementById('jump-toggle');
+  const open = typeof force === 'boolean' ? force : panel.classList.contains('hidden');
+  panel.classList.toggle('hidden', !open);
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  toggle.textContent = open ? 'Close' : 'Jump to';
+}
+
+document.getElementById('jump-toggle').addEventListener('click', () => toggleJumpPanel());
 
 function renderQuestion(){
   const item = QUESTIONS[state.current];
@@ -471,37 +599,73 @@ function renderQuestion(){
 
   document.getElementById('prev-btn').disabled = state.current === 0;
   const nextBtn = document.getElementById('next-btn');
-  nextBtn.disabled = state.answers[state.current] === null;
-  nextBtn.textContent = state.current === QUESTIONS.length - 1 ? 'Submit assessment' : 'Next';
+  const isLast = state.current === QUESTIONS.length - 1;
+  nextBtn.disabled = false;
+  nextBtn.textContent = isLast ? 'Submit assessment'
+                      : (state.answers[state.current] === null ? 'Skip' : 'Next');
+
+  const remaining = state.answers.filter(a => a === null).length;
+  const submitRow = document.getElementById('submit-row');
+  const submitBtn = document.getElementById('submit-early-btn');
+  submitRow.classList.toggle('hidden', isLast);
+  submitBtn.textContent = remaining === 0
+    ? 'Submit assessment now'
+    : `Submit assessment now — ${remaining} unanswered`;
 }
 
-document.getElementById('prev-btn').addEventListener('click', () => {
-  if (state.current > 0){
-    state.current--;
+function confirmSubmit(){
+  const remaining = state.answers.filter(a => a === null).length;
+  if (remaining > 0){
+    const nums = state.answers
+      .map((a, i) => (a === null ? i + 1 : null))
+      .filter(v => v !== null);
+    const list = nums.slice(0, 12).join(', ') + (nums.length > 12 ? ', …' : '');
+    const ok = window.confirm(
+      `${remaining} question${remaining > 1 ? 's are' : ' is'} still unanswered (Q${list}).\n\n` +
+      `Unanswered questions are marked incorrect. Submit anyway?`
+    );
+    if (!ok) return;
+  }
+  showResults();
+}
+
+document.getElementById('submit-early-btn').addEventListener('click', confirmSubmit);
+
+document.addEventListener('keydown', (e) => {
+  if (screenQuiz.classList.contains('hidden')) return;
+  if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); goTo(state.current + 1); }
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); goTo(state.current - 1); }
+  if (e.key === 'Escape') toggleJumpPanel(false);
+  const letter = e.key.toUpperCase();
+  if (['A','B','C','D'].includes(letter) && QUESTIONS[state.current].opts[letter]){
+    state.answers[state.current] = letter;
     renderQuestion();
     updateFilmstrip();
   }
 });
 
+document.getElementById('prev-btn').addEventListener('click', () => goTo(state.current - 1));
+
 document.getElementById('next-btn').addEventListener('click', () => {
   if (state.current < QUESTIONS.length - 1){
-    state.current++;
-    renderQuestion();
-    updateFilmstrip();
+    goTo(state.current + 1);
   } else {
-    showResults();
+    confirmSubmit();
   }
 });
 
 document.getElementById('retake-btn').addEventListener('click', () => {
   state.current = 0;
   state.answers = new Array(QUESTIONS.length).fill(null);
+  toggleJumpPanel(false);
   screenResults.classList.add('hidden');
   screenIntro.classList.remove('hidden');
   document.getElementById('candidate-name').value = '';
 });
 
 function showResults(){
+  toggleJumpPanel(false);
   screenQuiz.classList.add('hidden');
   screenResults.classList.remove('hidden');
 
