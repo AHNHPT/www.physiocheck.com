@@ -3,1075 +3,1271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
 <title>Vestibular Rehabilitation Competency Check</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --green:#008c15;
-    --green-2:#009743;
-    --gold:#ffc600;
-    --gold-2:#ffcb0a;
-    --white:#ffffff;
-    --ink:#0f2013;
-    --muted:#5c6d60;
-    --paper:#f3f7f2;
-    --line:#e0e8dd;
-    --wrong:#b23a2e;
-    --wrong-bg:#fdf1ef;
-    --radius:14px;
-    --shadow: 0 1px 2px rgba(15,32,19,.06), 0 8px 24px -12px rgba(15,32,19,.18);
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-    background:var(--paper);
-    color:var(--ink);
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.display{font-family:'Poppins',system-ui,sans-serif;}
-  .wrap{max-width:760px;margin:0 auto;padding:20px 16px 60px;}
-  .hidden{display:none !important;}
-  a{color:inherit;}
+:root{
+  --shell:#0b1015;
+  --paper:#141c24;
+  --paper-2:#1b242d;
+  --line:#26333d;
+  --line-soft:#1f2a33;
+  --ink:#e4eef3;
+  --ink-soft:#a3b7c2;
+  --ink-faint:#6d818e;
+  --accent:#2fd0a0;
+  --accent-dim:#1c8d6c;
+  --accent-soft:rgba(47,208,160,.12);
+  --accent-line:rgba(47,208,160,.38);
+  --amber:#f0a952;
+  --amber-soft:rgba(240,169,82,.12);
+  --amber-line:rgba(240,169,82,.42);
+  --correct:#37d891;
+  --correct-soft:rgba(55,216,145,.13);
+  --correct-line:rgba(55,216,145,.42);
+  --wrong:#ff7a70;
+  --wrong-soft:rgba(255,122,112,.12);
+  --wrong-line:rgba(255,122,112,.4);
+  --display:"Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang HK","Microsoft JhengHei",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --radius:12px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--shell);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+  min-height:100vh;
+}
+/* faint horizon grid — a nod to the visual-vestibular conflict */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(47,208,160,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(47,208,160,.05) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 72%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 72%);
+}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 16px 90px}
 
-  /* ---------- Top bar ---------- */
-  .topbar{
-    display:flex;align-items:center;gap:10px;
-    padding:14px 4px 22px;
-  }
-  .mark{
-    width:38px;height:38px;flex:none;border-radius:50%;
-    background:conic-gradient(from -90deg, var(--green) 0deg, var(--green-2) 140deg, var(--gold) 220deg, var(--green) 360deg);
-    position:relative;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .mark::after{
-    content:"";position:absolute;inset:5px;background:var(--white);border-radius:50%;
-  }
-  .mark::before{
-    content:"";position:absolute;width:6px;height:6px;background:var(--green);border-radius:50%;z-index:2;
-  }
-  .brand-text{display:flex;flex-direction:column;line-height:1.15;}
-  .brand-text .eyebrow{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;}
-  .brand-text .name{font-family:'Poppins';font-weight:700;font-size:15px;color:var(--ink);}
+/* ---------- masthead ---------- */
+.masthead{
+  background:rgba(11,16,21,.9);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:40;
+}
+.masthead-in{
+  max-width:900px;margin:0 auto;padding:10px 16px;
+  display:flex;align-items:center;gap:11px;flex-wrap:wrap;
+}
+.eye{width:30px;height:20px;flex:0 0 30px}
+.mark{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);font-weight:700;
+}
+.mark span{color:var(--ink);letter-spacing:.05em;font-weight:600}
+.mast-meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.08em}
 
-  /* ---------- Cards ---------- */
-  .card{
-    background:var(--white);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    padding:26px;
-  }
-  @media (max-width:520px){ .card{padding:20px;} }
+/* ---------- cards ---------- */
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;margin-top:20px;
+}
+@media(max-width:600px){.card{padding:18px}}
 
-  /* ---------- Intro screen ---------- */
-  .hero-ring{
-    width:96px;height:96px;margin:0 auto 18px;position:relative;
-  }
-  .hero-ring svg{width:100%;height:100%;display:block;}
-  .hero-ring .bubble{
-    transform-origin:48px 48px;
-    animation:orbit 7s linear infinite;
-  }
-  @media (prefers-reduced-motion: reduce){ .hero-ring .bubble{animation:none;} }
-  @keyframes orbit{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+.eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:14px;
+}
+h1{
+  font-family:var(--display);font-weight:700;font-size:clamp(27px,5.2vw,40px);
+  line-height:1.14;margin:0 0 12px;color:#f2f8fa;letter-spacing:-.022em;
+}
+h2{
+  font-family:var(--display);font-size:20px;font-weight:700;margin:0 0 12px;color:#f2f8fa;letter-spacing:-.012em;
+}
+.lede{color:var(--ink-soft);font-size:15.5px;margin:0}
 
-  .intro-title{font-size:26px;font-weight:700;text-align:center;margin:0 0 8px;color:var(--ink);}
-  .intro-sub{font-size:14px;color:var(--muted);text-align:center;max-width:540px;margin:0 auto 22px;}
-  .badge-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
-  .pill{
-    font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
-    padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted);
-    background:var(--paper);
-  }
-  .stat-grid{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 24px;
-  }
-  @media (max-width:560px){ .stat-grid{grid-template-columns:repeat(2,1fr);} }
-  .stat{
-    text-align:center;padding:14px 8px;border-radius:10px;background:var(--paper);border:1px solid var(--line);
-  }
-  .stat .num{font-family:'Poppins';font-weight:700;font-size:20px;color:var(--green);}
-  .stat .lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:22px}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--paper-2);padding:14px}
+.stat b{display:block;font-family:var(--display);font-size:23px;font-weight:700;color:var(--accent);line-height:1.2}
+.stat span{font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em}
 
-  .field{margin-bottom:20px;}
-  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink);}
-  .field input[type=text]{
-    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;
-    font-size:15px;font-family:inherit;color:var(--ink);background:var(--white);
-  }
-  .field input[type=text]:focus{outline:2px solid var(--green-2);outline-offset:1px;border-color:var(--green-2);}
-  .field .hint{font-size:12px;color:var(--muted);margin-top:5px;}
+ol.brief{margin:0;padding-left:20px;font-size:14.5px;color:var(--ink-soft)}
+ol.brief li{margin-bottom:9px}
+ol.brief b{color:var(--ink)}
 
-  .btn{
-    appearance:none;border:none;cursor:pointer;font-family:'Inter';font-weight:600;font-size:15px;
-    padding:13px 22px;border-radius:10px;transition:transform .08s ease, filter .15s ease;
-  }
-  .btn:active{transform:translateY(1px);}
-  .btn-primary{background:var(--green);color:var(--white);width:100%;}
-  .btn-primary:hover{filter:brightness(1.08);}
-  .btn-primary:focus-visible, .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
-  .btn-ghost{background:transparent;color:var(--green);border:1.5px solid var(--green);}
-  .btn-ghost:hover{background:rgba(0,140,21,.06);}
-  .btn-gold{background:var(--gold);color:var(--ink);}
-  .btn-gold:hover{filter:brightness(1.05);}
-  .btn:disabled{opacity:.4;cursor:not-allowed;}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+@media(max-width:560px){.demo{grid-template-columns:1fr}}
+.demo-box{border:1px dashed var(--line);border-radius:10px;padding:12px;background:var(--paper-2)}
+.demo-box .eyebrow{margin-bottom:9px}
+.pip{display:flex;gap:7px}
+.pip i{
+  width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:var(--paper);
+  display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-style:normal;color:var(--ink-faint)
+}
+.pip i.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:700}
+.pip i.on2{border-radius:50%;border-color:var(--amber);background:var(--amber-soft);color:var(--amber)}
 
-  .before-list{margin:0 0 24px;padding:0;list-style:none;}
-  .before-list li{
-    display:flex;gap:10px;font-size:13.5px;color:var(--ink);padding:9px 0;border-top:1px solid var(--line);
-  }
-  .before-list li:first-child{border-top:none;}
-  .before-list .n{
-    flex:none;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;
-    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;
-  }
+label.field{display:block;font-size:13px;color:var(--ink-soft);margin:22px 0 7px}
+input[type=text]{
+  width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:9px;background:var(--paper-2);
+  font-family:var(--body);font-size:15px;color:var(--ink)
+}
+input[type=text]::placeholder{color:var(--ink-faint)}
+input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px;background:#0f1720}
 
-  .disclaimer{font-size:11.5px;color:var(--muted);text-align:center;margin-top:18px;line-height:1.5;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--accent);color:#052b21;border:1px solid var(--accent);
+  padding:12px 22px;border-radius:9px;font-family:var(--body);font-size:15px;font-weight:700;
+  cursor:pointer;transition:filter .15s ease;
+}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:var(--paper-2);color:var(--ink);border-color:var(--line);font-weight:600}
+.btn.ghost:hover{border-color:var(--ink-faint);filter:none}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn:focus-visible,.opt:focus-visible,.railbtn:focus-visible,.cell:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.wide{width:100%;margin-top:20px;padding:14px}
 
-  /* ---------- Quiz screen ---------- */
-  .quiz-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
-  .quiz-progress-text{font-size:13px;font-weight:600;color:var(--ink);}
-  .quiz-timer{
-    font-family:'Poppins';font-weight:600;font-size:13px;color:var(--green-2);
-    background:var(--paper);border:1px solid var(--line);padding:5px 10px;border-radius:8px;
-  }
-  .progress-track{height:6px;border-radius:999px;background:var(--line);overflow:hidden;margin-bottom:18px;}
-  .progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-2));border-radius:999px;transition:width .25s ease;}
+/* ---------- quiz ---------- */
+.qbar{
+  display:flex;align-items:center;gap:12px;margin-top:20px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.06em
+}
+.qbar .clock{margin-left:auto;color:var(--ink-soft)}
+.track{height:4px;background:var(--line);border-radius:3px;margin-top:8px;overflow:hidden}
+.track i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent));width:0;transition:width .25s ease;border-radius:3px}
 
-  .rail{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
-  .rail button{
-    width:30px;height:30px;border-radius:8px;border:1.5px solid var(--line);background:var(--white);
-    font-size:11.5px;font-weight:600;color:var(--muted);cursor:pointer;position:relative;
-  }
-  .rail button.k{border-color:#bfe3c4;}
-  .rail button.c{border-color:#ffe28a;}
-  .rail button.answered{background:var(--paper);color:var(--ink);}
-  .rail button.current{border-color:var(--green);background:var(--green);color:#fff;}
-  .rail button:focus-visible{outline:2px solid var(--gold);outline-offset:1px;}
-  .rail button.rev-correct{background:var(--green);border-color:var(--green);color:#fff;}
-  .rail button.rev-wrong{background:var(--wrong);border-color:var(--wrong);color:#fff;}
+.rail{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.railbtn{
+  width:33px;height:30px;border:1px solid var(--line);background:var(--paper);border-radius:7px;
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);cursor:pointer;padding:0
+}
+.railbtn.done{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent);font-weight:700}
+.railbtn.part{border-style:dashed;border-color:var(--amber);color:var(--amber);background:var(--amber-soft);font-weight:700}
+.railbtn.here{border-color:var(--accent);background:var(--accent);color:#052b21;font-weight:700}
+@media(max-width:560px){.railbtn{width:29px;height:27px;font-size:10.5px}}
 
-  .cat-tag{
-    display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;
-    text-transform:uppercase;padding:5px 11px;border-radius:999px;margin-bottom:14px;
-  }
-  .cat-tag.knowledge{background:#e8f7ea;color:var(--green);}
-  .cat-tag.case{background:#fff6dc;color:#9a7500;}
-  .cat-tag .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.qtag{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:20px;padding:3px 10px;color:var(--ink-faint)
+}
+.chip.hot{border-color:var(--accent-line);color:var(--accent);background:var(--accent-soft);font-weight:700}
+.chip.hot.pend{border-color:var(--amber);color:var(--amber);background:var(--amber-soft);border-style:dashed}
+.chip.topic{border-style:none;padding-left:0;text-transform:none;letter-spacing:.02em;font-family:var(--body);font-size:12px;color:var(--ink-faint)}
+.stem{font-size:17px;line-height:1.62;margin:0 0 6px;color:var(--ink)}
+.stem .vig{display:block;background:var(--paper-2);border-left:3px solid var(--accent-line);
+  padding:13px 15px;border-radius:0 9px 9px 0;margin-bottom:14px;font-size:15.5px;color:var(--ink-soft)}
 
-  .vignette{
-    background:var(--paper);border-left:4px solid var(--gold-2);border-radius:8px;
-    padding:14px 16px;font-size:14.5px;color:var(--ink);margin-bottom:16px;
-  }
-  .vignette .vlabel{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9a7500;margin-bottom:6px;display:block;}
+/* inline figures */
+figure.fig{margin:16px 0 4px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0e161d}
+figure.fig svg{display:block;width:100%;height:auto}
+figure.fig figcaption{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-faint);padding:8px 12px;border-top:1px solid var(--line-soft);background:var(--paper-2)}
 
-  .question-stem{font-size:16.5px;font-weight:600;line-height:1.5;margin:0 0 18px;color:var(--ink);}
+.opts{margin-top:16px;display:grid;gap:8px}
+.opt{
+  display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+  border:1px solid var(--line);background:var(--paper-2);border-radius:10px;padding:12px 14px;
+  font-family:var(--body);font-size:15px;color:var(--ink);cursor:pointer;line-height:1.5;
+  transition:border-color .12s ease,background .12s ease;
+}
+.opt:hover{border-color:var(--ink-faint)}
+.opt > b{
+  flex:0 0 26px;height:26px;border:1px solid var(--line);border-radius:7px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink-faint);background:var(--paper)
+}
+.opt.two > b{border-radius:50%}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel > b{background:var(--accent);border-color:var(--accent);color:#052b21}
+.opt.two.sel{border-color:var(--amber);background:var(--amber-soft)}
+.opt.two.sel > b{background:var(--amber);border-color:var(--amber);color:#2b1a05}
 
-  .options{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
-  .option{
-    display:flex;align-items:flex-start;gap:12px;padding:13px 15px;border:1.5px solid var(--line);
-    border-radius:10px;cursor:pointer;background:var(--white);transition:border-color .12s, background .12s;
-  }
-  .option:hover{border-color:var(--green-2);}
-  .option .radio{
-    flex:none;width:19px;height:19px;border-radius:50%;border:2px solid #c7d3c9;margin-top:1px;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .option .radio::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--green);opacity:0;}
-  .option.selected{border-color:var(--green);background:#f2faf3;}
-  .option.selected .radio{border-color:var(--green);}
-  .option.selected .radio::after{opacity:1;}
-  .option .otext{font-size:14.5px;color:var(--ink);}
-  .option input{position:absolute;opacity:0;pointer-events:none;}
+.nav{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.nav .btn{flex:1;min-width:120px}
+.nav .btn.submit{flex:0 0 auto}
 
-  .quiz-nav{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;}
-  .quiz-nav .side{display:flex;gap:10px;}
+/* ---------- results ---------- */
+.verdict{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.badge{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  padding:6px 14px;border-radius:20px
+}
+.badge.pass{background:var(--correct-soft);color:var(--correct);border:1px solid var(--correct-line)}
+.badge.fail{background:var(--wrong-soft);color:var(--wrong);border:1px solid var(--wrong-line)}
+.bigscore{font-family:var(--display);font-size:clamp(38px,9vw,58px);font-weight:700;line-height:1;color:#f2f8fa;letter-spacing:-.03em}
+.bigscore small{font-size:.42em;color:var(--ink-faint);font-weight:600}
+.pcline{font-size:13.5px;color:var(--ink-faint);margin-top:6px}
 
-  .submit-row{margin-top:18px;text-align:center;}
-  .submit-row .sub-hint{font-size:12px;color:var(--muted);margin-top:8px;}
+.sheet{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:14px}
+@media(max-width:560px){.sheet{grid-template-columns:repeat(6,1fr)}}
+.cell{
+  aspect-ratio:1/1;border-radius:7px;border:1px solid var(--line);background:var(--paper-2);
+  font-family:var(--mono);font-size:11.5px;cursor:pointer;padding:0;color:var(--ink-faint)
+}
+.cell.ok{background:var(--correct-soft);border-color:var(--correct-line);color:var(--correct);font-weight:700}
+.cell.no{background:var(--wrong-soft);border-color:var(--wrong-line);color:var(--wrong);font-weight:700}
 
-  /* ---------- Results ---------- */
-  .score-hero{display:flex;flex-direction:column;align-items:center;padding:8px 0 20px;}
-  .score-ring{width:150px;height:150px;position:relative;margin-bottom:14px;}
-  .score-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
-  .score-ring .bg{fill:none;stroke:var(--line);stroke-width:10;}
-  .score-ring .fg{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease;}
-  .score-ring .center{
-    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  }
-  .score-ring .pct{font-family:'Poppins';font-weight:800;font-size:30px;color:var(--ink);}
-  .score-ring .frac{font-size:12px;color:var(--muted);}
-  .pass-badge{
-    font-family:'Poppins';font-weight:700;font-size:14px;padding:7px 18px;border-radius:999px;margin-bottom:6px;
-  }
-  .pass-badge.pass{background:#e8f7ea;color:var(--green);}
-  .pass-badge.fail{background:var(--wrong-bg);color:var(--wrong);}
-  .pass-note{font-size:12.5px;color:var(--muted);text-align:center;}
+.topics{margin-top:16px;display:grid;gap:8px}
+.trow{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.trow .tname{flex:1 1 auto;color:var(--ink-soft)}
+.trow .tbar{flex:0 0 110px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.trow .tbar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.trow .tnum{flex:0 0 46px;text-align:right;font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
 
-  .breakdown{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0;}
-  .bd-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-align:center;}
-  .bd-card .bd-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin-bottom:4px;}
-  .bd-card .bd-score{font-family:'Poppins';font-weight:700;font-size:19px;color:var(--green-2);}
+.review{margin-top:18px;border-top:1px solid var(--line)}
+.rev{padding:20px 0;border-bottom:1px solid var(--line)}
+.rev-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.verdict-tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  padding:3px 9px;border-radius:5px
+}
+.verdict-tag.ok{background:var(--correct-soft);color:var(--correct);border:1px solid var(--correct-line)}
+.verdict-tag.no{background:var(--wrong-soft);color:var(--wrong);border:1px solid var(--wrong-line)}
+.rev .rop{
+  display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);
+  border-radius:9px;margin-top:6px;font-size:14.5px;background:var(--paper-2)
+}
+.rev .rop > b{flex:0 0 22px;font-family:var(--mono);font-size:11.5px;color:var(--ink-faint)}
+.rev .rop.key{border-color:var(--correct-line);background:var(--correct-soft)}
+.rev .rop.key > b{color:var(--correct)}
+.rev .rop.picked-wrong{border-color:var(--wrong-line);background:var(--wrong-soft)}
+.rev .rop.picked-wrong > b{color:var(--wrong)}
+.rop-tag{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  white-space:nowrap;padding-top:3px}
+.rop.key .rop-tag{color:var(--correct)}
+.rop.picked-wrong .rop-tag{color:var(--wrong)}
+.why{margin-top:12px;background:var(--paper-2);border-radius:10px;padding:14px 16px;font-size:14.5px;color:var(--ink-soft)}
+.why b.lbl{color:var(--accent);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  display:block;margin-bottom:5px}
+.why em{color:var(--ink);font-style:italic}
 
-  .meta-row{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-bottom:8px;}
-  .meta-item{text-align:center;}
-  .meta-item .mv{font-family:'Poppins';font-weight:700;font-size:15px;color:var(--ink);}
-  .meta-item .ml{font-size:11px;color:var(--muted);}
+.warn{margin:18px 0 0;padding:12px 14px;border:1px solid var(--amber-line);background:var(--amber-soft);
+  border-radius:10px;font-size:14px;color:var(--ink)}
+.warn b{color:var(--amber)}
+.jumps{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.jump{font-family:var(--mono);font-size:11.5px;border:1px solid var(--amber);background:transparent;
+  color:var(--amber);border-radius:7px;padding:4px 9px;cursor:pointer;font-weight:700}
+.jump:hover{background:var(--amber);color:#2b1a05}
+.foot{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:26px}
+.hidden{display:none !important}
 
-  .action-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px;}
-  .action-row .btn{flex:1;min-width:150px;}
-
-  .review-toggle{
-    display:flex;align-items:center;justify-content:space-between;cursor:pointer;
-    padding:16px 4px;border-top:1px solid var(--line);margin-top:24px;
-  }
-  .review-toggle h3{margin:0;font-size:15px;}
-  .review-toggle .chev{transition:transform .2s ease;color:var(--muted);}
-  .review-toggle.open .chev{transform:rotate(180deg);}
-
-  .review-item{border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;background:var(--white);}
-  .review-item .r-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
-  .r-num{font-family:'Poppins';font-weight:700;font-size:12.5px;color:var(--muted);}
-  .r-result{
-    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-    padding:3px 10px;border-radius:999px;
-  }
-  .r-result.correct{background:#e8f7ea;color:var(--green);}
-  .r-result.wrong{background:var(--wrong-bg);color:var(--wrong);}
-  .r-stem{font-size:14.5px;font-weight:600;margin:6px 0 10px;color:var(--ink);}
-  .r-opt{
-    font-size:13.5px;padding:9px 12px;border-radius:8px;margin-bottom:6px;border:1px solid var(--line);
-    display:flex;gap:8px;align-items:flex-start;color:var(--ink);
-  }
-  .r-opt.correct-answer{background:#e8f7ea;border-color:var(--green);color:#0c4a17;}
-  .r-opt.chosen-wrong{background:var(--wrong-bg);border-color:var(--wrong);color:#7a2a20;}
-  .r-explain{
-    font-size:13px;color:var(--muted);background:var(--paper);border-radius:8px;padding:11px 13px;margin-top:8px;
-    border-left:3px solid var(--gold-2);
-  }
-  .r-explain b{color:var(--ink);}
-
-  footer.foot{text-align:center;font-size:11.5px;color:var(--muted);margin-top:34px;}
-
-  @media print{
-    body{background:#fff;}
-    .no-print{display:none !important;}
-    .wrap{max-width:100%;padding:0;}
-    .card{box-shadow:none;border:none;}
-    .review-item{break-inside:avoid;}
-  }
+@media print{
+  :root{--paper:#fff;--paper-2:#f6f8f9;--shell:#fff;--ink:#1a2229;--ink-soft:#41505a;--ink-faint:#71828d;--line:#d8e0e5}
+  body{background:#fff;color:#1a2229}
+  body::before{display:none}
+  h1,h2,.bigscore{color:#101a20}
+  .masthead,.nav,.rail,.btn,.sheet,.qbar,.track{display:none !important}
+  .card{border:none;padding:0;margin-top:14px;break-inside:avoid;background:#fff}
+  .rev{break-inside:avoid}
+  figure.fig{background:#fff}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
 </head>
 <body>
+
+<div class="masthead">
+  <div class="masthead-in">
+    <svg class="eye" viewBox="0 0 60 40" aria-hidden="true">
+      <path d="M4 20 C16 5, 44 5, 56 20 C44 35, 16 35, 4 20 Z" fill="none" stroke="#2fd0a0" stroke-width="2.4"/>
+      <circle cx="30" cy="20" r="8" fill="none" stroke="#2fd0a0" stroke-width="2.4"/>
+      <circle cx="30" cy="20" r="3.2" fill="#2fd0a0"/>
+      <path d="M40 20 h13 M53 20 l-5 -4 M53 20 l-5 4" stroke="#f0a952" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="mark">PT&#8209;VESTIB&#8209;CHECK · <span>Staff Competency Set</span></div>
+    <div class="mast-meta">30Q · PASS 60%</div>
+  </div>
+</div>
+
 <div class="wrap">
 
-  <div class="topbar">
-    <div class="mark" aria-hidden="true"></div>
-    <div class="brand-text">
-      <span class="eyebrow">Physiotherapy · In-Service Training</span>
-      <span class="name">Vestib-Check</span>
+<!-- ============ INTRO ============ -->
+<section id="intro">
+  <div class="card">
+    <div class="eyebrow">Internal training paper · vestibular rehabilitation · self-assessment</div>
+    <h1>Vestibular Rehabilitation Competency Check</h1>
+    <p class="lede">A 30-item assessment for physiotherapy staff running a vestibular caseload: labyrinthine
+      anatomy and reflex physiology, the BPPV variants and their repositioning manoeuvres, acute unilateral and
+      bilateral hypofunction, the peripheral-versus-central decision, exercise prescription and dosage, and the
+      outcome measures used to prove it worked. Eighteen items test knowledge directly; twelve are clinical
+      vignettes. This is a hard paper by design &mdash; on most items more than one option is defensible, and you
+      are being asked for the strongest one.</p>
+
+    <div class="stats">
+      <div class="stat"><b>30</b><span>Questions (18 knowledge / 12 case)</span></div>
+      <div class="stat"><b>~50</b><span>Minutes (suggested)</span></div>
+      <div class="stat"><b>60%</b><span>Pass mark (18/30)</span></div>
+      <div class="stat"><b>5</b><span>Options per item</span></div>
     </div>
   </div>
 
-  <!-- ============ INTRO SCREEN ============ -->
-  <section id="screen-intro" class="card">
-    <div class="hero-ring" aria-hidden="true">
-      <svg viewBox="0 0 96 96">
-        <circle cx="48" cy="48" r="40" fill="none" stroke="#e0e8dd" stroke-width="6"/>
-        <circle cx="48" cy="48" r="40" fill="none" stroke="url(#g1)" stroke-width="6" stroke-linecap="round" stroke-dasharray="188 251"/>
-        <defs>
-          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#008c15"/>
-            <stop offset="100%" stop-color="#ffc600"/>
-          </linearGradient>
-        </defs>
-        <g class="bubble">
-          <circle cx="48" cy="10" r="5" fill="#ffc600"/>
-        </g>
-      </svg>
-    </div>
+  <div class="card">
+    <h2>Before you begin</h2>
+    <ol class="brief">
+      <li>Each question has <b>five options (1&ndash;5)</b>. Most require <b>one</b> answer; items marked <b>&ldquo;Select 2&rdquo;</b> require exactly two.</li>
+      <li>Selecting the wrong number of answers on a &ldquo;Select 2&rdquo; item is marked as <b>incorrect</b> for that item.</li>
+      <li>Move freely between questions using the number rail or the Previous / Next buttons before you submit.</li>
+      <li>Sides matter. Where a stem names a <b>right</b> or <b>left</b> ear, or a direction of nystagmus, work the
+        side out before you read the options &mdash; two options will usually name the right treatment on the wrong side.</li>
+      <li>Read each stem carefully. Where it asks for the <b>best</b>, <b>first</b> or <b>most likely</b> option,
+        several answers will be partly right and some are true statements that do not answer the question asked.</li>
+      <li>After submitting you get your score, a marked answer sheet, a topic breakdown, and an explanation for every
+        question &mdash; including why each near-miss option fails.</li>
+    </ol>
 
-    <div class="badge-row">
-      <span class="pill">30 Questions</span>
-      <span class="pill">15 Knowledge · 15 Case-Based</span>
-      <span class="pill">Pass mark 70%</span>
-    </div>
-
-    <h1 class="intro-title">Vestibular Rehabilitation<br>Competency Check</h1>
-    <p class="intro-sub">A 30-item self-assessment covering peripheral vestibular anatomy, BPPV assessment and repositioning treatment, central-versus-peripheral differentiation, outcome measures, and clinical decision-making in vestibular rehabilitation.</p>
-
-    <div class="stat-grid">
-      <div class="stat"><div class="num">30</div><div class="lbl">Questions</div></div>
-      <div class="stat"><div class="num">~35</div><div class="lbl">Minutes (suggested)</div></div>
-      <div class="stat"><div class="num">70%</div><div class="lbl">Pass mark (21/30)</div></div>
-      <div class="stat"><div class="num">4</div><div class="lbl">Options per item</div></div>
-    </div>
-
-    <ul class="before-list">
-      <li><span class="n">1</span><span>Each question has four options (A–D) with a single best answer.</span></li>
-      <li><span class="n">2</span><span>Case-based questions present a short clinical vignette, shown in a highlighted panel, before the question.</span></li>
-      <li><span class="n">3</span><span>Move freely between questions using the number rail or the Previous / Next buttons before submitting.</span></li>
-      <li><span class="n">4</span><span>Once submitted, you'll see your score, a knowledge/case breakdown, a marked answer sheet, and a full explanation for every item.</span></li>
-    </ul>
-
-    <div class="field">
-      <label for="staffName">Staff name (optional, shown on your results)</label>
-      <input type="text" id="staffName" placeholder="e.g. PT2, Physiotherapy Dept.">
-      <div class="hint">This stays on your device — nothing is submitted anywhere.</div>
-    </div>
-
-    <button class="btn btn-primary" id="beginBtn">Begin assessment →</button>
-    <p class="disclaimer">Prepared for internal clinical education / in-service training use only. This is a self-assessment learning tool, not an official Hospital Authority competency or examination document, and does not replace departmental sign-off procedures or clinical guidelines.</p>
-  </section>
-
-  <!-- ============ QUIZ SCREEN ============ -->
-  <section id="screen-quiz" class="card hidden">
-    <div class="quiz-head">
-      <span class="quiz-progress-text" id="progressText">Question 1 of 30</span>
-      <span class="quiz-timer" id="timerText">00:00</span>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:3.3%"></div></div>
-
-    <div class="rail" id="rail" role="navigation" aria-label="Question navigator"></div>
-
-    <div id="catTag"></div>
-    <div id="vignetteBox"></div>
-    <p class="question-stem" id="questionStem"></p>
-    <div class="options" id="optionsBox"></div>
-
-    <div class="quiz-nav">
-      <button class="btn btn-ghost" id="prevBtn">← Previous</button>
-      <div class="side">
-        <button class="btn btn-ghost" id="nextBtn">Next →</button>
+    <div class="demo">
+      <div class="demo-box">
+        <div class="eyebrow">Example · Select 1</div>
+        <div class="pip"><i>1</i><i class="on">2</i><i>3</i></div>
+      </div>
+      <div class="demo-box">
+        <div class="eyebrow">Example · Select 2</div>
+        <div class="pip"><i class="on on2">1</i><i class="on2">2</i><i class="on on2">3</i></div>
       </div>
     </div>
 
-    <div class="submit-row">
-      <button class="btn btn-gold" id="submitBtn" style="width:100%;">Submit test</button>
-      <div class="sub-hint" id="unansweredHint"></div>
-    </div>
-  </section>
+    <label class="field" for="who">Staff name (optional, shown on your results)</label>
+    <input type="text" id="who" placeholder="e.g. PT Chan" autocomplete="off">
+    <button class="btn wide" id="start">Begin assessment &rarr;</button>
+  </div>
+</section>
 
-  <!-- ============ RESULTS SCREEN ============ -->
-  <section id="screen-results" class="card hidden">
-    <div class="score-hero">
-      <span class="pass-badge" id="passBadge">Pass</span>
-      <div class="score-ring">
-        <svg viewBox="0 0 120 120">
-          <circle class="bg" cx="60" cy="60" r="52"></circle>
-          <circle class="fg" id="scoreArc" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
-        </svg>
-        <div class="center">
-          <span class="pct" id="scorePct">0%</span>
-          <span class="frac" id="scoreFrac">0 / 30</span>
-        </div>
+<!-- ============ QUIZ ============ -->
+<section id="quiz" class="hidden">
+  <div class="qbar">
+    <span id="counter">Question 1 of 30</span>
+    <span class="clock" id="clock">00:00</span>
+  </div>
+  <div class="track"><i id="bar"></i></div>
+  <div class="rail" id="rail"></div>
+
+  <div class="card">
+    <div class="qtag">
+      <span class="chip" id="qno">Q01</span>
+      <span class="chip hot" id="qmode">Select 1</span>
+      <span class="chip topic" id="qtopic"></span>
+    </div>
+    <p class="stem" id="stem"></p>
+    <div class="opts" id="opts"></div>
+    <p class="warn hidden" id="warn"></p>
+    <div class="nav">
+      <button class="btn ghost" id="prev">&larr; Previous</button>
+      <button class="btn ghost" id="next">Next &rarr;</button>
+      <button class="btn submit" id="submit">Submit test</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section id="results" class="hidden">
+  <div class="card">
+    <div class="eyebrow">Result</div>
+    <div class="verdict">
+      <span class="badge" id="badge">&mdash;</span>
+      <div>
+        <div class="bigscore"><span id="raw">0</span><small> / 30</small></div>
+        <div class="pcline"><span id="pc">0%</span> · pass mark is 60% (18/30)</div>
       </div>
-      <p class="pass-note" id="passNote">pass mark is 70% (21/30)</p>
     </div>
-
-    <div class="breakdown">
-      <div class="bd-card"><div class="bd-label">Knowledge</div><div class="bd-score" id="bdKnowledge">0 / 15</div></div>
-      <div class="bd-card"><div class="bd-label">Case-Based</div><div class="bd-score" id="bdCase">0 / 15</div></div>
+    <div class="stats">
+      <div class="stat"><b id="nOk" style="color:var(--correct)">0</b><span>Correct</span></div>
+      <div class="stat"><b id="nNo" style="color:var(--wrong)">0</b><span>Incorrect</span></div>
+      <div class="stat"><b id="tTaken" style="color:var(--ink)">00:00</b><span>Time taken</span></div>
+      <div class="stat"><b id="staffOut" style="color:var(--ink)">&mdash;</b><span>Staff</span></div>
     </div>
+  </div>
 
-    <div class="meta-row">
-      <div class="meta-item"><div class="mv" id="metaCorrect">0</div><div class="ml">Correct</div></div>
-      <div class="meta-item"><div class="mv" id="metaIncorrect">0</div><div class="ml">Incorrect</div></div>
-      <div class="meta-item"><div class="mv" id="metaTime">00:00</div><div class="ml">Time taken</div></div>
-      <div class="meta-item"><div class="mv" id="metaStaff">—</div><div class="ml">Staff</div></div>
+  <div class="card">
+    <h2>Marked answer sheet</h2>
+    <p class="lede" style="font-size:14px">Green is correct. Tap any cell to jump to that question below.</p>
+    <div class="sheet" id="sheet"></div>
+  </div>
+
+  <div class="card">
+    <h2>Performance by area</h2>
+    <p class="lede" style="font-size:14px">Where the marks went, grouped by clinical area.</p>
+    <div class="topics" id="topics"></div>
+  </div>
+
+  <div class="card">
+    <h2>Question-by-question review</h2>
+    <div class="review" id="review"></div>
+    <div class="nav">
+      <button class="btn ghost" id="retake">Retake this set</button>
+      <button class="btn ghost" id="printout">Print / save results</button>
     </div>
+  </div>
+</section>
 
-    <div class="action-row no-print">
-      <button class="btn btn-ghost" id="retakeBtn">Retake this set</button>
-      <button class="btn btn-primary" id="printBtn">Print / save results</button>
-    </div>
-
-    <div class="review-toggle no-print" id="reviewToggle" role="button" tabindex="0" aria-expanded="false">
-      <h3>Marked answer sheet · question-by-question review</h3>
-      <span class="chev">▾</span>
-    </div>
-    <div class="rail" id="reviewRail" style="margin-top:4px;"></div>
-
-    <div id="reviewList" style="margin-top:10px;"></div>
-
-    <footer class="foot">Question set adapted for internal training use only · not an official examination</footer>
-  </section>
-
+<p class="foot">Question set adapted for internal training use only · not an official examination</p>
 </div>
 
 <script>
-(function(){
-  "use strict";
+const LABELS = ["1", "2", "3", "4", "5"];
 
-  // ---------------------------------------------------------------
-  // Question bank: 15 knowledge + 15 case-based (interleaved by design)
-  // ---------------------------------------------------------------
-  const QUESTIONS = [
-    {
-      cat:"knowledge",
-      stem:"Which structures make up the peripheral vestibular labyrinth?",
-      options:[
-        "Cochlea, saccule, and utricle only",
-        "Three semicircular canals, the utricle, and the saccule",
-        "Three semicircular canals and the cochlea only",
-        "The vestibular nerve and cochlear nerve only"
-      ],
-      correct:1,
-      explain:"The peripheral vestibular labyrinth comprises the three semicircular canals (sensing angular acceleration) plus the utricle and saccule (otolith organs, sensing linear acceleration and gravity). The cochlea is the auditory, not vestibular, end-organ."
-    },
-    {
-      cat:"case",
-      vignette:"A 68-year-old woman reports brief spinning vertigo (roughly 20–30 seconds) triggered when rolling over in bed and when looking up. On examination, a right Dix-Hallpike test provokes upbeating, torsional nystagmus after a short latency, which resolves within 30 seconds and fatigues on repeat testing.",
-      stem:"What is the most likely diagnosis?",
-      options:[
-        "Right posterior canal BPPV",
-        "Vestibular neuritis",
-        "Meniere's disease",
-        "Central positional vertigo"
-      ],
-      correct:0,
-      explain:"The classic combination of brief, positionally-triggered vertigo with latent, transient, fatigable upbeat-torsional nystagmus on Dix-Hallpike is diagnostic of posterior canal BPPV (canalithiasis) on the tested side."
-    },
-    {
-      cat:"knowledge",
-      stem:"What type of head movement do the semicircular canals primarily detect?",
-      options:[
-        "Linear acceleration only",
-        "Angular (rotational) acceleration",
-        "Static head tilt relative to gravity",
-        "Sound-induced vibration"
-      ],
-      correct:1,
-      explain:"The semicircular canals detect angular acceleration through endolymph displacement acting on the cupula. The otolith organs (utricle and saccule) detect linear acceleration and static head tilt via otoconia acting on the macula."
-    },
-    {
-      cat:"case",
-      vignette:"A 55-year-old man undergoes a supine roll (Pagnini–McClure) test. Turning his head to the left provokes a stronger geotropic (ground-beating) horizontal nystagmus than turning to the right.",
-      stem:"Which ear is most likely affected, and which treatment approach is appropriate?",
-      options:[
-        "Right ear affected — treat with the Epley maneuver",
-        "Left ear affected — treat with a Gufoni or barbecue roll maneuver toward the left",
-        "Right ear affected — Brandt-Daroff exercises only, no repositioning needed",
-        "Bilateral involvement — no repositioning maneuver is indicated"
-      ],
-      correct:1,
-      explain:"In geotropic horizontal canal BPPV, the side producing the stronger nystagmus on the roll test is the affected (lower, canalithiasis) side — here, the left ear. The Gufoni maneuver or barbecue (Lempert) roll toward that side is the appropriate repositioning treatment; the Epley maneuver targets the posterior canal, not the horizontal canal."
-    },
-    {
-      cat:"knowledge",
-      stem:"What is the primary functional purpose of the vestibulo-ocular reflex (VOR)?",
-      options:[
-        "To generate saccadic eye movements during reading",
-        "To stabilize gaze on a target during head movement",
-        "To control pupillary constriction in bright light",
-        "To coordinate eye convergence for near vision"
-      ],
-      correct:1,
-      explain:"The VOR produces an eye movement equal and opposite to head movement, keeping the image of a target stable on the fovea during head motion. Loss of VOR function causes oscillopsia (a visual world that appears to jump or blur) with head movement."
-    },
-    {
-      cat:"case",
-      vignette:"A 45-year-old man presents with acute, continuous vertigo, nausea and vomiting for two days, and an unsteady gait, but is able to walk with support. He reports no hearing loss or tinnitus. The head impulse test shows a clear corrective saccade when the head is rapidly turned to the right. Spontaneous nystagmus is unidirectional and horizontal, and is suppressed by visual fixation. There is no skew deviation.",
-      stem:"What is the most likely diagnosis?",
-      options:[
-        "Right vestibular neuritis",
-        "Posterior circulation stroke",
-        "Meniere's disease",
-        "Right labyrinthitis"
-      ],
-      correct:0,
-      explain:"An abnormal (corrective saccade positive) head impulse test, unidirectional nystagmus suppressed by fixation, and no skew deviation form a reassuringly peripheral pattern. Absence of hearing loss favours vestibular neuritis over labyrinthitis, which typically also involves the cochlea."
-    },
-    {
-      cat:"knowledge",
-      stem:"In benign paroxysmal positional vertigo (BPPV), the most common underlying pathophysiology is:",
-      options:[
-        "Viral inflammation of the vestibular nerve",
-        "Free-floating otoconia debris displaced into a semicircular canal",
-        "Endolymphatic hydrops",
-        "Vasospasm of the labyrinthine artery"
-      ],
-      correct:1,
-      explain:"BPPV is most commonly caused by canalithiasis: otoconia dislodged from the utricle migrate into a semicircular canal (most often the posterior canal) and move abnormally with changes in head position relative to gravity, producing brief positional vertigo."
-    },
-    {
-      cat:"case",
-      vignette:"The same patient from the previous vestibular neuritis vignette is re-examined the next day. This time, the head impulse test is normal (no corrective saccade) despite ongoing spontaneous nystagmus, and the nystagmus changes direction depending on gaze position.",
-      stem:"What should the treating clinician do?",
-      options:[
-        "Proceed directly with vestibular adaptation exercises",
-        "Reassure the patient and discharge home with an exercise programme",
-        "Escalate for urgent medical or neurological assessment given features concerning for a central cause",
-        "Perform an Epley maneuver"
-      ],
-      correct:2,
-      explain:"A normal head impulse test combined with direction-changing nystagmus in a patient with an acute vestibular syndrome is a red-flag ('INFARCT') pattern suggestive of a possible central cause such as posterior circulation stroke, and warrants urgent medical review before proceeding with rehabilitation."
-    },
-    {
-      cat:"knowledge",
-      stem:"Which semicircular canal is involved in the large majority of BPPV cases?",
-      options:[
-        "Anterior (superior) canal",
-        "Horizontal (lateral) canal",
-        "Posterior canal",
-        "All three canals are affected with roughly equal frequency"
-      ],
-      correct:2,
-      explain:"The posterior semicircular canal is involved in approximately 85–90% of BPPV cases, largely because of its dependent position within the labyrinth, which favours otoconial debris settling there."
-    },
-    {
-      cat:"case",
-      vignette:"A 50-year-old woman reports recurrent episodes of vertigo lasting 30 minutes to a few hours, associated with fluctuating low-frequency hearing loss, tinnitus, and a sensation of fullness in the left ear. Between episodes she feels essentially well.",
-      stem:"What is the most likely diagnosis?",
-      options:[
-        "BPPV",
-        "Meniere's disease",
-        "Vestibular migraine",
-        "Vestibular neuritis"
-      ],
-      correct:1,
-      explain:"The triad of episodic vertigo (minutes to hours), fluctuating sensorineural hearing loss, and tinnitus with aural fullness is characteristic of Meniere's disease, thought to relate to endolymphatic hydrops."
-    },
-    {
-      cat:"knowledge",
-      stem:"Which clinical test is used to diagnose posterior (and anterior) canal BPPV?",
-      options:[
-        "Supine roll test",
-        "Dix-Hallpike test",
-        "Head impulse test",
-        "Fukuda stepping test"
-      ],
-      correct:1,
-      explain:"The Dix-Hallpike test provokes the characteristic positional nystagmus of posterior (and less commonly anterior) canal BPPV by moving the head into a plane aligned with those canals. The supine roll test is used for horizontal canal BPPV."
-    },
-    {
-      cat:"case",
-      vignette:"A 32-year-old woman with a longstanding history of migraine headaches reports recurrent episodes of vertigo lasting hours, often accompanied by photophobia and phonophobia, and sometimes by headache. She has no hearing loss or tinnitus.",
-      stem:"What is the most likely diagnosis?",
-      options:[
-        "Meniere's disease",
-        "Vestibular migraine",
-        "BPPV",
-        "Vestibular neuritis"
-      ],
-      correct:1,
-      explain:"Episodic vertigo associated with migrainous features (photophobia, phonophobia, headache) in a patient with a migraine history, without the cochlear symptoms typical of Meniere's disease, is characteristic of vestibular migraine."
-    },
-    {
-      cat:"knowledge",
-      stem:"Which test is used to diagnose horizontal (lateral) canal BPPV?",
-      options:[
-        "Dix-Hallpike test",
-        "Romberg test",
-        "Supine roll test (Pagnini–McClure)",
-        "Unterberger stepping test"
-      ],
-      correct:2,
-      explain:"The supine roll test, in which the head is turned side to side while supine, provokes the horizontal, direction-dependent nystagmus characteristic of horizontal canal BPPV."
-    },
-    {
-      cat:"case",
-      vignette:"A patient completes the Dizziness Handicap Inventory (DHI) as part of an initial vestibular assessment and scores 72 out of 100.",
-      stem:"How should this score be interpreted?",
-      options:[
-        "Mild self-perceived handicap",
-        "Moderate self-perceived handicap",
-        "Severe self-perceived handicap",
-        "The score indicates no meaningful functional impact"
-      ],
-      correct:2,
-      explain:"Using the standard DHI severity bands (0–30 mild, 31–60 moderate, 61–100 severe), a score of 72 falls in the severe self-perceived handicap range, indicating substantial functional, physical, and emotional impact from dizziness."
-    },
-    {
-      cat:"knowledge",
-      stem:"On Dix-Hallpike testing, nystagmus typical of posterior canal canalithiasis is best described as:",
-      options:[
-        "Immediate onset, non-fatigable, and purely horizontal",
-        "Delayed onset (latency), upbeating and torsional, fatigable with repetition, lasting under a minute",
-        "Downbeating, persistent for several minutes, unaffected by repeated testing",
-        "Direction-changing depending on the direction of gaze"
-      ],
-      correct:1,
-      explain:"Peripheral BPPV nystagmus typically shows a short latency before onset, an upbeat-torsional pattern (for posterior canal), fatigability on repeated testing, and resolution within roughly 60 seconds. Persistent, non-fatigable, direction-changing, or purely downbeating nystagmus raises concern for a central cause."
-    },
-    {
-      cat:"case",
-      vignette:"An 80-year-old woman is referred for balance assessment after two falls in the past six months. Her Dynamic Gait Index (DGI) score is 15 out of 24.",
-      stem:"What does this score indicate, and what is an appropriate next step?",
-      options:[
-        "Normal gait function; no further action needed",
-        "Increased fall risk; initiate a falls-prevention and balance/gait rehabilitation plan",
-        "The score indicates a central vestibular lesion specifically",
-        "The DGI is only valid for patients under 65 and cannot be interpreted here"
-      ],
-      correct:1,
-      explain:"A DGI score below 19/24 is a well-recognised threshold for increased fall risk in older adults and in patients with vestibular disorders. This score should prompt a falls-prevention pathway alongside targeted balance and gait rehabilitation, not a specific diagnostic conclusion."
-    },
-    {
-      cat:"knowledge",
-      stem:"The first-line repositioning maneuver most commonly used for posterior canal canalithiasis is:",
-      options:[
-        "Semont liberatory maneuver",
-        "Epley (canalith repositioning) maneuver",
-        "Brandt-Daroff exercises",
-        "Gufoni maneuver"
-      ],
-      correct:1,
-      explain:"The Epley maneuver is the most widely used first-line canalith repositioning procedure for posterior canal canalithiasis. The Semont maneuver is a well-supported alternative, particularly considered for cupulolithiasis or when Epley cannot be performed; Brandt-Daroff exercises are a less targeted habituation-based home option, and Gufoni is used for horizontal canal BPPV."
-    },
-    {
-      cat:"case",
-      vignette:"A patient with confirmed bilateral vestibular hypofunction, secondary to prior aminoglycoside exposure, reports oscillopsia with head movement. Head impulse testing shows absent VOR responses on both sides.",
-      stem:"Which vestibular rehabilitation strategy should be the primary focus?",
-      options:[
-        "Habituation exercises for motion sensitivity",
-        "Canalith repositioning maneuvers",
-        "Substitution strategies (alternative gaze and balance strategies, use of remaining vestibular/visual/proprioceptive input) alongside gaze and gait training",
-        "Strict bed rest until symptoms resolve"
-      ],
-      correct:2,
-      explain:"With bilateral vestibular loss, there is little or no residual VOR gain to recover through adaptation exercises alone. Rehabilitation instead emphasises substitution strategies — using remaining vestibular, visual, and somatosensory input, and compensatory eye/head movement strategies — combined with gaze and gait training."
-    },
-    {
-      cat:"knowledge",
-      stem:"Which repositioning maneuver is specifically designed to treat horizontal canal BPPV?",
-      options:[
-        "Epley maneuver",
-        "Brandt-Daroff exercise",
-        "Gufoni or barbecue (Lempert) roll maneuver",
-        "Yacovino (deep head-hanging) maneuver"
-      ],
-      correct:2,
-      explain:"The Gufoni maneuver and the barbecue (Lempert) roll are designed specifically to reposition debris out of the horizontal canal. The Yacovino maneuver targets the anterior (superior) canal, and the Epley maneuver targets the posterior canal."
-    },
-    {
-      cat:"case",
-      vignette:"A patient reports dizziness triggered specifically by busy visual environments (such as supermarkets or scrolling on a phone) and by their own head movements, with no true spinning vertigo at rest. Symptoms began some months after an episode of vestibular neuritis that has otherwise resolved.",
-      stem:"This presentation is most consistent with which mechanism, and what management principle applies?",
-      options:[
-        "Acute BPPV — treat with an Epley maneuver",
-        "Persistent postural-perceptual dizziness / maladaptive compensation — graded habituation and optokinetic desensitisation exercises",
-        "Active Meniere's disease — dietary sodium restriction",
-        "Central stroke — urgent neuroimaging is required"
-      ],
-      correct:1,
-      explain:"Chronic dizziness provoked by motion and complex visual environments, without true vertigo, following a resolved vestibular insult, is a recognised pattern of persistent postural-perceptual dizziness (PPPD) or maladaptive vestibular compensation. Management centres on graded habituation exercises and optokinetic/visual desensitisation rather than repositioning maneuvers."
-    },
-    {
-      cat:"knowledge",
-      stem:"According to current evidence-based guidance, after a successful canalith repositioning maneuver, patients should generally be advised that:",
-      options:[
-        "They must sleep strictly upright for two nights",
-        "They must avoid lying on the affected side for one week",
-        "No specific post-maneuver postural restrictions are routinely required",
-        "They must remain supine and avoid all head movement for 48 hours"
-      ],
-      correct:2,
-      explain:"Current clinical practice guidelines (including the 2017 AAO-HNS BPPV update) do not support routine post-maneuver postural restrictions, as evidence shows they do not meaningfully improve treatment success rates and can unnecessarily limit patients' activity."
-    },
-    {
-      cat:"case",
-      vignette:"A patient with confirmed right posterior canal BPPV is treated with an Epley maneuver. On retesting immediately afterwards, the Dix-Hallpike remains positive on the right with similar nystagmus characteristics to before treatment.",
-      stem:"What is the most appropriate next step?",
-      options:[
-        "Refer immediately for surgical management",
-        "Repeat the Epley maneuver and reassess; consider whether canal conversion has occurred if the nystagmus pattern changes",
-        "Diagnose a central cause of vertigo and stop vestibular treatment",
-        "Prescribe long-term vestibular suppressant medication as definitive treatment"
-      ],
-      correct:1,
-      explain:"It is common for more than one repositioning attempt to be needed. If the nystagmus pattern changes on retesting (for example, becoming horizontal/geotropic), canal conversion — otoconia migrating into a different canal during the maneuver — should be considered and the appropriate maneuver for the new canal selected."
-    },
-    {
-      cat:"knowledge",
-      stem:"What key clinical feature most helps distinguish labyrinthitis from vestibular neuritis?",
-      options:[
-        "Presence of positional nystagmus",
-        "Presence of associated hearing loss or tinnitus",
-        "Duration of vertigo beyond 24 hours",
-        "A positive Dix-Hallpike test"
-      ],
-      correct:1,
-      explain:"Vestibular neuritis involves the vestibular portion of the eighth cranial nerve without cochlear involvement, so hearing is preserved. Labyrinthitis involves the cochlea as well, producing associated hearing loss and/or tinnitus alongside the vertigo."
-    },
-    {
-      cat:"case",
-      vignette:"A 74-year-old with a history of recurrent falls has a DGI score of 17 out of 24, a positive Romberg test, and reduced vibration sense in both feet on screening.",
-      stem:"What does this combination of findings suggest for the rehabilitation plan?",
-      options:[
-        "The findings are purely vestibular and no other referral is needed",
-        "A likely multifactorial balance deficit — vestibular plus a somatosensory/peripheral neuropathy contribution — warranting a broader falls-prevention approach, potentially with multidisciplinary input",
-        "The Romberg and vibration sense findings should be disregarded as irrelevant to gait",
-        "Bed rest is the safest initial management"
-      ],
-      correct:1,
-      explain:"Reduced DGI together with a positive Romberg and impaired vibration sense points to combined vestibular and somatosensory (peripheral neuropathy) contributions to imbalance. Management should address all contributing systems, often requiring multidisciplinary falls-prevention input rather than vestibular rehabilitation alone."
-    },
-    {
-      cat:"knowledge",
-      stem:"Which nystagmus feature is most suggestive of a central, rather than peripheral, cause of vertigo?",
-      options:[
-        "Nystagmus that is unidirectional and suppressed by visual fixation",
-        "Direction-changing nystagmus that is not suppressed by visual fixation",
-        "Nystagmus with a clear latency period before onset",
-        "Nystagmus that fatigues with repeated positional testing"
-      ],
-      correct:1,
-      explain:"Peripheral nystagmus is typically unidirectional, fatigable, has a latency, and is suppressed by visual fixation. Direction-changing nystagmus that persists despite visual fixation — along with pure vertical or pure torsional patterns — is a red flag for a central cause."
-    },
-    {
-      cat:"case",
-      vignette:"A patient who is several weeks post-concussion reports dizziness that is worse with quick head turns. Smooth pursuit neck torsion testing (tracking a moving target with the eyes while the trunk rotates beneath a stationary head) reproduces the dizziness, while standard vestibular testing is largely unremarkable.",
-      stem:"This pattern raises suspicion for which contributing source of dizziness?",
-      options:[
-        "Cervicogenic dizziness",
-        "Meniere's disease",
-        "Anterior canal BPPV",
-        "Bilateral vestibular loss"
-      ],
-      correct:0,
-      explain:"Reproducing symptoms by rotating the trunk beneath a stationary head — which isolates cervical afferent input from the vestibular and visual systems — while vestibular testing is otherwise unremarkable, suggests a cervicogenic contribution to the dizziness, which may warrant cervical-spine-directed treatment alongside any vestibular rehabilitation."
-    },
-    {
-      cat:"knowledge",
-      stem:"In the HINTS examination for acute vestibular syndrome, which single finding is most concerning for a central (stroke) cause?",
-      options:[
-        "An abnormal (positive, corrective-saccade) head impulse test",
-        "A normal head impulse test in a patient with ongoing spontaneous nystagmus",
-        "Unidirectional horizontal nystagmus",
-        "Absence of skew deviation"
-      ],
-      correct:1,
-      explain:"Counter-intuitively, a normal head impulse test (intact VOR) in a patient with an ongoing acute vestibular syndrome is concerning for a central cause, since an intact VOR does not explain continuous vertigo from a peripheral lesion. Combined with direction-changing nystagmus and/or skew deviation, this forms the 'INFARCT' red-flag pattern; an abnormal head impulse test is generally reassuring for a peripheral cause."
-    },
-    {
-      cat:"case",
-      vignette:"A patient suddenly develops severe vertigo with marked occipital headache, gait ataxia so severe they cannot stand unsupported, and vomiting. Nystagmus is present, but the degree of imbalance is out of proportion to what is typically seen in peripheral vestibular disorders.",
-      stem:"What is the priority action?",
-      options:[
-        "Begin gaze stabilisation exercises immediately",
-        "Perform a Dix-Hallpike test to confirm BPPV before deciding on further management",
-        "Urgent medical escalation to exclude a cerebellar stroke",
-        "Reassure the patient and review again in one week"
-      ],
-      correct:2,
-      explain:"Severe truncal ataxia disproportionate to the vertigo, combined with occipital headache and vomiting, are red flags for a cerebellar stroke and require urgent medical and neuroimaging assessment rather than proceeding directly with vestibular rehabilitation."
-    },
-    {
-      cat:"knowledge",
-      stem:"Which of the following is a red flag that should prompt urgent medical referral rather than proceeding with vestibular rehabilitation as first-line management?",
-      options:[
-        "A positive Dix-Hallpike test with typical torsional, upbeating nystagmus",
-        "New-onset diplopia, dysarthria, or limb ataxia accompanying vertigo",
-        "Nausea and vomiting during the Dix-Hallpike maneuver",
-        "Mild residual unsteadiness after an otherwise successful Epley maneuver"
-      ],
-      correct:1,
-      explain:"Focal neurological signs such as diplopia, dysarthria, limb ataxia, or motor/sensory deficits accompanying vertigo raise concern for a central or vascular cause (such as posterior circulation stroke) and warrant urgent medical assessment before vestibular rehabilitation proceeds."
-    },
-    {
-      cat:"case",
-      vignette:"An 82-year-old on multiple antihypertensive medications reports dizziness that occurs specifically on standing up from sitting or lying down, resolving once she sits back down. She reports no dizziness triggered by lying down, rolling over, or looking up.",
-      stem:"What should be prioritised in the assessment?",
-      options:[
-        "A Dix-Hallpike test as the first assessment",
-        "Lying-to-standing (orthostatic) blood pressure measurement",
-        "An empirical trial of the Epley maneuver",
-        "Caloric testing"
-      ],
-      correct:1,
-      explain:"Symptoms specifically provoked by postural change from lying or sitting to standing — rather than by head position or movement while stationary — suggest orthostatic hypotension, particularly relevant given her antihypertensive medications. Lying-to-standing blood pressure measurement should be prioritised over positional vestibular testing in this picture."
-    }
-  ];
-
-  const TOTAL = QUESTIONS.length; // 30
-  const KNOWLEDGE_TOTAL = QUESTIONS.filter(q=>q.cat==="knowledge").length;
-  const CASE_TOTAL = QUESTIONS.filter(q=>q.cat==="case").length;
-  const PASS_PCT = 70;
-
-  // ---------------------------------------------------------------
-  // State
-  // ---------------------------------------------------------------
-  let state = {
-    index:0,
-    answers:new Array(TOTAL).fill(null),
-    staffName:"",
-    startTime:null,
-    elapsedSeconds:0,
-    timerHandle:null,
-    submitted:false
-  };
-
-  // ---------------------------------------------------------------
-  // Helpers
-  // ---------------------------------------------------------------
-  const $ = (id)=>document.getElementById(id);
-  function showScreen(name){
-    $("screen-intro").classList.toggle("hidden", name!=="intro");
-    $("screen-quiz").classList.toggle("hidden", name!=="quiz");
-    $("screen-results").classList.toggle("hidden", name!=="results");
-    window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+const QUESTIONS = [
+  {
+    "n": 1,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Anatomy & physiology",
+    "topic": "Otolith organs · plane of sensitivity",
+    "stem": "A patient describes their symptoms as worst in a lift as it starts to rise. Which end-organ is the primary detector of that stimulus, and what does it sense?",
+    "options": [
+      "The utricle, which detects vertical linear acceleration and head tilt in the sagittal plane",
+      "The posterior semicircular canal, which detects vertical linear acceleration",
+      "The horizontal semicircular canal, which detects vertical translation of the head",
+      "The cochlea, which detects both sound and vertical acceleration",
+      "The saccule, whose macula is oriented vertically and therefore detects linear acceleration in the vertical plane, including gravity"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "The two otolith organs divide the job by the orientation of their maculae. The <em>saccular</em> macula lies roughly in the vertical plane, so it responds to vertical linear acceleration &mdash; lift starts and stops, jumping, and the constant pull of gravity in the head-upright position. The <em>utricular</em> macula lies roughly horizontally and responds to fore-aft and side-to-side linear acceleration and to head tilt. Option 1 is the trap because it names the right kind of organ but the wrong one and then gives it the saccule&rsquo;s job. The semicircular canals are excluded on principle rather than on detail: they are angular accelerometers and are essentially insensitive to pure linear translation, so no canal is the answer to a linear-acceleration question. The cochlea is the auditory end-organ. This matters clinically because otolith dysfunction produces a different complaint from canal dysfunction &mdash; a sense of tilt, of floating, of the floor dropping, or a pull to one side, rather than true rotational spinning."
+  },
+  {
+    "n": 2,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Anatomy & physiology",
+    "topic": "Canal pairing · coplanar partners",
+    "stem": "The semicircular canals work in coplanar pairs, one from each ear. The <b>right posterior</b> canal is paired with which canal of the opposite ear?",
+    "options": [
+      "The left posterior canal",
+      "The left horizontal canal",
+      "The left anterior (superior) canal",
+      "The left saccule",
+      "It has no coplanar partner; the posterior canals work independently"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "Each canal is functionally yoked to the canal in the opposite ear that lies in the same plane, so that head rotation excites one and inhibits the other &mdash; push-pull coding, which doubles the sensitivity and gives the system redundancy. The two horizontal canals pair with each other, but the vertical canals pair diagonally: right anterior with left posterior (the RALP plane) and left anterior with right posterior (the LARP plane). This is why the right posterior canal&rsquo;s partner is the left anterior canal, and why RALP and LARP are worth memorising as words rather than reasoned out each time. The pairing is not academic: it is the reason the Dix-Hallpike is performed with the head turned 45&deg; towards the tested ear (to bring that ear&rsquo;s posterior canal into the plane of the movement), the reason posterior canal BPPV produces a <em>torsional</em> plus <em>upbeat</em> nystagmus (the eye movement follows the plane of the stimulated canal), and the reason video head impulse testing is done in canal planes rather than in the cardinal planes of the head."
+  },
+  {
+    "n": 3,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Anatomy & physiology",
+    "topic": "Vestibulo-ocular reflex · gain",
+    "stem": "A patient is tested and found to have a vestibulo-ocular reflex gain of 0.4 on the right. What does that value mean?",
+    "options": [
+      "The eyes move at about 40% of head velocity, in the opposite direction to the head, so gaze is not fully stabilised and a corrective saccade is needed",
+      "The eyes move at about 40% of head velocity in the same direction as the head",
+      "The reflex takes 0.4 seconds to activate, which is within normal limits",
+      "Gaze is stabilised normally, since gain values below 1.0 are the expected finding in healthy adults",
+      "The patient has 40% of normal hearing on that side"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "VOR gain is eye velocity divided by head velocity, and in a healthy system it is close to 1.0 with the eyes moving equal and opposite to the head &mdash; that is what holds an image still on the retina during head movement. A gain of 0.4 means the eyes are moving only 40% as fast as the head, so the image slips across the retina and the brain must add a catch-up saccade to re-acquire the target. That retinal slip is what the patient experiences as blurring or oscillopsia with head movement, and it is the error signal that adaptation training uses. Two of the distractors are worth naming: same-direction eye movement (option 2) would be a following response rather than a stabilising one and does not describe the VOR at all, and option 4 inverts the norm &mdash; a gain well below 1 is a hypofunction finding, not a healthy one. The reflex latency, incidentally, is about 5&ndash;10 milliseconds, far too fast for any visually driven system, which is precisely why the VOR cannot be replaced by smooth pursuit at everyday head speeds."
+  },
+  {
+    "n": 4,
+    "mode": "Case",
+    "select": 1,
+    "area": "BPPV",
+    "topic": "Posterior canal BPPV · reading the nystagmus",
+    "vig": "A 62-year-old woman describes brief spinning attacks of 15&ndash;20 seconds when she rolls over in bed and when she tips her head back at the hairdresser. A right Dix-Hallpike is performed. After a latency of about 4 seconds, the nystagmus shown below appears; it builds, then fades within 25 seconds, and is less intense on immediate repeat testing.",
+    "media": "<figure class=\"fig\"><svg viewBox=\"0 0 700 270\" role=\"img\" aria-label=\"Examiner&#8217;s view of both eyes during a right Dix-Hallpike test. The fast phase of the nystagmus beats upwards, and the upper pole of each eye rotates towards the patient&#8217;s right, that is towards the lowermost ear\"><rect width=\"700\" height=\"270\" fill=\"#0e161d\"/><text x=\"350\" y=\"30\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"11.5\" letter-spacing=\"1.6\" fill=\"#6d818e\">RIGHT DIX-HALLPIKE &#183; EXAMINER&#8217;S VIEW OF THE EYES</text><path d=\"M 136.0 148.0 Q 212.0 96.0 288.0 148.0 Q 212.0 200.0 136.0 148.0 Z\" fill=\"#0a1218\" stroke=\"#7f95a3\" stroke-width=\"2\"/><circle cx=\"212.0\" cy=\"148.0\" r=\"27\" fill=\"#16242e\" stroke=\"#7f95a3\" stroke-width=\"1.8\"/><circle cx=\"212.0\" cy=\"148.0\" r=\"11\" fill=\"#7f95a3\"/><line x1=\"224.0\" y1=\"148.0\" x2=\"237.0\" y2=\"148.0\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"220.5\" y1=\"156.5\" x2=\"229.7\" y2=\"165.7\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"212.0\" y1=\"160.0\" x2=\"212.0\" y2=\"173.0\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"203.5\" y1=\"156.5\" x2=\"194.3\" y2=\"165.7\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"200.0\" y1=\"148.0\" x2=\"187.0\" y2=\"148.0\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"203.5\" y1=\"139.5\" x2=\"194.3\" y2=\"130.3\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"212.0\" y1=\"136.0\" x2=\"212.0\" y2=\"123.0\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"220.5\" y1=\"139.5\" x2=\"229.7\" y2=\"130.3\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><path d=\"M 246.8 124.5 A 42.0 42.0 0 0 0 177.2 124.5\" fill=\"none\" stroke=\"#2fd0a0\" stroke-width=\"2.8\" stroke-linecap=\"round\"/><path d=\"M 177.2 124.5 L 178.2 113.1 L 187.3 119.3 Z\" fill=\"#2fd0a0\"/><line x1=\"212.0\" y1=\"76.0\" x2=\"212.0\" y2=\"44.0\" stroke=\"#f0a952\" stroke-width=\"2.8\" stroke-linecap=\"round\"/><path d=\"M 212.0 36.0 L 206.0 49.0 L 218.0 49.0 Z\" fill=\"#f0a952\"/><text x=\"212.0\" y=\"224.0\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" letter-spacing=\"1.2\" fill=\"#6d818e\">PATIENT&#8217;S RIGHT EYE</text><path d=\"M 412.0 148.0 Q 488.0 96.0 564.0 148.0 Q 488.0 200.0 412.0 148.0 Z\" fill=\"#0a1218\" stroke=\"#7f95a3\" stroke-width=\"2\"/><circle cx=\"488.0\" cy=\"148.0\" r=\"27\" fill=\"#16242e\" stroke=\"#7f95a3\" stroke-width=\"1.8\"/><circle cx=\"488.0\" cy=\"148.0\" r=\"11\" fill=\"#7f95a3\"/><line x1=\"500.0\" y1=\"148.0\" x2=\"513.0\" y2=\"148.0\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"496.5\" y1=\"156.5\" x2=\"505.7\" y2=\"165.7\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"488.0\" y1=\"160.0\" x2=\"488.0\" y2=\"173.0\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"479.5\" y1=\"156.5\" x2=\"470.3\" y2=\"165.7\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"476.0\" y1=\"148.0\" x2=\"463.0\" y2=\"148.0\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"479.5\" y1=\"139.5\" x2=\"470.3\" y2=\"130.3\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"488.0\" y1=\"136.0\" x2=\"488.0\" y2=\"123.0\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><line x1=\"496.5\" y1=\"139.5\" x2=\"505.7\" y2=\"130.3\" stroke=\"#7f95a3\" stroke-width=\"1.1\" opacity=\"0.55\"/><path d=\"M 522.8 124.5 A 42.0 42.0 0 0 0 453.2 124.5\" fill=\"none\" stroke=\"#2fd0a0\" stroke-width=\"2.8\" stroke-linecap=\"round\"/><path d=\"M 453.2 124.5 L 454.2 113.1 L 463.3 119.3 Z\" fill=\"#2fd0a0\"/><line x1=\"488.0\" y1=\"76.0\" x2=\"488.0\" y2=\"44.0\" stroke=\"#f0a952\" stroke-width=\"2.8\" stroke-linecap=\"round\"/><path d=\"M 488.0 36.0 L 482.0 49.0 L 494.0 49.0 Z\" fill=\"#f0a952\"/><text x=\"488.0\" y=\"224.0\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" letter-spacing=\"1.2\" fill=\"#6d818e\">PATIENT&#8217;S LEFT EYE</text><line x1=\"252\" y1=\"238\" x2=\"278\" y2=\"238\" stroke=\"#f0a952\" stroke-width=\"2.8\" stroke-linecap=\"round\"/><text x=\"286\" y=\"242\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" fill=\"#a3b7c2\">vertical component</text><path d=\"M 452 244 A 16 16 0 0 0 478 234\" fill=\"none\" stroke=\"#2fd0a0\" stroke-width=\"2.8\" stroke-linecap=\"round\"/><text x=\"488\" y=\"242\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" fill=\"#a3b7c2\">torsional component</text><text x=\"20\" y=\"242\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" fill=\"#6d818e\">fast phase shown</text></svg><figcaption>Fast-phase direction observed on right Dix-Hallpike positioning</figcaption></figure>",
+    "stem": "Which canal is involved, and what does the direction of the nystagmus tell you?",
+    "options": [
+      "Right horizontal canal; the horizontal component confirms a lateral canal",
+      "Left posterior canal; nystagmus always beats away from the affected ear",
+      "Right anterior canal; upbeating nystagmus indicates the anterior canal on the tested side",
+      "Right posterior canal; the eye beats in the plane of the stimulated canal, giving an upbeat component with the upper pole of the eye torting towards the dependent right ear",
+      "A central lesion; upbeating nystagmus is never peripheral"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "Everything about this history is classic canalithiasis &mdash; a short latency, a crescendo-decrescendo course lasting well under a minute, fatigue on repeat testing, and triggering by positions that move the head in the plane of a vertical canal. The direction then localises it. Because the eye movement generated by a canal lies in the plane of that canal, stimulating the right posterior canal produces an <em>upbeating</em> vertical component combined with a <em>torsional</em> component whose upper pole beats towards the lowermost (right) ear. Option 3 is the sharpest distractor and is worth knowing cold: anterior canal BPPV also upbeats, but its torsional component beats towards the <em>opposite</em>, uppermost ear, so torsion &mdash; not the vertical component &mdash; is what separates them. Option 2 misstates a rule that belongs to acute unilateral hypofunction, not to BPPV. Option 5 overstates a genuinely useful caution: <em>persistent, non-fatiguing, downbeating</em> positional nystagmus without latency should raise suspicion of a central cause, but a latent, fatiguing upbeat-torsional response is the textbook peripheral finding."
+  },
+  {
+    "n": 5,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "BPPV",
+    "topic": "Epley manoeuvre · mechanism and sequence",
+    "stem": "During a canalith repositioning (Epley) manoeuvre for right posterior canal BPPV, what is the purpose of asking the patient to roll onto the left shoulder with the head turned further towards the left before sitting up?",
+    "options": [
+      "To fatigue the cupula so that the response habituates",
+      "To stretch the cervical spine and relieve a cervicogenic contribution",
+      "To dissolve the otoconia in the endolymph",
+      "To reposition the otoconia into the horizontal canal, where they cause fewer symptoms",
+      "To move the otoconia around the arc of the canal and out through the common crus into the utricle, where they no longer deflect the cupula"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "The Epley works by gravity and geometry. Each successive position rotates the head so that the free-floating otoconia keep travelling in one direction around the posterior canal, and the roll onto the opposite shoulder is the step that carries them past the far end of the arc and out through the common crus into the utricle. Once in the utricular cavity they can be reabsorbed and they no longer deflect the cupula when the head moves, which is why a successful manoeuvre often abolishes the symptom in a single treatment. Understanding it as a route rather than a recipe is what lets you troubleshoot: each position is held until the nystagmus stops plus a margin, the head must not be allowed to drift back, and stopping halfway is what leaves the debris in the canal. Option 1 describes habituation, the mechanism of Brandt-Daroff exercises rather than of repositioning. Option 4 describes canal conversion, which is an unwanted complication of the manoeuvre and not its aim. Nothing dissolves and nothing is stretched."
+  },
+  {
+    "n": 6,
+    "mode": "Case",
+    "select": 1,
+    "area": "BPPV",
+    "topic": "Horizontal canal BPPV · apogeotropic variant",
+    "vig": "A 54-year-old man has positional vertigo lasting well over a minute each time. On the supine roll (Pagnini-McClure) test he shows horizontal nystagmus beating <b>away from the ground</b> (apogeotropic) in both head positions. It is clearly stronger with the head turned to the right than to the left, and it does not fatigue.",
+    "media": "<figure class=\"fig\"><svg viewBox=\"0 0 700 320\" role=\"img\" aria-label=\"Two eye-position traces from a supine roll test. With the head turned right the nystagmus beats towards the patient&#8217;s left, that is towards the uppermost side, and is strong. With the head turned left it beats towards the patient&#8217;s right, again towards the uppermost side, and is weak\"><rect width=\"700\" height=\"320\" fill=\"#0e161d\"/><rect x=\"10.0\" y=\"10\" width=\"330\" height=\"300\" rx=\"10\" fill=\"#131d26\" stroke=\"#26333d\" stroke-width=\"1\"/><text x=\"175.0\" y=\"38\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"11.5\" letter-spacing=\"1.5\" fill=\"#2fd0a0\" font-weight=\"700\">HEAD TURNED RIGHT</text><text x=\"175.0\" y=\"58\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" fill=\"#6d818e\">right ear dependent</text><line x1=\"98.0\" y1=\"168.0\" x2=\"308.0\" y2=\"168.0\" stroke=\"#26333d\" stroke-width=\"1.2\"/><text x=\"92.0\" y=\"138.0\" text-anchor=\"end\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"9.5\" fill=\"#6d818e\">PT LEFT</text><text x=\"92.0\" y=\"204.0\" text-anchor=\"end\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"9.5\" fill=\"#6d818e\">PT RIGHT</text><polyline points=\"106.0,153.0 142.5,183.0 154.0,153.0 190.5,183.0 202.0,153.0 238.5,183.0 250.0,153.0 286.5,183.0 298.0,153.0 308.0,183.0 308.0,153.0\" fill=\"none\" stroke=\"#2fd0a0\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><line x1=\"324.0\" y1=\"196.0\" x2=\"324.0\" y2=\"150.0\" stroke=\"#f0a952\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M 324.0 140.0 L 318.5 152.0 L 329.5 152.0 Z\" fill=\"#f0a952\"/><text x=\"175.0\" y=\"248\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" fill=\"#a3b7c2\">fast phase towards the</text><text x=\"175.0\" y=\"266\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" fill=\"#a3b7c2\">UPPERMOST side (apogeotropic)</text><text x=\"175.0\" y=\"290\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"11.5\" fill=\"#f0a952\" font-weight=\"700\" letter-spacing=\"1.2\">STRONGER</text><rect x=\"360.0\" y=\"10\" width=\"330\" height=\"300\" rx=\"10\" fill=\"#131d26\" stroke=\"#26333d\" stroke-width=\"1\"/><text x=\"525.0\" y=\"38\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"11.5\" letter-spacing=\"1.5\" fill=\"#2fd0a0\" font-weight=\"700\">HEAD TURNED LEFT</text><text x=\"525.0\" y=\"58\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" fill=\"#6d818e\">left ear dependent</text><line x1=\"448.0\" y1=\"168.0\" x2=\"658.0\" y2=\"168.0\" stroke=\"#26333d\" stroke-width=\"1.2\"/><text x=\"442.0\" y=\"138.0\" text-anchor=\"end\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"9.5\" fill=\"#6d818e\">PT LEFT</text><text x=\"442.0\" y=\"204.0\" text-anchor=\"end\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"9.5\" fill=\"#6d818e\">PT RIGHT</text><polyline points=\"456.0,174.0 492.5,162.0 504.0,174.0 540.5,162.0 552.0,174.0 588.5,162.0 600.0,174.0 636.5,162.0 648.0,174.0 658.0,162.0 658.0,174.0\" fill=\"none\" stroke=\"#2fd0a0\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><line x1=\"674.0\" y1=\"140.0\" x2=\"674.0\" y2=\"186.0\" stroke=\"#f0a952\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M 674.0 196.0 L 668.5 184.0 L 679.5 184.0 Z\" fill=\"#f0a952\"/><text x=\"525.0\" y=\"248\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" fill=\"#a3b7c2\">fast phase towards the</text><text x=\"525.0\" y=\"266\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"10.5\" fill=\"#a3b7c2\">UPPERMOST side (apogeotropic)</text><text x=\"525.0\" y=\"290\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,Consolas,monospace\" font-size=\"11.5\" fill=\"#f0a952\" font-weight=\"700\" letter-spacing=\"1.2\">WEAKER</text></svg><figcaption>Supine roll (Pagnini-McClure) test &middot; eye-position traces in both head positions</figcaption></figure>",
+    "stem": "Which side is affected, and what does that direction tell you about where the debris sits?",
+    "options": [
+      "The right ear, because the affected side is always the side with the stronger nystagmus",
+      "The left ear &mdash; in the apogeotropic variant the affected side is the one giving the <b>weaker</b> response, and the debris is attached to the cupula or lying in the anterior arm of the horizontal canal",
+      "The right ear, and the debris is free-floating in the posterior arm of the horizontal canal",
+      "Neither ear; apogeotropic nystagmus is always central in origin",
+      "Both ears equally, since apogeotropic nystagmus is by definition bilateral"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "Horizontal canal BPPV has two variants and they follow opposite rules, which is why this is one of the most reliably failed questions in vestibular practice. In the <em>geotropic</em> form the debris floats freely in the posterior arm of the canal and the affected ear is the one producing the <em>stronger</em> nystagmus (Ewald&rsquo;s second law: for the horizontal canal, ampullopetal flow is the more powerful stimulus). In the <em>apogeotropic</em> form the debris is stuck to the cupula or sits in the anterior arm, the responses are reversed, and the affected ear is the one producing the <em>weaker</em> nystagmus. Here the response is apogeotropic and weaker on the left, so the left ear is affected. The supporting features fit: a duration beyond a minute and absence of fatigue both point to cupulolithiasis rather than free-floating debris. Option 1 applies the geotropic rule to an apogeotropic finding, which is the single commonest error and sends the patient into a manoeuvre performed on the wrong side. Treatment is a Gufoni or a forced prolonged position aimed at converting the apogeotropic form to the geotropic form first, and then clearing it."
+  },
+  {
+    "n": 7,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "BPPV",
+    "topic": "Canalithiasis versus cupulolithiasis",
+    "stem": "Which set of features best distinguishes <b>cupulolithiasis</b> from <b>canalithiasis</b>?",
+    "options": [
+      "Shorter latency, briefer duration and marked fatigability",
+      "Hearing loss accompanying every attack",
+      "Nystagmus only in the upright position and never when supine",
+      "Little or no latency, nystagmus persisting for as long as the position is held, and little fatigability",
+      "A response that appears only after five or more repetitions of the test position"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "The distinction follows directly from where the otoconia are. In canalithiasis they float freely, so it takes a moment for them to start moving (latency of a few seconds), they generate flow only while they are travelling (duration under about a minute, with a crescendo-decrescendo shape), and repeated testing disperses them (fatigability). In cupulolithiasis they are stuck to the cupula itself, which is therefore permanently weighted: the cupula deflects as soon as the head is put in the provoking position, and it stays deflected for as long as the position is held, so there is minimal latency, prolonged nystagmus and little fatigue. This is not a purely academic distinction &mdash; cupulolithiasis responds less well to standard repositioning and often needs a liberatory manoeuvre or a technique designed to detach the debris from the cupula first, so recognising it prevents repeating an Epley that was never going to work. It is also, however, the presentation that most overlaps with central positional nystagmus, so persistent positional nystagmus with no latency and no fatigue deserves a careful look at the other features &mdash; direction, suppression by fixation, and accompanying neurological signs &mdash; before it is accepted as peripheral."
+  },
+  {
+    "n": 8,
+    "mode": "Case",
+    "select": 1,
+    "area": "Acute vestibular syndrome",
+    "topic": "Vestibular neuritis · defining features",
+    "vig": "A 45-year-old man wakes with severe constant vertigo, nausea and vomiting that has now persisted for two days without fluctuating. He has spontaneous horizontal-torsional nystagmus beating to the left that dampens when he fixates on a target, a head impulse to the right that produces a corrective saccade, no skew deviation, and he can walk with a broad base but veers to the right.",
+    "stem": "Which single additional finding would most support vestibular neuritis rather than labyrinthitis?",
+    "options": [
+      "Nystagmus that beats away from the affected ear",
+      "The presence of nausea and vomiting",
+      "Normal hearing and no tinnitus on the affected side",
+      "Improvement of the vertigo over several days",
+      "A positive Romberg test"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "Vestibular neuritis and labyrinthitis are the same acute unilateral peripheral event distinguished by whether the cochlea is involved: neuritis spares hearing, labyrinthitis does not. So the discriminating finding is the audiological one, and every other feature listed here is shared by both conditions &mdash; nausea, nystagmus beating away from the hypofunctioning side, gradual improvement as central compensation begins, and an unsteady Romberg. The rest of this vignette is worth reading as a whole, because it is a full peripheral picture: horizontal-torsional nystagmus that is <em>unidirectional</em> and suppressed by fixation, an <em>abnormal</em> head impulse on the right, no skew, and a patient who can still walk. In HINTS terms that is a reassuringly peripheral set. The point to hold on to is the inverse: in a patient with an acute vestibular syndrome, a <em>normal</em> head impulse test is the alarming result, because it means the peripheral apparatus is working and the lesion is somewhere else. New unilateral hearing loss with acute vertigo also deserves urgent attention rather than a label &mdash; it can be labyrinthitis, but it can equally be an anterior inferior cerebellar artery stroke."
+  },
+  {
+    "n": 9,
+    "mode": "Knowledge",
+    "select": 2,
+    "area": "Central versus peripheral",
+    "topic": "HINTS examination · central findings",
+    "stem": "In a patient with an <b>acute vestibular syndrome</b>, which <b>two</b> HINTS findings point towards a central cause?",
+    "options": [
+      "A head impulse test producing a corrective saccade towards the target",
+      "A normal head impulse test (no corrective saccade)",
+      "Unidirectional horizontal nystagmus that increases on gaze towards the fast phase",
+      "Direction-changing nystagmus on lateral gaze",
+      "Absence of vertical ocular misalignment on cover testing"
+    ],
+    "answer": [
+      1,
+      3
+    ],
+    "why": "HINTS is deliberately counter-intuitive: it is the <em>normal-looking</em> head impulse that is worrying. A corrective saccade means the peripheral VOR is damaged, which is reassuring in this context; a normal head impulse in a patient who is acutely, continuously vertiginous means the periphery is intact and something central is generating the symptom. The second central sign is direction-changing (gaze-evoked) nystagmus &mdash; beating right on right gaze and left on left gaze &mdash; because a peripheral lesion produces a single fixed direction regardless of where the patient looks. The third component, skew deviation, is central when <em>present</em>, so option 5 (its absence) is a reassuring finding rather than a worrying one and is included to test that the direction of each sign is understood. Option 3 describes Alexander&rsquo;s law, which is the normal behaviour of peripheral nystagmus. Two caveats keep this from being applied badly: HINTS is validated only in continuous acute vestibular syndrome with nystagmus, not in episodic dizziness or in a patient with no nystagmus at all; and it should be performed by someone trained in it, with any central finding, new deafness, or additional neurological sign prompting immediate medical referral rather than treatment."
+  },
+  {
+    "n": 10,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Assessment",
+    "topic": "Head impulse test · interpretation",
+    "stem": "During a bedside head impulse test the patient is asked to fixate on your nose while you deliver a small, rapid, unpredictable head rotation to the left. You observe the eyes move off target and then make a visible saccade back to your nose. What does this indicate?",
+    "options": [
+      "Reduced VOR gain for the left horizontal canal, indicating hypofunction on the left",
+      "Reduced VOR gain on the right, since the reflex is tested contralaterally",
+      "Normal function, since the corrective saccade shows the reflex is working",
+      "Impaired smooth pursuit rather than a vestibular problem",
+      "Impaired otolith function on the left"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "The head impulse test interrogates the canal the head is turned <em>towards</em>: a rapid leftward rotation is an excitatory stimulus for the left horizontal canal, and the intact reflex answers with an equal and opposite eye movement that keeps the target on the fovea. If the left side is hypofunctional the eyes are dragged off target with the head and only afterwards catch up with a visible corrective (overt) saccade &mdash; so a saccade after a leftward impulse localises the deficit to the left. Option 3 inverts the finding, which sounds superficially plausible but describes the failure of the reflex, not its success. Option 4 is excluded by the speed of the stimulus: at head velocities above roughly 100&ndash;150&deg;/s the smooth pursuit system cannot keep up at all, which is exactly why the test must be delivered fast, small and unpredictably. Two practical points: covert saccades occurring <em>during</em> the head movement are invisible at the bedside and are the main reason a negative bedside test does not exclude hypofunction, which is what video head impulse testing was developed to capture; and the test must be interpreted alongside the rest of the picture, since in an acutely vertiginous patient a normal result is a red flag rather than a reassurance."
+  },
+  {
+    "n": 11,
+    "mode": "Case",
+    "select": 1,
+    "area": "Episodic disorders",
+    "topic": "M&eacute;ni&egrave;re&rsquo;s disease · role of vestibular rehabilitation",
+    "vig": "A 50-year-old woman has recurrent attacks of vertigo lasting two to four hours, accompanied by a sense of fullness and roaring tinnitus in the left ear and documented fluctuating low-frequency sensorineural hearing loss on the same side. Between attacks she feels persistently unsteady in busy environments. She asks whether vestibular rehabilitation will stop the attacks.",
+    "stem": "What is the most accurate answer?",
+    "options": [
+      "Vestibular rehabilitation reliably prevents the attacks and should replace medical management",
+      "No treatment is worthwhile until hearing has been permanently lost",
+      "Vestibular rehabilitation is contraindicated in M&eacute;ni&egrave;re&rsquo;s disease at any stage",
+      "Repositioning manoeuvres are the treatment of choice for M&eacute;ni&egrave;re&rsquo;s disease",
+      "Vestibular rehabilitation does not prevent or shorten the attacks, but it can meaningfully improve the interictal imbalance, gaze stability and confidence, and it addresses fall risk"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "The honest answer is a divided one, and giving it well is the competency here. The attacks themselves are driven by episodic inner-ear pathology and are managed medically &mdash; dietary sodium and trigger review, betahistine or diuretics depending on local practice, and intratympanic or surgical options in refractory cases &mdash; and no exercise programme prevents them. What rehabilitation does address is the part of the illness that fills the time <em>between</em> attacks: residual imbalance, sensitivity to busy visual environments, deconditioning, the fear of the next attack, and the fall risk that follows all of these. That is a substantial share of the disability, and it grows as repeated attacks leave a progressive unilateral deficit, at which point adaptation and substitution work becomes genuinely valuable. Two things to add rather than leave unsaid: fluctuating function means the programme has to be paced flexibly rather than progressed rigidly through a fixed protocol; and Tumarkin otolithic crises &mdash; sudden drop attacks without loss of consciousness &mdash; are a recognised feature that carries a real injury risk and warrants specific safety planning and prompt medical review. Option 4 confuses this with BPPV, though the two can and often do coexist."
+  },
+  {
+    "n": 12,
+    "mode": "Case",
+    "select": 2,
+    "area": "Hypofunction",
+    "topic": "Bilateral vestibular hypofunction · management priorities",
+    "vig": "A 68-year-old man completed a course of intravenous gentamicin for endocarditis four months ago. He now reports that the world &ldquo;bounces&rdquo; when he walks, that he cannot read road signs unless he stops moving, and that he becomes markedly more unsteady in the dark and on soft ground. He has no spinning vertigo. The head impulse test produces corrective saccades in <b>both</b> directions and dynamic visual acuity drops by four lines.",
+    "stem": "Which <b>two</b> elements should be central to his programme?",
+    "options": [
+      "Gaze stabilisation exercises, with the expectation of partial gain from saccadic and other substitution strategies rather than full VOR recovery",
+      "Repeated Epley manoeuvres to both sides",
+      "Vestibular suppressant medication taken regularly to control the oscillopsia",
+      "Advice to avoid all head movement so that the oscillopsia does not become worse",
+      "Balance training that deliberately varies visual and somatosensory input, together with falls-prevention advice about lighting, uneven ground and night-time mobility"
+    ],
+    "answer": [
+      0,
+      4
+    ],
+    "why": "This is bilateral vestibular hypofunction from aminoglycoside ototoxicity, and the giveaways are all in the history: oscillopsia with walking, difficulty reading signs on the move, disproportionate loss of balance in the dark or on compliant surfaces, and no spinning &mdash; because there is no asymmetry between the two sides to spin about. Bilateral head impulse saccades and a large dynamic visual acuity drop confirm it. The programme differs from unilateral rehabilitation in a way that matters for how it is explained to the patient. With no intact side to recalibrate against, true VOR adaptation is limited, so gains come largely from <em>substitution</em> &mdash; potentiated smooth pursuit, pre-programmed and covert saccades, central preprogramming and better use of vision and proprioception &mdash; and expectations should be set accordingly, with a longer programme and a larger daily dose than in unilateral loss. Balance work has to attack the specific weakness, which is the loss of the vestibular fallback when vision or somatosensory input is degraded, so varying those inputs deliberately is the point; and because the dark and uneven ground are genuinely higher-risk for this patient, environmental and falls advice is treatment, not an add-on. Avoiding head movement (option 4) and suppressant medication (option 3) both prevent whatever compensation is available, and there is no BPPV here to reposition."
+  },
+  {
+    "n": 13,
+    "mode": "Case",
+    "select": 1,
+    "area": "Chronic dizziness",
+    "topic": "Persistent postural-perceptual dizziness",
+    "vig": "A 38-year-old woman had a single episode of acute vertigo eight months ago that settled over three weeks. She now describes near-daily non-spinning dizziness and a feeling of swaying, worse on standing and walking, worse in supermarkets, on escalators and when scrolling on her phone, and better when lying down or driving. Vestibular function testing and imaging are normal. She has stopped going to shopping malls.",
+    "stem": "Which diagnosis and management approach best fit this picture?",
+    "options": [
+      "Undiagnosed BPPV; repeat Dix-Hallpike testing weekly until the debris is found",
+      "Bilateral vestibular hypofunction; substitution training and falls prevention",
+      "Malingering; discharge with reassurance that there is no physical cause",
+      "Persistent postural-perceptual dizziness; graded vestibular rehabilitation with habituation to visual motion, an SSRI or SNRI where indicated, and cognitive behavioural therapy, with a clear explanation of the mechanism",
+      "Recurrent vestibular neuritis; a course of corticosteroids during each episode"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "The pattern is diagnostic once it is recognised: at least three months of non-spinning dizziness or unsteadiness, present on most days, made worse by the three specific provocateurs &mdash; upright posture, active or passive motion, and complex or moving visual stimuli &mdash; and typically precipitated by an event that has since resolved, which is why the investigations are normal. PPPD is not a diagnosis of exclusion or a euphemism for imagined symptoms; it is a recognised functional disorder in which the balance system persists with the high-risk postural strategy and heightened visual dependence that were appropriate during the acute illness, and it is maintained by anxiety and by avoidance. Management follows from that mechanism and has three strands: vestibular rehabilitation weighted towards graded exposure and habituation to the provoking motion and visual environments, serotonergic medication where indicated, and cognitive behavioural therapy. Explaining the mechanism honestly is itself therapeutic and is the reason option 3 is not merely unkind but clinically wrong. Option 1 is the most tempting error in practice &mdash; repeatedly hunting for BPPV in a patient whose symptoms are not brief and positional reinforces the search for a missed structural cause and delays effective treatment. Note too that PPPD frequently coexists with a treated peripheral disorder, so finding one does not exclude the other."
+  },
+  {
+    "n": 14,
+    "mode": "Case",
+    "select": 1,
+    "area": "Episodic disorders",
+    "topic": "Vestibular migraine · differentiating from M&eacute;ni&egrave;re&rsquo;s",
+    "vig": "A 34-year-old woman has recurrent episodes of vertigo lasting between 30 minutes and a day. About half are accompanied by photophobia and a unilateral throbbing headache, and she has a long history of migraine with aura. Audiometry is normal and does not change between episodes. Examination between attacks is unremarkable.",
+    "stem": "Which feature most reliably separates this from M&eacute;ni&egrave;re&rsquo;s disease?",
+    "options": [
+      "The duration of the attacks, since M&eacute;ni&egrave;re attacks are always shorter than 20 minutes",
+      "The presence of nausea during attacks",
+      "The absence of fluctuating low-frequency sensorineural hearing loss, aural fullness and tinnitus, with normal and stable audiometry",
+      "The normal examination between attacks",
+      "The response to vestibular rehabilitation, which only helps in migraine"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "Both conditions produce recurrent spontaneous vertigo of similar duration in an adult woman, and their attack lengths overlap substantially &mdash; M&eacute;ni&egrave;re attacks run roughly 20 minutes to 12 hours, vestibular migraine 5 minutes to 72 hours &mdash; so duration cannot separate them, which is what makes option 1 wrong as stated. The cochlear findings can. M&eacute;ni&egrave;re&rsquo;s requires documented low-frequency sensorineural hearing loss on the affected side with associated fullness and tinnitus, and that hearing loss fluctuates early and becomes permanent later; vestibular migraine leaves the audiogram normal and stable. Add the migrainous features &mdash; headache, photophobia, phonophobia or visual aura accompanying at least half the episodes in someone with a migraine history &mdash; and the diagnosis is straightforward. Nausea and a normal interictal examination occur in both. The practical relevance is that management diverges completely: migraine prophylaxis, trigger and sleep management, and habituation-based rehabilitation on one side, versus the M&eacute;ni&egrave;re pathway on the other. It is also worth knowing that vestibular migraine is substantially more common than M&eacute;ni&egrave;re&rsquo;s, that the two can coexist, and that vestibular migraine is a frequent driver of the visual-motion sensitivity that later becomes PPPD."
+  },
+  {
+    "n": 15,
+    "mode": "Knowledge",
+    "select": 2,
+    "area": "Central versus peripheral",
+    "topic": "Nystagmus characteristics · localisation",
+    "stem": "Which <b>two</b> characteristics of spontaneous nystagmus suggest a <b>central</b> rather than a peripheral cause?",
+    "options": [
+      "A mixed horizontal-torsional pattern",
+      "Purely vertical (downbeat or upbeat) or purely torsional nystagmus",
+      "Nystagmus accompanied by intense vertigo and vomiting",
+      "Nystagmus that decreases when the patient fixates on a target",
+      "Nystagmus that is not suppressed, or is made worse, by visual fixation"
+    ],
+    "answer": [
+      1,
+      4
+    ],
+    "why": "Two rules carry most of the weight here. The first is about direction: a peripheral lesion knocks out a set of canals whose combined pull produces a <em>mixed</em> horizontal-torsional beat, so a nystagmus that is purely vertical or purely torsional cannot be explained by peripheral disease and points to the brainstem or cerebellum &mdash; downbeat nystagmus in particular is associated with lesions at the cervicomedullary junction. The second is about fixation: peripheral nystagmus is generated by an imbalance that the visual system can partly override, so it damps down when the patient fixates and becomes obvious when fixation is removed with Frenzel lenses or by closing one eye behind a cover. Central nystagmus is not suppressed and may worsen. Option 3 is the humane trap: the intensity of a patient&rsquo;s distress says nothing about where the lesion is, and a florid, vomiting, terrified patient with neuritis usually looks far worse than someone with a small cerebellar infarct, which is exactly why symptom severity must never be used for localisation. Other central pointers worth carrying alongside these are direction-changing gaze-evoked nystagmus, nystagmus without vertigo, and any accompanying neurological sign &mdash; diplopia, dysarthria, dysphagia, limb ataxia, or a new severe headache."
+  },
+  {
+    "n": 16,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Exercise prescription",
+    "topic": "Gaze stabilisation · VOR x1 and x2",
+    "stem": "What is the difference between a VOR x1 and a VOR x2 gaze stabilisation exercise, and why is x2 a progression?",
+    "options": [
+      "In x1 the target is stationary while the head moves; in x2 the target moves in the opposite direction to the head, doubling the required VOR gain and therefore the adaptation demand",
+      "In x1 the eyes move while the head is still; in x2 the head moves while the eyes are still",
+      "x2 simply means performing the x1 exercise twice as long",
+      "In x2 the patient closes their eyes, which removes visual input and increases the challenge",
+      "x2 uses two targets placed side by side, and the patient alternates between them with saccades"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "Both exercises drive adaptation the same way: they create retinal slip, which is the error signal the cerebellum uses to recalibrate VOR gain. The difference is how much slip is demanded. In VOR x1 the patient fixates a stationary target and turns the head, so the eyes must move exactly as far and as fast as the head &mdash; a gain of 1. In VOR x2 the target is moved in the <em>opposite</em> direction to the head at the same time, so the eyes must travel twice as far relative to the head, demanding an effective gain of 2. That is a larger and harder adaptation task and is used as a progression once x1 is comfortable. Everything else about prescription lives around these two: progress by increasing head velocity, by moving from sitting to standing to walking, by narrowing the base of support, by moving from a plain to a busy background, and by increasing duration &mdash; and be specific about the direction, since the exercise is done in yaw and in pitch separately. Two common execution faults are worth policing directly: the head must keep moving at a speed at which the target stays <em>clear</em>, since slowing down to blur point defeats the purpose, and mild provocation of symptoms during and shortly after the exercise is expected rather than a reason to stop."
+  },
+  {
+    "n": 17,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Exercise prescription",
+    "topic": "Dosage · gaze stabilisation in unilateral hypofunction",
+    "stem": "For a patient with <b>chronic</b> unilateral vestibular hypofunction, what total daily dose of gaze stabilisation exercise is recommended as a minimum in current clinical practice guidelines?",
+    "options": [
+      "About 3 minutes per day",
+      "About 20 minutes per day, typically divided into shorter bouts across the day",
+      "About 90 minutes per day in a single session",
+      "Dose does not matter, provided the exercises are performed correctly",
+      "Exercises should be performed only in supervised clinic sessions, twice weekly"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "Adaptation is dose-dependent, and the guideline figures are worth carrying as numbers rather than as an impression: roughly 12 minutes a day in <em>acute and subacute</em> unilateral hypofunction, roughly 20 minutes a day once the condition is <em>chronic</em>, and 20&ndash;40 minutes a day in <em>bilateral</em> hypofunction, in every case delivered as several short bouts rather than one long session. Short bouts matter because the exercise is deliberately symptom-provoking and adherence collapses if each session is long enough to leave the patient nauseated. The distractors mark out the two ways dosing goes wrong in practice. A token few minutes (option 1) is the commonest under-dose and produces the familiar &ldquo;the exercises did nothing&rdquo; outcome. Clinic-only practice (option 5) cannot reach any of these totals; the daily home programme is the treatment, and the clinic session exists to check technique, progress the challenge and troubleshoot. Option 4 discards the one variable most under the therapist&rsquo;s control. Alongside the daily dose, the programme should include balance and gait training and, where relevant, habituation, since gaze stabilisation alone does not address postural control."
+  },
+  {
+    "n": 18,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Exercise prescription",
+    "topic": "Habituation · patient selection",
+    "stem": "Habituation exercises are most appropriate for which patient?",
+    "options": [
+      "A patient whose dizziness occurs entirely at random with no identifiable trigger",
+      "A patient with untreated posterior canal BPPV",
+      "A patient with complete bilateral vestibular loss and no provocable symptoms",
+      "A patient in the first 24 hours of an acute vestibular syndrome of uncertain cause",
+      "A patient whose dizziness is reliably and reproducibly provoked by specific head movements or visual environments, and who has a stable, non-progressive underlying condition"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "Habituation works by graded, repeated exposure: a movement or environment that provokes symptoms is performed deliberately and often enough that the central response to it diminishes. That mechanism dictates the selection criteria embedded in option 5 &mdash; the trigger must be identifiable and reproducible, or there is nothing to expose the patient to and no way to measure progress, and the underlying disorder must be stable, since exposure cannot outpace an actively progressing lesion. Option 2 is the important clinical error: BPPV has a mechanical cause and a mechanical cure, and repositioning resolves it far faster and more completely than habituation, so habituating a patient with treatable canalithiasis means months of provoked symptoms in place of one or two manoeuvres. Options 1 and 3 fail the same requirement from opposite directions &mdash; no provocable symptom to habituate, or no consistent provoker to work with. Option 4 is a safety matter: an undiagnosed acute vestibular syndrome needs its cause established before any provocative programme begins. A structured approach such as the Motion Sensitivity Quotient is useful here, both to identify which movements to prescribe and to demonstrate change objectively."
+  },
+  {
+    "n": 19,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "BPPV",
+    "topic": "Brandt-Daroff exercises · role",
+    "stem": "What is the correct role of Brandt-Daroff exercises in the management of posterior canal BPPV?",
+    "options": [
+      "They are the first-line treatment and are more effective than canalith repositioning",
+      "They are less effective than canalith repositioning as an initial treatment, and are best reserved for residual dizziness after successful repositioning, or for self-management when repositioning is not available or has failed",
+      "They are used to diagnose the affected side before treatment",
+      "They should be performed before every Epley manoeuvre to loosen the otoconia",
+      "They are contraindicated once BPPV has been diagnosed"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "Brandt-Daroff exercises work primarily by habituation and by dispersing debris rather than by steering it out of the canal along a defined route, and head-to-head evidence consistently places them below canalith repositioning for initial treatment &mdash; resolution rates for a single well-performed Epley are high, whereas Brandt-Daroff typically takes days to weeks of repeated, symptom-provoking practice. That does not make them useless. They earn their place in the residual dizziness and imbalance that some patients have after the positional vertigo itself has been abolished, as a self-management option for patients who cannot readily access a clinician or who have recurrent episodes and have been taught to treat themselves, and where repositioning has genuinely failed. The clinically costly error is option 1, because it substitutes a slow, unpleasant treatment for a fast and effective one. Option 3 confuses treatment with diagnosis &mdash; the side is established by the Dix-Hallpike or supine roll test &mdash; and option 4 describes a step with no rationale. As with any positional technique, cervical and vascular precautions apply."
+  },
+  {
+    "n": 20,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Outcome measures",
+    "topic": "Dizziness Handicap Inventory",
+    "stem": "What does the Dizziness Handicap Inventory measure, and what change in score is generally taken as clinically meaningful?",
+    "options": [
+      "Objective postural sway measured on a force plate; a change of 18 units",
+      "The severity of nystagmus graded from 0 to 100 by the clinician",
+      "Vestibulo-ocular reflex gain expressed as a percentage of normal",
+      "Self-perceived handicap arising from dizziness across functional, emotional and physical domains, scored from 0 to 100, with a change of about 18 points generally regarded as clinically meaningful",
+      "The number of BPPV episodes reported in the preceding month"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "The DHI is a 25-item self-report questionnaire covering functional, emotional and physical domains, scored 0&ndash;100, with higher scores meaning greater self-perceived handicap; scores are often banded as mild (roughly 0&ndash;30), moderate (31&ndash;60) and severe (61&ndash;100), and a change of around 18 points is the figure usually cited as clinically meaningful. The distractors all name something objective, and that is the point of the item: the DHI deliberately measures <em>handicap</em>, which is what the patient experiences, and it correlates only loosely with laboratory measures of vestibular function. That dissociation is clinically useful rather than a flaw &mdash; a patient with a large measured deficit who has compensated well may report little handicap, while a patient with normal function tests may be severely handicapped, which is exactly the pattern seen in PPPD. It also means the DHI cannot stand alone: a rounded assessment pairs it with a performance measure of gait and balance such as the Functional Gait Assessment, a measure of gaze stability such as dynamic visual acuity, and where relevant a fear-of-falling or anxiety measure, since emotional factors load heavily on the DHI&rsquo;s emotional subscale."
+  },
+  {
+    "n": 21,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Outcome measures",
+    "topic": "Functional Gait Assessment · fall risk",
+    "stem": "Which statement about the Functional Gait Assessment (FGA) is correct?",
+    "options": [
+      "It is a 10-item measure scored out of 30 that includes gait with horizontal and vertical head turns, gait with eyes closed and walking backwards; a score at or below 22/30 has been shown to predict falls in older adults",
+      "It is a static balance test performed entirely in standing",
+      "It is scored out of 100 and is a self-report questionnaire",
+      "It replaced the Dizziness Handicap Inventory because it measures the same construct more accurately",
+      "It is scored out of 24 and its items are identical to those of the Berg Balance Scale"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "The FGA is a 10-item performance measure of dynamic gait, each item scored 0&ndash;3 for a maximum of 30. It was developed from the Dynamic Gait Index specifically for vestibular populations, adding items &mdash; gait with eyes closed, walking backwards, and a narrow-base gait &mdash; that reduce the ceiling effect the DGI showed in higher-functioning patients, and it has the better reliability of the two. A cut-off at or below 22/30 has been reported to predict falls in community-dwelling older adults. Its value in a vestibular caseload comes from the items that deliberately load the vestibular system: walking with horizontal and vertical head turns is where a patient with uncompensated hypofunction visibly deviates or has to stop, and eyes-closed gait removes the visual substitution many of these patients rely on. Option 4 is conceptually wrong rather than merely inaccurate: the FGA measures observed performance and the DHI measures self-perceived handicap, and because the two can dissociate widely they are complementary rather than interchangeable."
+  },
+  {
+    "n": 22,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Assessment",
+    "topic": "mCTSIB · isolating vestibular input",
+    "stem": "In the modified Clinical Test of Sensory Interaction on Balance (mCTSIB), which condition most specifically challenges the patient to rely on <b>vestibular</b> input for postural control?",
+    "options": [
+      "Standing on a firm surface with the eyes open",
+      "Standing on a firm surface with the eyes closed",
+      "Standing on a compliant (foam) surface with the eyes open",
+      "Standing on a compliant (foam) surface with the eyes closed",
+      "Sitting unsupported with the eyes closed"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "The test is a systematic subtraction. Balance is maintained by vision, somatosensation and vestibular input, so removing or degrading them one at a time reveals which the patient depends on. Eyes closed removes vision; foam degrades ankle somatosensory information by making the support surface unreliable. Doing both together leaves the vestibular system as the only accurate reference, which is why condition 4 is the one that isolates it, and why a patient who is steady in conditions 1 to 3 and falls or sways markedly in condition 4 is showing a vestibular pattern. The other conditions still carry information: excessive sway with eyes closed on a firm surface suggests visual dependence, and difficulty on foam with eyes open suggests somatosensory dependence &mdash; both common and both treatable by training in the deprived condition. Two caveats keep the interpretation honest. Condition 4 is a demanding task in which many healthy older adults also perform poorly, so it must be judged against age-appropriate norms rather than an absolute standard; and the test needs close guarding, since a genuine vestibular loss can produce a sudden fall with no protective reaction."
+  },
+  {
+    "n": 23,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Assessment",
+    "topic": "Dynamic visual acuity testing",
+    "stem": "What does the clinical dynamic visual acuity test measure, and what result is considered abnormal?",
+    "options": [
+      "Static visual acuity measured twice; any difference between the two readings is abnormal",
+      "Contrast sensitivity in low light; a two-level drop is abnormal",
+      "The speed at which a patient can read a chart; more than 30 seconds is abnormal",
+      "The ability to keep the eyes still while a target moves; any eye movement is abnormal",
+      "The difference between visual acuity measured with the head still and during passive head oscillation at about 2 Hz; a loss of three or more lines on the chart indicates significant VOR impairment"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "Dynamic visual acuity is the functional expression of the VOR. Static acuity is read first, then the head is oscillated passively in the horizontal plane at about 2 Hz &mdash; fast enough that smooth pursuit cannot contribute &mdash; and acuity is read again. If the reflex is holding the image on the retina the two readings should be close; if VOR gain is reduced the image slips and acuity falls, and a loss of three or more lines is generally taken as significant, with larger drops typical of bilateral loss. The test earns its place because it measures the thing the patient actually complains about: not a gain figure but the inability to read a sign, recognise a face or watch their feet while moving. That makes it useful both as a baseline and as a way of demonstrating improvement in terms the patient recognises. Two practical points: the frequency has to be maintained, since slowing the oscillation lets pursuit help out and produces a falsely normal result, and the head movement should be passive, small and within a comfortable cervical range, with the technique checked before the numbers are trusted."
+  },
+  {
+    "n": 24,
+    "mode": "Case",
+    "select": 1,
+    "area": "Red flags",
+    "topic": "Vestibular schwannoma · asymmetric hearing loss",
+    "vig": "A 57-year-old man is referred with two years of gradually increasing unsteadiness. He has no attacks of spinning vertigo. He has noticed over the same period that he cannot use the telephone with his right ear and has a constant high-pitched ringing on that side. Bedside testing shows mild unsteadiness on tandem gait and a subtly abnormal head impulse to the right. Audiometry confirms an asymmetrical sensorineural hearing loss on the right.",
+    "stem": "What is the most appropriate action?",
+    "options": [
+      "Begin gaze stabilisation and balance training, and review in six weeks",
+      "Perform Dix-Hallpike testing and treat with an Epley manoeuvre",
+      "Refer for medical review with a view to MRI of the internal auditory meati, because progressive asymmetrical sensorineural hearing loss with unilateral tinnitus requires exclusion of a vestibular schwannoma",
+      "Reassure him that the absence of vertigo excludes a serious cause",
+      "Refer for a hearing aid assessment alone"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "The pattern to recognise is a <em>slowly progressive unilateral</em> one: asymmetrical sensorineural hearing loss with unilateral tinnitus, and disproportionately little vertigo. That last feature is the one that misleads, and option 4 states the trap explicitly &mdash; a schwannoma grows slowly enough that central compensation keeps pace with the vestibular deficit, so the patient is unsteady rather than spinning, and the absence of vertigo is therefore reassuring about nothing at all. Asymmetrical sensorineural hearing loss is the red flag that carries the referral, and MRI of the internal auditory meati is the investigation that answers it. Treating the balance impairment first (option 1) is not harmless: it delays a diagnosis in which tumour size at detection drives the treatment options and the risk to facial nerve and hearing. Vestibular rehabilitation has a real role here, but after diagnosis &mdash; particularly around surgical or radiosurgical management, where a pre-habilitation and post-operative programme substantially improves recovery of balance. Option 2 treats a condition whose history is entirely absent, since nothing here is brief or positional."
+  },
+  {
+    "n": 25,
+    "mode": "Case",
+    "select": 1,
+    "area": "Concussion",
+    "topic": "Post-concussion dizziness · management",
+    "vig": "A 16-year-old rugby player is three weeks post-concussion. He reports dizziness with head movement and in busy corridors, headache, and difficulty concentrating in class. Vestibular/ocular motor screening reproduces his symptoms with horizontal VOR testing and with visual motion sensitivity testing. Neurological examination and imaging are normal. He has been advised to rest in a dark room until all symptoms resolve.",
+    "stem": "What is the most appropriate management?",
+    "options": [
+      "Continue strict rest until he is completely symptom-free, then return directly to full contact training",
+      "Cervicovestibular rehabilitation targeting the positive VOMS domains, combined with sub-symptom-threshold aerobic exercise, and a graded return-to-learn and return-to-sport progression",
+      "Immediate return to full contact training, since imaging is normal",
+      "Vestibular suppressant medication until the dizziness settles",
+      "Repositioning manoeuvres for both posterior canals"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "Prolonged strict rest is no longer supported and is itself associated with slower recovery and worse mood; current consensus is a brief initial period of relative rest of about 24&ndash;48 hours followed by graded reintroduction of activity below the symptom threshold. Two active treatments have trial support in this population &mdash; cervicovestibular rehabilitation, which is directly indicated by his positive VOR and visual motion sensitivity findings and by the frequent coexistence of a neck contribution after a collision, and sub-symptom-threshold aerobic exercise, prescribed from a graded exertion test where available. Alongside these, return-to-learn and return-to-sport progressions run in parallel, with academic adjustments for the concentration difficulty, and full contact is the last step rather than the first, entered only after medical clearance and completion of the stepwise progression &mdash; which is where option 1 fails even though its first half sounds cautious. Vestibular suppressants blunt the adaptation the rehabilitation is trying to drive and add sedation to a cognitively impaired adolescent. BPPV does occur after head trauma and should be tested for, but nothing here is brief or positional, so option 5 treats a diagnosis that has not been made."
+  },
+  {
+    "n": 26,
+    "mode": "Case",
+    "select": 1,
+    "area": "Chronic dizziness",
+    "topic": "Cervicogenic dizziness · diagnosis of exclusion",
+    "vig": "A 44-year-old woman developed neck pain and unsteadiness after a rear-end collision six months ago. She describes light-headedness and a feeling of being &ldquo;off&rdquo; rather than spinning, closely related to neck pain and to sustained desk postures. Oculomotor examination, head impulse testing, Dix-Hallpike and audiometry are all normal. She has restricted and painful upper cervical movement, a cervical joint position error of 8&deg;, and her symptoms are reproduced by the cervical torsion test but not by en-bloc head-and-trunk rotation.",
+    "stem": "Which statement best reflects appropriate management?",
+    "options": [
+      "Cervicogenic dizziness is a diagnosis of exclusion; manage with manual therapy to the cervical spine combined with cervical proprioceptive and oculomotor retraining, and reassess",
+      "This is definitely PPPD and should be treated with graded visual motion exposure alone",
+      "Cervical dizziness is a straightforward positive diagnosis confirmed by the cervical torsion test alone",
+      "A rigid collar should be prescribed to limit the provoking neck movement",
+      "No treatment is indicated, since all vestibular tests are normal"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "Cervicogenic dizziness has no confirmatory test, so it is reached by excluding vestibular, central and cardiovascular causes and then finding a convincing cervical picture &mdash; which is what this vignette provides: normal oculomotor, head impulse, positional and audiometric testing, alongside restricted painful upper cervical movement, an elevated joint position error and a symptom pattern that tracks the neck. The cervical torsion test, in which the head is held still while the trunk is rotated beneath it, is a useful supporting finding because it moves the neck without moving the vestibular apparatus, but it has modest diagnostic accuracy and does not stand alone, which is where option 3 over-claims. Management combines manual therapy for the cervical spine with retraining of cervical proprioception and the cervico-ocular and oculomotor systems &mdash; joint position error training, eye-head coordination, gaze stability with the trunk moving &mdash; and it should be reassessed rather than assumed, since failure to respond should send you back to the differential. A collar (option 4) promotes exactly the deconditioning and proprioceptive degradation that is driving the problem. Before settling on this diagnosis, vertebrobasilar and upper cervical instability screening should be complete, and PPPD, which frequently coexists after a collision, should be considered rather than ignored."
+  },
+  {
+    "n": 27,
+    "mode": "Case",
+    "select": 1,
+    "area": "Red flags",
+    "topic": "Orthostatic hypotension · recognising the non-vestibular cause",
+    "vig": "A 76-year-old woman is referred with &ldquo;dizziness&rdquo;. On careful questioning her symptoms are a brief light-headed, greying-out sensation lasting seconds, occurring only when she stands up from sitting or from bed, and never when she rolls over or turns her head. Vestibular examination is entirely normal. Her blood pressure falls from 142/80 supine to 112/64 within two minutes of standing, with reproduction of her symptoms. She takes a diuretic and an alpha-blocker.",
+    "stem": "What is the most appropriate action?",
+    "options": [
+      "Begin vestibular rehabilitation with gaze stabilisation exercises",
+      "Recognise this as orthostatic hypotension rather than a vestibular disorder; refer back for medication review, and advise on hydration, staged rising, counter-manoeuvres and falls prevention",
+      "Perform an Epley manoeuvre, since the symptoms occur on getting out of bed",
+      "Diagnose PPPD, since the symptoms are postural",
+      "Reassure her that this is a normal part of ageing and requires no action"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "&ldquo;Dizziness&rdquo; is a word patients use for at least four different experiences, and separating them is the first clinical act. Here the description is pre-syncopal &mdash; light-headed, greying-out, lasting seconds &mdash; and the trigger is a change in <em>posture against gravity</em> rather than a change in head position, which is the distinction that separates orthostatic hypotension from BPPV and is exactly why option 3 is wrong despite the symptom occurring on getting out of bed. A drop of at least 20 mmHg systolic or 10 mmHg diastolic within three minutes of standing, with reproduction of symptoms, confirms it, and her diuretic and alpha-blocker are both plausible contributors, making medication review the single highest-yield action. Physiotherapy still has real content: staged rising with a pause in sitting, counter-manoeuvres such as leg crossing and calf pumping before standing, hydration and salt advice where not contraindicated, lower-limb strengthening, and falls-prevention work. Option 4 misapplies a label &mdash; PPPD is persistent daily dizziness worsened by upright posture, motion and visual stimuli, not seconds-long light-headedness on standing &mdash; and option 5 dismisses a treatable and strongly fall-associated condition as ageing."
+  },
+  {
+    "n": 28,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Acute vestibular syndrome",
+    "topic": "Vestibular suppressants · effect on compensation",
+    "stem": "Why should vestibular suppressant medication (for example prochlorperazine, cinnarizine or an antihistamine) generally be limited to the first 24&ndash;72 hours of an acute vestibular syndrome?",
+    "options": [
+      "Because they cause permanent damage to the vestibular hair cells",
+      "Because they lose their anti-emetic effect completely after 72 hours",
+      "Because they damp the central asymmetry signal that drives compensation, and prolonged use delays recovery and can produce a chronically uncompensated patient; sedation and falls risk in older adults add to the harm",
+      "Because they interfere with the accuracy of subsequent audiometry",
+      "There is no reason to limit them; they can be continued indefinitely while symptoms persist"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "Central compensation is driven by the error signal &mdash; the mismatch between the two vestibular nuclei and between vestibular, visual and somatosensory information. Vestibular suppressants work by damping precisely that signal, so while they are being taken the brain has less to recalibrate against and the process stalls. Beyond the first few days, when they are genuinely useful for controlling intractable vertigo and vomiting, continued use converts a self-limiting illness into chronic uncompensated dizziness, and it is common to meet patients months later who are still taking a drug started for a three-day illness. In older adults the harms compound: these agents are sedating and anticholinergic, they increase falls risk, and some carry extrapyramidal effects. The message to give the patient is the counter-intuitive one &mdash; stop the tablets, and start moving. Early mobilisation and vestibular exercise accelerate recovery, and prolonged bed rest in a dark room does the same damage as the medication. It is also worth knowing what does have a role: corticosteroids in vestibular neuritis remain debated and are a medical decision, but they are not a substitute for exercise."
+  },
+  {
+    "n": 29,
+    "mode": "Case",
+    "select": 1,
+    "area": "BPPV",
+    "topic": "Canal conversion after repositioning",
+    "vig": "You treat a patient for right posterior canal BPPV with an Epley manoeuvre. The typical upbeat-torsional nystagmus is provoked and settles at each stage. On review a week later her original symptom has gone, but she now reports intense vertigo lasting more than a minute when she rolls over in bed. A supine roll test now provokes strong horizontal geotropic nystagmus, stronger with the head turned right.",
+    "stem": "What has most likely happened, and what should be done?",
+    "options": [
+      "Canal conversion &mdash; the otoconia have migrated into the right horizontal canal; treat with a horizontal canal technique such as a barbecue (Lempert) roll or a Gufoni manoeuvre",
+      "The Epley failed; repeat the same Epley manoeuvre on the right",
+      "She has developed vestibular neuritis and needs corticosteroids",
+      "She has developed a central lesion and needs urgent imaging",
+      "This is normal residual dizziness after a successful Epley; no further treatment is needed"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "The nystagmus has changed character, and that is the whole answer. It was upbeat-torsional and provoked by the Dix-Hallpike, which is posterior canal; it is now purely horizontal and provoked by the supine roll test, which is horizontal canal. That change after a repositioning manoeuvre is canal conversion &mdash; a recognised complication in which otoconia leaving the posterior canal enter the horizontal canal instead of settling in the utricle, and it is reported in a small but real percentage of treatments. The lengthened attacks fit, since horizontal canal BPPV characteristically lasts longer than posterior canal BPPV. Because the nystagmus is geotropic and stronger to the right, the right ear is the affected side, and treatment is a horizontal canal technique: a barbecue roll away from the affected ear, a Gufoni manoeuvre, or a forced prolonged position. Repeating the Epley (option 2) treats a canal the debris has left. Option 5 is the more insidious error: genuine residual dizziness after a successful Epley is a vague unsteadiness rather than a fresh, intense, positionally-triggered vertigo with a new nystagmus pattern, so calling this residual would leave a treatable and highly symptomatic condition untreated. The practical prevention is to warn patients that symptoms may change rather than simply improve, and to re-test rather than re-treat by memory."
+  },
+  {
+    "n": 30,
+    "mode": "Knowledge",
+    "select": 2,
+    "area": "Red flags",
+    "topic": "Positional testing · precautions",
+    "stem": "Which <b>two</b> of the following should make you modify or defer a Dix-Hallpike test and seek advice?",
+    "options": [
+      "A previous episode of BPPV that resolved with an Epley manoeuvre",
+      "Anxiety about the test and a fear of provoking symptoms",
+      "Symptoms or history suggesting vertebrobasilar insufficiency, or recent cervical arterial dissection",
+      "Known cervical instability, severe cervical stenosis or recent cervical spine surgery",
+      "A patient who wears bilateral hearing aids"
+    ],
+    "answer": [
+      2,
+      3
+    ],
+    "why": "The two genuine concerns are structural and vascular, and both follow from what the test requires: cervical extension combined with 45&deg; of rotation, held for up to a minute. That position is unsafe in a neck that cannot tolerate it &mdash; instability, severe stenosis with myelopathic features, rheumatoid or Down syndrome atlantoaxial disease, recent cervical surgery, acute fracture &mdash; and it is a recognised provocation in the presence of vertebrobasilar compromise or arterial dissection, where the sudden onset of the symptoms and their neurological company should already have prompted a different pathway. Neither is an absolute bar to assessment: the side-lying (Semont-style) test achieves the same posterior canal stimulus with far less cervical extension and is the standard modification, and the patient can also be positioned with the trunk pre-tilted or on a wedge. The other three options are distractors of a specific kind &mdash; they are reasons to prepare the patient rather than to defer. A previous BPPV episode makes the diagnosis <em>more</em> likely; hearing aids are irrelevant to the manoeuvre; and anxiety is managed by explaining that the test is expected to provoke the symptom briefly, that this is diagnostic rather than harmful, and that the vertigo will settle within about a minute. Deferring for anxiety alone leaves a treatable condition untreated, which is the outcome this item is testing against."
   }
-  function fmtTime(sec){
-    const m = Math.floor(sec/60).toString().padStart(2,"0");
-    const s = Math.floor(sec%60).toString().padStart(2,"0");
-    return m+":"+s;
+];
+
+/* ---------- state ---------- */
+/* defensive: drop any empty slot so a stray comma can never stall the paper */
+var ITEMS = QUESTIONS.filter(function(q){ return q && q.options && q.options.length; });
+var TOTAL = ITEMS.length;
+var picks = ITEMS.map(function(){return [];});
+var idx = 0, t0 = 0, tick = null, done = false, staff = '', armed = false;
+var $ = function(id){return document.getElementById(id);};
+
+function pad(n){return (n<10?'0':'')+n;}
+function fmt(s){return pad(Math.floor(s/60))+':'+pad(s%60);}
+function elapsed(){return Math.floor((Date.now()-t0)/1000);}
+function lbl(i){return LABELS[i];}
+
+/* ---------- rail ---------- */
+function buildRail(){
+  var r = $('rail'); r.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var b = document.createElement('button');
+    b.className='railbtn'; b.type='button'; b.textContent=q.n;
+    b.setAttribute('aria-label','Go to question '+q.n);
+    b.onclick=function(){idx=i;render();};
+    r.appendChild(b);
+  });
+}
+function paintRail(){
+  var kids = $('rail').children;
+  for(var i=0;i<kids.length;i++){
+    var got = (picks[i]||[]).length, need = ITEMS[i].select, cls = 'railbtn';
+    if(got===need) cls += ' done';
+    else if(got>0) cls += ' part';
+    if(i===idx) cls += ' here';
+    kids[i].className = cls;
+    kids[i].title = 'Q'+ITEMS[i].n+' · '+(got===need ? 'answered'
+      : got>0 ? 'incomplete — '+got+' of '+need+' selected' : 'not answered');
+  }
+}
+
+/* ---------- render one question ---------- */
+function render(){
+  var q = ITEMS[idx];
+  if(!q){ return; }
+  $('counter').textContent = 'Question '+(idx+1)+' of '+TOTAL;
+  $('bar').style.width = ((idx+1)/TOTAL*100)+'%';
+  $('qno').textContent = 'Q'+pad(q.n);
+  var got = picks[idx].length;
+  $('qmode').textContent = q.select===2 ? ('Select 2 · '+got+' of 2 chosen') : 'Select 1';
+  $('qmode').className = 'chip hot' + (q.select===2 && got!==2 ? ' pend' : '');
+  $('qtopic').textContent = q.mode+' · '+q.topic;
+  $('stem').innerHTML = (q.vig ? '<span class="vig">'+q.vig+'</span>' : '')
+                      + q.stem
+                      + (q.media ? q.media : '');
+
+  var box = $('opts'); box.innerHTML='';
+  q.options.forEach(function(text,i){
+    var b = document.createElement('button');
+    b.type='button';
+    b.className='opt'+(q.select===2?' two':'')+(picks[idx].indexOf(i)>-1?' sel':'');
+    b.setAttribute('aria-pressed', picks[idx].indexOf(i)>-1 ? 'true':'false');
+    b.innerHTML = '<b>'+lbl(i)+'</b><span>'+text+'</span>';
+    b.onclick=function(){choose(i);};
+    box.appendChild(b);
+  });
+
+  $('prev').disabled = (idx===0);
+  $('next').disabled = (idx===TOTAL-1);
+  paintRail();
+}
+
+function choose(i){
+  var q = ITEMS[idx], cur = picks[idx], at = cur.indexOf(i);
+  if(q.select===2){
+    if(at>-1){cur.splice(at,1);}
+    else{ if(cur.length>=2){cur.shift();} cur.push(i); }
+  }else{
+    picks[idx] = (at>-1) ? [] : [i];
+  }
+  if(armed){ armed=false; $('warn').classList.add('hidden'); $('submit').textContent='Submit test'; }
+  render();
+}
+
+/* ---------- marking ---------- */
+function isRight(i){
+  var a = ITEMS[i].answer.slice().sort().join(',');
+  var p = picks[i].slice().sort().join(',');
+  return a===p && picks[i].length===ITEMS[i].answer.length;
+}
+
+function finish(){
+  var bad = [];
+  picks.forEach(function(p,i){ if(p.length !== ITEMS[i].select){ bad.push(i); } });
+  if(bad.length>0 && !armed){
+    armed = true;
+    var links = bad.map(function(i){
+      var got = picks[i].length, need = ITEMS[i].select;
+      return '<button type="button" class="jump" data-i="'+i+'">Q'+pad(ITEMS[i].n)
+        + (got>0 ? ' – '+got+' of '+need : '') + '</button>';
+    }).join(' ');
+    var w = $('warn');
+    w.innerHTML = '<b>'+bad.length+' question'+(bad.length>1?'s still need':' still needs')+' attention.</b> '
+      + 'Items needing two answers show fewer than two selected, or nothing is selected. '
+      + 'Tap a number to go straight there, or tap “Submit test anyway” to submit — '
+      + 'unfinished items are marked incorrect.<span class="jumps">'+links+'</span>';
+    w.classList.remove('hidden');
+    $('submit').textContent = 'Submit test anyway';
+    return;
   }
 
-  // ---------------------------------------------------------------
-  // Rail (question navigator)
-  // ---------------------------------------------------------------
-  function buildRail(){
-    const rail = $("rail");
-    rail.innerHTML = "";
-    for(let i=0;i<TOTAL;i++){
-      const b = document.createElement("button");
-      b.type = "button";
-      b.textContent = i+1;
-      b.className = QUESTIONS[i].cat==="knowledge" ? "k" : "c";
-      b.setAttribute("aria-label", "Go to question "+(i+1));
-      b.addEventListener("click", ()=>{ state.index = i; renderQuestion(); });
-      rail.appendChild(b);
-    }
-  }
-  function updateRail(){
-    const rail = $("rail");
-    Array.from(rail.children).forEach((b,i)=>{
-      b.classList.toggle("answered", state.answers[i]!==null);
-      b.classList.toggle("current", i===state.index);
-    });
-  }
+  done = true; clearInterval(tick);
+  var secs = elapsed(), ok = 0;
+  ITEMS.forEach(function(q,i){ if(isRight(i)) ok++; });
+  var pc = Math.round(ok/TOTAL*100);
 
-  // ---------------------------------------------------------------
-  // Quiz rendering
-  // ---------------------------------------------------------------
-  function renderQuestion(){
-    const q = QUESTIONS[state.index];
-    $("progressText").textContent = "Question "+(state.index+1)+" of "+TOTAL;
-    $("progressFill").style.width = (((state.index+1)/TOTAL)*100).toFixed(1)+"%";
+  $('quiz').classList.add('hidden');
+  $('results').classList.remove('hidden');
 
-    $("catTag").innerHTML = q.cat==="knowledge"
-      ? '<span class="cat-tag knowledge"><span class="dot"></span>Knowledge</span>'
-      : '<span class="cat-tag case"><span class="dot"></span>Case-Based</span>';
+  var pass = pc>=60;
+  var bg = $('badge');
+  bg.textContent = pass ? 'Pass' : 'Below pass mark';
+  bg.className = 'badge '+(pass?'pass':'fail');
+  $('raw').textContent = ok;
+  $('pc').textContent = pc+'%';
+  $('nOk').textContent = ok;
+  $('nNo').textContent = TOTAL-ok;
+  $('tTaken').textContent = fmt(secs);
+  $('staffOut').textContent = staff || '—';
 
-    $("vignetteBox").innerHTML = q.vignette
-      ? '<div class="vignette"><span class="vlabel">Clinical vignette</span>'+q.vignette+'</div>'
-      : "";
-
-    $("questionStem").textContent = q.stem;
-
-    const box = $("optionsBox");
-    box.innerHTML = "";
-    q.options.forEach((opt, i)=>{
-      const label = document.createElement("label");
-      label.className = "option" + (state.answers[state.index]===i ? " selected" : "");
-      label.innerHTML =
-        '<span class="radio"></span>'+
-        '<input type="radio" name="opt" '+(state.answers[state.index]===i?"checked":"")+'>'+
-        '<span class="otext">'+String.fromCharCode(65+i)+'. '+opt+'</span>';
-      label.addEventListener("click", ()=>{
-        state.answers[state.index] = i;
-        renderQuestion();
-      });
-      box.appendChild(label);
-    });
-
-    $("prevBtn").disabled = state.index===0;
-    $("nextBtn").disabled = state.index===TOTAL-1;
-
-    updateRail();
-    updateUnansweredHint();
-  }
-
-  function updateUnansweredHint(){
-    const remaining = state.answers.filter(a=>a===null).length;
-    $("unansweredHint").textContent = remaining>0
-      ? remaining+" question"+(remaining===1?"":"s")+" not yet answered"
-      : "All questions answered";
-  }
-
-  // ---------------------------------------------------------------
-  // Timer
-  // ---------------------------------------------------------------
-  function startTimer(){
-    state.startTime = Date.now();
-    state.timerHandle = setInterval(()=>{
-      state.elapsedSeconds = Math.floor((Date.now()-state.startTime)/1000);
-      $("timerText").textContent = fmtTime(state.elapsedSeconds);
-    }, 1000);
-  }
-  function stopTimer(){
-    if(state.timerHandle){ clearInterval(state.timerHandle); state.timerHandle=null; }
-  }
-
-  // ---------------------------------------------------------------
-  // Submission & Results
-  // ---------------------------------------------------------------
-  function submitTest(){
-    const remaining = state.answers.filter(a=>a===null).length;
-    if(remaining>0){
-      const ok = confirm(remaining+" question(s) are unanswered. Submit anyway?");
-      if(!ok) return;
-    }
-    stopTimer();
-    state.submitted = true;
-
-    let correctCount = 0, kCorrect = 0, cCorrect = 0;
-    QUESTIONS.forEach((q,i)=>{
-      if(state.answers[i]===q.correct){
-        correctCount++;
-        if(q.cat==="knowledge") kCorrect++; else cCorrect++;
-      }
-    });
-    const pct = Math.round((correctCount/TOTAL)*100);
-    const passed = pct >= PASS_PCT;
-
-    $("passBadge").textContent = passed ? "Pass" : "Below pass mark";
-    $("passBadge").className = "pass-badge " + (passed ? "pass" : "fail");
-    $("scorePct").textContent = pct+"%";
-    $("scoreFrac").textContent = correctCount+" / "+TOTAL;
-    $("passNote").textContent = "pass mark is "+PASS_PCT+"% ("+Math.ceil(TOTAL*PASS_PCT/100)+"/"+TOTAL+")";
-
-    const circumference = 2*Math.PI*52;
-    const offset = circumference * (1 - correctCount/TOTAL);
-    const arc = $("scoreArc");
-    arc.style.stroke = passed ? "var(--green)" : "#c98b1f";
-    arc.setAttribute("stroke-dasharray", circumference.toFixed(1));
-    arc.setAttribute("stroke-dashoffset", circumference.toFixed(1));
-    requestAnimationFrame(()=>{ arc.setAttribute("stroke-dashoffset", offset.toFixed(1)); });
-
-    $("bdKnowledge").textContent = kCorrect+" / "+KNOWLEDGE_TOTAL;
-    $("bdCase").textContent = cCorrect+" / "+CASE_TOTAL;
-
-    $("metaCorrect").textContent = correctCount;
-    $("metaIncorrect").textContent = (TOTAL-correctCount);
-    $("metaTime").textContent = fmtTime(state.elapsedSeconds);
-    $("metaStaff").textContent = state.staffName ? state.staffName : "—";
-
-    buildReviewRail();
-    buildReviewList();
-
-    showScreen("results");
-  }
-
-  function buildReviewRail(){
-    const rail = $("reviewRail");
-    rail.innerHTML = "";
-    QUESTIONS.forEach((q,i)=>{
-      const b = document.createElement("button");
-      b.type="button";
-      b.textContent = i+1;
-      const isCorrect = state.answers[i]===q.correct;
-      b.className = isCorrect ? "rev-correct" : "rev-wrong";
-      b.addEventListener("click", ()=>{
-        const target = document.getElementById("review-"+i);
-        if(target){ target.scrollIntoView({behavior:"smooth", block:"center"}); }
-      });
-      rail.appendChild(b);
-    });
-  }
-
-  function buildReviewList(){
-    const list = $("reviewList");
-    list.innerHTML = "";
-    QUESTIONS.forEach((q,i)=>{
-      const chosen = state.answers[i];
-      const isCorrect = chosen===q.correct;
-      const item = document.createElement("div");
-      item.className = "review-item";
-      item.id = "review-"+i;
-
-      let optsHtml = "";
-      q.options.forEach((opt, oi)=>{
-        let cls = "r-opt";
-        if(oi===q.correct) cls += " correct-answer";
-        else if(oi===chosen && !isCorrect) cls += " chosen-wrong";
-        optsHtml += '<div class="'+cls+'">'+
-          '<span>'+String.fromCharCode(65+oi)+'.</span><span>'+opt+
-          (oi===q.correct ? ' <strong>(correct answer)</strong>' : (oi===chosen ? ' <strong>(your answer)</strong>' : '')) +
-          '</span></div>';
-      });
-
-      item.innerHTML =
-        '<div class="r-head">'+
-          '<span class="r-num">Q'+(i+1)+'</span>'+
-          (q.cat==="knowledge" ? '<span class="cat-tag knowledge"><span class="dot"></span>Knowledge</span>' : '<span class="cat-tag case"><span class="dot"></span>Case-Based</span>')+
-          '<span class="r-result '+(isCorrect?"correct":"wrong")+'">'+(isCorrect?"Correct":"Incorrect")+'</span>'+
-        '</div>'+
-        (q.vignette ? '<div class="vignette"><span class="vlabel">Clinical vignette</span>'+q.vignette+'</div>' : '')+
-        '<div class="r-stem">'+q.stem+'</div>'+
-        '<div>'+optsHtml+'</div>'+
-        '<div class="r-explain"><b>Explanation:</b> '+q.explain+'</div>';
-
-      list.appendChild(item);
-    });
-  }
-
-  function resetState(){
-    state = {
-      index:0,
-      answers:new Array(TOTAL).fill(null),
-      staffName: $("staffName").value.trim(),
-      startTime:null,
-      elapsedSeconds:0,
-      timerHandle:null,
-      submitted:false
+  /* ---- answer sheet ---- */
+  var sh = $('sheet'); sh.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var c = document.createElement('button');
+    c.type='button';
+    c.className = 'cell '+(isRight(i)?'ok':'no');
+    c.textContent = q.n;
+    c.setAttribute('aria-label','Question '+q.n+': '+(isRight(i)?'correct':'incorrect'));
+    c.onclick = function(){
+      var el = $('rev'+q.n);
+      if(el && el.scrollIntoView){ el.scrollIntoView({behavior:'smooth',block:'start'}); }
     };
+    sh.appendChild(c);
+  });
+
+  /* ---- performance by area ---- */
+  var tp = $('topics');
+  if(tp){
+    tp.innerHTML='';
+    var order = [], tally = {};
+    ITEMS.forEach(function(q,i){
+      var a = q.area || 'General';
+      if(!tally[a]){ tally[a] = {ok:0, all:0}; order.push(a); }
+      tally[a].all++;
+      if(isRight(i)) tally[a].ok++;
+    });
+    order.forEach(function(a){
+      var t = tally[a], pcA = Math.round(t.ok/t.all*100);
+      var row = document.createElement('div');
+      row.className = 'trow';
+      row.innerHTML = '<span class="tname">'+a+'</span>'
+        + '<span class="tbar"><i style="width:'+pcA+'%"></i></span>'
+        + '<span class="tnum">'+t.ok+'/'+t.all+'</span>';
+      tp.appendChild(row);
+    });
   }
 
-  // ---------------------------------------------------------------
-  // Event wiring
-  // ---------------------------------------------------------------
-  $("beginBtn").addEventListener("click", ()=>{
-    resetState();
-    buildRail();
-    renderQuestion();
-    startTimer();
-    showScreen("quiz");
+  /* ---- review ---- */
+  var rv = $('review'); rv.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var right = isRight(i);
+    var d = document.createElement('div');
+    d.className='rev'; d.id='rev'+q.n;
+
+    var head = '<div class="rev-head">'
+      + '<span class="chip">Q'+pad(q.n)+'</span>'
+      + '<span class="chip">'+(q.select===2?'Select 2':'Select 1')+'</span>'
+      + '<span class="verdict-tag '+(right?'ok':'no')+'">'+(right?'Correct':'Incorrect')+'</span>'
+      + '<span class="chip topic">'+q.mode+' · '+q.topic+'</span>'
+      + '</div>';
+
+    var stem = '<p class="stem" style="font-size:15.5px">'
+      + (q.vig?'<span class="vig">'+q.vig+'</span>':'') + q.stem + (q.media?q.media:'') + '</p>';
+
+    var opts = '';
+    q.options.forEach(function(text,k){
+      var isKey = q.answer.indexOf(k)>-1;
+      var isPick = picks[i].indexOf(k)>-1;
+      var cls = 'rop' + (isKey?' key':'') + ((isPick && !isKey)?' picked-wrong':'');
+      var tag = '';
+      if(isKey && isPick) tag = 'Correct · your answer';
+      else if(isKey) tag = 'Correct answer';
+      else if(isPick) tag = 'Your answer';
+      opts += '<div class="'+cls+'"><b>'+lbl(k)+'</b><span>'+text+'</span>'
+            + (tag?'<span class="rop-tag">'+tag+'</span>':'') + '</div>';
+    });
+    if(picks[i].length===0){
+      opts += '<div class="rop"><b>–</b><span style="color:var(--ink-faint)">No answer was selected for this question.</span></div>';
+    }
+
+    d.innerHTML = head + stem + '<div style="margin-top:10px">'+opts+'</div>'
+      + '<div class="why"><b class="lbl">Why</b>'+q.why+'</div>';
+    rv.appendChild(d);
   });
 
-  $("prevBtn").addEventListener("click", ()=>{
-    if(state.index>0){ state.index--; renderQuestion(); }
-  });
-  $("nextBtn").addEventListener("click", ()=>{
-    if(state.index<TOTAL-1){ state.index++; renderQuestion(); }
-  });
-  $("submitBtn").addEventListener("click", submitTest);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
-  $("retakeBtn").addEventListener("click", ()=>{
-    $("staffName").value = state.staffName || "";
-    showScreen("intro");
-  });
-  $("printBtn").addEventListener("click", ()=>window.print());
+/* ---------- wiring ---------- */
+function startClock(){
+  t0 = Date.now();
+  clearInterval(tick);
+  tick = setInterval(function(){ $('clock').textContent = fmt(elapsed()); },1000);
+  $('clock').textContent = '00:00';
+}
 
-  const reviewToggle = $("reviewToggle");
-  const reviewRail = $("reviewRail");
-  const reviewList = $("reviewList");
-  reviewRail.style.display = "none";
-  reviewList.style.display = "none";
-  reviewToggle.addEventListener("click", ()=>{
-    const open = reviewToggle.classList.toggle("open");
-    reviewToggle.setAttribute("aria-expanded", open ? "true":"false");
-    reviewRail.style.display = open ? "flex" : "none";
-    reviewList.style.display = open ? "block" : "none";
-  });
-  reviewToggle.addEventListener("keydown",(e)=>{
-    if(e.key==="Enter" || e.key===" "){ e.preventDefault(); reviewToggle.click(); }
-  });
+$('start').onclick = function(){
+  staff = $('who').value.trim();
+  $('intro').classList.add('hidden');
+  $('quiz').classList.remove('hidden');
+  startClock();
+  buildRail(); render();
+  window.scrollTo({top:0});
+};
+$('prev').onclick = function(){ if(idx>0){idx--;render();window.scrollTo({top:0,behavior:'smooth'});} };
+$('next').onclick = function(){ if(idx<TOTAL-1){idx++;render();window.scrollTo({top:0,behavior:'smooth'});} };
+$('submit').onclick = finish;
+$('retake').onclick = function(){
+  picks = ITEMS.map(function(){return [];});
+  idx=0; done=false; armed=false;
+  $('warn').classList.add('hidden');
+  $('submit').textContent = 'Submit test';
+  $('results').classList.add('hidden');
+  $('quiz').classList.remove('hidden');
+  startClock();
+  buildRail(); render();
+  window.scrollTo({top:0});
+};
+$('printout').onclick = function(){ window.print(); };
+$('warn').onclick = function(e){
+  var t = e.target;
+  if(t && t.className === 'jump'){
+    idx = parseInt(t.getAttribute('data-i'),10);
+    render();
+    var box = $('opts');
+    if(box && box.scrollIntoView){ box.scrollIntoView({behavior:'smooth',block:'center'}); }
+  }
+};
 
-  // Keyboard navigation within quiz (left/right arrows)
-  document.addEventListener("keydown",(e)=>{
-    if($("screen-quiz").classList.contains("hidden")) return;
-    if(e.key==="ArrowRight" && state.index<TOTAL-1){ state.index++; renderQuestion(); }
-    if(e.key==="ArrowLeft" && state.index>0){ state.index--; renderQuestion(); }
-  });
+document.addEventListener('keydown', function(e){
+  if(done || $('quiz').classList.contains('hidden')) return;
+  if(e.target && (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA')) return;
+  var k = -1;
+  if(e.key>='1' && e.key<='5'){ k = parseInt(e.key,10)-1; }
+  else{
+    var u = String(e.key||'').toUpperCase();
+    var at = LABELS.indexOf(u);
+    if(at>-1) k = at;
+  }
+  if(k>-1){ choose(k); return; }
+  if(e.key==='ArrowRight' && idx<TOTAL-1){ idx++; render(); }
+  if(e.key==='ArrowLeft' && idx>0){ idx--; render(); }
+});
 
-})();
 </script>
 </body>
 </html>

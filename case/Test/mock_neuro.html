@@ -3,580 +3,1107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neurological Physiotherapy — Staff Competency Check</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<title>Neurological Physiotherapy Competency Check</title>
 <style>
-  :root{
-    --ink:#1B2B27;
-    --ink-soft:#4C615B;
-    --paper:#F6F8F7;
-    --panel:#FFFFFF;
-    --line:#DDE5E2;
-    --teal:#1B4B43;
-    --teal-deep:#123430;
-    --amber:#B5732A;
-    --good:#2F7A57;
-    --good-bg:#E8F3EC;
-    --bad:#AE4530;
-    --bad-bg:#FBEAE5;
-    --chip:#EEF3F1;
-    --radius:10px;
-    --serif:'Source Serif 4', Georgia, serif;
-    --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --mono:'IBM Plex Mono', monospace;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--sans);
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-  }
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto;}
-    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
-  }
+:root{
+  --shell:#f1f2f9;
+  --paper:#ffffff;
+  --paper-2:#f7f8fc;
+  --line:#e0e2ef;
+  --line-soft:#edeef7;
+  --ink:#1a1c2e;
+  --ink-soft:#545871;
+  --ink-faint:#8a8fa8;
+  --accent:#4a3fc4;
+  --accent-dark:#352b9c;
+  --accent-soft:#ecebfb;
+  --accent-line:#c3bdf0;
+  --signal:#b4661a;
+  --signal-soft:#fbf1e2;
+  --signal-line:#e9cda6;
+  --correct:#1d7a50;
+  --correct-soft:#e5f3ec;
+  --correct-line:#a6d5be;
+  --wrong:#b33b3b;
+  --wrong-soft:#fbebeb;
+  --wrong-line:#eebcbc;
+  --display:"Palatino Linotype",Palatino,"Book Antiqua","Iowan Old Style",Georgia,serif;
+  --body:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang HK","Microsoft JhengHei",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --radius:6px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--shell);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+  min-height:100vh;
+}
+/* dendritic dot field */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(var(--accent-line) 1px,transparent 1px);
+  background-size:22px 22px;
+  opacity:.26;
+}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 16px 90px}
 
-  header.masthead{
-    background:var(--teal-deep);
-    color:#EFF5F2;
-    padding:34px 20px 26px;
-    border-bottom:4px solid var(--amber);
-  }
-  .masthead-inner{max-width:760px; margin:0 auto;}
-  .eyebrow{
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:#B9D6C9;
-    display:flex; gap:10px; align-items:center;
-    margin-bottom:10px;
-  }
-  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);display:inline-block;}
-  h1{
-    font-family:var(--serif);
-    font-weight:600;
-    font-size:clamp(22px,4vw,32px);
-    margin:0 0 8px;
-    letter-spacing:-0.01em;
-  }
-  .masthead p{margin:0;color:#C7DAD3;font-size:14px;max-width:60ch;}
-  .meta-row{
-    display:flex; flex-wrap:wrap; gap:18px;
-    margin-top:16px;
-    font-family:var(--mono);
-    font-size:12px;
-    color:#A9C9BC;
-  }
-  .meta-row b{color:#EFF5F2;font-weight:600;}
+/* ---------- masthead ---------- */
+.masthead{
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:40;
+}
+.masthead-in{
+  max-width:900px;margin:0 auto;padding:10px 16px;
+  display:flex;align-items:center;gap:11px;flex-wrap:wrap;
+}
+.neuron{width:34px;height:22px;flex:0 0 34px}
+.mark{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);font-weight:700;
+}
+.mark span{color:var(--ink);letter-spacing:.05em;font-weight:600}
+.mast-meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.08em}
 
-  .progress-wrap{
-    position:sticky; top:0; z-index:30;
-    background:rgba(246,248,247,0.94);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
-    padding:12px 20px;
-  }
-  .progress-inner{
-    max-width:760px; margin:0 auto;
-    display:flex; align-items:center; gap:14px;
-  }
-  .progress-track{flex:1; height:7px; background:var(--chip); border-radius:20px; overflow:hidden;}
-  .progress-fill{height:100%; width:0%; background:var(--teal); border-radius:20px; transition:width .25s ease;}
-  .progress-label{font-family:var(--mono); font-size:12.5px; color:var(--ink-soft); white-space:nowrap;}
+/* ---------- cards ---------- */
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;margin-top:20px;
+}
+@media(max-width:600px){.card{padding:18px}}
+/* the question card carries an accent spine */
+#quiz .card{border-left:4px solid var(--accent)}
 
-  .dot-rail{
-    max-width:760px; margin:10px auto 0;
-    padding:0 20px;
-    display:flex; flex-wrap:wrap; gap:6px;
-  }
-  .dot-rail button{
-    width:22px; height:22px;
-    border-radius:5px;
-    border:1px solid var(--line);
-    background:var(--panel);
-    font-family:var(--mono);
-    font-size:10px;
-    color:var(--ink-soft);
-    cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition:all .15s ease;
-  }
-  .dot-rail button.answered{background:var(--chip); border-color:var(--teal); color:var(--teal);}
-  .dot-rail button.current{background:var(--teal); border-color:var(--teal); color:#fff;}
-  .dot-rail button.correct{background:var(--good-bg); border-color:var(--good); color:var(--good);}
-  .dot-rail button.incorrect{background:var(--bad-bg); border-color:var(--bad); color:var(--bad);}
+.eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:14px;
+}
+h1{
+  font-family:var(--display);font-weight:600;font-size:clamp(27px,5.2vw,41px);
+  line-height:1.16;margin:0 0 12px;color:#141628;letter-spacing:-.005em;
+}
+h2{
+  font-family:var(--display);font-size:21px;font-weight:600;margin:0 0 12px;color:#141628;
+}
+.lede{color:var(--ink-soft);font-size:15.5px;margin:0}
 
-  main{max-width:760px; margin:0 auto; padding:22px 20px 100px;}
-  .intro-card{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:18px 20px;
-    margin-bottom:20px;
-    font-size:14px;
-    color:var(--ink-soft);
-  }
-  .intro-card strong{color:var(--ink);}
-  .pass-badge{
-    display:inline-flex; align-items:center; gap:8px;
-    font-family:var(--mono); font-size:12px;
-    background:var(--chip); color:var(--teal-deep);
-    padding:5px 10px; border-radius:20px; margin-top:10px;
-  }
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:22px}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--paper);padding:14px}
+.stat b{display:block;font-family:var(--display);font-size:24px;font-weight:600;color:var(--accent);line-height:1.2}
+.stat span{font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em}
 
-  .q-card{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:24px 22px 20px;
-    animation:fadein .2s ease;
-  }
-  @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+ol.brief{margin:0;padding-left:20px;font-size:14.5px;color:var(--ink-soft)}
+ol.brief li{margin-bottom:9px}
+ol.brief b{color:var(--ink)}
 
-  .q-head{display:flex; gap:14px; align-items:baseline; margin-bottom:14px;}
-  .q-num{
-    font-family:var(--mono); font-weight:600; font-size:13px;
-    color:var(--teal); background:var(--chip);
-    padding:3px 9px; border-radius:6px; flex-shrink:0;
-  }
-  .q-topic{
-    font-family:var(--mono); font-size:11px; letter-spacing:.06em;
-    text-transform:uppercase; color:var(--ink-soft); margin-left:auto; flex-shrink:0;
-  }
-  .q-stem{font-size:17px; font-weight:500; color:var(--ink); margin:0 0 18px;}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+@media(max-width:560px){.demo{grid-template-columns:1fr}}
+.demo-box{border:1px dashed var(--line);border-radius:var(--radius);padding:12px;background:var(--paper-2)}
+.demo-box .eyebrow{margin-bottom:9px}
+.pip{display:flex;gap:7px}
+.pip i{
+  width:30px;height:28px;border:1px solid var(--line);border-radius:4px;background:var(--paper);
+  display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-style:normal;color:var(--ink-faint)
+}
+.pip i.on{border-color:var(--accent);background:var(--accent);color:#fff;font-weight:700}
+.pip i.done{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent);font-weight:700}
 
-  .options{display:flex; flex-direction:column; gap:9px;}
-  .opt{
-    display:flex; align-items:flex-start; gap:12px;
-    padding:12px 14px; border:1px solid var(--line); border-radius:8px;
-    cursor:pointer; transition:border-color .15s ease, background .15s ease;
-  }
-  .opt:hover{border-color:var(--teal);}
-  .opt input{margin-top:3px; accent-color:var(--teal); flex-shrink:0;}
-  .opt .opt-letter{font-family:var(--mono); font-weight:600; color:var(--teal); flex-shrink:0;}
-  .opt .opt-text{font-size:14.5px; color:var(--ink);}
-  .opt.selected{border-color:var(--teal); background:#F0F6F3;}
-  .opt.mark-correct{border-color:var(--good); background:var(--good-bg);}
-  .opt.mark-incorrect{border-color:var(--bad); background:var(--bad-bg);}
+label.field{display:block;font-size:13px;color:var(--ink-soft);margin:22px 0 7px}
+input[type=text]{
+  width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper-2);
+  font-family:var(--body);font-size:15px;color:var(--ink)
+}
+input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px;background:var(--paper)}
 
-  .result-tag{
-    font-family:var(--mono); font-size:11.5px; font-weight:600;
-    padding:2px 8px; border-radius:5px; margin-left:8px;
-  }
-  .result-tag.correct{background:var(--good-bg); color:var(--good);}
-  .result-tag.incorrect{background:var(--bad-bg); color:var(--bad);}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--accent);color:#fff;border:1px solid var(--accent);
+  padding:12px 22px;border-radius:var(--radius);font-family:var(--body);font-size:15px;font-weight:600;
+  cursor:pointer;transition:filter .15s ease;
+}
+.btn:hover{filter:brightness(1.15)}
+.btn.ghost{background:var(--paper);color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink-faint);filter:none}
+.btn:disabled{opacity:.38;cursor:not-allowed}
+.btn:focus-visible,.opt:focus-visible,.railbtn:focus-visible,.cell:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.wide{width:100%;margin-top:20px;padding:14px}
 
-  .nav-bar{
-    position:sticky; bottom:0;
-    background:var(--panel);
-    border-top:1px solid var(--line);
-    padding:14px 20px;
-    display:flex; justify-content:center;
-    box-shadow:0 -6px 18px rgba(20,40,35,0.06);
-  }
-  .nav-bar-inner{
-    max-width:760px; width:100%;
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-  }
-  .nav-btn{
-    font-family:var(--sans); font-weight:600; font-size:14px;
-    padding:11px 20px; border-radius:8px; cursor:pointer;
-    border:1px solid var(--line); background:var(--panel); color:var(--ink);
-    transition:all .15s ease;
-  }
-  .nav-btn:hover:not(:disabled){border-color:var(--teal); color:var(--teal);}
-  .nav-btn:disabled{opacity:.4; cursor:not-allowed;}
-  .nav-btn.primary{background:var(--teal); border-color:var(--teal); color:#fff;}
-  .nav-btn.primary:hover:not(:disabled){background:var(--teal-deep);}
-  .nav-center-note{
-    font-family:var(--mono); font-size:12px; color:var(--ink-soft); text-align:center; flex:1;
-  }
-  .nav-btn:focus-visible{outline:3px solid var(--amber); outline-offset:2px;}
+/* ---------- quiz ---------- */
+.qbar{
+  display:flex;align-items:center;gap:12px;margin-top:20px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.06em
+}
+.qbar .clock{margin-left:auto;color:var(--ink-soft)}
+.track{height:3px;background:var(--line);border-radius:2px;margin-top:8px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s ease}
 
-  .results-panel{
-    display:none;
-    background:var(--teal-deep); color:#EFF5F2;
-    border-radius:var(--radius); padding:30px 26px; margin-bottom:22px; text-align:center;
-  }
-  .results-panel.show{display:block;}
-  .gauge{width:170px; height:170px; margin:0 auto 14px; position:relative;}
-  .gauge svg{transform:rotate(-90deg);}
-  .gauge-track{fill:none; stroke:rgba(255,255,255,0.14); stroke-width:12;}
-  .gauge-fill{fill:none; stroke:var(--amber); stroke-width:12; stroke-linecap:round; transition:stroke-dashoffset 1s ease;}
-  .gauge-fill.pass{stroke:#5FCB93;}
-  .gauge-center{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;}
-  .gauge-score{font-family:var(--serif); font-size:38px; font-weight:600;}
-  .gauge-of{font-family:var(--mono); font-size:12px; color:#B9D6C9;}
-  .result-verdict{font-family:var(--serif); font-size:22px; font-weight:600; margin:6px 0 4px;}
-  .result-verdict.pass{color:#8FE0B6;}
-  .result-verdict.fail{color:#F1A98F;}
-  .result-sub{font-size:13.5px; color:#C7DAD3; margin-bottom:18px;}
-  .results-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
-  .results-actions button{
-    font-family:var(--sans); font-weight:600; font-size:13.5px;
-    padding:10px 18px; border-radius:8px;
-    border:1px solid rgba(255,255,255,0.35); background:transparent; color:#EFF5F2; cursor:pointer;
-  }
-  .results-actions button.primary{background:var(--amber); border-color:var(--amber); color:#231407;}
+.rail{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.railbtn{
+  width:32px;height:29px;border:1px solid var(--line);background:var(--paper);border-radius:4px;
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);cursor:pointer;padding:0
+}
+.railbtn.done{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent);font-weight:700}
+.railbtn.part{border-style:dashed;border-color:var(--signal);color:var(--signal);background:var(--signal-soft);font-weight:700}
+.railbtn.here{border-color:var(--accent);background:var(--accent);color:#fff;font-weight:700}
+@media(max-width:560px){.railbtn{width:29px;height:27px;font-size:10.5px}}
 
-  footer{text-align:center; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); padding:20px;}
+.qtag{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:3px;padding:3px 9px;color:var(--ink-faint)
+}
+.chip.hot{border-color:var(--accent-line);color:var(--accent);background:var(--accent-soft);font-weight:700}
+.chip.hot.pend{border-color:var(--signal);color:var(--signal);background:var(--signal-soft);border-style:dashed}
+.chip.topic{border-style:none;padding-left:0;text-transform:none;letter-spacing:.02em;font-family:var(--body);font-size:12px}
+.stem{font-size:17px;line-height:1.62;margin:0 0 6px;color:#22243a}
+.stem .vig{display:block;background:var(--paper-2);border-left:3px solid var(--accent-line);
+  padding:13px 15px;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:14px;font-size:15.5px;color:var(--ink-soft)}
 
-  @media (max-width:480px){
-    .q-head{flex-wrap:wrap;}
-    .q-topic{margin-left:0;}
-    .nav-bar-inner{gap:8px;}
-    .nav-center-note{display:none;}
-  }
+figure.fig{margin:16px 0 4px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+figure.fig svg{display:block;width:100%;height:auto}
+figure.fig figcaption{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-faint);padding:8px 12px;border-top:1px solid var(--line-soft);background:var(--paper-2)}
+
+.opts{margin-top:16px;display:grid;gap:8px}
+.opt{
+  display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+  border:1px solid var(--line);background:var(--paper);border-radius:var(--radius);padding:12px 14px;
+  font-family:var(--body);font-size:15px;color:var(--ink);cursor:pointer;line-height:1.5;
+  transition:border-color .12s ease,background .12s ease;
+}
+.opt:hover{border-color:var(--ink-faint)}
+.opt > b{
+  flex:0 0 26px;height:26px;border:1px solid var(--line);border-radius:4px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink-faint);background:var(--paper-2)
+}
+.opt.two > b{border-radius:50%}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel > b{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt.two.sel{border-color:var(--signal);background:var(--signal-soft)}
+.opt.two.sel > b{background:var(--signal);border-color:var(--signal)}
+
+.nav{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.nav .btn{flex:1;min-width:120px}
+.nav .btn.submit{flex:0 0 auto}
+
+/* ---------- results ---------- */
+.verdict{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.badge{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  padding:6px 14px;border-radius:3px
+}
+.badge.pass{background:var(--correct-soft);color:var(--correct);border:1px solid var(--correct-line)}
+.badge.fail{background:var(--wrong-soft);color:var(--wrong);border:1px solid var(--wrong-line)}
+.bigscore{font-family:var(--display);font-size:clamp(38px,9vw,60px);font-weight:600;line-height:1;color:#141628}
+.bigscore small{font-size:.42em;color:var(--ink-faint);font-family:var(--body);font-weight:500}
+.pcline{font-size:13.5px;color:var(--ink-faint);margin-top:6px}
+
+.sheet{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:14px}
+@media(max-width:560px){.sheet{grid-template-columns:repeat(6,1fr)}}
+.cell{
+  aspect-ratio:1/1;border-radius:4px;border:1px solid var(--line);background:var(--paper);
+  font-family:var(--mono);font-size:11.5px;cursor:pointer;padding:0;color:var(--ink-faint)
+}
+.cell.ok{background:var(--correct-soft);border-color:var(--correct-line);color:var(--correct);font-weight:700}
+.cell.no{background:var(--wrong-soft);border-color:var(--wrong-line);color:var(--wrong);font-weight:700}
+
+.topics{margin-top:16px;display:grid;gap:8px}
+.trow{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.trow .tname{flex:1 1 auto;color:var(--ink-soft)}
+.trow .tbar{flex:0 0 110px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.trow .tbar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.trow .tnum{flex:0 0 46px;text-align:right;font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
+
+.review{margin-top:18px;border-top:1px solid var(--line)}
+.rev{padding:20px 0;border-bottom:1px solid var(--line)}
+.rev-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.verdict-tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  padding:3px 9px;border-radius:3px
+}
+.verdict-tag.ok{background:var(--correct-soft);color:var(--correct);border:1px solid var(--correct-line)}
+.verdict-tag.no{background:var(--wrong-soft);color:var(--wrong);border:1px solid var(--wrong-line)}
+.rev .rop{
+  display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);
+  border-radius:var(--radius);margin-top:6px;font-size:14.5px;background:var(--paper)
+}
+.rev .rop > b{flex:0 0 22px;font-family:var(--mono);font-size:11.5px;color:var(--ink-faint)}
+.rev .rop.key{border-color:var(--correct-line);background:var(--correct-soft)}
+.rev .rop.key > b{color:var(--correct)}
+.rev .rop.picked-wrong{border-color:var(--wrong-line);background:var(--wrong-soft)}
+.rev .rop.picked-wrong > b{color:var(--wrong)}
+.rop-tag{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  white-space:nowrap;padding-top:3px}
+.rop.key .rop-tag{color:var(--correct)}
+.rop.picked-wrong .rop-tag{color:var(--wrong)}
+.why{margin-top:12px;background:var(--paper-2);border-left:3px solid var(--accent-line);
+  border-radius:0 var(--radius) var(--radius) 0;padding:14px 16px;font-size:14.5px;color:var(--ink-soft)}
+.why b.lbl{color:var(--accent);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  display:block;margin-bottom:5px}
+.why em{color:var(--ink);font-style:italic}
+
+.warn{margin:18px 0 0;padding:12px 14px;border:1px solid var(--signal-line);background:var(--signal-soft);
+  border-radius:var(--radius);font-size:14px;color:var(--ink)}
+.warn b{color:var(--signal)}
+.jumps{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.jump{font-family:var(--mono);font-size:11.5px;border:1px solid var(--signal);background:var(--paper);
+  color:var(--signal);border-radius:4px;padding:4px 9px;cursor:pointer;font-weight:700}
+.jump:hover{background:var(--signal);color:#fff}
+.foot{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:26px}
+.hidden{display:none !important}
+
+@media print{
+  body{background:#fff}
+  body::before{display:none}
+  .masthead,.nav,.rail,.btn,.sheet,.qbar,.track{display:none !important}
+  .card{border:none;padding:0;margin-top:14px;break-inside:avoid}
+  #quiz .card{border-left:none}
+  .rev{break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
 </head>
 <body>
 
-<header class="masthead">
-  <div class="masthead-inner">
-    <div class="eyebrow"><span class="dot"></span>NEUROLOGICAL PHYSIOTHERAPY · STAFF ORIENTATION</div>
-    <h1>Competency Check — Neurological Physical Therapy</h1>
-    <p>30 single-best-answer items covering motor control, stroke rehabilitation, spinal cord injury, traumatic brain injury, movement disorders, vestibular dysfunction and peripheral neuropathies. Written for internal staff orientation.</p>
-    <div class="meta-row">
-      <span><b>Items:</b> 30</span>
-      <span><b>Passing score:</b> 60% (18 / 30)</span>
-      <span><b>Format:</b> single best answer, one at a time</span>
-    </div>
+<div class="masthead">
+  <div class="masthead-in">
+    <svg class="neuron" viewBox="0 0 68 44" aria-hidden="true">
+      <g fill="none" stroke="#4a3fc4" stroke-width="2" stroke-linecap="round">
+        <path d="M14 22 L4 12 M14 22 L4 22 M14 22 L4 32 M14 22 L10 6 M14 22 L10 38"/>
+        <path d="M22 22 H50"/>
+        <path d="M54 22 L64 13 M54 22 L64 22 M54 22 L64 31"/>
+      </g>
+      <circle cx="18" cy="22" r="6" fill="#4a3fc4"/>
+      <circle cx="52" cy="22" r="3.4" fill="#b4661a"/>
+    </svg>
+    <div class="mark">PT&#8209;NEURO&#8209;CHECK · <span>Staff Competency Set</span></div>
+    <div class="mast-meta">30Q · PASS 60%</div>
   </div>
-</header>
-
-<div class="progress-wrap">
-  <div class="progress-inner">
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-label" id="progressLabel">Question 1 / 30</div>
-  </div>
-  <div class="dot-rail" id="dotRail"></div>
 </div>
 
-<main>
-  <div class="intro-card" id="introCard">
-    <strong>Instructions.</strong> Questions appear one at a time. Select an answer, then use <em>Next</em> to continue — you can move back at any point with <em>Previous</em>, or jump to any question using the numbered squares above. Submit becomes available once all 30 have been answered.
-    <div class="pass-badge">✓ Passing threshold: 18 correct out of 30</div>
+<div class="wrap">
+
+<!-- ============ INTRO ============ -->
+<section id="intro">
+  <div class="card">
+    <div class="eyebrow">Internal training paper · neurological physiotherapy · self-assessment</div>
+    <h1>Neurological Physiotherapy Competency Check</h1>
+    <p class="lede">A 30-item assessment for physiotherapy staff working with neurological caseloads: motor control
+      and motor learning theory, the ICF framework, the named treatment approaches, stroke assessment and
+      rehabilitation, neurological examination, spinal cord injury, brain injury and disorders of consciousness,
+      movement disorders and the cerebellum, and the demyelinating and neuromuscular conditions. Twenty-two items
+      test knowledge directly; eight are clinical vignettes. This is a hard paper by design &mdash; on most items
+      more than one option is defensible, and you are being asked for the strongest one.</p>
+
+    <div class="stats">
+      <div class="stat"><b>30</b><span>Questions, single best answer</span></div>
+      <div class="stat"><b>~50</b><span>Minutes (suggested)</span></div>
+      <div class="stat"><b>60%</b><span>Pass mark (18/30)</span></div>
+      <div class="stat"><b>5</b><span>Options per item</span></div>
+    </div>
   </div>
 
-  <div class="results-panel" id="resultsPanel">
-    <div class="gauge">
-      <svg viewBox="0 0 120 120" width="170" height="170">
-        <circle class="gauge-track" cx="60" cy="60" r="50"></circle>
-        <circle class="gauge-fill" id="gaugeFill" cx="60" cy="60" r="50" stroke-dasharray="314.159" stroke-dashoffset="314.159"></circle>
-      </svg>
-      <div class="gauge-center">
-        <div class="gauge-score" id="gaugeScore">0%</div>
-        <div class="gauge-of" id="gaugeOf">0 / 30</div>
+  <div class="card">
+    <h2>Before you begin</h2>
+    <ol class="brief">
+      <li>Each question has <b>five options (A&ndash;E)</b> and every item is <b>single best answer</b> &mdash; choose exactly one.</li>
+      <li>Move freely between questions using the number rail or the Previous / Next buttons before you submit. Any question left unanswered is marked incorrect.</li>
+      <li>Watch the polarity of the stem. Several items ask which statement is <b>FALSE</b>, <b>incorrect</b>, <b>NOT</b> associated or <b>least</b> appropriate &mdash; on those, four options are true and you are looking for the one that is not.</li>
+      <li>Where a stem asks for the <b>best</b> or <b>most likely</b> option, several answers will be partly right and some are true statements that do not answer the question asked.</li>
+      <li>Sides and levels matter. Where a stem names a right or left lesion, or a spinal level, work out the consequence before you read the options.</li>
+      <li>After submitting you get your score, a marked answer sheet, a topic breakdown, and an explanation for every
+        question &mdash; including why each near-miss option fails.</li>
+    </ol>
+
+    <div class="demo">
+      <div class="demo-box">
+        <div class="eyebrow">Selecting an answer</div>
+        <div class="pip"><i>A</i><i class="on">B</i><i>C</i><i>D</i><i>E</i></div>
+      </div>
+      <div class="demo-box">
+        <div class="eyebrow">Number rail · answered vs not</div>
+        <div class="pip"><i class="done">1</i><i class="done">2</i><i class="on">3</i><i>4</i><i>5</i></div>
       </div>
     </div>
-    <div class="result-verdict" id="resultVerdict">—</div>
-    <div class="result-sub" id="resultSub">Review your answers below — correct answers are marked in green, incorrect selections in red.</div>
-    <div class="results-actions">
-      <button class="primary" id="reviewBtn">Jump to first miss</button>
-      <button id="retakeBtn">Retake quiz</button>
+
+    <label class="field" for="who">Staff name (optional, shown on your results)</label>
+    <input type="text" id="who" placeholder="e.g. PT Chan" autocomplete="off">
+    <button class="btn wide" id="start">Begin assessment &rarr;</button>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz" class="hidden">
+  <div class="qbar">
+    <span id="counter">Question 1 of 30</span>
+    <span class="clock" id="clock">00:00</span>
+  </div>
+  <div class="track"><i id="bar"></i></div>
+  <div class="rail" id="rail"></div>
+
+  <div class="card">
+    <div class="qtag">
+      <span class="chip" id="qno">Q01</span>
+      <span class="chip hot" id="qmode">Select 1</span>
+      <span class="chip topic" id="qtopic"></span>
+    </div>
+    <p class="stem" id="stem"></p>
+    <div class="opts" id="opts"></div>
+    <p class="warn hidden" id="warn"></p>
+    <div class="nav">
+      <button class="btn ghost" id="prev">&larr; Previous</button>
+      <button class="btn ghost" id="next">Next &rarr;</button>
+      <button class="btn submit" id="submit">Submit test</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section id="results" class="hidden">
+  <div class="card">
+    <div class="eyebrow">Result</div>
+    <div class="verdict">
+      <span class="badge" id="badge">&mdash;</span>
+      <div>
+        <div class="bigscore"><span id="raw">0</span><small> / 30</small></div>
+        <div class="pcline"><span id="pc">0%</span> · pass mark is 60% (18/30)</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="nOk" style="color:var(--correct)">0</b><span>Correct</span></div>
+      <div class="stat"><b id="nNo" style="color:var(--wrong)">0</b><span>Incorrect</span></div>
+      <div class="stat"><b id="tTaken" style="color:var(--ink)">00:00</b><span>Time taken</span></div>
+      <div class="stat"><b id="staffOut" style="color:var(--ink)">&mdash;</b><span>Staff</span></div>
     </div>
   </div>
 
-  <div id="questionHost"></div>
-</main>
-
-<div class="nav-bar">
-  <div class="nav-bar-inner">
-    <button class="nav-btn" id="prevBtn">← Previous</button>
-    <span class="nav-center-note" id="navNote">30 questions remaining</span>
-    <button class="nav-btn primary" id="nextBtn">Next →</button>
+  <div class="card">
+    <h2>Marked answer sheet</h2>
+    <p class="lede" style="font-size:14px">Green is correct. Tap any cell to jump to that question below.</p>
+    <div class="sheet" id="sheet"></div>
   </div>
+
+  <div class="card">
+    <h2>Performance by area</h2>
+    <p class="lede" style="font-size:14px">Where the marks went, grouped by clinical area.</p>
+    <div class="topics" id="topics"></div>
+  </div>
+
+  <div class="card">
+    <h2>Question-by-question review</h2>
+    <div class="review" id="review"></div>
+    <div class="nav">
+      <button class="btn ghost" id="retake">Retake this set</button>
+      <button class="btn ghost" id="printout">Print / save results</button>
+    </div>
+  </div>
+</section>
+
+<p class="foot">Question set adapted for internal training use only · not an official examination</p>
 </div>
 
-<footer>Internal staff training use only</footer>
-
 <script>
+const LABELS = ['A','B','C','D','E'];
+
 const QUESTIONS = [
-{topic:"Motor Control", stem:"Which statement about the \u201cmotor program\u201d concept in motor control theory is accurate?",
- options:["A movement can only be produced when continuous sensory feedback is available","Motor programs are stored within the central nervous system","A motor program is a detailed neural map that forms only after a movement has already occurred","The motor program concept is fundamentally a closed-loop model"], answer:1},
 
-{topic:"Motor Control", stem:"Which theoretical model of motor control holds that movement is regulated in a top-down manner by higher centers, such that damage to those centers causes primitive reflexive patterns to resurface?",
- options:["Dynamical systems theory","Reflex theory","Motor programming theory","Hierarchical theory"], answer:3},
+{
+  n:1, mode:'Knowledge', select:1, area:'Motor control & learning', topic:'Motor control · the motor program concept',
+  stem:'Which statement about the &ldquo;motor program&rdquo; concept in motor control theory is accurate?',
+  options:[
+    'Motor programs are stored within the central nervous system',
+    'A movement can only be produced when continuous sensory feedback is available',
+    'A motor program is a detailed neural map that forms only after a movement has already occurred',
+    'The motor program concept is fundamentally a closed-loop model',
+    'A motor program specifies fixed absolute muscle forces and timings, and cannot be scaled to a different speed or size of movement'
+  ],
+  answer:[0],
+  why:'A motor program is an abstract, prestructured set of commands held centrally and able to be run off without waiting for peripheral feedback &mdash; which makes it an <em>open-loop</em> model, so option D has it exactly backwards. The evidence for central storage is the reason option B fails: deafferented animals and people can still produce organised movement, and very rapid movements are simply too fast for a feedback loop to correct within the movement, so feedback refines and updates a program rather than being a precondition for producing one. Option C reverses the logic &mdash; a program is prospective, generated before the movement, not a trace laid down afterwards. Option E misses the refinement that makes the idea clinically useful: the <em>generalised</em> motor program stores invariant features (relative timing, sequence, relative force) alongside free parameters (overall duration, overall force, which limb executes it), which is how the same signature can be written large on a whiteboard or small on paper. That is the theoretical basis for variable practice &mdash; practising a class of movements across different speeds, loads and contexts builds a more flexible schema than drilling one identical repetition.'
+},
 
-{topic:"Motor Learning", stem:"Which motor learning framework proposes that the central challenge of acquiring a skill is learning to manage the body's mechanical degrees of freedom?",
- options:["Ecological theory","Gentile's two-stage model","Bernstein's three-stage approach to motor learning","Fitts and Posner's three-stage model"], answer:2},
+{
+  n:2, mode:'Knowledge', select:1, area:'Motor control & learning', topic:'Motor control · theoretical models',
+  stem:'Which theoretical model of motor control holds that movement is regulated in a top-down manner by higher centres, such that damage to those centres causes primitive reflexive patterns to resurface?',
+  options:[
+    'Reflex theory',
+    'Dynamical systems theory',
+    'Motor programming theory',
+    'Hierarchical theory',
+    'Systems (task-oriented) theory'
+  ],
+  answer:[3],
+  why:'Hierarchical theory arranges the nervous system in strict vertical layers, with higher centres inhibiting and directing lower ones. Its clinical signature is exactly what the stem describes: remove the cortical brake and the lower levels are released, so primitive reflexes and stereotyped synergies reappear. That model underpins the older neurofacilitation approaches, in which treatment was organised around inhibiting abnormal tone and reflexes and following a fixed developmental sequence. Reflex theory (option A) is different and simpler &mdash; movement as a chain of stimulus-response reflexes &mdash; and it cannot account for movement that occurs without a stimulus or for the same stimulus producing different responses in different contexts. Motor programming theory shifts the explanation to centrally stored programs rather than to a hierarchy of control. Dynamical systems and systems/task-oriented theories are the contemporary alternatives and they explicitly reject strict top-down control: movement emerges from the interaction of the individual, the task and the environment, with no single level in charge. That shift is why current practice favours task-specific, context-varied training over normalising movement quality first, and it is worth being able to name which theory a given treatment rationale comes from.'
+},
 
-{topic:"Neuroplasticity", stem:"Which of the following statements about neuroplasticity and motor recovery is FALSE?",
- options:["Cerebellar circuits contribute meaningfully to recovery after damage to the primary motor cortex","Reorganization of secondary motor areas on the affected side contributes to recovery after primary motor cortex damage","Cortical remapping does not occur following peripheral nerve injury","Recruitment of reticulospinal pathways contributes to recovery after corticospinal tract damage"], answer:2},
+{
+  n:3, mode:'Knowledge', select:1, area:'Motor control & learning', topic:'Motor learning · stage models',
+  stem:'Which motor learning framework proposes that the central challenge of acquiring a skill is learning to manage the body&rsquo;s mechanical degrees of freedom?',
+  options:[
+    'Fitts and Posner&rsquo;s three-stage model',
+    'Bernstein&rsquo;s three-stage approach to motor learning',
+    'Gentile&rsquo;s two-stage model',
+    'Ecological theory',
+    'Schmidt&rsquo;s schema theory'
+  ],
+  answer:[1],
+  why:'Bernstein framed skill acquisition as the degrees-of-freedom problem: the body offers far more independent joints and muscles than any single movement needs, so learning is the progressive solution of how to control that redundancy. His three stages are recognisable at the bedside &mdash; the novice <em>freezes</em> degrees of freedom by stiffening joints and moving as a rigid block, then gradually <em>releases</em> them as coordination improves, and finally learns to <em>exploit</em> the passive and reactive forces of the limb so the movement becomes economical. That is precisely what you watch for in an early stroke or ataxia patient who reaches with a fixed trunk and a locked elbow, and it tells you that increasing stiffness early is a normal learning strategy rather than a fault to be corrected. The other frameworks are all real but answer different questions: Fitts and Posner describe cognitive, associative and autonomous <em>phases</em> defined by attentional demand; Gentile&rsquo;s model contrasts getting the idea of the movement with fixation or diversification; ecological theory emphasises the perception-action coupling and the affordances an environment offers; and Schmidt&rsquo;s schema theory explains how variable practice builds generalisable rules for parameterising a motor program.'
+},
 
-{topic:"ICF Framework", stem:"A 40-year-old woman with cerebellar atrophy shows the following on upper-limb exam: (1) slowed performance on finger-to-nose testing; (2) inaccurate reach when attempting to pick up a cup placed in front of her; (3) inability to fasten the buttons on her blouse independently. Which ICF categories correspond to findings (1), (2) and (3), in that order?",
- options:["(1) Activity (2) Body function (3) Environmental factor","(1) Body function (2) Activity (3) Activity","(1) Activity (2) Body function (3) Activity","(1) Body function (2) Activity (3) Personal factor"], answer:1},
+{
+  n:4, mode:'Knowledge', select:1, area:'Motor control & learning', topic:'Neuroplasticity · mechanisms of recovery',
+  stem:'Which of the following statements about neuroplasticity and motor recovery is <b>FALSE</b>?',
+  options:[
+    'Cerebellar circuits contribute meaningfully to recovery after damage to the primary motor cortex',
+    'Reorganisation of secondary motor areas on the affected side contributes to recovery after primary motor cortex damage',
+    'Recruitment of reticulospinal pathways contributes to recovery after corticospinal tract damage',
+    'Repetitive, task-specific and salient practice drives use-dependent cortical reorganisation more effectively than passive movement alone',
+    'Cortical remapping does not occur following peripheral nerve injury'
+  ],
+  answer:[4],
+  why:'Cortical remapping after <em>peripheral</em> injury is one of the best-documented findings in the whole plasticity literature, which is what makes option E the false statement. Deafferentation or amputation leads the neighbouring cortical territory to invade the now-silent representation within days to weeks, and the same mechanism underlies referred sensation and phantom limb phenomena after amputation and the reversal of those maps with successful rehabilitation. The other four are all supported. Secondary motor areas &mdash; premotor cortex and the supplementary motor area &mdash; take on function after primary motor cortex damage, and the extent of that recruitment tracks recovery. Cerebellar circuits participate through the cerebello-thalamo-cortical loop and through their role in error-based learning. Reticulospinal pathways become more prominent after corticospinal damage, which is the double-edged part of the story: they support proximal and postural control and are part of why gross recovery occurs, but their organisation into flexor and extensor drives also contributes to the stereotyped synergies and to associated reactions. Option D states the principle that turns all of this into treatment &mdash; repetition alone is not enough, and the practice must be task-specific, sufficiently intense, salient to the patient and progressively challenging.'
+},
 
-{topic:"ICF Framework", stem:"Prescribing a rigid ankle-foot orthosis to correct foot drop in a stroke patient, thereby easing gait-related disability, represents a change to which ICF component?",
- options:["Personal factor","Activity","Environmental factor","Participation"], answer:2},
+{
+  n:5, mode:'Case', select:1, area:'Assessment & classification', topic:'ICF framework · classifying findings',
+  vig:'A 40-year-old woman with cerebellar atrophy shows the following on upper-limb examination: (1) slowed performance on finger-to-nose testing; (2) inaccurate reach when attempting to pick up a cup placed in front of her; (3) inability to fasten the buttons on her blouse independently.',
+  stem:'Which ICF categories correspond to findings (1), (2) and (3), in that order?',
+  options:[
+    '(1) Activity (2) Body function (3) Environmental factor',
+    '(1) Activity (2) Body function (3) Activity',
+    '(1) Body function (2) Activity (3) Activity',
+    '(1) Body function (2) Activity (3) Personal factor',
+    '(1) Body function (2) Body function (3) Participation'
+  ],
+  answer:[2],
+  why:'The test to apply is simple: does the item describe how a <em>body system</em> is working, or an <em>action the person performs</em>? Finger-to-nose testing is a clinician-administered impairment measure of coordination &mdash; it isolates a body function and corresponds to nothing the patient does in daily life, so it sits at body function level. Reaching for a cup and fastening buttons are both purposeful actions executed by the individual, so both are activities. Option E is the one worth thinking about, because fastening buttons feels like it might be participation; participation is <em>involvement in a life situation</em> &mdash; holding a job, maintaining a social role, attending a place of worship &mdash; rather than the task itself, so dressing is an activity and being unable to return to work as a result would be the participation restriction. Personal factors are internal attributes such as age, coping style, education and motivation, and environmental factors are external &mdash; equipment, support, attitudes, services. Getting these levels right matters practically because it determines where the goal is written: an impairment-level goal, an activity-level goal and a participation-level goal for the same patient look completely different, and outcome measures are not interchangeable across the levels.'
+},
 
-{topic:"Treatment Approaches", stem:"Which treatment approach relies on active, dynamic movement — rather than passive handling — as the primary means of regulating muscle tone?",
- options:["Motor Relearning Programme","Proprioceptive Neuromuscular Facilitation (PNF)","Brunnstrom approach","Bobath approach"], answer:3},
+{
+  n:6, mode:'Knowledge', select:1, area:'Assessment & classification', topic:'ICF framework · orthotic prescription',
+  stem:'Prescribing a rigid ankle-foot orthosis to correct foot drop in a stroke patient, thereby easing gait-related disability, represents a change to which ICF component?',
+  options:[
+    'Environmental factor',
+    'Personal factor',
+    'Activity',
+    'Participation',
+    'Body structure'
+  ],
+  answer:[0],
+  why:'Within the ICF, environmental factors cover the physical, social and attitudinal world the person lives in, and the first chapter of that domain is <em>products and technology</em> &mdash; which is where assistive devices, orthoses, wheelchairs and home modifications belong. So the orthosis itself is an environmental factor; what it produces is an improvement in <em>activity</em> (walking) and potentially in <em>participation</em> (getting to the shops, returning to work), and it is this chain that makes the classification worth doing rather than being a labelling exercise. The distinction the question is testing is between the intervention and its effect: options C and D name the effect, not the component that was changed. Personal factors are internal and are not classified in detail within the ICF at all. Body structure would apply if the anatomy itself had changed &mdash; surgery, amputation, a tendon transfer &mdash; whereas an orthosis leaves the structure untouched and alters the environment around it. The same logic sorts most of the equipment questions you will meet: a walking frame, a grab rail, a communication aid and a family member who provides support are all environmental factors, and the presence or absence of each can be a facilitator or a barrier.'
+},
 
-{topic:"Treatment Approaches", stem:"Which of the following best reflects contemporary Bobath practice for eliciting movement in a patient with hemiplegia?",
- options:["The therapist should guide the limb passively first, to prevent abnormal patterns from emerging","Movement is elicited mainly through repeated quick-stretch stimuli","The patient actively generates movement once placed, through preparatory handling, in a suitable dynamic posture","A period of static postural holding should always precede any attempt at active movement"], answer:2},
+{
+  n:7, mode:'Knowledge', select:1, area:'Treatment approaches', topic:'Treatment approaches · regulating tone',
+  stem:'Which treatment approach relies on active, dynamic movement &mdash; rather than passive handling &mdash; as the primary means of regulating muscle tone?',
+  options:[
+    'Motor Relearning Programme',
+    'Proprioceptive Neuromuscular Facilitation (PNF)',
+    'Brunnstrom approach',
+    'Rood approach',
+    'Bobath approach'
+  ],
+  answer:[4],
+  why:'Contemporary Bobath practice has moved a long way from the reflex-inhibiting postures of its origins. What it retains is the idea that tone is best influenced through the patient&rsquo;s own activity: the therapist prepares the patient by handling and positioning, but the tone change comes from the patient generating movement in a functionally relevant, dynamic posture, not from the therapist manipulating a passive limb. That is the distinction the question is aiming at, and it is also why the approach is now framed around postural control and selective movement rather than around inhibition. The alternatives all use a different primary lever. The Brunnstrom approach deliberately <em>uses</em> synergies and reflex activity in the early stages, encouraging associated reactions to elicit movement before working towards selective control. PNF works largely through resistance, irradiation, quick stretch and diagonal patterns applied by the therapist. The Rood approach is built on peripheral sensory stimulation &mdash; brushing, icing, vibration, tapping &mdash; to facilitate or inhibit. The Motor Relearning Programme is different in kind: it is task-oriented rather than tone-oriented, focusing on practising real tasks with the missing components trained explicitly. Contemporary evidence favours that task-oriented direction, and most experienced clinicians work eclectically rather than within one named school.'
+},
 
-{topic:"PNF", stem:"Which PNF technique is best suited to helping a patient who struggles to initiate a movement get started?",
- options:["Hold-relax active motion","Alternating isometrics","Rhythmic initiation","Agonist reversal"], answer:2},
+{
+  n:8, mode:'Knowledge', select:1, area:'Treatment approaches', topic:'Bobath concept · contemporary practice',
+  stem:'Which of the following best reflects contemporary Bobath practice for eliciting movement in a patient with hemiplegia?',
+  options:[
+    'The therapist should guide the limb passively first, to prevent abnormal patterns from emerging',
+    'The patient actively generates movement once placed, through preparatory handling, in a suitable dynamic posture',
+    'Movement is elicited mainly through repeated quick-stretch stimuli',
+    'A period of static postural holding should always precede any attempt at active movement',
+    'Tone must be fully normalised before any functional task is attempted'
+  ],
+  answer:[1],
+  why:'The modern formulation is preparation followed by activity: handling and positioning are used to give the patient a postural set from which the target movement becomes possible, and then the <em>patient</em> produces it. Option E is the belief the concept has explicitly moved away from and is the most clinically damaging of the distractors, because waiting for normal tone before attempting function means much of the therapeutic time is spent on the impairment while the activity goes untrained &mdash; and the evidence is consistent that task practice is what drives functional recovery. Option A confuses guiding with treating; passive movement has a role in maintaining range and in giving sensory information, but it does not drive motor learning, and a limb that is always moved for the patient is a limb that is not learning. Option C describes a PNF and Rood mechanism rather than a Bobath one. Option D imposes a fixed sequence that contemporary practice does not hold to &mdash; postural stability and mobility are trained together and in the context of the task, not in a compulsory order. A fair summary is that Bobath today is best understood as a clinical reasoning framework centred on postural control, alignment and selective movement, rather than as a fixed set of techniques.'
+},
 
-{topic:"Stroke Assessment", stem:"During gait, a stroke patient shows recurrent ankle inversion just before heel strike, leading to instability at initial contact on that side. Based on Brunnstrom staging, what most likely explains this?",
- options:["Persistent stage II extensor tone","Coexisting Raimiste's phenomenon","The limb is still in stage III flexor synergy","Selective ankle control at stage V has not yet been achieved"], answer:3},
+{
+  n:9, mode:'Knowledge', select:1, area:'Treatment approaches', topic:'PNF · technique selection',
+  stem:'Which PNF technique is best suited to helping a patient who struggles to initiate a movement get started?',
+  options:[
+    'Hold-relax active motion',
+    'Alternating isometrics',
+    'Agonist reversal',
+    'Rhythmic initiation',
+    'Rhythmic stabilisation'
+  ],
+  answer:[3],
+  why:'Rhythmic initiation is named for exactly this problem. The therapist takes the limb through the pattern passively while the patient relaxes, progresses to active-assisted, then active, then lightly resisted movement, keeping the rhythm and the pattern constant throughout. The passive phase gives the patient the sensory template of the movement and reduces the apprehension and co-contraction that often block initiation, and the graded progression hands control back. It is a natural fit for the rigidity and start hesitation of Parkinson&rsquo;s disease, for apraxia, and for a patient who cannot find the movement after a stroke. The other techniques address different deficits and are worth keeping distinct. Alternating isometrics and rhythmic stabilisation both build stability &mdash; the first with alternating isometric holds against resistance in one plane, the second with simultaneous multidirectional resistance and no movement permitted. Agonist reversal is an eccentric-to-concentric technique for controlling a limb through range. Hold-relax active motion combines a relaxation technique with active movement into the newly gained range and is aimed at limited range with weakness at the end of it. The common thread when choosing is to name the deficit first &mdash; initiation, mobility, stability, controlled mobility or skill &mdash; and let that select the technique.'
+},
 
-{topic:"Stroke Pathophysiology", stem:"Within the Bobath framework, damage to which pathway is considered most responsible for the abnormal tone and reflex activity seen after stroke?",
- options:["Dorsal column–medial lemniscus pathway","Spinocerebellar tract","Corticospinal tract","Spinothalamic tract"], answer:2},
+{
+  n:10, mode:'Case', select:1, area:'Stroke', topic:'Brunnstrom stages · interpreting gait deviation',
+  vig:'During gait, a stroke patient shows recurrent ankle inversion just before heel strike, leading to instability at initial contact on that side.',
+  stem:'Based on Brunnstrom staging, what most likely explains this?',
+  options:[
+    'Persistent stage II extensor tone',
+    'Coexisting Raimiste&rsquo;s phenomenon',
+    'Selective ankle control at stage V has not yet been achieved',
+    'The limb is still in stage III flexor synergy',
+    'Associated reactions triggered by effort in the unaffected limb are producing the inversion'
+  ],
+  answer:[2],
+  why:'Brunnstrom&rsquo;s sequence runs from flaccidity, through the emergence of synergy and spasticity, to movement combinations that break out of synergy, and finally to isolated selective movement and near-normal coordination. Stage V is where selective, out-of-synergy movement appears, and dorsiflexion with eversion in terminal swing is a selective ankle movement &mdash; it requires the tibialis anterior and the peroneals to act together while the rest of the limb does something else. Until that selective control is available, the ankle defaults to the extensor synergy pattern of plantarflexion and inversion, which is what shows up as the foot turning in just before initial contact. Stage II is the appearance of synergy and spasticity rather than a described gait pattern, and stage III is the peak of synergy dominance with the limb largely locked into flexor or extensor patterns &mdash; a limb genuinely at stage III would not be walking with this pattern in isolation. Raimiste&rsquo;s phenomenon is an associated reaction in which resisted hip abduction or adduction on the sound side produces the same movement on the affected side; it is an upper- and lower-limb curiosity used in assessment, not an explanation for a swing-phase deviation. Practically, this patient needs selective ankle control training and probably an orthosis in the meantime, because repeated inversion at initial contact is an ankle sprain and a fall waiting to happen.'
+},
 
-{topic:"CIMT", stem:"Regarding constraint-induced movement therapy, which of the following claims is NOT well supported?",
- options:["Upper-limb CIMT benefits patients in the chronic stage after stroke","Lower-limb CIMT can improve motor function in chronic stroke patients","Upper-limb CIMT benefits patients in the acute stage after stroke","Upper-limb CIMT can generate movement in patients who have no voluntary movement at all on the affected side"], answer:3},
+{
+  n:11, mode:'Knowledge', select:1, area:'Stroke', topic:'Stroke pathophysiology · tone and reflex activity',
+  stem:'Within the Bobath framework, damage to which pathway is considered most responsible for the abnormal tone and reflex activity seen after stroke?',
+  options:[
+    'Dorsal column&ndash;medial lemniscus pathway',
+    'Spinocerebellar tract',
+    'Spinothalamic tract',
+    'Vestibulospinal tract',
+    'Corticospinal tract'
+  ],
+  answer:[4],
+  why:'The corticospinal tract carries the descending voluntary motor command and, with the closely associated corticoreticular fibres, provides much of the inhibitory control over spinal reflex circuits. Interrupting it produces the upper motor neurone picture that dominates stroke rehabilitation: weakness and loss of selective movement as the positive command is lost, and hyperreflexia, clonus, spasticity and released synergies as the inhibition is lost. That is the pathway the Bobath framework has always identified as the source of the abnormal tone it seeks to influence. The other tracts are all real and all matter, but for different findings. The dorsal column&ndash;medial lemniscus pathway carries proprioception, vibration and discriminative touch, so its loss produces sensory ataxia and a limb the patient cannot locate without looking &mdash; a major obstacle to recovery, but not a tone problem. The spinothalamic tract carries pain and temperature. The spinocerebellar tracts carry unconscious proprioception to the cerebellum and are associated with ataxia rather than spasticity. The vestibulospinal tract is worth a second look, since it contributes to antigravity extensor tone and is part of why decerebrate and decorticate posturing occur, but after a typical hemispheric stroke it is the loss of corticospinal control rather than a vestibulospinal lesion that generates the picture.'
+},
 
-{topic:"Balance Assessment", stem:"An older adult living in the community relies heavily on visual input to stay balanced, which causes difficulty walking under certain conditions. Which assessment would best expose this issue?",
- options:["6-Minute Walk Test","Timed Up and Go Test","Dynamic Gait Index","Stops Walking When Talking Test"], answer:2},
+{
+  n:12, mode:'Knowledge', select:1, area:'Stroke', topic:'Constraint-induced movement therapy · evidence',
+  stem:'Regarding constraint-induced movement therapy, which of the following claims is <b>NOT</b> well supported?',
+  options:[
+    'Upper-limb CIMT can generate movement in patients who have no voluntary movement at all on the affected side',
+    'Upper-limb CIMT benefits patients in the chronic stage after stroke',
+    'Lower-limb CIMT can improve motor function in chronic stroke patients',
+    'Upper-limb CIMT benefits patients in the acute stage after stroke',
+    'Candidates are typically selected on the basis of a minimum amount of active wrist and finger extension on the affected side'
+  ],
+  answer:[0],
+  why:'CIMT works by overcoming learned non-use &mdash; the acquired habit of not using an arm that was unusable early on and has since recovered some capacity. That mechanism requires there to be capacity to release, which is why the entry criteria are what they are: the classic protocol requires roughly 20&deg; of active wrist extension and 10&deg; of extension at the metacarpophalangeal and interphalangeal joints, with modified protocols extending to somewhat lower thresholds. A patient with no voluntary movement at all has nothing for the therapy to work with, and constraining the sound limb in that situation produces frustration and dependence rather than recovery &mdash; making option A the unsupported claim. Everything else listed has evidence behind it. The original and strongest evidence is in the chronic phase, which is a large part of why CIMT mattered historically &mdash; it demonstrated that meaningful gains were still available long after the window in which recovery was assumed to have plateaued. Benefit in the acute and subacute phases is also supported, though very intensive protocols very early have raised questions about dose. Lower-limb applications, where constraint is conceptually harder, have shown improvements in chronic stroke. The practical caution is dose and tolerance: the classic protocol demands six hours a day of shaping practice for two weeks with the sound arm mitted 90% of waking hours, and modified schedules exist precisely because adherence to the original is difficult.'
+},
 
-{topic:"Pusher Syndrome", stem:"When managing the postural abnormality seen in pusher syndrome, which of the following approaches is least appropriate?",
- options:["Encouraging the patient to actively identify and correct their own postural errors","Resisting the hemiplegic shoulder to push the patient's weight further toward the hemiplegic side","Using a mirror to give feedback on vertical alignment","Minimizing reliance on the unaffected arm for support during modified plantigrade stance training"], answer:1},
+{
+  n:13, mode:'Case', select:1, area:'Assessment & classification', topic:'Balance assessment · exposing visual dependence',
+  vig:'An older adult living in the community relies heavily on visual input to stay balanced, which causes difficulty walking under certain conditions.',
+  stem:'Which assessment would best expose this issue?',
+  options:[
+    '6-Minute Walk Test',
+    'Timed Up and Go Test',
+    'Stops Walking When Talking Test',
+    'Dynamic Gait Index',
+    'Berg Balance Scale'
+  ],
+  answer:[3],
+  why:'To expose dependence on vision you have to take vision away or make it unhelpful while the person is doing something demanding. The Dynamic Gait Index does exactly that: among its eight items are walking with horizontal and vertical head turns, which decouple the visual scene from the direction of travel, and gait with the eyes closed, which removes it altogether. A patient who is steady on all the other items and deteriorates markedly on those is showing you the answer. The alternatives measure real things but not this one. The 6-Minute Walk Test is a submaximal endurance measure. The Timed Up and Go is a brief mobility and fall-risk screen performed with eyes open in good light, so a visually dependent patient can pass it comfortably. The Stops Walking When Talking test probes dual-task cost and divided attention, which often coexists with visual dependence but is a different construct. The Berg Balance Scale is largely static and predominantly eyes-open, with only one brief eyes-closed item in standing, and it has a well-known ceiling effect in ambulant community-dwelling older adults. If you want to characterise the sensory strategy more formally, the modified Clinical Test of Sensory Interaction on Balance is the tool designed for it, since it systematically removes vision and degrades somatosensory input one at a time.'
+},
 
-{topic:"Cranial Nerve Exam", stem:"A stable patient, two weeks after a left putaminal hemorrhage, is asked to keep his eyes on the therapist's finger as it moves left-right and up-down in front of him, without turning his head. This assesses which cranial nerve?",
- options:["VII (Facial)","III (Oculomotor)","X (Vagus)","V (Trigeminal)"], answer:1},
+{
+  n:14, mode:'Knowledge', select:1, area:'Stroke', topic:'Pusher syndrome · management',
+  stem:'When managing the postural abnormality seen in pusher syndrome, which of the following approaches is <b>least</b> appropriate?',
+  options:[
+    'Encouraging the patient to actively identify and correct their own postural errors',
+    'Resisting the hemiplegic shoulder to push the patient&rsquo;s weight further toward the hemiplegic side',
+    'Using a mirror to give feedback on vertical alignment',
+    'Minimising reliance on the unaffected arm for support during modified plantigrade stance training',
+    'Using a vertical visual reference such as a door frame to help the patient re-orient to upright'
+  ],
+  answer:[1],
+  why:'The defining problem in pusher syndrome is a disturbed internal sense of postural vertical: the patient perceives upright as being tilted towards the unaffected side, and so actively pushes towards the hemiplegic side to reach what feels vertical to them. Pushing them further in that direction, as option B describes, drives them deeper into the error and confirms the faulty reference &mdash; and it also provokes the resistance that makes handling these patients so difficult. Treatment goes the other way, and the mechanism that makes it work is the key insight: <em>visual</em> control of verticality is typically intact even though the postural sense of vertical is not. So management uses vision as the substitute reference. That means explicit visual vertical cues &mdash; door frames, window edges, a mirror &mdash; and getting the patient to actively recognise their tilt and correct it themselves rather than being passively repositioned, since active error detection is what retrains the reference. Reducing reliance on the sound arm matters because pushing with it is the mechanism of the deviation, so training positions that occupy or unload that arm remove the tool the patient is using to push. Two practical points: pusher behaviour is not a contraindication to standing and typically improves substantially over weeks to months, and it should not be confused with neglect, though the two frequently coexist.'
+},
 
-{topic:"Stroke Rehabilitation", stem:"A patient with a right posterolateral thalamic lesion shows hip flexion with excess weight-bearing on the affected side while standing, plus hip adduction during swing phase on that side. Which intervention is most appropriate?",
- options:["Provide extensor-facilitating sensory input to the affected leg during standing","Stretch the hip adductors before beginning gait training","Cue the patient to shift weight toward a doorframe positioned on the unaffected side while standing","Have the patient stand with each foot on a separate scale, for visual weight-bearing feedback"], answer:2},
+{
+  n:15, mode:'Case', select:1, area:'Neurological examination', topic:'Cranial nerve examination · extraocular movement',
+  vig:'A stable patient, two weeks after a left putaminal haemorrhage, is asked to keep his eyes on the therapist&rsquo;s finger as it moves left-right and up-down in front of him, without turning his head.',
+  stem:'This primarily assesses which cranial nerve?',
+  options:[
+    'VII (Facial)',
+    'X (Vagus)',
+    'III (Oculomotor)',
+    'V (Trigeminal)',
+    'II (Optic)'
+  ],
+  answer:[2],
+  why:'The oculomotor nerve supplies four of the six extraocular muscles &mdash; superior, inferior and medial rectus and inferior oblique &mdash; along with levator palpebrae superioris and the parasympathetic supply to the pupil, so it is the single nerve doing most of the work in an H-pattern eye movement test and is the best answer here. Be aware of the nuance rather than memorising it as a clean one-to-one: a full assessment of eye movement also tests the trochlear nerve (IV, superior oblique, giving depression in adduction) and the abducens nerve (VI, lateral rectus, giving abduction), and in practice this test screens all three together. The other options are testable but by different manoeuvres: the facial nerve by facial expression and eye closure, the trigeminal by facial sensation and jaw movement, and the vagus by palatal elevation, gag and voice. Option E is the trap worth naming &mdash; the optic nerve is purely sensory and carries vision <em>in</em>; tracking a target uses it as the afferent limb but the test is of the efferent motor supply. Clinically the findings that matter are a fixed, dilated pupil with ptosis and a down-and-out eye, which is a third nerve palsy and, in a patient with an intracranial bleed, may signal uncal herniation and needs immediate escalation.'
+},
 
-{topic:"Visual Field Deficits", stem:"Regarding visual field deficits, which statement is accurate?",
- options:["A lesion at the optic chiasm typically first produces a right inferior quadrantanopia in both eyes","A left optic tract lesion produces right homonymous hemianopia in both eyes","A left optic nerve lesion produces right homonymous hemianopia in both eyes","A left visual cortex lesion produces bitemporal hemianopia"], answer:1},
+{
+  n:16, mode:'Case', select:1, area:'Stroke', topic:'Stroke rehabilitation · weight-bearing asymmetry',
+  vig:'A patient with a right posterolateral thalamic lesion shows hip flexion with excess weight-bearing on the affected side while standing, plus hip adduction during swing phase on that side.',
+  stem:'Which intervention is most appropriate?',
+  options:[
+    'Provide extensor-facilitating sensory input to the affected leg during standing',
+    'Stretch the hip adductors before beginning gait training',
+    'Have the patient stand with each foot on a separate scale, for visual weight-bearing feedback',
+    'Apply a strong quick stretch to the hip flexors immediately before each step',
+    'Cue the patient to shift weight toward a doorframe positioned on the unaffected side while standing'
+  ],
+  answer:[4],
+  why:'The pattern described &mdash; a posterolateral thalamic lesion with the patient actively loading the <em>affected</em> side and adducting across the midline &mdash; is contraversive pushing, and the lesion location is the classic one. The treatment principle follows from the mechanism: the postural sense of vertical is displaced, vision is not, so the intervention that works is an explicit external visual vertical placed on the <em>unaffected</em> side, with the patient actively shifting towards it. That is what option E does, and the side matters as much as the strategy &mdash; a vertical reference placed on the affected side would reinforce the push. The other options treat the presentation as though it were a tone or length problem. Facilitating extension into the affected leg adds to the pushing rather than opposing it. The adduction here is an active behaviour, not a contracture, so stretching the adductors addresses a problem the patient does not have. A quick stretch to the hip flexors is a facilitation technique with no rationale in this presentation and risks reinforcing the flexed posture. Option C is the closest of the wrong answers and is the one worth arguing about: dual scales do give quantified visual feedback about load and can be genuinely useful later, but they tell the patient <em>how much</em> weight is where rather than <em>where upright is</em>, and they do not supply the vertical reference that this specific deficit needs.'
+},
 
-{topic:"Neurological Signs", stem:"Which of the following is NOT typically associated with elevated intracranial pressure?",
- options:["Papilledema","Irregular respiratory pattern","Reduced level of consciousness","Bradycardia"], answer:3},
+{
+  n:17, mode:'Knowledge', select:1, area:'Neurological examination', topic:'Visual pathway · field defects',
+  stem:'Regarding visual field deficits, which statement is accurate?',
+  options:[
+    'A left optic tract lesion produces right homonymous hemianopia in both eyes',
+    'A lesion at the optic chiasm typically first produces a right inferior quadrantanopia in both eyes',
+    'A left optic nerve lesion produces right homonymous hemianopia in both eyes',
+    'A left visual cortex lesion produces bitemporal hemianopia',
+    'A lesion of Meyer&rsquo;s loop in the left temporal lobe produces a right <b>inferior</b> homonymous quadrantanopia'
+  ],
+  answer:[0],
+  why:'Work the pathway forward and every one of these resolves. Nasal retinal fibres cross at the chiasm and temporal fibres do not, so behind the chiasm each side of the brain carries the <em>contralateral</em> half of the visual world from both eyes. A left optic tract lesion therefore removes the right half of the field in both eyes &mdash; a right homonymous hemianopia. In front of the chiasm the two eyes are still separate, so a left optic nerve lesion causes monocular visual loss in the left eye only and can never be homonymous, which disposes of option C. At the chiasm the crossing nasal fibres are picked off, producing bitemporal hemianopia rather than a quadrantanopia, so option B is wrong and option D attaches the chiasmal defect to a cortical lesion. Option E is the one that catches most people: Meyer&rsquo;s loop carries the fibres from the inferior retina, which see the <em>superior</em> field, so a temporal lobe lesion gives a contralateral <em>superior</em> quadrantanopia &mdash; the classic &ldquo;pie in the sky&rdquo; &mdash; while a parietal lesion affecting the upper radiation gives the inferior one. The practical importance in rehabilitation is that hemianopia and neglect look similar at a glance but are not the same: a hemianopic patient knows the field is missing and will learn compensatory scanning, whereas a neglecting patient does not know, and the two need different treatment.'
+},
 
-{topic:"Stroke Etiology", stem:"A right-handed man develops right-sided hemiplegia after an ischemic stroke and is left able to communicate only through gestures. Which vessel is most likely completely occluded?",
- options:["Basilar artery","Left posterior cerebral artery","Left middle cerebral artery","Left anterior cerebral artery"], answer:2},
+{
+  n:18, mode:'Knowledge', select:1, area:'Neurological examination', topic:'Raised intracranial pressure · clinical signs',
+  stem:'Which of the following is <b>NOT</b> typically associated with elevated intracranial pressure?',
+  options:[
+    'Papilloedema',
+    'Irregular respiratory pattern',
+    'Reduced level of consciousness',
+    'Tachycardia',
+    'Widening pulse pressure with a rising systolic blood pressure'
+  ],
+  answer:[3],
+  why:'The cardiovascular response to rising intracranial pressure is the Cushing reflex, and its triad is <em>hypertension with a widening pulse pressure, bradycardia and irregular respiration</em>. Tachycardia is therefore the odd one out: as pressure rises, the systolic pressure climbs to maintain cerebral perfusion, the baroreceptors register the surge, and the reflex answer is a <em>slowing</em> of the heart. A tachycardic, hypotensive patient is far more likely to be bleeding somewhere else, and reading that combination as raised intracranial pressure sends you down the wrong path. Papilloedema follows from transmitted pressure along the optic nerve sheath and is a later sign that requires time to develop, so its absence proves nothing acutely. A declining level of consciousness is the earliest and most sensitive sign of all and is the one worth watching most closely, since the Cushing triad in full is a late and ominous finding that often signals impending herniation. Practically, this is a stop-and-escalate picture rather than a treat-and-review one: any deterioration in conscious level, a new pupillary asymmetry, worsening headache with vomiting, or a rising blood pressure with a falling pulse in a patient with a head injury or bleed needs immediate medical review, and treatment such as head-down positioning or anything that raises intrathoracic pressure should be stopped.'
+},
 
-{topic:"Spinal Cord Injury", stem:"Which of the following is NOT a typical respiratory complication in patients with spinal cord injury?",
- options:["Greater compliance of the chest wall","Weakness and reduced endurance of respiratory muscles","Reduced lung volumes","Hypoxemia"], answer:0},
+{
+  n:19, mode:'Case', select:1, area:'Stroke', topic:'Stroke aetiology · vascular territory',
+  vig:'A right-handed man develops right-sided hemiplegia after an ischaemic stroke and is left able to communicate only through gestures.',
+  stem:'Which vessel is most likely completely occluded?',
+  options:[
+    'Basilar artery',
+    'Left middle cerebral artery',
+    'Left posterior cerebral artery',
+    'Left anterior cerebral artery',
+    'Right middle cerebral artery'
+  ],
+  answer:[1],
+  why:'Two features localise this. The right-sided hemiplegia puts the lesion in the left hemisphere, and the loss of expressive language in a right-handed man puts it in the dominant hemisphere, which is the left in essentially all right-handers and in the majority of left-handers too. The middle cerebral artery supplies the lateral hemisphere including the motor and sensory cortex for the face and arm, the internal capsule via the lenticulostriate branches, and both Broca&rsquo;s and Wernicke&rsquo;s areas &mdash; so a complete left MCA occlusion produces exactly this combination. Option E fails on side: a right MCA stroke gives left hemiplegia, and instead of aphasia you would expect neglect, anosognosia and visuospatial difficulty. The anterior cerebral artery supplies the medial surface, so its territory gives leg-predominant weakness with relative sparing of the arm and face, often with urinary incontinence and frontal features. The posterior cerebral artery supplies the occipital lobe and gives homonymous hemianopia with cortical visual disturbance rather than hemiplegia with aphasia. Basilar occlusion is a posterior circulation catastrophe producing bilateral signs, cranial nerve palsies, reduced consciousness or locked-in syndrome. Distinguishing MCA territory matters for what you expect in rehabilitation: a dense arm, a hand that recovers late if at all, and communication that will need speech and language therapy input from the start.'
+},
 
-{topic:"Spinal Cord Injury", stem:"Which combination of findings would be expected in a man with a complete T4 spinal cord injury, 24 hours after injury? (1) diminished sweating below the level of injury (2) preserved erectile function (3) hypotension (4) tachycardia",
- options:["(2) and (4)","(1) and (3)","(1) and (2)","(3) and (4)"], answer:1},
+{
+  n:20, mode:'Knowledge', select:1, area:'Spinal cord injury', topic:'Spinal cord injury · respiratory complications',
+  stem:'Which of the following is <b>NOT</b> a typical respiratory complication in patients with spinal cord injury?',
+  options:[
+    'Weakness and reduced endurance of respiratory muscles',
+    'Reduced lung volumes',
+    'Greater compliance of the chest wall',
+    'Hypoxaemia',
+    'An ineffective cough with impaired secretion clearance'
+  ],
+  answer:[2],
+  why:'The standard list of respiratory problems after cervical or high thoracic injury is weakness of the inspiratory and expiratory muscles, restrictive loss of lung volumes, an ineffective cough with retained secretions, atelectasis and hypoxaemia &mdash; so increased chest wall compliance is the outlier. In the established injury the chest wall becomes <em>stiffer</em>, not more compliant, as spasticity develops in the intercostals and the ribcage loses its normal excursion, and that reduced compliance adds a mechanical load on top of the muscle weakness. There is a nuance worth knowing rather than glossing over: in the first days after injury, while the patient is in spinal shock and the intercostals are flaccid, the chest wall <em>is</em> abnormally compliant, which is why paradoxical inward movement of the upper chest on inspiration is seen acutely. That is a transient phase, not a typical ongoing complication. The practical consequence of the rest of the list is that cough augmentation is the single highest-value intervention in this group &mdash; manual assisted cough with an abdominal thrust, breath-stacking or glossopharyngeal breathing, and mechanical insufflation-exsufflation &mdash; alongside attention to positioning, since an abdominal binder in the upright position can improve vital capacity in a patient with a high lesion by supporting the diaphragm.'
+},
 
-{topic:"ASIA Impairment Scale", stem:"Regarding the ASIA Impairment Scale for spinal cord injury, which statement is correct?",
- options:["Tetraplegia is defined as thoracic, lumbar, or sacral cord injury causing deficits in the lower limbs, trunk, or pelvis","ASIA D indicates an incomplete injury in which most key muscles below the level of injury score below grade 3","ASIA A denotes a complete injury with no sensory or motor function preserved in the lowest sacral segments","Whether an injury is incomplete is determined by testing sensation at the anal mucocutaneous junction"], answer:2},
+{
+  n:21, mode:'Case', select:1, area:'Spinal cord injury', topic:'Acute spinal cord injury · neurogenic shock',
+  vig:'A man has a complete T4 spinal cord injury and is reviewed 24 hours after injury. Consider the following findings: (1) diminished sweating below the level of injury; (2) preserved erectile function; (3) hypotension; (4) tachycardia.',
+  stem:'Which combination would be expected at this stage?',
+  options:[
+    '(2) and (4)',
+    '(1) and (2)',
+    '(3) and (4)',
+    '(2) and (3)',
+    '(1) and (3)'
+  ],
+  answer:[4],
+  why:'Two things are happening at 24 hours and both point the same way. The lesion is at T4, above the T6 watershed, so the sympathetic outflow from T1 to L2 is largely disconnected from higher control. That produces neurogenic shock: loss of vasomotor tone with pooling and hypotension, loss of sympathetic drive to the heart with an <em>unopposed</em> vagus and therefore <em>bradycardia</em> rather than tachycardia, and loss of sudomotor supply so sweating is diminished below the level. Findings (1) and (3) fit; (4) is the opposite of what you expect and is the discriminator that separates neurogenic from haemorrhagic shock, which is a distinction that matters urgently in a trauma patient. Finding (2) fails on timing rather than on principle. Reflexogenic erection depends on an intact sacral reflex arc, which a T4 lesion preserves &mdash; but at 24 hours the patient is in spinal shock, with all reflexes below the lesion absent, so nothing reflexive is available yet. It returns over days to weeks as spinal shock resolves and reflexes become hyperactive. The practical implications are immediate: expect orthostatic hypotension and mobilise gradually with abdominal binders and compression stockings, be cautious with suction and other vagal stimuli in a bradycardic patient, and remember that once spinal shock resolves a lesion at this level carries a lifelong risk of autonomic dysreflexia.'
+},
 
-{topic:"Disorders of Consciousness", stem:"Regarding disorders of consciousness, which statement is correct?",
- options:["Coma is characterized by a clearly preserved sleep-wake cycle","A patient in a minimally conscious state may correctly follow a simple one-step command","Vegetative state includes intact, smooth visual pursuit of a moving target","Of the three states, vegetative state shows the most purposeful response to external stimuli"], answer:1},
+{
+  n:22, mode:'Knowledge', select:1, area:'Spinal cord injury', topic:'ASIA Impairment Scale · definitions',
+  stem:'Regarding the ASIA Impairment Scale for spinal cord injury, which statement is correct?',
+  options:[
+    'ASIA A denotes a complete injury with no sensory or motor function preserved in the lowest sacral segments',
+    'Tetraplegia is defined as thoracic, lumbar or sacral cord injury causing deficits in the lower limbs, trunk or pelvis',
+    'ASIA D indicates an incomplete injury in which most key muscles below the level of injury score below grade 3',
+    'Whether an injury is incomplete is determined by testing sensation at the anal mucocutaneous junction',
+    'The neurological level of injury is the most caudal segment with normal motor function, regardless of sensation'
+  ],
+  answer:[0],
+  why:'Everything in this classification hinges on the sacral segments, because they are the most caudal and therefore the last to be spared. ASIA A is complete: no sensory or motor function in S4&ndash;S5, which is established by testing light touch and pin-prick at the anal mucocutaneous junction, deep anal pressure, and voluntary anal contraction. Option D is close enough to be tempting but is incomplete as stated &mdash; sensation alone does not settle it, since voluntary anal contraction is a motor finding that also makes an injury incomplete, and sacral sparing means either. Option B swaps the definitions: tetraplegia is cervical cord injury affecting all four limbs plus trunk and pelvic organs, while the description given belongs to paraplegia. Option C inverts the grading &mdash; ASIA D is the better grade, in which at least half the key muscles below the level score 3 or more, whereas ASIA C is the one where most score below 3; B is sensory-only sparing and E is normal. Option E omits half the definition: the neurological level is the most caudal segment with <em>both</em> normal sensory and antigravity motor function bilaterally, and because the two can differ between sides it is recorded separately for right and left. The grade matters practically because it is the single strongest predictor of eventual walking, and because it changes over the first weeks, so it is recorded repeatedly rather than once.'
+},
 
-{topic:"Traumatic Brain Injury", stem:"Following traumatic brain injury, patients often cannot recall events that happened before the injury occurred. This is best described as:",
- options:["Selective amnesia","Anterograde amnesia","Retrograde amnesia","Dissociative amnesia"], answer:2},
+{
+  n:23, mode:'Knowledge', select:1, area:'Brain injury & consciousness', topic:'Disorders of consciousness · differentiation',
+  stem:'Regarding disorders of consciousness, which statement is correct?',
+  options:[
+    'Coma is characterised by a clearly preserved sleep-wake cycle',
+    'Vegetative state includes intact, smooth visual pursuit of a moving target',
+    'Of the three states, vegetative state shows the most purposeful response to external stimuli',
+    'A patient in a minimally conscious state may correctly follow a simple one-step command',
+    'Locked-in syndrome is a disorder of consciousness in which awareness is abolished'
+  ],
+  answer:[3],
+  why:'The three states are separated by two axes &mdash; wakefulness and awareness &mdash; and the distinctions are clinically consequential rather than academic. Coma is neither awake nor aware, with eyes closed and no sleep-wake cycle, which makes option A wrong. Vegetative state (now often called unresponsive wakefulness syndrome) is wakefulness <em>without</em> awareness: the eyes open, sleep-wake cycles return, and reflexive movement occurs, but there is no reproducible purposeful response, so options B and C both overstate it. Minimally conscious state is the category defined by inconsistent but <em>reproducible</em> evidence of awareness, and the accepted markers are exactly what option D describes: following simple commands, gestural or verbal yes/no responses regardless of accuracy, intelligible speech, and purposeful behaviour including sustained visual pursuit or fixation. Sustained visual pursuit is in fact one of the earliest and most useful signs that a patient has emerged from vegetative state into minimally conscious state. Option E names a condition that is often mistaken for a disorder of consciousness but is not one: in locked-in syndrome, usually from a ventral pontine lesion, the patient is fully aware and cognitively intact but almost entirely de-efferented, typically retaining vertical eye movement and blinking &mdash; which is the communication channel to look for and the reason the diagnosis is missed for weeks in a substantial proportion of cases.'
+},
 
-{topic:"Parkinson's Disease", stem:"Physical therapy for Parkinson's disease relies more heavily on cueing strategies than therapy for brain injury typically does. Which statement about cueing is incorrect?",
- options:["Lines marked on the floor can help lengthen a patient's stride","Because of basal ganglia dysfunction, internal cueing is deficient, contributing to start hesitation and slowed movement","External cues can enhance frontal-lobe activity and attention","A metronome's steady beat reliably increases the total number of steps a patient takes"], answer:3},
+{
+  n:24, mode:'Knowledge', select:1, area:'Brain injury & consciousness', topic:'Traumatic brain injury · amnesia',
+  stem:'Following traumatic brain injury, patients often cannot recall events that happened <b>before</b> the injury occurred. This is best described as:',
+  options:[
+    'Anterograde amnesia',
+    'Retrograde amnesia',
+    'Selective amnesia',
+    'Dissociative amnesia',
+    'Post-traumatic amnesia'
+  ],
+  answer:[1],
+  why:'Retrograde means backwards in time: memories laid down <em>before</em> the injury are lost, typically with a gradient in which the most recent memories are the most vulnerable and remote memories are relatively preserved. Anterograde amnesia is the mirror image and the more functionally disabling of the two &mdash; the inability to lay down <em>new</em> memories after the injury, which is what makes a patient repeat the same question every few minutes and forget a therapy session between visits. Option E is the distractor worth understanding rather than just excluding: post-traumatic amnesia is a defined clinical period running from the injury until continuous day-to-day memory returns, and it is predominantly an anterograde phenomenon. Its duration is one of the more useful early predictors of outcome, with commonly used bands classifying injury as mild under an hour, moderate up to a day, severe up to a week and very severe beyond that, and it is measured formally with tools such as the Westmead PTA scale. Selective and dissociative amnesia are psychogenic patterns rather than the structural memory loss of brain injury. The practical point for therapy is that a patient still in post-traumatic amnesia is disoriented and cannot carry learning between sessions, so the priorities are orientation, consistency of staff and environment, short familiar routines, and errorless rather than trial-and-error learning.'
+},
 
-{topic:"Parkinson's Disease", stem:"Which of the following is least likely to appear during the early stage of idiopathic Parkinson's disease?",
- options:["Masked facial expression","Small, cramped handwriting","Pronounced orthostatic hypotension together with bladder dysfunction","Unilateral resting tremor with bradykinesia"], answer:2},
+{
+  n:25, mode:'Knowledge', select:1, area:'Movement disorders', topic:'Parkinson&rsquo;s disease · cueing strategies',
+  stem:'Physical therapy for Parkinson&rsquo;s disease relies more heavily on cueing strategies than therapy for brain injury typically does. Which statement about cueing is <b>incorrect</b>?',
+  options:[
+    'Lines marked on the floor can help lengthen a patient&rsquo;s stride',
+    'Because of basal ganglia dysfunction, internal cueing is deficient, contributing to start hesitation and slowed movement',
+    'A metronome&rsquo;s steady beat reliably increases the total number of steps a patient takes',
+    'External cues can enhance frontal-lobe activity and attention',
+    'Cueing effects tend to diminish once the cue is withdrawn, so cues are usually trained into everyday routines'
+  ],
+  answer:[2],
+  why:'The rationale for cueing is that the basal ganglia normally supply the internal timing signal that runs automatic, repetitive movement; when that fails, movement becomes small, slow and hesitant, and external cues let the patient route the same movement through a goal-directed frontal and premotor pathway instead. Everything in options A, B, D and E follows from that. Visual cues such as floor lines and laser pointers act on <em>amplitude</em> and reliably lengthen stride, auditory cues such as a metronome act on <em>timing</em> and raise cadence and gait speed, and both work by substituting attention for automaticity &mdash; which is also why the effect fades when the cue is removed and why cues are trained into real routines and specific problem situations rather than used only in the gym. Option C is the incorrect statement, on two counts. The documented outcomes of rhythmic auditory cueing are cadence, stride length and velocity, not the raw number of steps &mdash; and since a cue that lengthens stride will reduce the steps taken over a fixed distance, the direction of the claim is not even consistent. &ldquo;Reliably&rdquo; also over-claims, since responses vary considerably between individuals and with disease stage. Two practical points: because cueing depends on attention, it is undermined by dual-tasking, so patients should be taught not to cue and converse at the same time; and cueing is a compensation rather than a disease-modifying treatment, which is why it sits alongside high-amplitude, high-intensity exercise rather than replacing it.'
+},
 
-{topic:"Cerebellar Function", stem:"Imaging in a 40-year-old patient with cerebellar disease shows involvement of the flocculonodular lobe. Which of the following is most likely to be impaired?",
- options:["Asymmetrical tonic neck reflex","Tonic lumbar reflex","Vestibulo-ocular reflex","Symmetrical tonic labyrinthine reflex"], answer:2},
+{
+  n:26, mode:'Knowledge', select:1, area:'Movement disorders', topic:'Parkinson&rsquo;s disease · early features and red flags',
+  stem:'Which of the following is <b>least</b> likely to appear during the early stage of idiopathic Parkinson&rsquo;s disease?',
+  options:[
+    'Masked facial expression',
+    'Small, cramped handwriting',
+    'Unilateral resting tremor with bradykinesia',
+    'Reduced arm swing on one side during walking',
+    'Pronounced orthostatic hypotension together with bladder dysfunction'
+  ],
+  answer:[4],
+  why:'Early idiopathic Parkinson&rsquo;s disease is characteristically <em>asymmetrical</em> and motor: a unilateral resting tremor, bradykinesia, rigidity, reduced arm swing on the affected side, hypomimia and micrographia are the classic opening picture, and all four of the other options belong to it. Prominent autonomic failure early in the course is the red flag, because it points away from idiopathic Parkinson&rsquo;s disease and towards multiple system atrophy, in which severe orthostatic hypotension and urinary dysfunction appear early and the response to levodopa is poor. That distinction is worth carrying alongside the other atypical patterns: early falls with a vertical gaze palsy suggests progressive supranuclear palsy, early prominent visual hallucinations with fluctuating cognition suggests dementia with Lewy bodies, and a markedly symmetrical presentation or a rapid course should prompt a rethink. Autonomic features are not absent from idiopathic Parkinson&rsquo;s disease &mdash; constipation and orthostatic symptoms are common, and constipation and REM sleep behaviour disorder are recognised <em>prodromal</em> features that may precede motor onset by years &mdash; but pronounced, disabling autonomic failure in the early motor stage is the discriminator. Practically, the label changes what you should expect from therapy: the atypical parkinsonian syndromes progress faster, respond less to medication, and carry a much higher early falls risk, so goals and equipment planning need to run further ahead.'
+},
 
-{topic:"Multiple Sclerosis", stem:"Which statement about multiple sclerosis is incorrect?",
- options:["Interferon-beta injections are commonly used to slow disease progression","Relapsing-remitting is the most common subtype","The underlying pathology mainly involves damage at the neuromuscular junction","Acute relapses are often managed with corticosteroids"], answer:2},
+{
+  n:27, mode:'Case', select:1, area:'Movement disorders', topic:'Cerebellum · functional subdivisions',
+  vig:'Imaging in a 40-year-old patient with cerebellar disease shows involvement of the flocculonodular lobe.',
+  stem:'Which of the following is most likely to be impaired?',
+  options:[
+    'Vestibulo-ocular reflex',
+    'Asymmetrical tonic neck reflex',
+    'Tonic lumbar reflex',
+    'Symmetrical tonic labyrinthine reflex',
+    'Deep tendon reflexes in the lower limbs'
+  ],
+  answer:[0],
+  why:'The cerebellum divides functionally into three parts and the flocculonodular lobe is the oldest of them &mdash; the vestibulocerebellum. It connects directly with the vestibular nuclei and is responsible for balance, control of eye movement and the calibration of the vestibulo-ocular reflex, so a lesion there produces truncal ataxia, nystagmus, impaired smooth pursuit and a poorly tuned VOR, often with vertigo and little or no limb ataxia. Knowing the other two subdivisions makes the whole region predictable: the spinocerebellum (vermis and paravermis) handles gait and posture and the ongoing correction of limb movement, so lesions give a wide-based ataxic gait and truncal instability, while the cerebrocerebellum (lateral hemispheres) handles the planning and timing of skilled voluntary movement, so lesions give dysmetria, intention tremor, dysdiadochokinesia and dysarthria on the same side as the lesion. Options B, C and D are all primitive or tonic reflexes mediated at brainstem and spinal level and are not cerebellar functions. Option E is the one worth being explicit about: cerebellar disease does not abolish deep tendon reflexes, though it may make them pendular, and frankly absent reflexes should send you looking for a peripheral or posterior column cause instead. Clinically, a flocculonodular presentation is the one that overlaps most with vestibular disorders, so it is where a central cause is most easily mistaken for a peripheral one.'
+},
 
-{topic:"Movement Disorders", stem:"Abnormal copper metabolism leading to basal ganglia damage characterizes which condition?",
- options:["Huntington's disease","Alzheimer's disease","Wilson's disease","Parkinson's disease"], answer:2},
+{
+  n:28, mode:'Knowledge', select:1, area:'Neuromuscular & demyelinating', topic:'Multiple sclerosis · pathology and management',
+  stem:'Which statement about multiple sclerosis is <b>incorrect</b>?',
+  options:[
+    'Interferon-beta injections are commonly used to slow disease progression',
+    'Relapsing-remitting is the most common subtype at diagnosis',
+    'Acute relapses are often managed with corticosteroids',
+    'The underlying pathology mainly involves damage at the neuromuscular junction',
+    'Heat sensitivity (Uhthoff&rsquo;s phenomenon) can transiently worsen symptoms during exercise'
+  ],
+  answer:[3],
+  why:'Multiple sclerosis is an immune-mediated demyelinating disease of the <em>central</em> nervous system, in which lesions disseminated in time and space damage myelin and, increasingly recognised, the axons themselves. The neuromuscular junction is not involved at all &mdash; that is the site of pathology in myasthenia gravis, which is a useful pairing to hold in mind because the two produce very different fatigue: the fatigable weakness of myasthenia recovers with rest within minutes, whereas the fatigue of multiple sclerosis is a pervasive, disproportionate exhaustion that is one of its most disabling symptoms. The other statements are all accurate. Relapsing-remitting disease accounts for the large majority of presentations, with a substantial proportion converting to secondary progressive disease over years, and around one in ten following a primary progressive course from onset. High-dose corticosteroids shorten relapses without altering long-term outcome, while disease-modifying therapies including interferon-beta reduce relapse rate and lesion accrual. Uhthoff&rsquo;s phenomenon is the practically important one for physiotherapy: a rise in core temperature transiently worsens conduction in demyelinated axons, so symptoms can deteriorate during exercise and recover on cooling. That is a reason to manage temperature &mdash; cooling vests, cooler environments, timing sessions, interval formats &mdash; and not a reason to avoid exercise, which is now well supported in this population.'
+},
 
-{topic:"Myasthenia Gravis", stem:"Which statement about myasthenia gravis is least appropriate?",
- options:["Symptom improvement with medication occurs in most patients","The main treatment principle is to keep exercise fixed and unvarying, avoiding any activity that might fatigue the muscles","Limb muscles are commonly affected early in the disease","It is an autoimmune condition targeting acetylcholine receptors at the neuromuscular junction"], answer:1}
+{
+  n:29, mode:'Knowledge', select:1, area:'Movement disorders', topic:'Movement disorders · metabolic causes',
+  stem:'Abnormal copper metabolism leading to basal ganglia damage characterises which condition?',
+  options:[
+    'Huntington&rsquo;s disease',
+    'Wilson&rsquo;s disease',
+    'Alzheimer&rsquo;s disease',
+    'Parkinson&rsquo;s disease',
+    'Progressive supranuclear palsy'
+  ],
+  answer:[1],
+  why:'Wilson&rsquo;s disease is an autosomal recessive defect of copper transport in which copper accumulates in the liver and then deposits in the basal ganglia, cornea and other tissues. It matters far out of proportion to its rarity for one reason: it is among the very few genuinely <em>treatable</em> causes of a movement disorder, so it must be actively considered rather than waited for. The features to recognise are a young patient &mdash; typically in the second or third decade &mdash; with any combination of tremor (classically a coarse proximal &ldquo;wing-beating&rdquo; tremor), dystonia, dysarthria, parkinsonism or ataxia, together with liver disease and often psychiatric or behavioural change, and the Kayser-Fleischer ring of copper deposition at the corneal margin. Investigation centres on serum caeruloplasmin, 24-hour urinary copper and slit-lamp examination, and treatment with chelation or zinc can halt and partly reverse the neurological picture. The other options are distinguished by mechanism: Huntington&rsquo;s disease is an autosomal dominant CAG trinucleotide repeat expansion causing striatal degeneration with chorea and cognitive and psychiatric decline; Parkinson&rsquo;s disease involves alpha-synuclein aggregation with loss of dopaminergic neurones in the substantia nigra; progressive supranuclear palsy is a tauopathy with early falls and a vertical gaze palsy; and Alzheimer&rsquo;s disease is a cortical dementia rather than a basal ganglia disorder. The practical rule is that any movement disorder in a patient under about 40 deserves a thought about Wilson&rsquo;s.'
+},
+
+{
+  n:30, mode:'Knowledge', select:1, area:'Neuromuscular & demyelinating', topic:'Myasthenia gravis · management principles',
+  stem:'Which statement about myasthenia gravis is <b>least</b> appropriate?',
+  options:[
+    'Symptom improvement with medication occurs in most patients',
+    'Limb muscles are commonly affected as the disease generalises',
+    'The main treatment principle is to keep exercise fixed and unvarying, avoiding any activity that might fatigue the muscles',
+    'It is an autoimmune condition targeting acetylcholine receptors at the neuromuscular junction',
+    'Weakness characteristically worsens with sustained activity and improves with rest'
+  ],
+  answer:[2],
+  why:'Myasthenia gravis is an antibody-mediated attack on postsynaptic acetylcholine receptors at the neuromuscular junction, which produces its signature: weakness that worsens with sustained or repeated activity and recovers with rest, typically worst late in the day. Most patients improve substantially with acetylcholinesterase inhibitors such as pyridostigmine, alongside immunosuppression and, in selected patients, thymectomy. Option C is the statement to reject, and it is worth being clear about why, because the instinct behind it is understandable. Complete avoidance of anything fatiguing produces disuse weakness and deconditioning on top of the disease, and the evidence now supports supervised, individually tailored exercise in stable, well-controlled myasthenia. What management actually requires is <em>variable</em> rather than fixed prescription: sessions timed to the peak effect of medication, interval formats with generous rest, submaximal intensity, monitoring for fatigable weakness during the session, and dropping back when disease activity increases. Worth adding on option B: the classic presentation is ocular &mdash; ptosis and diplopia in around two-thirds at onset &mdash; with limb and bulbar involvement following as the disease generalises, so a patient with a new fatigable ptosis needs referral rather than reassurance. The genuine safety issue is myasthenic crisis, in which respiratory and bulbar weakness threatens the airway; a rising respiratory rate, weak cough, nasal speech or swallowing difficulty is a medical emergency, not a reason to modify the exercise.'
+}
+
 ];
 
-const letters = ["A","B","C","D"];
-const N = QUESTIONS.length;
-const answers = new Array(N).fill(-1);
-let current = 0;
-let graded = false;
+/* ---------- state ---------- */
+/* defensive: drop any empty slot so a stray comma can never stall the paper */
+var ITEMS = QUESTIONS.filter(function(q){ return q && q.options && q.options.length; });
+var TOTAL = ITEMS.length;
+var picks = ITEMS.map(function(){return [];});
+var idx = 0, t0 = 0, tick = null, done = false, staff = '', armed = false;
+var $ = function(id){return document.getElementById(id);};
 
-const questionHost = document.getElementById('questionHost');
-const dotRail = document.getElementById('dotRail');
-const progressFill = document.getElementById('progressFill');
-const progressLabel = document.getElementById('progressLabel');
-const navNote = document.getElementById('navNote');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const resultsPanel = document.getElementById('resultsPanel');
-const introCard = document.getElementById('introCard');
+function pad(n){return (n<10?'0':'')+n;}
+function fmt(s){return pad(Math.floor(s/60))+':'+pad(s%60);}
+function elapsed(){return Math.floor((Date.now()-t0)/1000);}
+function lbl(i){return LABELS[i];}
 
-function buildDotRail(){
-  dotRail.innerHTML = "";
-  QUESTIONS.forEach((_, qi) => {
-    const b = document.createElement('button');
-    b.type = "button";
-    b.textContent = qi + 1;
-    b.title = `Go to question ${qi+1}`;
-    b.addEventListener('click', () => { current = qi; renderQuestion(); });
-    dotRail.appendChild(b);
+/* ---------- rail ---------- */
+function buildRail(){
+  var r = $('rail'); r.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var b = document.createElement('button');
+    b.className='railbtn'; b.type='button'; b.textContent=q.n;
+    b.setAttribute('aria-label','Go to question '+q.n);
+    b.onclick=function(){idx=i;render();};
+    r.appendChild(b);
   });
 }
+function paintRail(){
+  var kids = $('rail').children;
+  for(var i=0;i<kids.length;i++){
+    var got = (picks[i]||[]).length, need = ITEMS[i].select, cls = 'railbtn';
+    if(got===need) cls += ' done';
+    else if(got>0) cls += ' part';
+    if(i===idx) cls += ' here';
+    kids[i].className = cls;
+    kids[i].title = 'Q'+ITEMS[i].n+' · '+(got===need ? 'answered'
+      : got>0 ? 'incomplete — '+got+' of '+need+' selected' : 'not answered');
+  }
+}
 
-function renderQuestion(){
-  const q = QUESTIONS[current];
-  const card = document.createElement('div');
-  card.className = 'q-card';
-  card.id = 'q' + current;
+/* ---------- render one question ---------- */
+function render(){
+  var q = ITEMS[idx];
+  if(!q){ return; }
+  $('counter').textContent = 'Question '+(idx+1)+' of '+TOTAL;
+  $('bar').style.width = ((idx+1)/TOTAL*100)+'%';
+  $('qno').textContent = 'Q'+pad(q.n);
+  var got = picks[idx].length;
+  $('qmode').textContent = q.select===2 ? ('Select 2 · '+got+' of 2 chosen') : 'Select 1';
+  $('qmode').className = 'chip hot' + (q.select===2 && got!==2 ? ' pend' : '');
+  $('qtopic').textContent = q.mode+' · '+q.topic;
+  $('stem').innerHTML = (q.vig ? '<span class="vig">'+q.vig+'</span>' : '')
+                      + q.stem
+                      + (q.media ? q.media : '');
 
-  const head = document.createElement('div');
-  head.className = 'q-head';
-  head.innerHTML = `<span class="q-num">Q${current+1}</span><span class="q-topic">${q.topic}</span>`;
-  card.appendChild(head);
+  var box = $('opts'); box.innerHTML='';
+  q.options.forEach(function(text,i){
+    var b = document.createElement('button');
+    b.type='button';
+    b.className='opt'+(q.select===2?' two':'')+(picks[idx].indexOf(i)>-1?' sel':'');
+    b.setAttribute('aria-pressed', picks[idx].indexOf(i)>-1 ? 'true':'false');
+    b.innerHTML = '<b>'+lbl(i)+'</b><span>'+text+'</span>';
+    b.onclick=function(){choose(i);};
+    box.appendChild(b);
+  });
 
-  const stem = document.createElement('p');
-  stem.className = 'q-stem';
-  stem.textContent = q.stem;
-  card.appendChild(stem);
+  $('prev').disabled = (idx===0);
+  $('next').disabled = (idx===TOTAL-1);
+  paintRail();
+}
 
-  const opts = document.createElement('div');
-  opts.className = 'options';
-  q.options.forEach((optText, oi) => {
-    const label = document.createElement('label');
-    label.className = 'opt';
-    if(answers[current] === oi) label.classList.add('selected');
-    label.innerHTML = `<input type="radio" name="qcurrent" value="${oi}" ${answers[current]===oi ? 'checked' : ''} ${graded ? 'disabled' : ''}>
-      <span class="opt-letter">${letters[oi]}</span>
-      <span class="opt-text">${optText}</span>`;
-    label.querySelector('input').addEventListener('change', () => {
-      answers[current] = oi;
-      renderQuestion();
-      updateProgress();
+function choose(i){
+  var q = ITEMS[idx], cur = picks[idx], at = cur.indexOf(i);
+  if(q.select===2){
+    if(at>-1){cur.splice(at,1);}
+    else{ if(cur.length>=2){cur.shift();} cur.push(i); }
+  }else{
+    picks[idx] = (at>-1) ? [] : [i];
+  }
+  if(armed){ armed=false; $('warn').classList.add('hidden'); $('submit').textContent='Submit test'; }
+  render();
+}
+
+/* ---------- marking ---------- */
+function isRight(i){
+  var a = ITEMS[i].answer.slice().sort().join(',');
+  var p = picks[i].slice().sort().join(',');
+  return a===p && picks[i].length===ITEMS[i].answer.length;
+}
+
+function finish(){
+  var bad = [];
+  picks.forEach(function(p,i){ if(p.length !== ITEMS[i].select){ bad.push(i); } });
+  if(bad.length>0 && !armed){
+    armed = true;
+    var links = bad.map(function(i){
+      var got = picks[i].length, need = ITEMS[i].select;
+      return '<button type="button" class="jump" data-i="'+i+'">Q'+pad(ITEMS[i].n)
+        + (got>0 ? ' – '+got+' of '+need : '') + '</button>';
+    }).join(' ');
+    var w = $('warn');
+    w.innerHTML = '<b>'+bad.length+' question'+(bad.length>1?'s still need':' still needs')+' attention.</b> '
+      + 'Items needing two answers show fewer than two selected, or nothing is selected. '
+      + 'Tap a number to go straight there, or tap “Submit test anyway” to submit — '
+      + 'unfinished items are marked incorrect.<span class="jumps">'+links+'</span>';
+    w.classList.remove('hidden');
+    $('submit').textContent = 'Submit test anyway';
+    return;
+  }
+
+  done = true; clearInterval(tick);
+  var secs = elapsed(), ok = 0;
+  ITEMS.forEach(function(q,i){ if(isRight(i)) ok++; });
+  var pc = Math.round(ok/TOTAL*100);
+
+  $('quiz').classList.add('hidden');
+  $('results').classList.remove('hidden');
+
+  var pass = pc>=60;
+  var bg = $('badge');
+  bg.textContent = pass ? 'Pass' : 'Below pass mark';
+  bg.className = 'badge '+(pass?'pass':'fail');
+  $('raw').textContent = ok;
+  $('pc').textContent = pc+'%';
+  $('nOk').textContent = ok;
+  $('nNo').textContent = TOTAL-ok;
+  $('tTaken').textContent = fmt(secs);
+  $('staffOut').textContent = staff || '—';
+
+  /* ---- answer sheet ---- */
+  var sh = $('sheet'); sh.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var c = document.createElement('button');
+    c.type='button';
+    c.className = 'cell '+(isRight(i)?'ok':'no');
+    c.textContent = q.n;
+    c.setAttribute('aria-label','Question '+q.n+': '+(isRight(i)?'correct':'incorrect'));
+    c.onclick = function(){
+      var el = $('rev'+q.n);
+      if(el && el.scrollIntoView){ el.scrollIntoView({behavior:'smooth',block:'start'}); }
+    };
+    sh.appendChild(c);
+  });
+
+  /* ---- performance by area ---- */
+  var tp = $('topics');
+  if(tp){
+    tp.innerHTML='';
+    var order = [], tally = {};
+    ITEMS.forEach(function(q,i){
+      var a = q.area || 'General';
+      if(!tally[a]){ tally[a] = {ok:0, all:0}; order.push(a); }
+      tally[a].all++;
+      if(isRight(i)) tally[a].ok++;
     });
-    opts.appendChild(label);
-  });
-  card.appendChild(opts);
-
-  if(graded){
-    const isCorrect = answers[current] === q.answer;
-    card.classList.add(isCorrect ? 'correct' : 'incorrect');
-    const tag = document.createElement('span');
-    tag.className = 'result-tag ' + (isCorrect ? 'correct' : 'incorrect');
-    tag.textContent = isCorrect ? 'Correct' : 'Incorrect';
-    head.appendChild(tag);
-    opts.querySelectorAll('.opt').forEach((optEl, oi) => {
-      if(oi === q.answer) optEl.classList.add('mark-correct');
-      else if(oi === answers[current] && !isCorrect) optEl.classList.add('mark-incorrect');
+    order.forEach(function(a){
+      var t = tally[a], pcA = Math.round(t.ok/t.all*100);
+      var row = document.createElement('div');
+      row.className = 'trow';
+      row.innerHTML = '<span class="tname">'+a+'</span>'
+        + '<span class="tbar"><i style="width:'+pcA+'%"></i></span>'
+        + '<span class="tnum">'+t.ok+'/'+t.all+'</span>';
+      tp.appendChild(row);
     });
   }
 
-  questionHost.innerHTML = "";
-  questionHost.appendChild(card);
+  /* ---- review ---- */
+  var rv = $('review'); rv.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var right = isRight(i);
+    var d = document.createElement('div');
+    d.className='rev'; d.id='rev'+q.n;
 
-  prevBtn.disabled = current === 0;
-  if(current === N - 1){
-    nextBtn.textContent = graded ? 'Finish review' : 'Submit answers';
-  } else {
-    nextBtn.textContent = 'Next →';
-  }
+    var head = '<div class="rev-head">'
+      + '<span class="chip">Q'+pad(q.n)+'</span>'
+      + '<span class="chip">'+(q.select===2?'Select 2':'Select 1')+'</span>'
+      + '<span class="verdict-tag '+(right?'ok':'no')+'">'+(right?'Correct':'Incorrect')+'</span>'
+      + '<span class="chip topic">'+q.mode+' · '+q.topic+'</span>'
+      + '</div>';
 
-  updateDotRail();
-  updateProgress();
-}
+    var stem = '<p class="stem" style="font-size:15.5px">'
+      + (q.vig?'<span class="vig">'+q.vig+'</span>':'') + q.stem + (q.media?q.media:'') + '</p>';
 
-function updateDotRail(){
-  Array.from(dotRail.children).forEach((b, qi) => {
-    b.classList.remove('answered','current','correct','incorrect');
-    if(graded){
-      b.classList.add(answers[qi] === QUESTIONS[qi].answer ? 'correct' : 'incorrect');
-    } else if(answers[qi] !== -1){
-      b.classList.add('answered');
+    var opts = '';
+    q.options.forEach(function(text,k){
+      var isKey = q.answer.indexOf(k)>-1;
+      var isPick = picks[i].indexOf(k)>-1;
+      var cls = 'rop' + (isKey?' key':'') + ((isPick && !isKey)?' picked-wrong':'');
+      var tag = '';
+      if(isKey && isPick) tag = 'Correct · your answer';
+      else if(isKey) tag = 'Correct answer';
+      else if(isPick) tag = 'Your answer';
+      opts += '<div class="'+cls+'"><b>'+lbl(k)+'</b><span>'+text+'</span>'
+            + (tag?'<span class="rop-tag">'+tag+'</span>':'') + '</div>';
+    });
+    if(picks[i].length===0){
+      opts += '<div class="rop"><b>–</b><span style="color:var(--ink-faint)">No answer was selected for this question.</span></div>';
     }
-    if(qi === current) b.classList.add('current');
+
+    d.innerHTML = head + stem + '<div style="margin-top:10px">'+opts+'</div>'
+      + '<div class="why"><b class="lbl">Why</b>'+q.why+'</div>';
+    rv.appendChild(d);
   });
+
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function updateProgress(){
-  const answeredCount = answers.filter(a => a !== -1).length;
-  progressLabel.textContent = `Question ${current+1} / ${N}`;
-  progressFill.style.width = `${((current+1)/N)*100}%`;
-  if(graded){
-    navNote.textContent = 'Review mode';
-  } else {
-    const remaining = N - answeredCount;
-    navNote.textContent = remaining === 0 ? 'All questions answered — ready to submit' : `${remaining} question${remaining===1?'':'s'} remaining`;
-  }
+/* ---------- wiring ---------- */
+function startClock(){
+  t0 = Date.now();
+  clearInterval(tick);
+  tick = setInterval(function(){ $('clock').textContent = fmt(elapsed()); },1000);
+  $('clock').textContent = '00:00';
 }
 
-prevBtn.addEventListener('click', () => {
-  if(current > 0){ current--; renderQuestion(); window.scrollTo({top:0, behavior:'smooth'}); }
-});
-
-nextBtn.addEventListener('click', () => {
-  if(current < N - 1){
-    current++;
-    renderQuestion();
-    window.scrollTo({top:0, behavior:'smooth'});
-  } else if(!graded){
-    if(answers.includes(-1)){
-      const firstUnanswered = answers.indexOf(-1);
-      current = firstUnanswered;
-      renderQuestion();
-      window.scrollTo({top:0, behavior:'smooth'});
-      return;
-    }
-    gradeQuiz();
-  } else {
-    resultsPanel.scrollIntoView({behavior:'smooth', block:'start'});
+$('start').onclick = function(){
+  staff = $('who').value.trim();
+  $('intro').classList.add('hidden');
+  $('quiz').classList.remove('hidden');
+  startClock();
+  buildRail(); render();
+  window.scrollTo({top:0});
+};
+$('prev').onclick = function(){ if(idx>0){idx--;render();window.scrollTo({top:0,behavior:'smooth'});} };
+$('next').onclick = function(){ if(idx<TOTAL-1){idx++;render();window.scrollTo({top:0,behavior:'smooth'});} };
+$('submit').onclick = finish;
+$('retake').onclick = function(){
+  picks = ITEMS.map(function(){return [];});
+  idx=0; done=false; armed=false;
+  $('warn').classList.add('hidden');
+  $('submit').textContent = 'Submit test';
+  $('results').classList.add('hidden');
+  $('quiz').classList.remove('hidden');
+  startClock();
+  buildRail(); render();
+  window.scrollTo({top:0});
+};
+$('printout').onclick = function(){ window.print(); };
+$('warn').onclick = function(e){
+  var t = e.target;
+  if(t && t.className === 'jump'){
+    idx = parseInt(t.getAttribute('data-i'),10);
+    render();
+    var box = $('opts');
+    if(box && box.scrollIntoView){ box.scrollIntoView({behavior:'smooth',block:'center'}); }
   }
-});
+};
 
-function gradeQuiz(){
-  graded = true;
-  const score = answers.filter((a, qi) => a === QUESTIONS[qi].answer).length;
-  const pct = Math.round((score / N) * 100);
-  const passed = score >= 18;
-
-  document.getElementById('gaugeScore').textContent = pct + '%';
-  document.getElementById('gaugeOf').textContent = `${score} / ${N} correct`;
-  const verdict = document.getElementById('resultVerdict');
-  verdict.textContent = passed ? 'Pass' : 'Not yet passing';
-  verdict.className = 'result-verdict ' + (passed ? 'pass' : 'fail');
-  document.getElementById('resultSub').textContent = passed
-    ? 'Passing threshold of 60% (18/30) has been met. Step through the questions to review any missed items.'
-    : 'Passing threshold is 60% (18/30). Step through the questions below to review before retaking.';
-
-  const circumference = 2 * Math.PI * 50;
-  const gaugeFill = document.getElementById('gaugeFill');
-  gaugeFill.setAttribute('stroke-dasharray', circumference.toFixed(3));
-  const offset = circumference * (1 - score / N);
-  requestAnimationFrame(() => { gaugeFill.style.strokeDashoffset = offset.toFixed(3); });
-  gaugeFill.classList.toggle('pass', passed);
-
-  introCard.style.display = 'none';
-  resultsPanel.classList.add('show');
-  resultsPanel.scrollIntoView({behavior:'smooth', block:'start'});
-
-  const reviewBtn = document.getElementById('reviewBtn');
-  const firstMiss = answers.findIndex((a, qi) => a !== QUESTIONS[qi].answer);
-  if(firstMiss !== -1){
-    reviewBtn.style.display = 'inline-block';
-    reviewBtn.onclick = () => { current = firstMiss; renderQuestion(); questionHost.scrollIntoView({behavior:'smooth', block:'center'}); };
-  } else {
-    reviewBtn.style.display = 'none';
+document.addEventListener('keydown', function(e){
+  if(done || $('quiz').classList.contains('hidden')) return;
+  if(e.target && (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA')) return;
+  var k = -1;
+  if(e.key>='1' && e.key<='5'){ k = parseInt(e.key,10)-1; }
+  else{
+    var u = String(e.key||'').toUpperCase();
+    var at = LABELS.indexOf(u);
+    if(at>-1) k = at;
   }
-
-  current = 0;
-  renderQuestion();
-}
-
-document.getElementById('retakeBtn').addEventListener('click', () => {
-  graded = false;
-  answers.fill(-1);
-  current = 0;
-  introCard.style.display = 'block';
-  resultsPanel.classList.remove('show');
-  renderQuestion();
-  window.scrollTo({top:0, behavior:'smooth'});
+  if(k>-1){ choose(k); return; }
+  if(e.key==='ArrowRight' && idx<TOTAL-1){ idx++; render(); }
+  if(e.key==='ArrowLeft' && idx>0){ idx--; render(); }
 });
 
-buildDotRail();
-renderQuestion();
 </script>
-
 </body>
 </html>

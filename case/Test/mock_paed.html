@@ -5,1067 +5,1257 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paediatric Physiotherapy Competency Check</title>
 <style>
-  :root{
-    --paper:#FFF8F0;
-    --paper-dim:#FBE8D8;
-    --card:#FFFFFF;
-    --ink:#3A2417;
-    --ink-soft:#7D5A4A;
-    --ink-faint:#AE8F86;
-    --line:#D4A5A5;
-    --line-soft:#E9D0D0;
-    --accent:#FF6F61;
-    --accent-dark:#E14E3F;
-    --accent-tint:#FFE4DF;
-    --gold:#FF9F00;
-    --gold-tint:#FFEACC;
-    --danger:#9C4F4E;
-    --danger-tint:#F5E1DE;
-    --success:#4C8F5D;
-    --success-tint:#E3F0E3;
-    --radius:2px;
-    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
-    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--sans);
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-    min-height:100vh;
-  }
-  body::before{
-    content:"";
-    position:fixed; inset:0;
-    background-image:
-      linear-gradient(var(--line-soft) 1px, transparent 1px);
-    background-size: 100% 42px;
-    opacity:.35;
-    pointer-events:none;
-    z-index:0;
-  }
-  .wrap{position:relative; z-index:1; max-width:840px; margin:0 auto; padding:0 20px 80px;}
+:root{
+  --paper:#ffffff;
+  --shell:#eef4f6;
+  --shell-2:#e2edf1;
+  --line:#dbe6ea;
+  --line-soft:#e9f0f3;
+  --ink:#213038;
+  --ink-soft:#55686f;
+  --ink-faint:#8298a1;
+  --accent:#0d6a83;
+  --accent-dark:#08505f;
+  --accent-soft:#e2f1f5;
+  --accent-line:#a5d3e0;
+  --honey:#b8781a;
+  --honey-soft:#fdf2df;
+  --honey-line:#eccf9c;
+  --correct:#1c7a4d;
+  --correct-soft:#e6f4ec;
+  --correct-line:#a4d5bb;
+  --wrong:#b8452f;
+  --wrong-soft:#fceceb;
+  --wrong-line:#eeb8ae;
+  --round:-apple-system,ui-rounded,"SF Pro Rounded","Nunito","Avenir Next","Segoe UI Variable Display",BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang HK","Microsoft JhengHei",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--shell);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 90px}
 
-  a{color:inherit;}
-  button{font-family:inherit;}
+/* ---------- masthead with growth-ruler motif ---------- */
+.masthead{
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:40;
+}
+.masthead-in{
+  max-width:900px;margin:0 auto;padding:11px 16px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.ruler{
+  width:26px;height:26px;flex:0 0 26px;border-radius:8px;
+  background:var(--accent-soft);
+  background-image:
+    linear-gradient(var(--accent-line) 1px, transparent 1px);
+  background-size:100% 5px;
+  border:1px solid var(--accent-line);
+}
+.mark{
+  font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--accent);font-weight:700;
+}
+.mark span{color:var(--ink);letter-spacing:.05em;font-weight:600}
+.mast-meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.07em}
 
-  /* ---------- Top bar ---------- */
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:18px 20px;
-    max-width:840px; margin:0 auto;
-    position:relative; z-index:2;
-  }
-  .brand{
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-  }
-  .brand b{color:var(--ink);}
-  .pill{
-    font-family:var(--mono);
-    font-size:11px;
-    letter-spacing:.06em;
-    padding:5px 10px;
-    border:1px solid var(--line);
-    border-radius:20px;
-    color:var(--ink-soft);
-    background:var(--card);
-  }
+/* ---------- cards ---------- */
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;margin-top:20px;
+}
+@media(max-width:600px){.card{padding:18px}}
 
-  /* ---------- Cover ---------- */
-  .cover-card{
-    background:var(--card);
-    border:1px solid var(--line);
-    padding:44px 40px 40px;
-    margin-top:6px;
-  }
-  .exam-code{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--ink-faint);
-    letter-spacing:.1em;
-    margin-bottom:18px;
-  }
-  h1{
-    font-family:var(--serif);
-    font-weight:400;
-    font-size:clamp(28px,4.4vw,40px);
-    line-height:1.15;
-    margin:0 0 10px;
-    letter-spacing:-.01em;
-  }
-  .subtitle{
-    color:var(--ink-soft);
-    font-size:15px;
-    max-width:56ch;
-    margin:0 0 28px;
-  }
-  .meta-row{
-    display:flex; flex-wrap:wrap; gap:10px;
-    margin-bottom:32px;
-  }
-  .meta-chip{
-    border:1px solid var(--line);
-    padding:10px 14px;
-    flex:1 1 140px;
-    min-width:130px;
-  }
-  .meta-chip .num{
-    font-family:var(--mono);
-    font-size:20px;
-    color:var(--accent-dark);
-    display:block;
-  }
-  .meta-chip .lbl{
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color:var(--ink-faint);
-  }
+.eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:14px;
+}
+h1{
+  font-family:var(--round);font-weight:800;font-size:clamp(27px,5.2vw,40px);
+  line-height:1.14;margin:0 0 12px;color:#16262d;letter-spacing:-.02em;
+}
+h2{
+  font-family:var(--round);font-size:20px;font-weight:700;margin:0 0 12px;color:#16262d;letter-spacing:-.01em;
+}
+.lede{color:var(--ink-soft);font-size:15.5px;margin:0}
 
-  .instructions{
-    border:1px solid var(--line);
-    border-left:3px solid var(--ink);
-    padding:22px 24px;
-    margin-bottom:28px;
-    background:var(--paper-dim);
-  }
-  .instructions h2{
-    font-family:var(--serif);
-    font-weight:400;
-    font-size:17px;
-    margin:0 0 12px;
-  }
-  .instructions ol{
-    margin:0 0 18px; padding-left:20px;
-    font-size:14px; color:var(--ink-soft);
-  }
-  .instructions li{margin-bottom:7px;}
-  .instructions li b{color:var(--ink);}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:22px}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--paper);padding:14px}
+.stat b{display:block;font-family:var(--round);font-size:23px;font-weight:800;color:var(--accent);line-height:1.2}
+.stat span{font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em}
 
-  .marksheet-demo{
-    display:flex; gap:28px; flex-wrap:wrap;
-    padding-top:14px; border-top:1px dashed var(--line);
-  }
-  .demo-block{font-size:12px; color:var(--ink-soft);}
-  .demo-block .demo-title{
-    font-family:var(--mono); font-size:11px; text-transform:uppercase;
-    letter-spacing:.06em; color:var(--ink-faint); margin-bottom:8px;
-  }
-  .demo-bubbles{display:flex; gap:6px;}
-  .demo-bubble{
-    width:22px; height:22px; border:1.5px solid var(--ink-soft);
-    border-radius:50%; display:flex; align-items:center; justify-content:center;
-    font-family:var(--mono); font-size:11px; color:var(--ink-soft);
-  }
-  .demo-bubble.filled{ background:var(--ink); border-color:var(--ink); color:#fff; }
-  .demo-bubble.sq{ border-radius:3px; }
+ol.brief{margin:0;padding-left:20px;font-size:14.5px;color:var(--ink-soft)}
+ol.brief li{margin-bottom:9px}
+ol.brief b{color:var(--ink)}
 
-  .name-field{margin-bottom:26px;}
-  .name-field label{
-    display:block; font-size:11px; text-transform:uppercase; letter-spacing:.08em;
-    color:var(--ink-faint); margin-bottom:6px;
-  }
-  .name-field input{
-    width:100%; max-width:340px;
-    font-family:var(--sans); font-size:15px;
-    padding:10px 12px;
-    border:1px solid var(--line);
-    background:#fff; color:var(--ink);
-    border-radius:0;
-  }
-  .name-field input:focus{outline:2px solid var(--accent); outline-offset:1px;}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+@media(max-width:560px){.demo{grid-template-columns:1fr}}
+.demo-box{border:1px dashed var(--line);border-radius:12px;padding:12px;background:var(--shell)}
+.demo-box .eyebrow{margin-bottom:9px}
+.pip{display:flex;gap:7px}
+.pip i{
+  width:30px;height:30px;border:1px solid var(--line);border-radius:9px;background:var(--paper);
+  display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-style:normal;color:var(--ink-faint)
+}
+.pip i.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:700}
+.pip i.on2{border-radius:50%;border-color:var(--honey);background:var(--honey-soft);color:var(--honey)}
 
-  .btn{
-    appearance:none; border:none; cursor:pointer;
-    font-family:var(--sans); font-weight:600; font-size:14px;
-    letter-spacing:.02em;
-    padding:14px 26px;
-    border-radius:2px;
-    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
-  }
-  .btn:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
-  .btn-primary{
-    background:var(--ink); color:#fff;
-  }
-  .btn-primary:hover{background:var(--accent-dark);}
-  .btn-primary:active{transform:translateY(1px);}
-  .btn-ghost{
-    background:transparent; color:var(--ink); border:1px solid var(--line);
-  }
-  .btn-ghost:hover{border-color:var(--ink);}
-  .btn-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
-  .btn[disabled]{opacity:.4; cursor:not-allowed;}
+label.field{display:block;font-size:13px;color:var(--ink-soft);margin:22px 0 7px}
+input[type=text]{
+  width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:var(--shell);
+  font-family:var(--body);font-size:15px;color:var(--ink)
+}
+input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px;background:var(--paper)}
 
-  /* ---------- Quiz ---------- */
-  #quiz-screen{display:none;}
-  .quiz-head{
-    position:sticky; top:0; z-index:5;
-    background:var(--paper);
-    padding-top:10px; padding-bottom:12px;
-    margin-bottom:10px;
-  }
-  .quiz-head::after{
-    content:""; display:block; height:1px; background:var(--line);
-    margin-top:12px;
-  }
-  .progress-row{
-    display:flex; justify-content:space-between; align-items:baseline;
-    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
-    margin-bottom:10px;
-  }
-  .progress-row .timer{color:var(--ink-faint);}
-  .progress-track{
-    height:4px; background:var(--line-soft); width:100%; overflow:hidden;
-  }
-  .progress-fill{
-    height:100%; background:var(--accent); width:0%;
-    transition:width .25s ease;
-  }
-  .chip-rail{
-    display:flex; gap:6px; overflow-x:auto;
-    padding:12px 2px 4px;
-    scrollbar-width:thin;
-  }
-  .chip{
-    flex:0 0 auto;
-    width:30px; height:30px;
-    border:1px solid var(--line);
-    background:#fff;
-    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer;
-  }
-  .chip:hover{border-color:var(--ink);}
-  .chip.answered{background:var(--accent-tint); border-color:var(--accent); color:var(--accent-dark);}
-  .chip.current{outline:2px solid var(--ink); outline-offset:1px;}
-  .chip:focus-visible{outline:2px solid var(--gold);}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--accent);color:#fff;border:1px solid var(--accent);
+  padding:12px 22px;border-radius:11px;font-family:var(--body);font-size:15px;font-weight:600;
+  cursor:pointer;transition:filter .15s ease;
+}
+.btn:hover{filter:brightness(1.12)}
+.btn.ghost{background:var(--paper);color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink-faint);filter:none}
+.btn:disabled{opacity:.38;cursor:not-allowed}
+.btn:focus-visible,.opt:focus-visible,.railbtn:focus-visible,.cell:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.wide{width:100%;margin-top:20px;padding:14px}
 
-  .q-card{
-    background:var(--card); border:1px solid var(--line);
-    padding:32px 32px 28px;
-  }
-  .q-eyebrow{
-    display:flex; align-items:center; gap:10px; margin-bottom:16px;
-  }
-  .q-index{
-    font-family:var(--mono); font-size:13px; color:var(--ink-faint);
-  }
-  .select-badge{
-    font-family:var(--mono); font-size:11px; letter-spacing:.05em;
-    padding:3px 9px; border:1px solid var(--gold); color:var(--gold);
-    background:var(--gold-tint);
-  }
-  .q-stem{
-    font-family:var(--serif);
-    font-size:19px; line-height:1.5;
-    white-space:pre-line;
-    margin:0 0 26px;
-  }
-  .options{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
-  .option{
-    display:flex; align-items:flex-start; gap:14px;
-    padding:13px 16px;
-    border:1px solid var(--line);
-    cursor:pointer;
-    transition:border-color .12s ease, background .12s ease;
-  }
-  .option:hover{border-color:var(--ink-soft);}
-  .option.selected{border-color:var(--accent); background:var(--accent-tint);}
-  .option:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
-  .bubble{
-    flex:0 0 auto;
-    width:26px; height:26px;
-    border:1.5px solid var(--ink-soft);
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
-    background:#fff;
-  }
-  .option.selected .bubble{background:var(--accent); border-color:var(--accent); color:#fff;}
-  .options.multi .bubble{border-radius:4px;}
-  .option-text{font-size:15px; padding-top:3px; color:var(--ink);}
+/* ---------- quiz ---------- */
+.qbar{
+  display:flex;align-items:center;gap:12px;margin-top:20px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.06em
+}
+.qbar .clock{margin-left:auto;color:var(--ink-soft)}
+.track{height:6px;background:var(--shell-2);border-radius:4px;margin-top:8px;overflow:hidden}
+.track i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#2a98b0);width:0;transition:width .25s ease;border-radius:4px}
 
-  .nav-row{
-    display:flex; justify-content:space-between; align-items:center;
-    margin-top:26px; gap:12px; flex-wrap:wrap;
-  }
-  .nav-row .right-group{display:flex; gap:10px;}
+.rail{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.railbtn{
+  width:33px;height:31px;border:1px solid var(--line);background:var(--paper);border-radius:9px;
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);cursor:pointer;padding:0
+}
+.railbtn.done{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent);font-weight:700}
+.railbtn.part{border-style:dashed;border-color:var(--honey);color:var(--honey);background:var(--honey-soft);font-weight:700}
+.railbtn.here{border-color:var(--accent);background:var(--accent);color:#fff;font-weight:700}
+@media(max-width:560px){.railbtn{width:29px;height:28px;font-size:10.5px}}
 
-  /* ---------- Results ---------- */
-  #results-screen{display:none;}
-  .result-hero{
-    background:var(--card); border:1px solid var(--line);
-    padding:40px 36px; text-align:center; position:relative; overflow:hidden;
-    margin-top:6px;
-  }
-  .stamp{
-    display:inline-block;
-    font-family:var(--serif);
-    font-weight:700;
-    font-size:15px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    padding:10px 26px;
-    border:3px solid var(--success);
-    color:var(--success);
-    transform:rotate(-4deg);
-    margin-bottom:18px;
-  }
-  .stamp.fail{border-color:var(--danger); color:var(--danger);}
-  .score-big{
-    font-family:var(--mono);
-    font-size:56px;
-    color:var(--ink);
-    margin:6px 0 2px;
-  }
-  .score-sub{color:var(--ink-soft); font-size:14px; margin-bottom:22px;}
-  .stat-row{
-    display:flex; justify-content:center; gap:26px; flex-wrap:wrap;
-    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
-    padding-top:18px; border-top:1px dashed var(--line);
-  }
-  .stat-row .stat b{display:block; color:var(--ink); font-size:16px;}
+.qtag{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:20px;padding:3px 10px;color:var(--ink-faint)
+}
+.chip.hot{border-color:var(--accent-line);color:var(--accent);background:var(--accent-soft);font-weight:700}
+.chip.hot.pend{border-color:var(--honey);color:var(--honey);background:var(--honey-soft);border-style:dashed}
+.chip.topic{border-style:none;padding-left:0;text-transform:none;letter-spacing:.02em;font-family:var(--body);font-size:12px}
+.stem{font-size:17px;line-height:1.62;margin:0 0 6px;color:#28383f}
+.stem .vig{display:block;background:var(--shell);border-left:4px solid var(--accent-line);
+  padding:13px 15px;border-radius:0 12px 12px 0;margin-bottom:14px;font-size:15.5px;color:var(--ink-soft)}
 
-  .sheet-title{
-    font-family:var(--mono); font-size:11px; text-transform:uppercase;
-    letter-spacing:.08em; color:var(--ink-faint);
-    margin:34px 0 10px;
-  }
-  .answer-grid{
-    display:grid; grid-template-columns:repeat(15,1fr); gap:5px;
-  }
-  .grid-cell{
-    aspect-ratio:1; border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--mono); font-size:10px; color:#fff;
-    cursor:pointer;
-  }
-  .grid-cell.correct{background:var(--success);}
-  .grid-cell.wrong{background:var(--danger);}
-  .grid-cell:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+/* inline figures */
+figure.fig{margin:16px 0 4px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+figure.fig svg{display:block;width:100%;height:auto}
+figure.fig figcaption{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-faint);padding:8px 12px;border-top:1px solid var(--line-soft);background:var(--shell)}
 
-  .review-list{margin-top:36px;}
-  .review-item{
-    border:1px solid var(--line); border-top:none;
-    padding:0;
-  }
-  .review-item:first-child{border-top:1px solid var(--line);}
-  .review-summary{
-    display:flex; align-items:center; gap:12px;
-    padding:14px 18px; cursor:pointer;
-    background:#fff;
-  }
-  .review-summary:hover{background:var(--paper-dim);}
-  .r-mark{
-    flex:0 0 auto; width:22px; height:22px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-family:var(--mono); font-size:12px; color:#fff;
-  }
-  .r-mark.correct{background:var(--success);}
-  .r-mark.wrong{background:var(--danger);}
-  .r-stem-short{
-    font-size:14px; color:var(--ink);
-    flex:1;
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-  }
-  .r-num{font-family:var(--mono); font-size:12px; color:var(--ink-faint);}
-  .r-caret{font-family:var(--mono); color:var(--ink-faint); transition:transform .15s ease;}
-  .review-item.open .r-caret{transform:rotate(90deg);}
-  .review-detail{
-    display:none;
-    padding:6px 18px 22px 52px;
-    border-top:1px solid var(--line-soft);
-    background:var(--paper-dim);
-  }
-  .review-item.open .review-detail{display:block;}
-  .review-detail .q-stem-full{
-    font-family:var(--serif); font-size:15px; margin:14px 0 12px; white-space:pre-line;
-  }
-  .review-opts{list-style:none; margin:0 0 14px; padding:0; font-size:13.5px;}
-  .review-opts li{
-    padding:7px 10px; margin-bottom:5px; border:1px solid var(--line-soft);
-    display:flex; gap:8px; align-items:flex-start;
-    background:#fff;
-  }
-  .review-opts li.is-correct{border-color:var(--success); background:var(--success-tint);}
-  .review-opts li.is-user-wrong{border-color:var(--danger); background:var(--danger-tint);}
-  .tag{
-    font-family:var(--mono); font-size:10px; padding:1px 6px; border-radius:2px;
-    flex:0 0 auto;
-  }
-  .tag.correct-tag{background:var(--success); color:#fff;}
-  .tag.wrong-tag{background:var(--danger); color:#fff;}
-  .explain{
-    font-size:13.5px; color:var(--ink-soft);
-    border-left:2px solid var(--ink-soft); padding-left:12px;
-  }
-  .explain b{color:var(--ink);}
+.opts{margin-top:16px;display:grid;gap:8px}
+.opt{
+  display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+  border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:12px 14px;
+  font-family:var(--body);font-size:15px;color:var(--ink);cursor:pointer;line-height:1.5;
+  transition:border-color .12s ease,background .12s ease;
+}
+.opt:hover{border-color:var(--ink-faint)}
+.opt > b{
+  flex:0 0 26px;height:26px;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink-faint);background:var(--shell)
+}
+.opt.two > b{border-radius:50%}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel > b{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt.two.sel{border-color:var(--honey);background:var(--honey-soft)}
+.opt.two.sel > b{background:var(--honey);border-color:var(--honey)}
 
-  .footer-actions{
-    display:flex; gap:12px; justify-content:center; margin-top:36px; flex-wrap:wrap;
-  }
-  .warn-banner{
-    background:var(--gold-tint); border:1px solid var(--gold); color:var(--ink);
-    padding:10px 14px; font-size:13px; margin-bottom:14px; display:none;
-  }
+.nav{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.nav .btn{flex:1;min-width:120px}
+.nav .btn.submit{flex:0 0 auto}
 
-  footer.pagefoot{
-    text-align:center; font-family:var(--mono); font-size:11px; color:var(--ink-faint);
-    padding:34px 20px 10px;
-  }
+/* ---------- results ---------- */
+.verdict{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.badge{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  padding:6px 14px;border-radius:20px
+}
+.badge.pass{background:var(--correct-soft);color:var(--correct);border:1px solid var(--correct-line)}
+.badge.fail{background:var(--wrong-soft);color:var(--wrong);border:1px solid var(--wrong-line)}
+.bigscore{font-family:var(--round);font-size:clamp(38px,9vw,58px);font-weight:800;line-height:1;color:#16262d;letter-spacing:-.02em}
+.bigscore small{font-size:.42em;color:var(--ink-faint);font-weight:600}
+.pcline{font-size:13.5px;color:var(--ink-faint);margin-top:6px}
 
-  @media (max-width:600px){
-    .cover-card{padding:30px 20px;}
-    .q-card{padding:24px 18px;}
-    .instructions{padding:18px;}
-    .answer-grid{grid-template-columns:repeat(10,1fr);}
-    .result-hero{padding:30px 18px;}
-    .score-big{font-size:44px;}
-    .nav-row{flex-direction:column; align-items:stretch;}
-    .nav-row .btn-row{width:100%; justify-content:space-between;}
-  }
+.sheet{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:14px}
+@media(max-width:560px){.sheet{grid-template-columns:repeat(6,1fr)}}
+.cell{
+  aspect-ratio:1/1;border-radius:9px;border:1px solid var(--line);background:var(--paper);
+  font-family:var(--mono);font-size:11.5px;cursor:pointer;padding:0;color:var(--ink-faint)
+}
+.cell.ok{background:var(--correct-soft);border-color:var(--correct-line);color:var(--correct);font-weight:700}
+.cell.no{background:var(--wrong-soft);border-color:var(--wrong-line);color:var(--wrong);font-weight:700}
 
-  @media (prefers-reduced-motion:reduce){
-    *{transition:none !important; animation:none !important;}
-  }
+.topics{margin-top:16px;display:grid;gap:8px}
+.trow{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.trow .tname{flex:1 1 auto;color:var(--ink-soft)}
+.trow .tbar{flex:0 0 110px;height:7px;background:var(--shell-2);border-radius:4px;overflow:hidden}
+.trow .tbar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.trow .tnum{flex:0 0 46px;text-align:right;font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
+
+.review{margin-top:18px;border-top:1px solid var(--line)}
+.rev{padding:20px 0;border-bottom:1px solid var(--line)}
+.rev-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.verdict-tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  padding:3px 9px;border-radius:6px
+}
+.verdict-tag.ok{background:var(--correct-soft);color:var(--correct);border:1px solid var(--correct-line)}
+.verdict-tag.no{background:var(--wrong-soft);color:var(--wrong);border:1px solid var(--wrong-line)}
+.rev .rop{
+  display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);
+  border-radius:10px;margin-top:6px;font-size:14.5px;background:var(--paper)
+}
+.rev .rop > b{flex:0 0 22px;font-family:var(--mono);font-size:11.5px;color:var(--ink-faint)}
+.rev .rop.key{border-color:var(--correct-line);background:var(--correct-soft)}
+.rev .rop.key > b{color:var(--correct)}
+.rev .rop.picked-wrong{border-color:var(--wrong-line);background:var(--wrong-soft)}
+.rev .rop.picked-wrong > b{color:var(--wrong)}
+.rop-tag{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  white-space:nowrap;padding-top:3px}
+.rop.key .rop-tag{color:var(--correct)}
+.rop.picked-wrong .rop-tag{color:var(--wrong)}
+.why{margin-top:12px;background:var(--shell);border-radius:12px;padding:14px 16px;font-size:14.5px;color:var(--ink-soft)}
+.why b.lbl{color:var(--accent);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  display:block;margin-bottom:5px}
+.why em{color:var(--ink);font-style:italic}
+
+.warn{margin:18px 0 0;padding:12px 14px;border:1px solid var(--honey-line);background:var(--honey-soft);
+  border-radius:12px;font-size:14px;color:var(--ink)}
+.warn b{color:var(--honey)}
+.jumps{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.jump{font-family:var(--mono);font-size:11.5px;border:1px solid var(--honey);background:var(--paper);
+  color:var(--honey);border-radius:8px;padding:4px 9px;cursor:pointer;font-weight:700}
+.jump:hover{background:var(--honey);color:#fff}
+.foot{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:26px}
+.hidden{display:none !important}
+
+@media print{
+  body{background:#fff}
+  .masthead,.nav,.rail,.btn,.sheet,.qbar,.track{display:none !important}
+  .card{border:none;padding:0;margin-top:14px;break-inside:avoid}
+  .rev{break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="brand">PAED&#8209;PT&#8209;COMP&#8209;CHECK · <b>Junior Staff Assessment</b></div>
-  <div class="pill" id="modePill">30Q · Pass 60%</div>
+<div class="masthead">
+  <div class="masthead-in">
+    <div class="ruler" aria-hidden="true"></div>
+    <div class="mark">PT&#8209;PAED&#8209;CHECK · <span>Staff Competency Set</span></div>
+    <div class="mast-meta">30Q · PASS 60%</div>
+  </div>
 </div>
 
 <div class="wrap">
 
-  <!-- ===================== COVER ===================== -->
-  <section id="cover-screen">
-    <div class="cover-card">
-      <div class="exam-code">INTERNAL TRAINING SET · PAEDIATRIC PHYSIOTHERAPY · JUNIOR STAFF SELF-ASSESSMENT</div>
-      <h1>Paediatric Physiotherapy Competency Check</h1>
-      <p class="subtitle">A 30-item self-assessment for junior physiotherapy staff, covering paediatric
-      knowledge and case-based clinical reasoning across neurodevelopmental, musculoskeletal, respiratory,
-      and professional practice topics encountered in day-to-day paediatric caseloads. Fifteen items test
-      core knowledge; fifteen present clinical scenarios.</p>
+<!-- ============ INTRO ============ -->
+<section id="intro">
+  <div class="card">
+    <div class="eyebrow">Internal training paper · paediatric physiotherapy · self-assessment</div>
+    <h1>Paediatric Physiotherapy Competency Check</h1>
+    <p class="lede">A 30-item assessment for physiotherapy staff working with infants, children and adolescents:
+      neurodisability and cerebral palsy, developmental surveillance, paediatric orthopaedics and the limping child,
+      neuromuscular disease, paediatric respiratory care, and the musculoskeletal presentations of growth.
+      Twelve items test knowledge directly; eighteen are clinical vignettes. This is a hard paper by design — on most items more
+      than one option is defensible, and you are being asked for the strongest one.</p>
 
-      <div class="meta-row">
-        <div class="meta-chip"><span class="num">30</span><span class="lbl">Questions</span></div>
-        <div class="meta-chip"><span class="num">~45</span><span class="lbl">Minutes (suggested)</span></div>
-        <div class="meta-chip"><span class="num">60%</span><span class="lbl">Pass mark (18/30)</span></div>
-        <div class="meta-chip"><span class="num">1&ndash;5</span><span class="lbl">Options per item</span></div>
-      </div>
-
-      <div class="instructions">
-        <h2>Before you begin</h2>
-        <ol>
-          <li>Each question has <b>five options (1&ndash;5)</b>. Most questions require you to select
-            <b>one</b> answer; questions marked <b>&ldquo;Select 2&rdquo;</b> require exactly two.</li>
-          <li>Selecting the wrong number of answers on a &ldquo;Select 2&rdquo; item will be marked
-            as incorrect for that item.</li>
-          <li>You may move freely between questions using the number rail or the Previous/Next
-            buttons before submitting.</li>
-          <li>Once you submit, you'll see your score, a marked answer sheet, and a full explanation
-            for every question.</li>
-        </ol>
-        <div class="marksheet-demo">
-          <div class="demo-block">
-            <div class="demo-title">Example &middot; Select 1</div>
-            <div class="demo-bubbles">
-              <div class="demo-bubble filled">1</div>
-              <div class="demo-bubble">2</div>
-              <div class="demo-bubble">3</div>
-            </div>
-          </div>
-          <div class="demo-block">
-            <div class="demo-title">Example &middot; Select 2</div>
-            <div class="demo-bubbles">
-              <div class="demo-bubble sq filled">1</div>
-              <div class="demo-bubble sq">2</div>
-              <div class="demo-bubble sq filled">3</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="name-field">
-        <label for="staffName">Staff name (optional, shown on your results)</label>
-        <input type="text" id="staffName" placeholder="e.g. Chan Tai Man">
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-primary" id="startBtn">Begin assessment &rarr;</button>
-      </div>
+    <div class="stats">
+      <div class="stat"><b>30</b><span>Questions (12 knowledge / 18 case)</span></div>
+      <div class="stat"><b>~50</b><span>Minutes (suggested)</span></div>
+      <div class="stat"><b>60%</b><span>Pass mark (18/30)</span></div>
+      <div class="stat"><b>5</b><span>Options per item</span></div>
     </div>
-  </section>
+  </div>
 
-  <!-- ===================== QUIZ ===================== -->
-  <section id="quiz-screen">
-    <div class="quiz-head">
-      <div class="progress-row">
-        <span id="progressLabel">Question 1 of 30</span>
-        <span class="timer" id="timerLabel">00:00</span>
+  <div class="card">
+    <h2>Before you begin</h2>
+    <ol class="brief">
+      <li>Each question has <b>five options (A&ndash;E)</b>. Most require <b>one</b> answer; items marked <b>&ldquo;Select 2&rdquo;</b> require exactly two.</li>
+      <li>Selecting the wrong number of answers on a &ldquo;Select 2&rdquo; item is marked as <b>incorrect</b> for that item.</li>
+      <li>Move freely between questions using the number rail or the Previous / Next buttons before you submit.</li>
+      <li>Read each stem carefully. Where it asks for the <b>best</b>, <b>first</b> or <b>most likely</b> option,
+        several answers will be partly right and some are true statements that do not answer the question asked.</li>
+      <li>Ages matter. Several items turn on whether a finding is normal <b>for that age</b> — check the age in the stem before you answer.</li>
+      <li>After submitting you get your score, a marked answer sheet, a topic breakdown, and an explanation for every
+        question &mdash; including why each near-miss option fails.</li>
+    </ol>
+
+    <div class="demo">
+      <div class="demo-box">
+        <div class="eyebrow">Example · Select 1</div>
+        <div class="pip"><i>A</i><i class="on">B</i><i>C</i></div>
       </div>
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="chip-rail" id="chipRail"></div>
-    </div>
-
-    <div class="warn-banner" id="warnBanner"></div>
-
-    <div class="q-card">
-      <div class="q-eyebrow">
-        <span class="q-index" id="qIndex">Q01</span>
-        <span class="select-badge" id="selectBadge">Select 1</span>
-      </div>
-      <p class="q-stem" id="qStem"></p>
-      <ul class="options" id="optionsList"></ul>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-ghost" id="prevBtn">&larr; Previous</button>
-      <div class="right-group">
-        <button class="btn btn-ghost" id="nextBtn">Next &rarr;</button>
-        <button class="btn btn-primary" id="submitBtn" style="display:none;">Submit test</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== RESULTS ===================== -->
-  <section id="results-screen">
-    <div class="result-hero">
-      <div class="stamp" id="stampEl">Pass</div>
-      <div class="score-big" id="scoreBig">0 / 30</div>
-      <div class="score-sub" id="scoreSub">0% &middot; pass mark is 60%</div>
-      <div class="stat-row">
-        <div class="stat"><b id="statCorrect">0</b>Correct</div>
-        <div class="stat"><b id="statIncorrect">0</b>Incorrect</div>
-        <div class="stat"><b id="statTime">00:00</b>Time taken</div>
-        <div class="stat"><b id="statName">&mdash;</b>Staff</div>
+      <div class="demo-box">
+        <div class="eyebrow">Example · Select 2</div>
+        <div class="pip"><i class="on on2">A</i><i class="on2">B</i><i class="on on2">C</i></div>
       </div>
     </div>
 
-    <div class="sheet-title">Marked answer sheet &middot; click a cell to jump to that question below</div>
-    <div class="answer-grid" id="answerGrid"></div>
+    <label class="field" for="who">Staff name (optional, shown on your results)</label>
+    <input type="text" id="who" placeholder="e.g. PT Chan" autocomplete="off">
+    <button class="btn wide" id="start">Begin assessment &rarr;</button>
+  </div>
+</section>
 
-    <div class="sheet-title">Question-by-question review</div>
-    <div class="review-list" id="reviewList"></div>
+<!-- ============ QUIZ ============ -->
+<section id="quiz" class="hidden">
+  <div class="qbar">
+    <span id="counter">Question 1 of 30</span>
+    <span class="clock" id="clock">00:00</span>
+  </div>
+  <div class="track"><i id="bar"></i></div>
+  <div class="rail" id="rail"></div>
 
-    <div class="footer-actions">
-      <button class="btn btn-ghost" id="retakeBtn">Retake this set</button>
-      <button class="btn btn-primary" id="printBtn">Print / save results</button>
+  <div class="card">
+    <div class="qtag">
+      <span class="chip" id="qno">Q01</span>
+      <span class="chip hot" id="qmode">Select 1</span>
+      <span class="chip topic" id="qtopic"></span>
     </div>
-  </section>
+    <p class="stem" id="stem"></p>
+    <div class="opts" id="opts"></div>
+    <p class="warn hidden" id="warn"></p>
+    <div class="nav">
+      <button class="btn ghost" id="prev">&larr; Previous</button>
+      <button class="btn ghost" id="next">Next &rarr;</button>
+      <button class="btn submit" id="submit">Submit test</button>
+    </div>
+  </div>
+</section>
 
-  <footer class="pagefoot">Question set for internal paediatric physiotherapy training use only &middot; not an official examination</footer>
+<!-- ============ RESULTS ============ -->
+<section id="results" class="hidden">
+  <div class="card">
+    <div class="eyebrow">Result</div>
+    <div class="verdict">
+      <span class="badge" id="badge">&mdash;</span>
+      <div>
+        <div class="bigscore"><span id="raw">0</span><small> / 30</small></div>
+        <div class="pcline"><span id="pc">0%</span> · pass mark is 60% (18/30)</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="nOk" style="color:var(--correct)">0</b><span>Correct</span></div>
+      <div class="stat"><b id="nNo" style="color:var(--wrong)">0</b><span>Incorrect</span></div>
+      <div class="stat"><b id="tTaken" style="color:var(--ink)">00:00</b><span>Time taken</span></div>
+      <div class="stat"><b id="staffOut" style="color:var(--ink)">&mdash;</b><span>Staff</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Marked answer sheet</h2>
+    <p class="lede" style="font-size:14px">Green is correct. Tap any cell to jump to that question below.</p>
+    <div class="sheet" id="sheet"></div>
+  </div>
+
+  <div class="card">
+    <h2>Performance by area</h2>
+    <p class="lede" style="font-size:14px">Where the marks went, grouped by clinical area.</p>
+    <div class="topics" id="topics"></div>
+  </div>
+
+  <div class="card">
+    <h2>Question-by-question review</h2>
+    <div class="review" id="review"></div>
+    <div class="nav">
+      <button class="btn ghost" id="retake">Retake this set</button>
+      <button class="btn ghost" id="printout">Print / save results</button>
+    </div>
+  </div>
+</section>
+
+<p class="foot">Question set adapted for internal training use only · not an official examination</p>
 </div>
 
 <script>
-(function(){
-  "use strict";
+const LABELS = ["A", "B", "C", "D", "E"];
 
-  var QUESTIONS = [
-    {
-      stem:"The Gross Motor Function Classification System (GMFCS) for cerebral palsy is used to describe a child's...",
-      options:["Fine motor hand function only","Cognitive and communication ability","Self-initiated movement ability, with particular emphasis on sitting, walking, and wheeled mobility","Degree of muscle tone/spasticity only","Nutritional status"],
-      correct:[3],
-      explain:"GMFCS is a five-level classification (I-V) describing self-initiated gross motor function, with particular emphasis on sitting, transfers and walking/wheeled mobility. It does not classify fine motor skill (that is the Manual Ability Classification System, MACS), tone alone, cognition, or nutritional status."
-    },
-    {
-      stem:"A 6-week-old infant born breech is referred to physiotherapy after the paediatrician notes asymmetrical thigh skin folds and a positive Ortolani test on the left hip during routine examination.\n\nWhat is the most appropriate next step?",
-      options:["Commence a home stretching programme for hip abductors","Refer promptly for hip ultrasound and orthopaedic assessment","Reassure the family that this is a normal variant and review in 6 months","Fit the infant with ankle-foot orthoses","Begin serial casting of the hip immediately"],
-      correct:[2],
-      explain:"A positive Ortolani test with recognised risk factors (breech birth, asymmetrical skin folds) is highly suggestive of developmental dysplasia of the hip (DDH). The appropriate next step is prompt referral for hip ultrasound imaging and orthopaedic assessment, not stretching, reassurance, orthoses, or casting, none of which is first-line management for suspected DDH."
-    },
-    {
-      stem:"What term is used to describe cerebral palsy involving all four limbs but with the lower limbs usually experiencing more severe effects and the upper limbs being minimally affected?",
-      options:["Hemiplegia","Monoplegia","Diplegia","Triplegia","Quadriplegia (total body involvement)"],
-      correct:[3],
-      explain:"Spastic diplegia involves all four limbs, but the lower limbs are more affected than the upper limbs(only minor or no impact). Quadriplegia (total body involvement) affects all four limbs roughly equally and severely, while hemiplegia affects one side of the body only."
-    },
-    {
-      stem:"A 2-year-old is brought to physiotherapy because her parents are concerned about her feet turning inward when she walks. On examination the forefoot is adducted relative to the hindfoot, but the deformity is passively correctable to a neutral position, and there is no hindfoot involvement.\n\nWhich of the following is the most appropriate initial management?",
-      options:["Immediate referral for surgical correction","Serial casting starting within the first week of life","Fitting of rigid ankle-foot orthoses","Reassurance and monitoring, as most cases resolve spontaneously with growth","Referral for below-knee amputation"],
-      correct:[4],
-      explain:"Flexible metatarsus adductus that is passively correctable is common and usually resolves spontaneously as the child grows; the mainstay of management is reassurance, monitoring, and simple stretching if needed. Serial casting is generally reserved for infants with rigid, non-correctable deformity, and surgery is rarely required."
-    },
-    {
-      stem:"In the Ponseti method for correcting idiopathic congenital talipes equinovarus (clubfoot), which deformity is corrected last, typically requiring a percutaneous Achilles tenotomy?",
-      options:["Cavus","Adductus","Internal tibial torsion","Varus","Equinus"],
-      correct:[5],
-      explain:"Ponseti correction follows the sequence of cavus, adductus, and varus, addressed through serial manipulation and casting, with equinus corrected last, often needing a percutaneous tenotomy because the tight Achilles tendon resists manipulation alone."
-    },
-    {
-      stem:"An 8-year-old boy with spastic diplegic cerebral palsy is classified as GMFCS Level III.\n\nWhich of the following best matches his expected typical functional mobility profile at this level?",
-      options:["Walks independently without limitations in all settings","Has no independent movement and requires full physical assistance for all mobility","Walks using a hand-held mobility device indoors and typically uses wheeled mobility for longer community distances","Self-mobilises only by rolling on the floor","Walks independently but has difficulty only with running and jumping"],
-      correct:[3],
-      explain:"GMFCS Level III describes children who walk using a hand-held mobility device for indoor mobility and typically use wheeled mobility to cover longer distances or in the community. Level I/II walk more independently, while Level IV/V rely more heavily on powered or supported mobility."
-    },
-    {
-      stem:"Which two clinical tests are used in neonatal screening for developmental dysplasia of the hip (DDH)? Select 2.",
-      options:["Thomas test","Barlow test","Trendelenburg test","Ortolani test","Galeazzi sign"],
-      correct:[2,4],
-      explain:"The Barlow test attempts to provoke posterior dislocation of an unstable hip, and the Ortolani test relocates a dislocated hip anteriorly with a palpable clunk; together these are the standard neonatal screening manoeuvres for DDH. The Thomas test assesses hip flexion contracture, Trendelenburg assesses hip abductor function/gait, and the Galeazzi sign is a useful supporting sign for leg-length asymmetry but is not itself one of the two core screening tests."
-    },
-    {
-      stem:"A 3-month-old infant is referred with a consistent preference to turn her head to the right and a palpable, firm, non-tender nodule within the left sternocleidomastoid muscle. Mild flattening of the left occiput is also noted.\n\nWhich physiotherapy approach is most appropriate?",
-      options:["Immobilise the neck in a soft collar to prevent further turning","Botulinum toxin injection as first-line treatment","Passive stretching of the shortened sternocleidomastoid combined with active repositioning strategies and supervised tummy time","Refer for surgical release of the sternocleidomastoid without a trial of conservative therapy","Advise against tummy time until the torticollis resolves"],
-      correct:[3],
-      explain:"First-line management of congenital muscular torticollis is conservative: gentle passive stretching of the shortened sternocleidomastoid, active repositioning and handling techniques to encourage looking and turning to the non-preferred side, and supervised tummy time, which also helps address the associated positional plagiocephaly. Surgery and botulinum toxin are reserved for cases that fail to respond to an adequate trial of conservative therapy."
-    },
-    {
-      stem:"A child who is still not walking independently by which age should be flagged for further developmental assessment?",
-      options:["12 months","15 months","24 months","18 months","30 months"],
-      correct:[4],
-      explain:"While the average age of onset of independent walking is around 12 months, most developmental surveillance guidelines flag a child not walking independently by 18 months for further assessment."
-    },
-    {
-      stem:"A newborn delivered following a difficult shoulder dystocia is noted to hold the affected arm adducted and internally rotated at the shoulder, extended at the elbow, pronated at the forearm, and flexed at the wrist, a classic waiter's tip posture.\n\nWhich brachial plexus injury pattern does this most likely represent?",
-      options:["Klumpke's palsy (C8-T1)","Total plexus palsy (C5-T1)","Isolated radial nerve palsy","Erb's (Erb-Duchenne) palsy (C5-C6)","Isolated long thoracic nerve palsy"],
-      correct:[4],
-      explain:"The classic waiter's tip posture, shoulder adduction and internal rotation, elbow extension, forearm pronation, and wrist flexion, reflects loss of C5-C6 innervated muscles and is characteristic of Erb's (Erb-Duchenne) palsy, the most common form of neonatal brachial plexus injury. Klumpke's palsy (C8-T1) instead affects the hand and wrist flexors/intrinsics, sparing the shoulder."
-    },
-    {
-      stem:"Gowers' sign, classically seen in Duchenne muscular dystrophy, describes a child who...",
-      options:["Walks on tiptoes with a wide base","Has a high-stepping gait due to foot drop","Uses their hands to climb up their own legs when rising from the floor due to proximal muscle weakness","Shows a positive Trendelenburg sign on single-leg stance","Has hyperextended knees when standing"],
-      correct:[3],
-      explain:"Gowers' sign reflects proximal (hip and thigh) muscle weakness: the child pushes up from the floor and then walks their hands up their thighs to achieve standing, a finding characteristic of Duchenne muscular dystrophy and other proximal myopathies."
-    },
-    {
-      stem:"A previously well 5-month-old is admitted with uncomplicated acute bronchiolitis. She is on supplemental low-flow oxygen but shows no signs of impending respiratory failure or significant lobar collapse.\n\nBased on current evidence, what is the most appropriate physiotherapy approach?",
-      options:["Routine chest percussion and vibration for all admitted infants with bronchiolitis","Aggressive postural drainage in head-down tilt several times per day","Immediate referral for non-invasive ventilation initiation","Chest physiotherapy is not routinely recommended in uncomplicated bronchiolitis, as evidence does not show it improves outcomes","Suctioning is contraindicated regardless of secretion load"],
-      correct:[4],
-      explain:"Current evidence indicates that conventional chest physiotherapy techniques (percussion, vibration, postural drainage) do not improve outcomes in uncomplicated bronchiolitis and are not routinely recommended. Gentle upper-airway clearance may still have a role when secretions are clearly obstructive, but routine percussion or aggressive postural drainage is not supported."
-    },
-    {
-      stem:"Spinal muscular atrophy (SMA) Type I (Werdnig-Hoffmann disease) typically presents with onset of symptoms at what age, and what is the expected highest motor milestone achieved without disease-modifying treatment?",
-      options:["Onset after 18 months; walks independently","Onset in adolescence; normal walking maintained into adulthood","Onset before 6 months; never achieves independent sitting","Onset before 6 months; walks with an assistive device","Onset at birth only in premature infants; sits but does not stand"],
-      correct:[3],
-      explain:"SMA Type I has onset before 6 months of age and, without disease-modifying treatment, affected infants never achieve the ability to sit independently. It is the most severe classic form of SMA."
-    },
-    {
-      stem:"A 6-year-old boy with genetically confirmed Duchenne muscular dystrophy is referred for a home exercise programme. His parents ask whether he should do resistance training to build up his strength.\n\nWhich advice is most appropriate?",
-      options:["High-intensity eccentric resistance training should be encouraged to maximise strength gains","All forms of physical activity should be avoided to preserve remaining muscle fibres","Only isometric exercise held to maximal fatigue is appropriate","Submaximal, low-to-moderate intensity aerobic and functional activity is generally encouraged, while high-resistance and eccentric exercise should be avoided due to the risk of exercise-induced muscle damage","Swimming is absolutely contraindicated in DMD"],
-      correct:[4],
-      explain:"In Duchenne muscular dystrophy, dystrophin-deficient muscle is more vulnerable to exercise-induced damage, particularly from eccentric and high-resistance loading. Guidance therefore favours submaximal aerobic and functional activity, including well-tolerated activities such as swimming, while avoiding high-resistance and heavy eccentric work."
-    },
-    {
-      stem:"Congenital muscular torticollis is most commonly associated with which underlying finding?",
-      options:["A fibrotic mass or tightness within the sternocleidomastoid muscle","Cervical spine vertebral fusion (Klippel-Feil syndrome)","Atlantoaxial rotatory subluxation","A brachial plexus lesion","Congenital hearing loss"],
-      correct:[1],
-      explain:"Congenital muscular torticollis is most often linked to a palpable fibrotic mass or generalised tightness/shortening within the sternocleidomastoid muscle, thought to relate to intrauterine positioning or a compartment-syndrome-like process. The other options are separate differential diagnoses for an infant head tilt."
-    },
-    {
-      stem:"A physiotherapist is asked to advise on positioning for a stable preterm infant in the neonatal intensive care unit to support motor development.\n\nWhich positioning strategy is most appropriate?",
-      options:["Full extension of all limbs to prevent contractures","Prone positioning with the head consistently turned to the same side for all naps","Positioning is not relevant for infants who are ventilated","Encouraging a persistent extended, arched posture to strengthen the back extensors","Supported, flexed midline positioning that mimics an in-utero posture"],
-      correct:[5],
-      explain:"Developmentally supportive positioning for preterm infants aims for flexed, contained, midline-oriented postures that approximate the in-utero position, supporting physiological stability and later motor development, and avoiding prolonged asymmetrical or fully extended positions."
-    },
-    {
-      stem:"Which two of the following are appropriate considerations when providing chest physiotherapy to a young infant? Select 2.",
-      options:["Perform physiotherapy immediately after a full feed","Time sessions away from feeding to reduce the risk of reflux or aspiration","Percuss directly over the sternum for maximum effect","Avoid vigorous percussion or vibration directly over rib fractures or chest drains","Increase treatment intensity regardless of oxygen saturation trends"],
-      correct:[2,4],
-      explain:"Chest physiotherapy sessions are generally timed away from feeds to reduce the risk of reflux, vomiting, and aspiration, and vigorous percussion or vibration is avoided directly over rib fractures, drains, or other vulnerable sites. Treatment should be guided by the infant's tolerance and oxygen saturation trends, not intensified regardless of them, and percussion is never directed over the sternum."
-    },
-    {
-      stem:"A 7-year-old with spastic diplegic cerebral palsy has recently undergone selective dorsal rhizotomy (SDR) to reduce lower limb spasticity.\n\nWhat is the primary physiotherapy focus in the months following this procedure?",
-      options:["Maintaining the spasticity that remains, as it is needed for standing","No physiotherapy input is required after SDR","Intensive strengthening and motor control retraining, since the underlying muscle weakness is unmasked once spasticity is reduced","Immediate return to unsupported independent walking without further training","Applying serial casting to reintroduce tone"],
-      correct:[3],
-      explain:"SDR reduces spasticity by selectively sectioning sensory nerve rootlets, but it does not address the underlying muscle weakness, which often becomes more apparent once spasticity is reduced. Post-operative rehabilitation therefore centres on intensive strengthening, motor control, and functional retraining."
-    },
-    {
-      stem:"The Gross Motor Function Measure (GMFM) assesses gross motor function across five dimensions. Which of the following is NOT one of them?",
-      options:["Lying and rolling","Sitting","Fine motor manipulation","Crawling and kneeling","Standing"],
-      correct:[3],
-      explain:"The GMFM's five dimensions are lying and rolling, sitting, crawling and kneeling, standing, and walking/running/jumping. Fine motor manipulation is assessed by other tools, such as the fine motor domain of the Peabody Developmental Motor Scales, not the GMFM."
-    },
-    {
-      stem:"A 9-year-old girl with a new diagnosis of juvenile idiopathic arthritis (JIA) reports morning stiffness and swelling in both knees, which improves somewhat with movement through the day.\n\nWhich two of the following are appropriate physiotherapy strategies at this stage? Select 2.",
-      options:["Complete immobilisation of the affected joints until inflammation resolves","A graded, individualised exercise programme addressing range of motion and strength","High-impact plyometric training to maximise bone density","Hydrotherapy as a useful adjunct, allowing joint movement with reduced loading","Aggressive passive stretching into pain to break down early contracture"],
-      correct:[2,4],
-      explain:"For JIA, a graded, individualised exercise programme addressing range of motion, strength, and function is recommended rather than immobilisation, and hydrotherapy is a well-tolerated adjunct that allows joint movement with reduced loading. Aggressive stretching into pain, high-impact loading, and prolonged immobilisation are all associated with worse outcomes."
-    },
-    {
-      stem:"The Alberta Infant Motor Scale (AIMS) is a standardised observational tool designed to assess gross motor development in infants across which age range?",
-      options:["2 to 5 years","Birth to 6 weeks only","6 months to 3 years","Birth to 18 months, or until independent walking","1 to 2 years only"],
-      correct:[4],
-      explain:"The AIMS observes spontaneous movement in prone, supine, sitting, and standing positions, and is validated for infants from birth up to 18 months of age, or until independent walking is achieved."
-    },
-    {
-      stem:"During a school screening programme, a 13-year-old girl shows a rib hump on the right side during the Adam's forward bend test, with no reported back pain or neurological symptoms.\n\nWhat is the most appropriate next step?",
-      options:["Reassure the family that this finding is not significant and no follow-up is needed","Commence spinal fusion surgery immediately","Refer for a standing spine radiograph to quantify the Cobb angle and guide further management","Prescribe a rigid brace without any imaging","Advise strict bed rest"],
-      correct:[3],
-      explain:"A positive Adam's forward bend test with a visible rib hump warrants referral for a standing spine radiograph to measure the Cobb angle, which then guides whether observation, bracing, or surgical referral is appropriate. Imaging comes before any decision on bracing or surgery, not after."
-    },
-    {
-      stem:"When a Pavlik harness is used to manage developmental dysplasia of the hip in an infant, which of the following is correct?",
-      options:["It is generally most effective when started after 6 months of age","Forced abduction beyond the harness's safe range increases the risk of avascular necrosis of the femoral head","The harness should hold the hips in full extension and adduction","It functions primarily by applying traction to lengthen the limb","It is contraindicated in infants under 3 months of age"],
-      correct:[2],
-      explain:"The Pavlik harness positions the hips in flexion and controlled abduction to encourage reduction and acetabular development. Forcing abduction beyond the safe zone risks avascular necrosis of the femoral head. It is typically most effective when started early, ideally before 6 months of age, not after."
-    },
-    {
-      stem:"A 14-month-old with Down syndrome is referred for delayed gross motor development. She is generally hypotonic with hypermobile joints, and is not yet sitting independently.\n\nWhich of the following should the physiotherapist specifically bear in mind when planning her exercise programme?",
-      options:["Vigorous, forceful passive stretching should be used to increase joint range","Down syndrome has no implications for exercise prescription beyond typical developmental delay","Weight-bearing activities should be avoided entirely due to hypotonia","Independent sitting is not an appropriate treatment goal at this age","Activities involving extremes of neck flexion/extension warrant caution because of the increased risk of atlantoaxial instability"],
-      correct:[5],
-      explain:"Children with Down syndrome have a higher prevalence of atlantoaxial instability, so activities placing the cervical spine at extremes of movement or high impact require caution and, where indicated, prior screening. Forceful stretching into already-hypermobile joints is avoided, while weight-bearing and postural control work, including progress toward sitting, remain appropriate treatment goals."
-    },
-    {
-      stem:"In adolescent idiopathic scoliosis, bracing is typically considered for a Cobb angle within approximately which range in a still-growing child?",
-      options:["5-10 degrees","10-15 degrees","45-50 degrees","Bracing is never indicated regardless of angle","20-40 degrees"],
-      correct:[5],
-      explain:"Bracing is generally considered for curves of roughly 20-40 degrees Cobb angle in a skeletally immature patient, aiming to prevent progression. Smaller curves are usually monitored, while larger or progressive curves, typically beyond 45-50 degrees, are more likely to prompt surgical discussion."
-    },
-    {
-      stem:"A 12-year-old boy with obesity presents with a limp and vague aching in his right knee that has been present for several weeks. On examination, hip movement is restricted and painful, particularly internal rotation, and the affected leg tends to externally rotate as the hip is passively flexed.\n\nWhich diagnosis is most likely?",
-      options:["Transient synovitis of the hip","Developmental dysplasia of the hip","Septic arthritis of the knee","Slipped capital femoral epiphysis (SCFE)","Osgood-Schlatter disease"],
-      correct:[4],
-      explain:"SCFE classically presents in overweight adolescents around this age with hip pain that may be referred to the knee, restricted internal rotation, and obligatory external rotation on hip flexion. This is not typical of transient synovitis (usually younger, more acute), DDH (presents earlier in life), septic arthritis (usually more acute and febrile, with inability to weight-bear), or Osgood-Schlatter disease (localises to the tibial tuberosity)."
-    },
-    {
-      stem:"Legg-Calve-Perthes disease in children is best described as which of the following?",
-      options:["An autoimmune inflammatory arthritis of the hip","A bacterial infection of the hip joint","Idiopathic avascular necrosis of the femoral head","A slipped growth plate of the proximal femur","A congenital dislocation of the hip present from birth"],
-      correct:[3],
-      explain:"Legg-Calve-Perthes disease is idiopathic avascular necrosis of the femoral epiphysis in children, leading to temporary loss of blood supply, bone softening, and risk of femoral head deformity if unmanaged. It is distinct from septic arthritis, juvenile idiopathic arthritis, SCFE, and DDH."
-    },
-    {
-      stem:"A 3-year-old boy walks persistently on his toes. He has a normal early developmental history, no family history of neuromuscular disease, normal muscle tone and reflexes, and full passive ankle dorsiflexion range. He can walk with a heel-toe pattern when specifically asked to.\n\nWhich of the following is most consistent with this presentation?",
-      options:["Spastic diplegic cerebral palsy","Duchenne muscular dystrophy","Idiopathic toe walking, a diagnosis of exclusion once neurological and musculoskeletal causes have been ruled out","Charcot-Marie-Tooth disease","A fixed tendoachilles contracture requiring immediate surgical lengthening"],
-      correct:[3],
-      explain:"With normal tone, reflexes, and full passive range, and the ability to voluntarily walk heel-toe, a fixed contracture or a neuromuscular cause such as cerebral palsy, Duchenne muscular dystrophy, or Charcot-Marie-Tooth disease, which typically show tone, reflex, or strength abnormalities, is unlikely. Idiopathic toe walking is a diagnosis of exclusion made once such causes have been screened out."
-    },
-    {
-      stem:"Which pain assessment tool is most appropriate for evaluating pain in a pre-verbal or cognitively impaired child who cannot reliably self-report?",
-      options:["Visual Analogue Scale (VAS)","Numeric Pain Rating Scale (NPRS)","McGill Pain Questionnaire","FLACC (Face, Legs, Activity, Cry, Consolability) scale","Brief Pain Inventory"],
-      correct:[4],
-      explain:"The FLACC scale is an observational, behaviour-based tool designed for infants and children who cannot self-report pain, scoring facial expression, leg movement, activity, cry, and consolability. The VAS, NPRS, McGill Pain Questionnaire, and Brief Pain Inventory all rely on self-report."
-    },
-    {
-      stem:"During a routine physiotherapy session, you notice several bruises of different colours over the trunk and both upper arms of a 5-month-old infant who is not yet independently mobile. The explanation given does not adequately account for the pattern of bruising.\n\nWhat is the most appropriate immediate action?",
-      options:["Document the finding but take no further action since bruising is common in infants","Confront the caregiver directly and accuse them of causing harm","Delay any action until the next scheduled follow-up appointment","Discuss the case openly on a public forum to seek colleagues' opinions","Raise the concern promptly through your department's child protection/safeguarding procedures, in line with local policy"],
-      correct:[5],
-      explain:"Bruising in a non-independently-mobile infant, especially in patterns or locations inconsistent with the explanation given, is a recognised red flag for possible non-accidental injury. The appropriate response is to raise the concern promptly through the recognised child protection/safeguarding pathway, not to delay, ignore it, confront the caregiver directly, or discuss it outside proper channels."
-    }
-  ];
+const QUESTIONS = [
+  {
+    "n": 1,
+    "mode": "Knowledge",
+    "select": 2,
+    "area": "Cerebral palsy",
+    "topic": "Cerebral palsy · classification systems",
+    "stem": "Which <b>two</b> statements about the Gross Motor Function Classification System (GMFCS) are correct?",
+    "options": [
+      "It has separate descriptors for different age bands, from before 2nd birthday up to 12&ndash;18 years",
+      "It grades the severity of spasticity in the lower limbs",
+      "It is designed to be re-scored after each block of therapy to measure treatment effect",
+      "A child&rsquo;s level is generally stable from about 5 years of age onwards",
+      "A level is assigned separately for each limb"
+    ],
+    "answer": [
+      0,
+      3
+    ],
+    "why": "GMFCS is a five-level <em>classification</em> of self-initiated gross motor function, written as separate descriptors for five age bands (&lt;2, 2&ndash;4, 4&ndash;6, 6&ndash;12, 12&ndash;18 years) because what distinguishes a Level II from a Level III child changes with age. Levels are known to be reasonably stable once a child is past about 5 years, which is what makes GMFCS useful for prognosis and for planning equipment years ahead. The three wrong options all describe something GMFCS deliberately is not: it says nothing about tone (that is the Ashworth or Tardieu scale), it is not limb-specific (topography &mdash; hemiplegia, diplegia &mdash; is a separate axis), and it is not an evaluative measure. That last point is the trap most often seen in practice: because GMFCS is stable by design, using it to show that therapy &ldquo;worked&rdquo; will almost always show no change. Use the GMFM-66 for that."
+  },
+  {
+    "n": 2,
+    "mode": "Case",
+    "select": 1,
+    "area": "Paediatric orthopaedics",
+    "topic": "Developmental dysplasia of the hip · age-dependent signs",
+    "vig": "A 4-month-old infant, first-born and born in the breech position, is referred after her mother noticed that one leg &ldquo;does not move out as far&rdquo; when changing her nappy. On examination there are asymmetrical thigh skin creases. Ortolani and Barlow tests are both negative.",
+    "stem": "Which examination finding would be the <b>most reliable</b> indicator of developmental dysplasia of the hip at this age?",
+    "options": [
+      "A negative Barlow test, confirming the hip is stable",
+      "Asymmetrical thigh and gluteal skin creases",
+      "A leg-length difference measured from anterior superior iliac spine to medial malleolus",
+      "A positive Trendelenburg sign",
+      "Limited hip abduction in flexion on the affected side"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "The Ortolani and Barlow manoeuvres depend on the hip being able to move in and out of the socket, and they lose their sensitivity from roughly 8&ndash;12 weeks onwards as the dislocated hip becomes fixed by soft-tissue contracture. Past that point <em>limited abduction in flexion</em> (and the Galeazzi sign) become the key clinical signs, and a negative Ortolani/Barlow is therefore reassuring only in the newborn period &mdash; which is exactly why option A is the dangerous answer here rather than merely a wrong one. Asymmetrical creases are common in normal babies and have poor specificity on their own, although they reasonably prompted this referral. Trendelenburg requires independent single-leg stance and is not testable at 4 months. Tape-measure leg-length is unreliable in an infant; the Galeazzi sign, which compares knee heights with hips and knees flexed, is the usable version of that idea."
+  },
+  {
+    "n": 3,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Cerebral palsy",
+    "topic": "Cerebral palsy · aetiology and pattern",
+    "stem": "Periventricular leukomalacia in an infant born very preterm is <b>most</b> characteristically associated with which pattern of cerebral palsy?",
+    "options": [
+      "Spastic hemiplegia",
+      "Ataxic cerebral palsy",
+      "Dyskinetic (athetoid) cerebral palsy",
+      "Spastic diplegia",
+      "Spastic quadriplegia with severe intellectual disability in all cases"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "Periventricular white matter is where the descending corticospinal fibres run, and the fibres destined for the <em>legs</em> pass closest to the lateral ventricles. Injury there therefore affects the lower limbs disproportionately, which is the definition of spastic diplegia &mdash; and this is why diplegia is the classic pattern of prematurity. Hemiplegia more often follows a unilateral lesion such as a middle cerebral artery infarct or a large unilateral haemorrhagic infarction. Dyskinetic cerebral palsy points instead to basal ganglia and thalamic injury, typically from acute near-total hypoxic-ischaemic insult at term or from kernicterus. Ataxic cerebral palsy is usually genetic or cerebellar in origin. Extensive PVL can certainly produce quadriplegia, but option E over-reaches with &ldquo;in all cases&rdquo;: motor severity and cognitive outcome are not tightly coupled, and assuming they are is a common and damaging error in how these children are spoken about."
+  },
+  {
+    "n": 4,
+    "mode": "Case",
+    "select": 1,
+    "area": "Infant presentations",
+    "topic": "Congenital muscular torticollis · side of lesion",
+    "vig": "A 3-month-old infant is referred with a head posture the parents describe as &ldquo;always leaning one way&rdquo;. On observation the head is tilted towards the <b>right</b> shoulder and the chin is rotated towards the <b>left</b>. A firm, non-tender fusiform thickening is palpable in one sternocleidomastoid.",
+    "stem": "Which muscle is shortened, and which passive movement will be most restricted?",
+    "options": [
+      "Left sternocleidomastoid; restricted left lateral flexion",
+      "Right sternocleidomastoid; restricted left lateral flexion and right rotation",
+      "Left sternocleidomastoid; restricted right rotation only",
+      "Right sternocleidomastoid; restricted right lateral flexion and left rotation",
+      "Bilateral sternocleidomastoid shortening; restriction is symmetrical"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "The sternocleidomastoid side-flexes the head <em>towards</em> its own side and rotates the chin <em>away</em>. A shortened right SCM therefore produces exactly the posture described: right tilt with the chin turned left. It follows that the restricted movements are the opposites of that muscle&rsquo;s actions &mdash; left lateral flexion and right rotation &mdash; and those are the two ranges you measure and re-measure. Option D describes the pattern of a left SCM lesion and is the answer given by anyone who names the muscle from the direction the chin points rather than from the direction of tilt; naming torticollis by the side of the <em>tilt</em> (i.e. the tight muscle) avoids this. Bilateral involvement is rare and would not give an asymmetrical posture. Note too that the mass is expected to be non-tender and to resolve over months; a tender, enlarging or rapidly changing neck mass, or torticollis that appears after a period of normal head control, is not congenital muscular torticollis and needs medical review."
+  },
+  {
+    "n": 5,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Paediatric orthopaedics",
+    "topic": "Clubfoot · Ponseti method",
+    "stem": "A child has completed successful Ponseti casting and percutaneous Achilles tenotomy for idiopathic congenital talipes equinovarus. Which factor is the <b>single most important</b> determinant of whether the correction is maintained?",
+    "options": [
+      "Delaying independent walking until the foot shape is fully mature",
+      "Daily passive stretching of the calf performed by the parents",
+      "Adherence to the foot abduction brace for the full prescribed period",
+      "Wearing a solid ankle-foot orthosis during the day",
+      "Repeat radiographs of the foot every three months"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "Relapse after Ponseti correction is overwhelmingly a bracing-adherence problem. The foot abduction brace (boots on a bar) is worn 23 hours a day for around three months and then at night and naps until roughly age 4&ndash;5, and studies consistently show that families who do not manage the brace have relapse rates several times higher than those who do. That makes the single most valuable thing a physiotherapist does in this phase unglamorous: teaching brace fitting, troubleshooting skin problems and heel slippage, and supporting a family through years of nightly use. Home stretching is a reasonable adjunct but does not substitute for bracing. Walking should not be delayed &mdash; children in Ponseti bracing walk on schedule with the brace off during the day. A daytime AFO does not hold the foot in the abducted, dorsiflexed position that prevents relapse. Routine radiographs do not change management in an idiopathic clubfoot, which is followed clinically."
+  },
+  {
+    "n": 6,
+    "mode": "Case",
+    "select": 1,
+    "area": "Neuromuscular",
+    "topic": "Duchenne muscular dystrophy · exercise prescription",
+    "vig": "A 6-year-old boy with genetically confirmed Duchenne muscular dystrophy is still walking independently. He has calf pseudohypertrophy, a positive Gowers&rsquo; sign and early ankle plantarflexion contractures. His father asks what exercise will &ldquo;keep the muscle strong for as long as possible&rdquo;.",
+    "stem": "Which element of an exercise programme should be specifically <b>avoided</b>?",
+    "options": [
+      "Submaximal aerobic activity such as cycling or swimming",
+      "Regular standing and walking practice within his tolerance",
+      "Daily passive stretching of the ankle plantarflexors",
+      "Night ankle-foot orthoses to maintain plantargrade position",
+      "High-resistance and eccentric strengthening to fatigue"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "Dystrophin-deficient muscle is mechanically fragile, and the loading pattern that damages it most is <em>eccentric</em>, high-force contraction &mdash; the sarcolemma tears under lengthening load and the fibre is lost, with no capacity to fully repair. High-resistance work to fatigue is therefore contraindicated in DMD, and this is one of the few places in physiotherapy where a strengthening programme can plausibly make the underlying condition worse. Everything else listed is standard care: submaximal aerobic activity is encouraged, ankle stretching and night AFOs delay equinus contracture, and remaining ambulant matters for spine, bone density and function. The distractor to watch is option A, because clinicians who over-generalise the &ldquo;avoid exercise&rdquo; message sometimes withdraw all activity &mdash; which accelerates disuse weakness and is itself harmful. The message is not <em>no exercise</em>; it is <em>no eccentric or maximal resistance work</em>."
+  },
+  {
+    "n": 7,
+    "mode": "Case",
+    "select": 1,
+    "area": "Infant presentations",
+    "topic": "Neonatal brachial plexus palsy · lesion level",
+    "vig": "A newborn is reviewed after a prolonged, difficult delivery. The affected arm moves at the shoulder and elbow, but there is no active wrist or finger movement and the grasp reflex is absent on that side. The examining paediatrician also notes a mildly drooping eyelid and a smaller pupil on the same side.",
+    "stem": "Which lesion does this pattern most likely represent?",
+    "options": [
+      "Klumpke&rsquo;s palsy affecting C8&ndash;T1",
+      "Erb&rsquo;s (Erb&ndash;Duchenne) palsy affecting C5&ndash;C6",
+      "Isolated radial nerve palsy from humeral positioning",
+      "Fractured clavicle with pseudoparalysis",
+      "Isolated axillary nerve injury"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "The distribution is the giveaway: shoulder and elbow are working, so the upper trunk is intact; the hand is not, so the lesion is at the <em>lower</em> trunk, C8&ndash;T1 &mdash; Klumpke&rsquo;s palsy. The ptosis and miosis clinch it, because the sympathetic fibres to the eye leave the cord at T1 and travel with that root, so a Horner&rsquo;s syndrome on the same side localises the injury to T1 and also flags it as a more severe, often avulsion-type lesion with a poorer prognosis. Erb&rsquo;s palsy gives the opposite picture &mdash; the classic waiter&rsquo;s tip arm with a preserved grasp &mdash; and is far more common, which is why it is the reflex answer here and why the hand findings must be read before the label is chosen. A radial nerve palsy would spare finger flexion and produce isolated wrist drop, and neither a clavicle fracture nor an axillary nerve injury explains an absent grasp or a Horner&rsquo;s syndrome."
+  },
+  {
+    "n": 8,
+    "mode": "Knowledge",
+    "select": 2,
+    "area": "Development",
+    "topic": "Developmental surveillance · red flags",
+    "stem": "Which <b>two</b> findings should prompt referral for further developmental assessment rather than reassurance?",
+    "options": [
+      "Not walking independently at 15 months",
+      "Not sitting without support by 9 months",
+      "Pulling to stand but not yet cruising at 10 months",
+      "Not rolling front-to-back at 5 months",
+      "A clear, consistent hand preference before 12 months of age"
+    ],
+    "answer": [
+      1,
+      4
+    ],
+    "why": "Two things make a milestone a red flag: it is either well past the outer limit of normal, or it is <em>asymmetrical</em>. Independent sitting is expected by about 9 months, so a child not sitting at that age is outside the normal range and warrants assessment. Early established handedness is the asymmetry flag &mdash; true hand preference does not normally emerge until 18&ndash;24 months, and a baby who consistently ignores one hand before their first birthday may be doing so because that hand does not work well, which is how unilateral cerebral palsy commonly declares itself. The other three sit inside normal variation: independent walking has a wide range with 18 months as the usual referral threshold, rolling typically appears somewhere between 4 and 6 months, and cruising at 10 months is simply not yet due. Note the general principle worth more than any single cut-off: <em>loss</em> of an acquired skill at any age is always abnormal and always needs urgent review."
+  },
+  {
+    "n": 9,
+    "mode": "Case",
+    "select": 1,
+    "area": "Neuromuscular",
+    "topic": "Spina bifida · motor level and ambulation",
+    "vig": "A 4-year-old with a repaired lumbar myelomeningocele has strong hip flexors and quadriceps (grade 4/5), weak hip adductors, but no active knee flexion, no ankle movement and no active hip extension or abduction. Sensation is absent below the knee.",
+    "stem": "Which orthotic and mobility plan best matches this motor level?",
+    "options": [
+      "No orthosis needed; encourage barefoot walking to build strength",
+      "Ankle-foot orthoses alone, with independent community ambulation expected",
+      "Reciprocating gait orthosis is contraindicated at any level of spina bifida",
+      "Knee-ankle-foot orthoses with a walking aid for household and short-distance walking, plus wheeled mobility for community distances",
+      "Wheelchair only, since walking will not be functional at any lumbar level"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "The described pattern &mdash; quadriceps present, nothing below the knee, no hip extension or abduction &mdash; is a mid-lumbar (about L3) motor level. Quadriceps strength is what buys a child upright mobility, but with no ankle control and no hip stabilisers the knee and ankle both need external control, so KAFOs plus a walker or crutches is the appropriate prescription. Equally important is the second half of the answer: at this level walking is realistically for the house and short distances, and providing wheeled mobility alongside it is not giving up on walking &mdash; it is what allows the child to keep up with peers, cover a school campus and conserve energy, since the oxygen cost of braced walking at this level is very high. Option B fits a low lumbar/sacral level (L4&ndash;L5, with active dorsiflexion or at least strong quadriceps and some hamstring function). Option E writes off a level that is usually a walker in childhood, and option A ignores an insensate foot, which will ulcerate without protection."
+  },
+  {
+    "n": 10,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Development",
+    "topic": "Prematurity · corrected age",
+    "stem": "An infant born at 28 weeks&rsquo; gestation is now 8 months old by date of birth. When assessing her motor development, which age should be used, and for how long should this adjustment continue?",
+    "options": [
+      "5 months corrected, adjusting until about 2 years of age",
+      "5 months corrected, adjusting only until 6 months of age",
+      "8 months, since correction applies only to infants born before 26 weeks",
+      "6 months corrected, adjusting until school entry",
+      "8 months, since correction applies only to weight and head circumference, not motor skills"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "Corrected age is chronological age minus the number of weeks born before 40 weeks. Twenty-eight weeks is 12 weeks (3 months) early, so an 8-month-old born at 28 weeks is 5 months corrected, and she should be expected to do roughly what a 5-month-old does. Convention is to keep correcting until about 2 years, by which point the gap has usually closed for most infants. The single most common practical error is failing to correct at all &mdash; which manufactures a &ldquo;delay&rdquo; that is nothing more than arithmetic, worries the family and can generate an unnecessary referral. The opposite error matters too: correcting indefinitely can mask a genuine delay that should be investigated. Correction applies to <em>all</em> developmental and growth parameters, not just growth charts, which is where option E goes wrong."
+  },
+  {
+    "n": 11,
+    "mode": "Case",
+    "select": 2,
+    "area": "Paediatric rheumatology",
+    "topic": "Juvenile idiopathic arthritis · early management",
+    "vig": "A 4-year-old girl is referred with a 10-week history of a swollen, warm right knee, a limp that is worst first thing in the morning, and about an hour of morning stiffness. She is systemically well and afebrile. Oligoarticular juvenile idiopathic arthritis is diagnosed.",
+    "stem": "Which <b>two</b> actions are appropriate parts of her early management?",
+    "options": [
+      "Complete rest of the joint until all swelling has resolved",
+      "Fit a resting splint in full knee extension to be worn during the day",
+      "A programme maintaining knee range and quadriceps strength, with hydrotherapy and activity graded to symptoms",
+      "Advise against all weight-bearing sport permanently",
+      "Ensure she is referred for regular ophthalmology slit-lamp screening"
+    ],
+    "answer": [
+      2,
+      4
+    ],
+    "why": "The two correct answers cover the joint and the eye. Rest is the wrong instinct in inflammatory arthritis: immobility drives quadriceps wasting, joint contracture and, in a growing child, leg-length discrepancy from the localised growth disturbance an inflamed knee causes, so an active programme with hydrotherapy graded to symptoms is what protects function. The eye component is the one non-rheumatologists most often miss &mdash; young ANA-positive girls with oligoarticular JIA have the highest risk of <em>asymptomatic</em> chronic anterior uveitis, which is painless, has no red eye, and can cause irreversible visual loss before anyone notices. It is found only by scheduled slit-lamp screening, so checking that the child is in an ophthalmology surveillance programme is a legitimate part of the physiotherapist&rsquo;s review. Permanent sports restriction is neither necessary nor desirable, and daytime resting splints promote stiffness; night splinting is sometimes used, but for a specific contracture, not by default."
+  },
+  {
+    "n": 12,
+    "mode": "Case",
+    "select": 1,
+    "area": "Paediatric respiratory",
+    "topic": "Cystic fibrosis · airway clearance selection",
+    "vig": "A 10-year-old with cystic fibrosis has been having percussion and postural drainage performed by his mother since infancy. He is now increasingly reluctant to co-operate, sessions are becoming a source of family conflict, and he reports feeling nauseated when tipped head-down. His lung function is stable.",
+    "stem": "What is the most appropriate change to his airway clearance regimen?",
+    "options": [
+      "Continue the current regimen unchanged, since his lung function is stable",
+      "Refer for daily hospital-based physiotherapy so the technique is done correctly",
+      "Stop all airway clearance while he remains asymptomatic and restart at the next exacerbation",
+      "Increase the frequency of percussion and add a steeper head-down tilt to improve drainage",
+      "Transition to an independent technique such as the active cycle of breathing or oscillating positive expiratory pressure, in a modified (non-tipped) position, combined with regular exercise"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "No airway clearance technique has been shown to be clearly superior to the others in cystic fibrosis, which means the technique that works is the one the patient will actually do &mdash; and at 10 years old, that means handing him control. Moving to ACBT, PEP or oscillating PEP gives him a regimen he can perform himself, at school, on camp, for the rest of his life, and it fits the developmental task of this age. The head-down tilt should also go: it is associated with gastro-oesophageal reflux and desaturation, his nausea is a clue, and modified positions are now standard. Exercise is a valuable adjunct but not a replacement. Stopping clearance in a stable patient (option C) misunderstands the disease &mdash; clearance is preventive, and stable lung function is the result of doing it, not a reason to stop. Option A ignores the adherence problem that will shortly make his lung function not stable, and option B solves nothing while making him more dependent."
+  },
+  {
+    "n": 13,
+    "mode": "Case",
+    "select": 1,
+    "area": "Paediatric respiratory",
+    "topic": "Bronchiolitis · appropriateness of chest physiotherapy",
+    "vig": "A 5-month-old infant is admitted with RSV bronchiolitis. He has widespread wheeze and fine crackles, mild subcostal recession and is feeding at about two-thirds of normal volumes. Oxygen saturation is 94% in air. The ward nurse asks you to start twice-daily chest physiotherapy &ldquo;to clear the crackles&rdquo;.",
+    "stem": "What is the most appropriate response?",
+    "options": [
+      "Start percussion and vibrations twice daily as requested",
+      "Start nasopharyngeal suction before every feed to reduce the work of breathing",
+      "Explain that chest physiotherapy is not indicated in uncomplicated bronchiolitis, and advise on positioning, feeding and monitoring for deterioration instead",
+      "Start continuous positive airway pressure to prevent airway collapse",
+      "Perform a single session and reassess after the crackles have cleared"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "Bronchiolitis is a small-airway, oedema-and-debris disease rather than a sputum-retention disease, and the evidence is consistent: percussion, vibration and forced expiratory techniques do not shorten stay, reduce oxygen requirement or improve severity scores in uncomplicated bronchiolitis, and they can provoke distress, desaturation, vomiting and transient bradycardia in an already tiring infant. Recognising when <em>not</em> to treat is the competency this item tests, and declining well is part of the job &mdash; the answer is not simply &ldquo;no&rdquo;, it is &ldquo;no, and here is what does help&rdquo;: supportive positioning, feeding support, minimal handling, and clear escalation criteria. Gentle suction of the nose has a place if upper-airway secretions are obstructing feeding, but routine pre-feed suction is not indicated. CPAP is a treatment for the infant who is failing, decided medically, not something started prophylactically. Physiotherapy is reasonable in the atypical cases &mdash; comorbid neuromuscular disease, lobar collapse, an existing chronic suppurative lung condition &mdash; but this infant has none of those."
+  },
+  {
+    "n": 14,
+    "mode": "Case",
+    "select": 1,
+    "area": "Paediatric orthopaedics",
+    "topic": "Adolescent idiopathic scoliosis · management thresholds",
+    "vig": "A 12-year-old girl is referred with a right thoracic curve. She is premenarchal, Risser stage 1, and standing height is still increasing. The curve measured on her radiograph is shown below.",
+    "media": "<figure class=\"fig\"><svg viewBox=\"0 0 700 350\" role=\"img\" aria-label=\"Diagram of a scoliotic curve with the superior end-plate line of the upper end vertebra and the inferior end-plate line of the lower end vertebra extended until they meet, forming a Cobb angle of 28 degrees\"><rect width=\"700\" height=\"350\" fill=\"#ffffff\"/><g transform=\"translate(150.0,78.0) rotate(14.0)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><g transform=\"translate(134.3,98.4) rotate(10.9)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><g transform=\"translate(120.4,118.9) rotate(7.8)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><g transform=\"translate(110.2,139.3) rotate(4.7)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><g transform=\"translate(104.7,159.8) rotate(1.6)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><g transform=\"translate(104.7,180.2) rotate(-1.6)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><g transform=\"translate(110.2,200.7) rotate(-4.7)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><g transform=\"translate(120.4,221.1) rotate(-7.8)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><g transform=\"translate(134.3,241.6) rotate(-10.9)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><g transform=\"translate(150.0,262.0) rotate(-14.0)\"><rect x=\"-37\" y=\"-9\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#eef4f6\" stroke=\"#7d97a1\" stroke-width=\"1.6\"/></g><line x1=\"88\" y1=\"54.5\" x2=\"551.1\" y2=\"170.0\" stroke=\"#0d6a83\" stroke-width=\"2.2\"/><line x1=\"88\" y1=\"285.5\" x2=\"551.1\" y2=\"170.0\" stroke=\"#0d6a83\" stroke-width=\"2.2\"/><path d=\"M 475.4 188.9 A 78.0 78.0 0 0 0 475.4 151.1\" fill=\"none\" stroke=\"#b8781a\" stroke-width=\"2.4\"/><text x=\"463.1\" y=\"176.0\" text-anchor=\"end\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"19\" font-weight=\"700\" fill=\"#b8781a\">28&#176;</text><text x=\"88\" y=\"42.5\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"11\" fill=\"#55686f\">UPPER END VERTEBRA</text><text x=\"88\" y=\"307.5\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"11\" fill=\"#55686f\">LOWER END VERTEBRA</text><text x=\"561.1\" y=\"175.0\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"10.5\" fill=\"#8298a1\">lines meet here</text></svg><figcaption>Cobb angle &middot; the two end-plate lines extended until they meet</figcaption></figure>",
+    "stem": "What is the most appropriate management?",
+    "options": [
+      "Observation with repeat radiographs every 6&ndash;12 months, with no active treatment",
+      "Scoliosis-specific exercises alone, with no further imaging or referral",
+      "Referral for posterior spinal fusion",
+      "Referral for a thoraco-lumbo-sacral orthosis (brace), worn for the prescribed daily hours",
+      "Discharge with reassurance, since idiopathic curves do not progress after diagnosis"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "Two numbers decide this: the size of the curve and how much growing is left. The curve is 28&deg;, which is inside the 25&ndash;40&deg; bracing window, and she is premenarchal at Risser 1 &mdash; that is a lot of remaining growth and therefore a high risk of progression. Bracing is the intervention with trial evidence (notably BrAIST) that it reduces the proportion of curves progressing to the surgical threshold, and the effect is dose-dependent on hours worn, which is where physiotherapy support for adherence earns its place. Observation alone (option A) would be right for a curve under about 25&deg;, and surgery is generally considered from about 45&ndash;50&deg; upwards or for documented progression despite bracing. Scoliosis-specific exercises (PSSE, such as Schroth) are a reasonable adjunct alongside bracing but should not replace it in a skeletally immature girl with a curve of this size. Option E states the opposite of the truth: risk of progression is highest precisely during the adolescent growth spurt."
+  },
+  {
+    "n": 15,
+    "mode": "Case",
+    "select": 1,
+    "area": "Development",
+    "topic": "Toe walking · idiopathic versus neurological",
+    "vig": "A 3-year-old boy has walked on his toes since he began walking at 13 months. His parents report that his father did the same as a child. He can stand with his heels flat when reminded, and passive ankle dorsiflexion is to 10&deg; with the knee extended.",
+    "stem": "Which additional finding would most strongly suggest a <b>neurological</b> cause rather than idiopathic toe walking?",
+    "options": [
+      "Toe walking that is bilateral and symmetrical",
+      "A positive family history of toe walking",
+      "Brisk ankle jerks with several beats of sustained ankle clonus",
+      "The ability to walk flat-footed on request",
+      "Intermittent toe walking that increases when he is excited or running"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "Idiopathic toe walking is a diagnosis of exclusion, and the exclusion is mostly neurological. Brisk reflexes with sustained clonus are upper motor neurone signs and point towards cerebral palsy &mdash; often a mild diplegia that has not previously been labelled &mdash; or, if the child was previously walking normally, towards a progressive cord lesion such as a tethered cord. That finding alone changes the diagnosis. Everything else listed is compatible with idiopathic toe walking: it is typically bilateral and symmetrical, frequently familial, characteristically increases with excitement or speed, and the child can usually get their heels down voluntarily even if they do not habitually do so. Two other red flags are worth holding alongside clonus: <em>asymmetry</em>, which suggests a hemiplegia or a unilateral structural cause, and any history of regression or of a child who walked normally first and later began toe walking. Calf hypertrophy with a positive Gowers&rsquo; sign should also prompt a creatine kinase test, since toe walking is a recognised early presentation of Duchenne muscular dystrophy."
+  },
+  {
+    "n": 16,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Syndromes",
+    "topic": "Down syndrome · atlantoaxial instability",
+    "stem": "Which statement best reflects current practice regarding atlantoaxial instability in children with Down syndrome?",
+    "options": [
+      "All children should have screening cervical spine radiographs before any physical activity is permitted",
+      "Symptoms of cord compression in this group are usually acute and dramatic, so subtle change can be safely ignored",
+      "Atlantoaxial instability is a contraindication to all forms of exercise in Down syndrome",
+      "The condition affects the atlanto-occipital joint only and does not involve the odontoid peg",
+      "Routine radiographic screening of asymptomatic children is no longer recommended; clinicians should instead avoid forced neck flexion activities and remain alert for symptoms and signs of myelopathy"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "Screening films were abandoned because they did not do the job asked of them: radiographic atlantoaxial laxity is common in Down syndrome, has poor reproducibility, and predicts symptomatic cord compression badly &mdash; children with normal films went on to develop problems, and most with abnormal films never did. What replaced it is clinical vigilance plus sensible activity advice: avoid manoeuvres that force the neck into flexion (forward rolls and somersaults, trampolining, diving, contact sports, and certain judo or gymnastics techniques), and investigate promptly if symptoms appear. The signs are the ones to memorise because they are easy to dismiss in a child with a developmental disability: a new head tilt or reluctance to move the neck, neck pain, deterioration in gait or new tripping, loss of previously acquired skills, change in bladder control, or new brisk reflexes and clonus. Option C over-restricts &mdash; children with Down syndrome benefit greatly from exercise and it should not be withheld &mdash; and option D is anatomically wrong, since the instability is at C1&ndash;C2 and is closely related to odontoid morphology."
+  },
+  {
+    "n": 17,
+    "mode": "Case",
+    "select": 1,
+    "area": "Neuromuscular",
+    "topic": "Osteogenesis imperfecta · handling and activity",
+    "vig": "You are asked to give handling advice to the parents of a 5-month-old infant with moderately severe osteogenesis imperfecta who has already sustained two long-bone fractures.",
+    "stem": "Which advice is most appropriate?",
+    "options": [
+      "Minimise all handling and movement to reduce fracture risk, and avoid floor play",
+      "Support the infant under the trunk and buttocks with a broad hand contact, never lifting or turning by holding the limbs, while actively encouraging safe positioning, floor play and hydrotherapy",
+      "Lift the infant by the ankles for nappy changes, as this is the quickest and therefore safest method",
+      "Immobilise both lower limbs in splints between sessions to protect the bones",
+      "Delay all active movement until bisphosphonate treatment has been running for at least one year"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "The principle is to distribute load rather than to concentrate it: lift and turn with a broad hand under the trunk and buttocks, support the head, and never use a limb as a handle. Lifting an infant by the ankles for a nappy change &mdash; a routine manoeuvre in typical babies &mdash; applies torsion through the femora and is a well-recognised mechanism of fracture in osteogenesis imperfecta, which is exactly why option C is included. The other half of the answer matters just as much. Immobility is not protective here; it worsens the disuse osteopenia and muscle weakness that make the next fracture more likely, so the aim is to keep the child moving safely rather than to keep the child still. Supported positioning, floor play, and hydrotherapy (where the buoyancy allows strengthening and eventually weight-bearing at very low fracture risk) are core to the programme. Bisphosphonates and physiotherapy run together, not in sequence."
+  },
+  {
+    "n": 18,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Neuromuscular",
+    "topic": "Spinal muscular atrophy · phenotype",
+    "stem": "A child with spinal muscular atrophy achieved independent sitting but has never walked independently. Which type does this functional pattern describe, and what is the most important respiratory and musculoskeletal consequence to anticipate?",
+    "options": [
+      "Type I; anticipate normal respiratory function but early hip dysplasia",
+      "Type II; anticipate progressive scoliosis and restrictive respiratory impairment from intercostal weakness with relative diaphragm sparing",
+      "Type III; anticipate no scoliosis and normal respiratory function throughout life",
+      "Type IV; anticipate onset of symptoms only after the fifth decade",
+      "Type II; anticipate obstructive lung disease with air trapping as the main respiratory problem"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "The types are defined by the best motor milestone ever achieved: Type I never sits, Type II sits but never walks independently, Type III walks at some stage, Type IV has adult onset. A child who sits but does not walk is therefore Type II, and the two problems that dominate the long-term picture are scoliosis and respiratory decline. The respiratory pattern is specific and is the reason option E is wrong: weakness falls on the intercostal muscles while the diaphragm is relatively spared, producing a <em>restrictive</em> picture with a bell-shaped chest and paradoxical breathing, weak cough and poor secretion clearance, and nocturnal hypoventilation appearing before daytime symptoms. Practically that means anticipatory management rather than reactive: overnight oximetry or capnography, non-invasive ventilation when hypoventilation appears, cough augmentation, and spinal surveillance with early orthopaedic referral, since scoliosis in SMA Type II is near-universal and progresses through growth. Disease-modifying therapies have changed these trajectories substantially, but they have not removed the need for the surveillance."
+  },
+  {
+    "n": 19,
+    "mode": "Case",
+    "select": 1,
+    "area": "Cerebral palsy",
+    "topic": "Botulinum toxin · physiotherapy in the treatment window",
+    "vig": "A 6-year-old with spastic diplegic cerebral palsy (GMFCS II) receives botulinum toxin A injections to both gastrocnemii for a dynamic equinus that is limiting heel strike. He is reviewed in your clinic one week later.",
+    "stem": "What is the most appropriate physiotherapy plan over the next three months?",
+    "options": [
+      "Rest the limbs for four weeks to allow the toxin to take full effect, then reassess",
+      "No physiotherapy input, as the injection is the definitive treatment",
+      "Passive stretching only, since strengthening will counteract the toxin",
+      "An intensive period of stretching and serial casting as needed, together with strengthening and task-specific gait practice, delivered while the tone is reduced",
+      "Immediate high-intensity plyometric training to take advantage of the reduced tone"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "Botulinum toxin does not correct anything by itself &mdash; it opens a window. Onset is within days, peak effect is at roughly 2&ndash;6 weeks and the effect wanes over about 3&ndash;4 months, and it is what happens inside that window that determines whether anything durable is gained. That means using the reduced tone to lengthen the muscle (stretching, and serial casting where there is a fixed component), to strengthen the antagonists and the injected muscle group itself, and to practise the actual task &mdash; heel strike in walking &mdash; so the new range is used functionally. Options A, B and C all waste the window in different ways. The idea that strengthening &ldquo;counteracts&rdquo; the toxin (option C) is a persistent myth; weakness, not strength, is the bigger functional problem in cerebral palsy, and strengthening does not increase spasticity. Option E is wrong for a different reason: intensity should be graded, and high-impact plyometric loading into a temporarily weakened calf risks injury."
+  },
+  {
+    "n": 20,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Cerebral palsy",
+    "topic": "Hip surveillance · migration percentage",
+    "stem": "The radiographic measurement shown below is used in hip surveillance programmes for children with cerebral palsy. What does it measure, and roughly what value should prompt orthopaedic referral?",
+    "media": "<figure class=\"fig\"><svg viewBox=\"0 0 700 340\" role=\"img\" aria-label=\"Schematic antero-posterior pelvic radiograph. Hilgenreiner&#8217;s horizontal line and a vertical Perkin&#8217;s line are drawn. On the left hip the femoral head is displaced laterally so that part of it lies outside Perkin&#8217;s line; the uncovered width is marked A and the total head width is marked B. The right hip is normally located\"><rect width=\"700\" height=\"340\" fill=\"#ffffff\"/><line x1=\"350\" y1=\"44\" x2=\"350\" y2=\"300\" stroke=\"#c4d3d9\" stroke-width=\"1.4\" stroke-dasharray=\"5 5\"/><text x=\"350\" y=\"34\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"10.5\" fill=\"#8298a1\">midline</text><line x1=\"95\" y1=\"125\" x2=\"605\" y2=\"125\" stroke=\"#0d6a83\" stroke-width=\"2.2\"/><text x=\"356\" y=\"117\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"10.5\" fill=\"#0d6a83\" font-weight=\"700\">HILGENREINER&#8217;S LINE</text><path d=\"M282 125 L176 147\" stroke=\"#7d97a1\" stroke-width=\"3\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M418 125 L550 141\" stroke=\"#7d97a1\" stroke-width=\"3\" stroke-linecap=\"round\" fill=\"none\"/><line x1=\"170\" y1=\"207\" x2=\"126\" y2=\"243\" stroke=\"#7d97a1\" stroke-width=\"19\" stroke-linecap=\"round\" opacity=\"0.5\"/><line x1=\"126\" y1=\"243\" x2=\"112\" y2=\"300\" stroke=\"#7d97a1\" stroke-width=\"26\" stroke-linecap=\"round\" opacity=\"0.5\"/><circle cx=\"180.0\" cy=\"182.0\" r=\"36.0\" fill=\"#ffffff\" stroke=\"#7d97a1\" stroke-width=\"2\"/><path d=\"M 176.0 146.2 A 36.0 36.0 0 0 0 176.0 217.8 Z\" fill=\"#fdf2df\" stroke=\"none\"/><circle cx=\"180.0\" cy=\"182.0\" r=\"36.0\" fill=\"none\" stroke=\"#7d97a1\" stroke-width=\"2\"/><line x1=\"176.0\" y1=\"60\" x2=\"176.0\" y2=\"262\" stroke=\"#0d6a83\" stroke-width=\"2.2\" stroke-dasharray=\"7 5\"/><text x=\"176.0\" y=\"50\" text-anchor=\"middle\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"10.5\" fill=\"#0d6a83\" font-weight=\"700\">PERKIN&#8217;S LINE</text><line x1=\"144.0\" y1=\"254.0\" x2=\"176.0\" y2=\"254.0\" stroke=\"#b8781a\" stroke-width=\"1.6\"/><line x1=\"144.0\" y1=\"248.0\" x2=\"144.0\" y2=\"260.0\" stroke=\"#b8781a\" stroke-width=\"1.6\"/><line x1=\"176.0\" y1=\"248.0\" x2=\"176.0\" y2=\"260.0\" stroke=\"#b8781a\" stroke-width=\"1.6\"/><text x=\"135.0\" y=\"259\" text-anchor=\"end\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"13\" font-weight=\"700\" fill=\"#b8781a\">A</text><line x1=\"144.0\" y1=\"282.0\" x2=\"216.0\" y2=\"282.0\" stroke=\"#55686f\" stroke-width=\"1.6\"/><line x1=\"144.0\" y1=\"276.0\" x2=\"144.0\" y2=\"288.0\" stroke=\"#55686f\" stroke-width=\"1.6\"/><line x1=\"216.0\" y1=\"276.0\" x2=\"216.0\" y2=\"288.0\" stroke=\"#55686f\" stroke-width=\"1.6\"/><text x=\"225.0\" y=\"287\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"13\" font-weight=\"700\" fill=\"#55686f\">B</text><text x=\"272\" y=\"258\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"11\" fill=\"#b8781a\">A = head width lateral to Perkin&#8217;s line</text><text x=\"272\" y=\"286\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"11\" fill=\"#55686f\">B = total femoral head width</text><line x1=\"530\" y1=\"207\" x2=\"574\" y2=\"243\" stroke=\"#c4d3d9\" stroke-width=\"19\" stroke-linecap=\"round\" opacity=\"0.8\"/><line x1=\"574\" y1=\"243\" x2=\"588\" y2=\"300\" stroke=\"#c4d3d9\" stroke-width=\"26\" stroke-linecap=\"round\" opacity=\"0.8\"/><circle cx=\"520.0\" cy=\"182\" r=\"36.0\" fill=\"#ffffff\" stroke=\"#c4d3d9\" stroke-width=\"2\"/><line x1=\"550.0\" y1=\"95\" x2=\"550.0\" y2=\"250\" stroke=\"#c4d3d9\" stroke-width=\"2\" stroke-dasharray=\"7 5\"/><text x=\"605\" y=\"272\" text-anchor=\"end\" font-family=\"ui-monospace,Menlo,monospace\" font-size=\"10.5\" fill=\"#8298a1\">normally located hip</text></svg><figcaption>Migration percentage &middot; A divided by B, expressed as a percentage</figcaption></figure>",
+    "options": [
+      "The acetabular index; referral is indicated above 10&deg;",
+      "The neck-shaft angle; referral is indicated above 120&deg;",
+      "The centre-edge angle of Wiberg; referral is indicated below 40&deg;",
+      "The proportion of the femoral head that is ossified; referral is indicated below 50%",
+      "The migration percentage &mdash; the proportion of the femoral head lying lateral to Perkin&rsquo;s line, i.e. uncovered by the acetabulum; values above about 30% are abnormal and above about 40% usually warrant orthopaedic referral"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "Migration percentage (Reimer&rsquo;s index) is the width of femoral head lateral to Perkin&rsquo;s line divided by the total head width. It is the workhorse measurement of hip surveillance because progressive lateral migration is how the hip in cerebral palsy displaces &mdash; silently, painlessly at first, and then into a painful dislocation that is far harder to salvage. Under about 30% is generally considered within normal limits, 30&ndash;40% is the watch zone requiring closer interval imaging, and above about 40% usually triggers surgical referral, with the exact thresholds and radiograph intervals set by the local surveillance programme and driven by GMFCS level (children at GMFCS IV&ndash;V are at much higher risk and are imaged more often, while GMFCS I children need little or no radiographic surveillance). The other options name real measurements applied to the wrong problem: the acetabular index and centre-edge angle describe acetabular development and are used mainly in developmental dysplasia, and the neck-shaft angle describes proximal femoral geometry rather than displacement. The clinical point is that surveillance is radiographic, not symptomatic &mdash; waiting for hip pain means waiting too long."
+  },
+  {
+    "n": 21,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Practice",
+    "topic": "Family-centred practice · goal setting",
+    "stem": "Which approach best exemplifies family-centred practice when setting goals for a preschool child with cerebral palsy?",
+    "options": [
+      "The therapist offers the family information about realistic options, and goals are then agreed collaboratively around activities that matter in the family&rsquo;s everyday routines",
+      "The therapist identifies the impairments on assessment and sets goals to normalise movement quality",
+      "The family is asked to choose from a standard list of therapy goals used for all children at that GMFCS level",
+      "Goals are set by the multidisciplinary team at a meeting and then explained to the family afterwards",
+      "The child alone decides the goals, with the family and therapist implementing whatever is chosen"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "Family-centred practice rests on two things happening together: the therapist supplies expertise and realistic options, and the family supplies the priorities and the context, with authority for the decision sitting with the family. Option A is the only one where both halves are present. Option B is the classic impairment-led alternative, and it fails on evidence as well as on philosophy &mdash; goals aimed at normalising movement quality transfer poorly to real-life participation, whereas activity- and participation-level goals embedded in daily routines are what change function. Option C offers only the appearance of choice. Option D is multidisciplinary but not family-centred; informing a family of a decision is not the same as making it with them. Option E abandons the therapist&rsquo;s responsibility to advise. In practice this is operationalised with tools such as goal attainment scaling or the COPM, and the useful test of a goal is whether it names something the child will do, where and when, in a way the family would recognise as worth the effort."
+  },
+  {
+    "n": 22,
+    "mode": "Knowledge",
+    "select": 2,
+    "area": "Practice",
+    "topic": "Outcome measures · classification versus evaluation",
+    "stem": "You need to demonstrate whether a 6-year-old&rsquo;s gross motor function has <b>changed</b> over a 6-month block of therapy. Which <b>two</b> instruments are appropriate for that purpose?",
+    "options": [
+      "Gross Motor Function Classification System (GMFCS)",
+      "Gross Motor Function Measure-66 (GMFM-66)",
+      "Manual Ability Classification System (MACS)",
+      "Peabody Developmental Motor Scales-2, gross motor subtests",
+      "Communication Function Classification System (CFCS)"
+    ],
+    "answer": [
+      1,
+      3
+    ],
+    "why": "The distinction being tested is between <em>classification</em> and <em>evaluation</em>, and it is one of the most common measurement errors in paediatric practice. GMFCS, MACS and CFCS are classification systems: they describe a child&rsquo;s usual everyday performance in a domain, they are deliberately built to be stable over time, and they are for communication and prognosis. Using them as outcome measures guarantees a null result, because not changing is what they are designed to do. The GMFM-66 and the PDMS-2 gross motor subtests are evaluative measures, constructed and validated to detect change, with known measurement properties and published minimal clinically important differences for the GMFM in cerebral palsy. A practical addition worth knowing: alongside a standardised evaluative measure, an individualised method such as goal attainment scaling or the COPM captures change that a norm-referenced test may miss entirely, which matters most for children whose meaningful gains are in participation rather than in motor skill counts."
+  },
+  {
+    "n": 23,
+    "mode": "Case",
+    "select": 1,
+    "area": "The limping child",
+    "topic": "Perthes disease · presentation and management principle",
+    "vig": "A 6-year-old boy has a 3-month history of an intermittent painless limp, with occasional aching referred to the front of the thigh and the knee. He is systemically well and afebrile. On examination, hip abduction and internal rotation are restricted and there is mild thigh wasting.",
+    "stem": "Which diagnosis is most likely, and what principle should guide physiotherapy management?",
+    "options": [
+      "Septic arthritis; urgent joint aspiration and no mobilisation",
+      "Transient synovitis; reassure and review in 6 weeks with no examination findings expected to persist",
+      "Slipped upper femoral epiphysis; immediate non-weight-bearing and urgent surgical referral",
+      "Legg&ndash;Calv&eacute;&ndash;Perthes disease; maintain hip range, particularly abduction and internal rotation, to keep the femoral head contained, and limit high-impact loading",
+      "Juvenile idiopathic arthritis; commence a hydrotherapy programme without further investigation"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "The combination fits Perthes closely: a boy in the 4&ndash;8 year band, a limp of months rather than days, no systemic upset, and loss of abduction and internal rotation &mdash; the two movements that go first in this condition. The thigh and knee pain is a reminder that hip pathology refers along the obturator nerve, so a limping child with knee pain needs their hip examined. Management is built on the idea of containment: the femoral head is soft during fragmentation and remodels into whatever shape the acetabulum holds it in, so preserving abduction and internal rotation and avoiding high-impact loading gives it the best chance of remodelling round. That makes range of movement the outcome that is followed, with orthopaedic input for bracing or surgery in more severe or older presentations. The wrong options are each a diagnosis that must be considered and can be excluded here: septic arthritis is acute, febrile and systemically unwell; SUFE is typically an older, heavier adolescent with obligate external rotation; transient synovitis is short-lived and post-viral, not three months long; and JIA would not usually give this isolated restriction pattern &mdash; and no hip like this should be treated without imaging."
+  },
+  {
+    "n": 24,
+    "mode": "Case",
+    "select": 1,
+    "area": "The limping child",
+    "topic": "Slipped upper femoral epiphysis · recognition",
+    "vig": "A 13-year-old boy with a body mass index above the 97th centile presents with a 5-week history of vague left knee and distal thigh pain and a limp. He is afebrile. On examination the left hip lacks internal rotation, and passively flexing the hip produces obligatory external rotation of the limb.",
+    "stem": "What is the most appropriate immediate action?",
+    "options": [
+      "Make the child non-weight-bearing and arrange urgent orthopaedic referral with AP and frog-lateral pelvic radiographs",
+      "Begin a hip and knee strengthening programme with a graded return to sport",
+      "Prescribe a stretching programme for the hip internal rotators",
+      "Reassure that this is anterior knee pain of adolescence and review in 6 weeks",
+      "Arrange an MRI of the knee before considering the hip"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "Obligate external rotation on hip flexion &mdash; the Drehmann sign &mdash; in an overweight adolescent with knee pain and a limp is slipped upper femoral epiphysis until proved otherwise. The urgency is mechanical: a stable slip can become unstable, and an unstable slip carries a high rate of avascular necrosis with permanent disability. That makes the correct action a set of things you <em>stop</em> doing as much as things you start &mdash; stop weight-bearing, do not stretch or mobilise the hip, do not load it, and get the child to orthopaedics the same day with the right films, which must include a frog-lateral view because early slips are frequently invisible on the AP alone. Options B, C and D all delay a diagnosis in which delay is the main modifiable harm, and options D and E repeat the specific error that causes most of the delay in this condition: taking adolescent knee pain at face value without ever examining the hip. Bilateral involvement is common enough that the other hip is always examined and imaged too."
+  },
+  {
+    "n": 25,
+    "mode": "Case",
+    "select": 1,
+    "area": "The limping child",
+    "topic": "Septic arthritis · Kocher criteria",
+    "vig": "A 5-year-old is referred to physiotherapy on the ward with a 2-day history of refusing to weight-bear on the right leg. His temperature is 38.7&deg;C, he holds the hip flexed, abducted and externally rotated and resists any passive movement. Blood tests show a white cell count of 13.5 &times; 10&#8313;/L and an ESR of 55 mm/hr.",
+    "stem": "What is the most appropriate action?",
+    "options": [
+      "Begin gentle passive range of movement exercises to prevent contracture",
+      "Commence a hydrotherapy programme to allow pain-free movement",
+      "Encourage partial weight-bearing with a frame as tolerated",
+      "Apply ice and advise elevation, reviewing the following day",
+      "Escalate immediately for urgent medical and orthopaedic review, and do not mobilise the joint"
+    ],
+    "answer": [
+      4
+    ],
+    "why": "This child meets all four Kocher predictors &mdash; non-weight-bearing, fever above 38.5&deg;C, ESR above 40 mm/hr and white cell count above 12 &times; 10&#8313;/L &mdash; which carries a probability of septic arthritis of the order of 99%, and the position he is holding (flexion, abduction, external rotation) is the one that maximises capsular volume in a distended hip joint. Septic arthritis of the hip is a surgical emergency: pus destroys articular cartilage within hours and threatens the blood supply to the femoral head, so the treatment is urgent aspiration, washout and antibiotics. The physiotherapist&rsquo;s job here is entirely about recognition and escalation. Every other option delays that, and two of them cause direct harm &mdash; moving or loading a septic joint spreads infection and damages cartilage, and hydrotherapy is contraindicated with a systemically unwell, potentially bacteraemic child. This is one of the clearest examples in paediatric practice of a referral that should be declined and converted into an escalation on the spot."
+  },
+  {
+    "n": 26,
+    "mode": "Case",
+    "select": 1,
+    "area": "Adolescent MSK",
+    "topic": "Osgood&ndash;Schlatter disease · management",
+    "vig": "A 13-year-old footballer in the middle of his growth spurt has a 3-month history of anterior knee pain, localised tenderness and a prominent bump over the tibial tuberosity. Pain comes on with running, jumping and kneeling, and settles with rest. There is no effusion and the knee is stable.",
+    "stem": "What is the most appropriate management?",
+    "options": [
+      "Complete rest from all sport for three months",
+      "Corticosteroid injection into the tibial tuberosity",
+      "Load management with relative activity modification, quadriceps and hamstring flexibility work, progressive strengthening including eccentric quadriceps loading, and reassurance about the natural history",
+      "Immobilisation in a cylinder cast for six weeks",
+      "Surgical excision of the tibial tuberosity ossicle now, to prevent long-term deformity"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "Osgood&ndash;Schlatter is a traction apophysitis at the patellar tendon&rsquo;s insertion, driven by repetitive extensor-mechanism load across an apophysis that is temporarily vulnerable during the growth spurt, and it is self-limiting as the apophysis fuses. The management that fits that mechanism is load management rather than abstinence: reduce the aggravating volume enough to settle symptoms while continuing to train, address the reduced quadriceps and hamstring length typical of a rapidly growing adolescent, and build capacity with progressive strengthening. Complete rest is both unnecessary and counterproductive &mdash; it deconditions the athlete, is poorly adhered to, and the pain returns on return to sport because nothing has changed. Injecting corticosteroid near a tendon insertion in a growing child risks tendon and physeal damage. Casting is disproportionate. Surgery is reserved for the small number of skeletally mature patients with a persistently painful separate ossicle after conservative management has failed, and is not a preventive procedure. Reassurance is a genuine part of treatment here: the prominence usually persists, which is cosmetic rather than functional, and telling the family that in advance prevents a lot of unnecessary worry."
+  },
+  {
+    "n": 27,
+    "mode": "Case",
+    "select": 1,
+    "area": "Development",
+    "topic": "Lower limb alignment · physiological variants",
+    "vig": "A 3-year-old girl is brought to clinic because her parents are worried her knees &ldquo;knock together&rdquo;. The appearance is symmetrical, she is at the 50th centile for height, the intermalleolar distance is 6 cm, she has no pain, and she walks and runs normally.",
+    "stem": "What is the most appropriate management?",
+    "options": [
+      "Refer for guided growth surgery to correct the alignment",
+      "Refer for long-leg alignment radiographs and orthopaedic opinion",
+      "Prescribe medial arch supports and night splints",
+      "Reassure the family that this is physiological genu valgum for her age and review only if it becomes painful, asymmetrical or fails to improve",
+      "Advise avoiding running and jumping until the alignment corrects"
+    ],
+    "answer": [
+      3
+    ],
+    "why": "Lower-limb alignment follows a predictable arc: infants are bow-legged (genu varum), pass through neutral at around 18&ndash;24 months, swing into maximum knock-knee (genu valgum) at about 3&ndash;4 years, and settle into the adult position by roughly 7 years. A symmetrical, painless valgus of this degree in a normally growing 3-year-old is squarely on that curve, and the correct treatment is an explanation confident enough that the family stops worrying. Orthoses do not alter the natural history, and guided growth surgery is for genuine pathological deformity in an older child. Restricting activity has no rationale. What earns a referral instead is the deviation from the pattern: asymmetry, pain, short stature or a height below the 25th centile, an intermalleolar distance greater than about 8 cm, progression rather than improvement with age, valgus persisting beyond about 7&ndash;8 years, or a history suggesting rickets, skeletal dysplasia or previous physeal injury. Those features move the diagnosis away from a physiological variant, and they are the reason a measurement is recorded at the first visit rather than an impression."
+  },
+  {
+    "n": 28,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Neonatal",
+    "topic": "Neonatal unit · developmental care positioning",
+    "stem": "Which positioning approach best supports neuromotor development in a preterm infant on the neonatal unit?",
+    "options": [
+      "Nursing supine in an extended posture at all times, since this is the safest sleep position and should be used from birth",
+      "Supported flexion using nesting and boundaries, with varied positions including side-lying and supervised prone while monitored, and a transition to supine sleeping before discharge",
+      "Prone positioning at all times, including after discharge home",
+      "Avoiding all handling, since any positioning changes destabilise a preterm infant",
+      "Maintaining a fixed head position to prevent plagiocephaly"
+    ],
+    "answer": [
+      1
+    ],
+    "why": "A preterm infant is born without the physiological flexion that the third trimester in utero would have produced, and gravity in an open cot pushes them into extension, abduction and external rotation &mdash; the postures that later show up as shoulder retraction, hip abduction contracture and poor midline hand use. Developmental care therefore builds flexion back artificially with nesting, boundaries and containment, and varies position to protect the head shape and allow the physiological benefits of prone, which improves oxygenation and reduces reflux in the monitored setting. The critical safety point is the transition: prone and side-lying are appropriate <em>only</em> under continuous monitoring in hospital, and the infant must be established supine for sleep before discharge, with the family taught safe-sleep rules explicitly &mdash; hence the error in option C. Option A ignores neuromotor development entirely, option D confuses minimal handling (a real principle for the unstable infant) with no handling, and option E would create the plagiocephaly it claims to prevent."
+  },
+  {
+    "n": 29,
+    "mode": "Knowledge",
+    "select": 1,
+    "area": "Development",
+    "topic": "Primitive reflexes · persistence",
+    "stem": "Which primitive reflex, if still obligatory beyond 6 months of age, most directly interferes with a child bringing both hands to the midline and to the mouth, and is a recognised marker of neurological impairment?",
+    "options": [
+      "Moro reflex",
+      "Palmar grasp reflex",
+      "Asymmetrical tonic neck reflex",
+      "Rooting reflex",
+      "Plantar grasp reflex"
+    ],
+    "answer": [
+      2
+    ],
+    "why": "The ATNR turns the head to one side and extends the limbs on the face side while flexing those on the skull side &mdash; the &ldquo;fencing&rdquo; posture. While it is obligatory, the child is mechanically prevented from bringing the hands together in midline, from getting a hand to the mouth, and from rolling segmentally; it also biases the head to one side and contributes to postural scoliosis and hip displacement in children with cerebral palsy. Normally it is present but never obligatory, and integrates by around 4&ndash;6 months. The other reflexes have different consequences and timings: the Moro integrates by about 4&ndash;6 months and its persistence affects startle and sitting balance rather than midline hand use; the palmar grasp integrates by about 5&ndash;6 months and its persistence blocks voluntary release rather than midline orientation; rooting integrates by about 3&ndash;4 months and relates to feeding; and the plantar grasp persists longest, to around 9&ndash;12 months, and interferes with standing. Two nuances are worth keeping: it is <em>obligatory</em> and <em>asymmetrical</em> responses that matter, since a fleeting response can be normal, and reflex testing supports a picture built from milestones, tone and movement quality rather than standing as a diagnosis on its own."
+  },
+  {
+    "n": 30,
+    "mode": "Case",
+    "select": 1,
+    "area": "Infant presentations",
+    "topic": "Plagiocephaly · positional versus synostotic",
+    "vig": "A 5-month-old has flattening of the right occiput. Viewed from above, the right ear is displaced <b>forwards</b> relative to the left and there is mild fullness of the right forehead, giving a parallelogram shape. Cervical rotation is full and symmetrical, and the posterior fontanelle feels normal.",
+    "stem": "What is the most likely diagnosis and appropriate management?",
+    "options": [
+      "Positional (deformational) plagiocephaly; repositioning advice, increased supervised tummy time and parent education, with review to confirm improvement",
+      "Lambdoid craniosynostosis; urgent craniofacial surgical referral",
+      "Positional plagiocephaly; immediate helmet orthosis as first-line treatment for all cases",
+      "Congenital muscular torticollis with secondary plagiocephaly; begin sternocleidomastoid stretching",
+      "Normal variant requiring no advice, review or follow-up"
+    ],
+    "answer": [
+      0
+    ],
+    "why": "The head shape distinguishes the two conditions and it is worth being able to draw. In positional plagiocephaly the skull is a <em>parallelogram</em>: the flattened occiput pushes the ipsilateral ear and forehead forwards. In lambdoid craniosynostosis, where the suture has fused, the skull is a <em>trapezoid</em>: the ear on the flattened side sits posteriorly and inferiorly, there is a palpable ridge over the suture and a compensatory mastoid bulge, and that is the presentation that needs a craniofacial referral. This infant has the parallelogram, so management is conservative &mdash; alternating head position in the cot, alternating the carrying and feeding side, reducing time in car seats and bouncers, and building up supervised tummy time while awake. Option D is the one to think hardest about, because torticollis and plagiocephaly frequently coexist and every plagiocephalic head must have its neck examined; here rotation is full and symmetrical, so there is no torticollis to treat. Helmet therapy is not first-line and is considered only for moderate-to-severe deformity that has not responded to repositioning, within a limited age window. Option E is wrong because doing nothing without review misses both the progressive cases and the coexisting torticollis."
+  }
+];
 
-  QUESTIONS.forEach(function(q,i){
-    q.id = i;
-    q.numAnswers = q.correct.length;
+/* ---------- state ---------- */
+/* defensive: drop any empty slot so a stray comma can never stall the paper */
+var ITEMS = QUESTIONS.filter(function(q){ return q && q.options && q.options.length; });
+var TOTAL = ITEMS.length;
+var picks = ITEMS.map(function(){return [];});
+var idx = 0, t0 = 0, tick = null, done = false, staff = '', armed = false;
+var $ = function(id){return document.getElementById(id);};
+
+function pad(n){return (n<10?'0':'')+n;}
+function fmt(s){return pad(Math.floor(s/60))+':'+pad(s%60);}
+function elapsed(){return Math.floor((Date.now()-t0)/1000);}
+function lbl(i){return LABELS[i];}
+
+/* ---------- rail ---------- */
+function buildRail(){
+  var r = $('rail'); r.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var b = document.createElement('button');
+    b.className='railbtn'; b.type='button'; b.textContent=q.n;
+    b.setAttribute('aria-label','Go to question '+q.n);
+    b.onclick=function(){idx=i;render();};
+    r.appendChild(b);
+  });
+}
+function paintRail(){
+  var kids = $('rail').children;
+  for(var i=0;i<kids.length;i++){
+    var got = (picks[i]||[]).length, need = ITEMS[i].select, cls = 'railbtn';
+    if(got===need) cls += ' done';
+    else if(got>0) cls += ' part';
+    if(i===idx) cls += ' here';
+    kids[i].className = cls;
+    kids[i].title = 'Q'+ITEMS[i].n+' · '+(got===need ? 'answered'
+      : got>0 ? 'incomplete — '+got+' of '+need+' selected' : 'not answered');
+  }
+}
+
+/* ---------- render one question ---------- */
+function render(){
+  var q = ITEMS[idx];
+  if(!q){ return; }
+  $('counter').textContent = 'Question '+(idx+1)+' of '+TOTAL;
+  $('bar').style.width = ((idx+1)/TOTAL*100)+'%';
+  $('qno').textContent = 'Q'+pad(q.n);
+  var got = picks[idx].length;
+  $('qmode').textContent = q.select===2 ? ('Select 2 · '+got+' of 2 chosen') : 'Select 1';
+  $('qmode').className = 'chip hot' + (q.select===2 && got!==2 ? ' pend' : '');
+  $('qtopic').textContent = q.mode+' · '+q.topic;
+  $('stem').innerHTML = (q.vig ? '<span class="vig">'+q.vig+'</span>' : '')
+                      + q.stem
+                      + (q.media ? q.media : '');
+
+  var box = $('opts'); box.innerHTML='';
+  q.options.forEach(function(text,i){
+    var b = document.createElement('button');
+    b.type='button';
+    b.className='opt'+(q.select===2?' two':'')+(picks[idx].indexOf(i)>-1?' sel':'');
+    b.setAttribute('aria-pressed', picks[idx].indexOf(i)>-1 ? 'true':'false');
+    b.innerHTML = '<b>'+lbl(i)+'</b><span>'+text+'</span>';
+    b.onclick=function(){choose(i);};
+    box.appendChild(b);
   });
 
-  var TOTAL = QUESTIONS.length;
-  var PASS_PCT = 60;
-  var current = 0;
-  var answers = {}; // id -> array of selected option numbers (1-based)
-  var startTime = null;
-  var timerInterval = null;
-  var elapsedSeconds = 0;
+  $('prev').disabled = (idx===0);
+  $('next').disabled = (idx===TOTAL-1);
+  paintRail();
+}
 
-  // ---------- element refs ----------
-  var coverScreen = document.getElementById('cover-screen');
-  var quizScreen = document.getElementById('quiz-screen');
-  var resultsScreen = document.getElementById('results-screen');
-  var startBtn = document.getElementById('startBtn');
-  var staffNameInput = document.getElementById('staffName');
+function choose(i){
+  var q = ITEMS[idx], cur = picks[idx], at = cur.indexOf(i);
+  if(q.select===2){
+    if(at>-1){cur.splice(at,1);}
+    else{ if(cur.length>=2){cur.shift();} cur.push(i); }
+  }else{
+    picks[idx] = (at>-1) ? [] : [i];
+  }
+  if(armed){ armed=false; $('warn').classList.add('hidden'); $('submit').textContent='Submit test'; }
+  render();
+}
 
-  var progressLabel = document.getElementById('progressLabel');
-  var timerLabel = document.getElementById('timerLabel');
-  var progressFill = document.getElementById('progressFill');
-  var chipRail = document.getElementById('chipRail');
-  var qIndex = document.getElementById('qIndex');
-  var selectBadge = document.getElementById('selectBadge');
-  var qStem = document.getElementById('qStem');
-  var optionsList = document.getElementById('optionsList');
-  var prevBtn = document.getElementById('prevBtn');
-  var nextBtn = document.getElementById('nextBtn');
-  var submitBtn = document.getElementById('submitBtn');
-  var warnBanner = document.getElementById('warnBanner');
+/* ---------- marking ---------- */
+function isRight(i){
+  var a = ITEMS[i].answer.slice().sort().join(',');
+  var p = picks[i].slice().sort().join(',');
+  return a===p && picks[i].length===ITEMS[i].answer.length;
+}
 
-  function pad(n){ return n<10 ? '0'+n : ''+n; }
-  function fmtTime(sec){
-    var m = Math.floor(sec/60), s = sec%60;
-    return pad(m)+':'+pad(s);
+function finish(){
+  var bad = [];
+  picks.forEach(function(p,i){ if(p.length !== ITEMS[i].select){ bad.push(i); } });
+  if(bad.length>0 && !armed){
+    armed = true;
+    var links = bad.map(function(i){
+      var got = picks[i].length, need = ITEMS[i].select;
+      return '<button type="button" class="jump" data-i="'+i+'">Q'+pad(ITEMS[i].n)
+        + (got>0 ? ' – '+got+' of '+need : '') + '</button>';
+    }).join(' ');
+    var w = $('warn');
+    w.innerHTML = '<b>'+bad.length+' question'+(bad.length>1?'s still need':' still needs')+' attention.</b> '
+      + 'Items needing two answers show fewer than two selected, or nothing is selected. '
+      + 'Tap a number to go straight there, or tap “Submit test anyway” to submit — '
+      + 'unfinished items are marked incorrect.<span class="jumps">'+links+'</span>';
+    w.classList.remove('hidden');
+    $('submit').textContent = 'Submit test anyway';
+    return;
   }
 
-  // ---------- build chip rail ----------
-  QUESTIONS.forEach(function(q,i){
-    var chip = document.createElement('button');
-    chip.className = 'chip';
-    chip.type = 'button';
-    chip.textContent = (i+1);
-    chip.setAttribute('aria-label','Go to question '+(i+1));
-    chip.addEventListener('click', function(){ goTo(i); });
-    chipRail.appendChild(chip);
+  done = true; clearInterval(tick);
+  var secs = elapsed(), ok = 0;
+  ITEMS.forEach(function(q,i){ if(isRight(i)) ok++; });
+  var pc = Math.round(ok/TOTAL*100);
+
+  $('quiz').classList.add('hidden');
+  $('results').classList.remove('hidden');
+
+  var pass = pc>=60;
+  var bg = $('badge');
+  bg.textContent = pass ? 'Pass' : 'Below pass mark';
+  bg.className = 'badge '+(pass?'pass':'fail');
+  $('raw').textContent = ok;
+  $('pc').textContent = pc+'%';
+  $('nOk').textContent = ok;
+  $('nNo').textContent = TOTAL-ok;
+  $('tTaken').textContent = fmt(secs);
+  $('staffOut').textContent = staff || '—';
+
+  /* ---- answer sheet ---- */
+  var sh = $('sheet'); sh.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var c = document.createElement('button');
+    c.type='button';
+    c.className = 'cell '+(isRight(i)?'ok':'no');
+    c.textContent = q.n;
+    c.setAttribute('aria-label','Question '+q.n+': '+(isRight(i)?'correct':'incorrect'));
+    c.onclick = function(){
+      var el = $('rev'+q.n);
+      if(el && el.scrollIntoView){ el.scrollIntoView({behavior:'smooth',block:'start'}); }
+    };
+    sh.appendChild(c);
   });
 
-  function refreshChips(){
-    var chips = chipRail.children;
-    for (var i=0;i<chips.length;i++){
-      var c = chips[i];
-      c.classList.toggle('answered', !!(answers[i] && answers[i].length));
-      c.classList.toggle('current', i===current);
-    }
-  }
-
-  function renderQuestion(){
-    var q = QUESTIONS[current];
-    qIndex.textContent = 'Q' + pad(current+1);
-    selectBadge.textContent = q.numAnswers > 1 ? ('Select ' + q.numAnswers) : 'Select 1';
-    qStem.textContent = q.stem;
-    progressLabel.textContent = 'Question ' + (current+1) + ' of ' + TOTAL;
-    progressFill.style.width = (((current)/(TOTAL-1)) * 100) + '%';
-
-    optionsList.innerHTML = '';
-    optionsList.className = 'options' + (q.numAnswers > 1 ? ' multi' : '');
-    var selected = answers[q.id] || [];
-
-    q.options.forEach(function(text, idx){
-      var num = idx+1;
-      var li = document.createElement('li');
-      li.className = 'option' + (selected.indexOf(num) > -1 ? ' selected' : '');
-      li.tabIndex = 0;
-      li.setAttribute('role', q.numAnswers>1 ? 'checkbox' : 'radio');
-      li.setAttribute('aria-checked', selected.indexOf(num) > -1 ? 'true':'false');
-
-      var bubble = document.createElement('span');
-      bubble.className = 'bubble';
-      bubble.textContent = num;
-
-      var span = document.createElement('span');
-      span.className = 'option-text';
-      span.textContent = text;
-
-      li.appendChild(bubble);
-      li.appendChild(span);
-      li.addEventListener('click', function(){ toggleOption(q, num); });
-      li.addEventListener('keydown', function(e){
-        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleOption(q, num); }
-      });
-      optionsList.appendChild(li);
+  /* ---- performance by area ---- */
+  var tp = $('topics');
+  if(tp){
+    tp.innerHTML='';
+    var order = [], tally = {};
+    ITEMS.forEach(function(q,i){
+      var a = q.area || 'General';
+      if(!tally[a]){ tally[a] = {ok:0, all:0}; order.push(a); }
+      tally[a].all++;
+      if(isRight(i)) tally[a].ok++;
     });
-
-    prevBtn.disabled = (current === 0);
-    var isLast = (current === TOTAL-1);
-    nextBtn.style.display = isLast ? 'none' : 'inline-block';
-    submitBtn.style.display = isLast ? 'inline-block' : 'none';
-    warnBanner.style.display = 'none';
-
-    refreshChips();
-  }
-
-  function toggleOption(q, num){
-    var sel = answers[q.id] ? answers[q.id].slice() : [];
-    var pos = sel.indexOf(num);
-    if (q.numAnswers === 1){
-      sel = (pos > -1) ? [] : [num];
-    } else {
-      if (pos > -1){
-        sel.splice(pos,1);
-      } else {
-        sel.push(num);
-        if (sel.length > q.numAnswers){ sel.shift(); }
-      }
-    }
-    answers[q.id] = sel;
-    renderQuestion();
-  }
-
-  function goTo(i){
-    current = Math.max(0, Math.min(TOTAL-1, i));
-    renderQuestion();
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  prevBtn.addEventListener('click', function(){ goTo(current-1); });
-  nextBtn.addEventListener('click', function(){ goTo(current+1); });
-
-  submitBtn.addEventListener('click', function(){
-    var unanswered = [];
-    QUESTIONS.forEach(function(q,i){
-      if (!answers[q.id] || answers[q.id].length === 0) unanswered.push(i+1);
-    });
-    if (unanswered.length){
-      warnBanner.style.display = 'block';
-      warnBanner.textContent = 'You still have ' + unanswered.length + ' unanswered question' +
-        (unanswered.length>1?'s':'') + ' (Q' + unanswered.join(', Q') + '). Submit anyway, or use the number rail to go back.';
-      var again = document.createElement('div');
-      again.style.marginTop = '8px';
-      var b = document.createElement('button');
-      b.className = 'btn btn-ghost';
-      b.style.padding = '8px 16px';
-      b.style.fontSize = '12px';
-      b.textContent = 'Submit anyway';
-      b.addEventListener('click', finishQuiz);
-      warnBanner.appendChild(again);
-      again.appendChild(b);
-      return;
-    }
-    finishQuiz();
-  });
-
-  function startTimer(){
-    startTime = Date.now();
-    timerInterval = setInterval(function(){
-      elapsedSeconds = Math.floor((Date.now()-startTime)/1000);
-      timerLabel.textContent = fmtTime(elapsedSeconds);
-    }, 1000);
-  }
-  function stopTimer(){
-    if (timerInterval) clearInterval(timerInterval);
-  }
-
-  startBtn.addEventListener('click', function(){
-    coverScreen.style.display = 'none';
-    quizScreen.style.display = 'block';
-    current = 0;
-    renderQuestion();
-    startTimer();
-    window.scrollTo({top:0});
-  });
-
-  function arraysEqualAsSets(a,b){
-    if (a.length !== b.length) return false;
-    var sa = a.slice().sort();
-    var sb = b.slice().sort();
-    for (var i=0;i<sa.length;i++){ if (sa[i]!==sb[i]) return false; }
-    return true;
-  }
-
-  function finishQuiz(){
-    stopTimer();
-    quizScreen.style.display = 'none';
-    resultsScreen.style.display = 'block';
-    window.scrollTo({top:0});
-
-    var correctCount = 0;
-    QUESTIONS.forEach(function(q){
-      var sel = answers[q.id] || [];
-      if (arraysEqualAsSets(sel, q.correct)) correctCount++;
-    });
-
-    var pct = Math.round((correctCount/TOTAL)*100);
-    var pass = pct >= PASS_PCT;
-
-    document.getElementById('stampEl').textContent = pass ? 'Pass' : 'Not yet';
-    document.getElementById('stampEl').className = 'stamp' + (pass ? '' : ' fail');
-    document.getElementById('scoreBig').textContent = correctCount + ' / ' + TOTAL;
-    document.getElementById('scoreSub').textContent = pct + '% \u00B7 pass mark is ' + PASS_PCT + '%';
-    document.getElementById('statCorrect').textContent = correctCount;
-    document.getElementById('statIncorrect').textContent = (TOTAL-correctCount);
-    document.getElementById('statTime').textContent = fmtTime(elapsedSeconds);
-    document.getElementById('statName').textContent = staffNameInput.value.trim() || '\u2014';
-
-    buildAnswerGrid();
-    buildReview();
-  }
-
-  function buildAnswerGrid(){
-    var grid = document.getElementById('answerGrid');
-    grid.innerHTML = '';
-    QUESTIONS.forEach(function(q,i){
-      var sel = answers[q.id] || [];
-      var ok = arraysEqualAsSets(sel, q.correct);
-      var cell = document.createElement('div');
-      cell.className = 'grid-cell ' + (ok ? 'correct' : 'wrong');
-      cell.textContent = (i+1);
-      cell.tabIndex = 0;
-      cell.addEventListener('click', function(){
-        var target = document.querySelector('.review-item[data-idx="'+i+'"]');
-        if (target){
-          target.classList.add('open');
-          target.scrollIntoView({behavior:'smooth', block:'center'});
-        }
-      });
-      grid.appendChild(cell);
+    order.forEach(function(a){
+      var t = tally[a], pcA = Math.round(t.ok/t.all*100);
+      var row = document.createElement('div');
+      row.className = 'trow';
+      row.innerHTML = '<span class="tname">'+a+'</span>'
+        + '<span class="tbar"><i style="width:'+pcA+'%"></i></span>'
+        + '<span class="tnum">'+t.ok+'/'+t.all+'</span>';
+      tp.appendChild(row);
     });
   }
 
-  function buildReview(){
-    var list = document.getElementById('reviewList');
-    list.innerHTML = '';
-    QUESTIONS.forEach(function(q,i){
-      var sel = answers[q.id] || [];
-      var ok = arraysEqualAsSets(sel, q.correct);
-
-      var item = document.createElement('div');
-      item.className = 'review-item';
-      item.setAttribute('data-idx', i);
-
-      var summary = document.createElement('div');
-      summary.className = 'review-summary';
-      summary.innerHTML =
-        '<span class="r-mark ' + (ok?'correct':'wrong') + '">' + (ok?'\u2713':'\u2717') + '</span>' +
-        '<span class="r-num">Q' + pad(i+1) + '</span>' +
-        '<span class="r-stem-short">' + escapeHtml(q.stem.split('\n')[0]) + '</span>' +
-        '<span class="r-caret">&#8250;</span>';
-      summary.addEventListener('click', function(){ item.classList.toggle('open'); });
-
-      var detail = document.createElement('div');
-      detail.className = 'review-detail';
-
-      var stemFull = document.createElement('div');
-      stemFull.className = 'q-stem-full';
-      stemFull.textContent = q.stem;
-      detail.appendChild(stemFull);
-
-      var optsUl = document.createElement('ul');
-      optsUl.className = 'review-opts';
-      q.options.forEach(function(text, idx){
-        var num = idx+1;
-        var isCorrect = q.correct.indexOf(num) > -1;
-        var wasSelected = sel.indexOf(num) > -1;
-        var li = document.createElement('li');
-        var cls = '';
-        if (isCorrect) cls = 'is-correct';
-        else if (wasSelected && !isCorrect) cls = 'is-user-wrong';
-        li.className = cls;
-
-        var tagHtml = '';
-        if (isCorrect) tagHtml = '<span class="tag correct-tag">Correct</span>';
-        else if (wasSelected) tagHtml = '<span class="tag wrong-tag">Your pick</span>';
-
-        li.innerHTML = '<span>' + num + '.</span><span style="flex:1;">' + escapeHtml(text) + '</span>' + tagHtml;
-        optsUl.appendChild(li);
-      });
-      detail.appendChild(optsUl);
-
-      var explain = document.createElement('div');
-      explain.className = 'explain';
-      explain.innerHTML = '<b>Why:</b> ' + escapeHtml(q.explain);
-      detail.appendChild(explain);
-
-      item.appendChild(summary);
-      item.appendChild(detail);
-      list.appendChild(item);
-    });
-  }
-
-  function escapeHtml(s){
+  /* ---- review ---- */
+  var rv = $('review'); rv.innerHTML='';
+  ITEMS.forEach(function(q,i){
+    var right = isRight(i);
     var d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
+    d.className='rev'; d.id='rev'+q.n;
+
+    var head = '<div class="rev-head">'
+      + '<span class="chip">Q'+pad(q.n)+'</span>'
+      + '<span class="chip">'+(q.select===2?'Select 2':'Select 1')+'</span>'
+      + '<span class="verdict-tag '+(right?'ok':'no')+'">'+(right?'Correct':'Incorrect')+'</span>'
+      + '<span class="chip topic">'+q.mode+' · '+q.topic+'</span>'
+      + '</div>';
+
+    var stem = '<p class="stem" style="font-size:15.5px">'
+      + (q.vig?'<span class="vig">'+q.vig+'</span>':'') + q.stem + (q.media?q.media:'') + '</p>';
+
+    var opts = '';
+    q.options.forEach(function(text,k){
+      var isKey = q.answer.indexOf(k)>-1;
+      var isPick = picks[i].indexOf(k)>-1;
+      var cls = 'rop' + (isKey?' key':'') + ((isPick && !isKey)?' picked-wrong':'');
+      var tag = '';
+      if(isKey && isPick) tag = 'Correct · your answer';
+      else if(isKey) tag = 'Correct answer';
+      else if(isPick) tag = 'Your answer';
+      opts += '<div class="'+cls+'"><b>'+lbl(k)+'</b><span>'+text+'</span>'
+            + (tag?'<span class="rop-tag">'+tag+'</span>':'') + '</div>';
+    });
+    if(picks[i].length===0){
+      opts += '<div class="rop"><b>–</b><span style="color:var(--ink-faint)">No answer was selected for this question.</span></div>';
+    }
+
+    d.innerHTML = head + stem + '<div style="margin-top:10px">'+opts+'</div>'
+      + '<div class="why"><b class="lbl">Why</b>'+q.why+'</div>';
+    rv.appendChild(d);
+  });
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- wiring ---------- */
+function startClock(){
+  t0 = Date.now();
+  clearInterval(tick);
+  tick = setInterval(function(){ $('clock').textContent = fmt(elapsed()); },1000);
+  $('clock').textContent = '00:00';
+}
+
+$('start').onclick = function(){
+  staff = $('who').value.trim();
+  $('intro').classList.add('hidden');
+  $('quiz').classList.remove('hidden');
+  startClock();
+  buildRail(); render();
+  window.scrollTo({top:0});
+};
+$('prev').onclick = function(){ if(idx>0){idx--;render();window.scrollTo({top:0,behavior:'smooth'});} };
+$('next').onclick = function(){ if(idx<TOTAL-1){idx++;render();window.scrollTo({top:0,behavior:'smooth'});} };
+$('submit').onclick = finish;
+$('retake').onclick = function(){
+  picks = ITEMS.map(function(){return [];});
+  idx=0; done=false; armed=false;
+  $('warn').classList.add('hidden');
+  $('submit').textContent = 'Submit test';
+  $('results').classList.add('hidden');
+  $('quiz').classList.remove('hidden');
+  startClock();
+  buildRail(); render();
+  window.scrollTo({top:0});
+};
+$('printout').onclick = function(){ window.print(); };
+$('warn').onclick = function(e){
+  var t = e.target;
+  if(t && t.className === 'jump'){
+    idx = parseInt(t.getAttribute('data-i'),10);
+    render();
+    var box = $('opts');
+    if(box && box.scrollIntoView){ box.scrollIntoView({behavior:'smooth',block:'center'}); }
   }
+};
 
-  document.getElementById('retakeBtn').addEventListener('click', function(){
-    answers = {};
-    current = 0;
-    elapsedSeconds = 0;
-    resultsScreen.style.display = 'none';
-    coverScreen.style.display = 'block';
-    window.scrollTo({top:0});
-  });
+document.addEventListener('keydown', function(e){
+  if(done || $('quiz').classList.contains('hidden')) return;
+  if(e.target && (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA')) return;
+  var k = -1;
+  if(e.key>='1' && e.key<='5'){ k = parseInt(e.key,10)-1; }
+  else{
+    var u = String(e.key||'').toUpperCase();
+    var at = LABELS.indexOf(u);
+    if(at>-1) k = at;
+  }
+  if(k>-1){ choose(k); return; }
+  if(e.key==='ArrowRight' && idx<TOTAL-1){ idx++; render(); }
+  if(e.key==='ArrowLeft' && idx>0){ idx--; render(); }
+});
 
-  document.getElementById('printBtn').addEventListener('click', function(){
-    window.print();
-  });
-
-})();
 </script>
 </body>
 </html>
