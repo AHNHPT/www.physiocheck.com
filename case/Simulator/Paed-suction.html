@@ -634,7 +634,10 @@ const plain=t=>String(t).replace(/<[^>]*>/g,'');
    ===================================================================== */
 const S={
   mode:'coach', sound:true, t:0, started:false, step:0, over:false,
-  crisisDone:false, ended:false
+  crisisDone:false, ended:false,
+  crisisOpen:false,    // a crisis modal is on screen — mutex against overlapping triggers
+  desatDone:false,     // the SpO2-below-80 crisis has already fired once this session
+  dead:false           // the child did not survive — terminal, checked everywhere
 };
 const coach=()=>S.mode==='coach';
 
@@ -956,8 +959,15 @@ function paintNumbers(){
   if(S.t-bpT>45){bpT=S.t;bpShown=Math.round(P.map*1.4)+'/'+Math.round(P.map*0.78);}
   setNum('#v-bp','#nm-bp',bpShown,P.map<55,P.map<45);
 
-  /* alarm banner + audible alarm */
-  const at=$('#alarmtxt'); let msg='',kind='';
+  /* alarm banner + audible alarm — once he has died the alarm is silenced
+     (as it would be acknowledged at the bedside), not left ringing at 0% forever */
+  const at=$('#alarmtxt');
+  if(S.dead){
+    at.textContent='◆◆◆ ASYSTOLE'; at.classList.add('on'); at.classList.remove('warn');
+    $('#fp-mon').classList.add('alarm'); alarmOff();
+    return;
+  }
+  let msg='',kind='';
   if(P.vomiting){msg='◆◆◆ VOMITING · AIRWAY AT RISK';kind='crit';}
   else if(sp<85){msg='◆◆◆ SpO₂ LOW '+sp+'%';kind='crit';}
   else if(hr<80){msg='◆◆◆ BRADYCARDIA '+hr;kind='crit';}
@@ -982,7 +992,11 @@ function tick(){
   if(!S.started||S.over)return;
   S.t+=dt;
   physio(dt);
-  if(typeof suctionTick==='function')suctionTick(dt);
+  /* once he has died, the suction engine (gag build-up, vomit risk, trauma,
+     yield) must not keep advancing — otherwise it can fire a second crisis
+     on top of the outcome screen */
+  if(typeof suctionTick==='function'&&!S.dead)suctionTick(dt);
+  checkDesatCrisis();
   $('#c-clock').innerHTML='<b>'+mmss(S.t)+'</b>';
   paintNumbers();
 }
@@ -1808,7 +1822,7 @@ function endPass(){
 }
 /* ---- vacuum ---- */
 function vacOn(){
-  if(!SUC.running||P.vomiting)return;
+  if(!SUC.running||P.vomiting||S.dead)return;
   SUC.vacOn=true; P.suction=true;
   const b=$('#thumbport'); if(b){b.classList.add('on');b.innerHTML='VACUUM APPLIED<small>release to stop</small>';}
   $('#sucstate').textContent='SUCTION';
@@ -1847,7 +1861,11 @@ function suctionTick(dt){
        at the larynx with the feed running, against about fifteen with it vented. */
     const peg=E.pegVented?0.42:1.55;
     SUC.vomitRisk+=dt*(z===4?0.10:0.025)*peg*(1+P.gag*0.6);
-    if(SUC.vomitRisk>=1&&!P.vomiting&&!P.vomited)doVomit();
+    /* !S.crisisOpen: the vomit and desaturation crises share one modal — if a
+       child manages to be both deep enough to gag AND hypoxic enough to have
+       already opened the desat crisis, the vomit must wait its turn rather
+       than overwrite the modal that is currently deciding whether he lives */
+    if(SUC.vomitRisk>=1&&!P.vomiting&&!P.vomited&&!S.crisisOpen)doVomit();
   }else{
     SUC.vomitRisk=Math.max(0,SUC.vomitRisk-dt*0.12);
   }
@@ -2025,7 +2043,7 @@ function doVomit(){
 /* the timed airway-protection decision */
 function openCrisis(){
   const m=$('#crisis'); if(!m)return;
-  S.crisisDone=true;
+  S.crisisDone=true; S.crisisOpen=true;
   $('#cr-eb').textContent='Airway emergency';
   $('#cr-t').textContent='He has vomited undigested milk feed';
   $('#cr-p').innerHTML='He is supine, gagging, with feed in his mouth and pharynx. '
@@ -2074,7 +2092,7 @@ function openCrisis(){
       if(opts[i].good)b.classList.add('good');
       else if(o===opts[i])b.classList.add('bad');
     });
-    setTimeout(()=>{m.classList.remove('on');},o?2600:1800);
+    setTimeout(()=>{m.classList.remove('on');S.crisisOpen=false;},o?2600:1800);
     if(o)toast(o.fb,o.good?'g':'b',9000,true);
   }
   opts.forEach((o,i)=>{
@@ -2085,6 +2103,127 @@ function openCrisis(){
     box.appendChild(b);
   });
   m.classList.add('on');
+}
+
+/* =====================================================================
+   CRISIS 2 · CRITICAL DESATURATION — this one is lethal.
+   SpO2 below 80% opens a second, harder-edged decision: get it right, or
+   he does not survive. Vomiting is recoverable if you manage it badly;
+   this is not, because by the time it fires he has already been hypoxic
+   for a stretch and a wrong answer here costs him the airway entirely.
+   ===================================================================== */
+function checkDesatCrisis(){
+  if(S.dead||S.desatDone||S.crisisOpen)return;
+  if(!SUC.running)return;           // only while the suction station is live
+  if(P.spo2<80)openDesatCrisis();
+}
+function openDesatCrisis(){
+  const m=$('#crisis'); if(!m)return;
+  S.desatDone=true; S.crisisOpen=true;
+  $('#cr-eb').textContent='Airway emergency';
+  $('#cr-t').textContent='His SpO₂ has fallen below 80%';
+  $('#cr-p').innerHTML='The monitor alarm is sounding. He is centrally cyanosed and floppy in your hands'
+    +(SUC.vacOn?', and the vacuum is still applied.':'.')
+    +' His heart rate is beginning to fall. <b>You have seconds.</b>';
+  const opts=[
+    {t:'Immediately release the vacuum and withdraw the catheter, increase him to high-flow oxygen, and stimulate and reassess him — call for help if he does not recover within seconds',
+     good:true, sc:4,
+     fb:'Correct, and in that order. The catheter and the vacuum are the obstruction and the noxious stimulus — remove both first. Oxygen buys time but cannot work around an airway that is still occluded. Stimulating him and reassessing tells you whether he is recovering on his own; if he is not, this is the point to call for senior help and prepare to bag him.'},
+    {t:'Stop the vacuum but leave the catheter where it is, and wait to see if he comes back up on his own',
+     good:false, sc:0,
+     fb:'The catheter is still occupying and partially obstructing his nasal airway even with the vacuum off, and waiting costs him seconds he does not have. Take it out.',
+     crit:'Left the catheter in place during a critical desaturation.'},
+    {t:'Advance the catheter further — there may be more secretions blocking him that a deeper pass would clear',
+     good:false, sc:0,
+     fb:'This is the error the whole station has been building toward. A falling saturation during suction is caused by the suction, not by secretions you have not reached yet. Advancing now is the one action guaranteed to make it worse.',
+     crit:'Advanced the catheter deeper during a critical desaturation.'},
+    {t:'Reassure him and continue the pass — you are almost finished and stopping now means starting again',
+     good:false, sc:0,
+     fb:'Nothing you have not already cleared is worth what continuing costs him now. A falling saturation ends the pass immediately, no matter how close to finished you were.',
+     crit:'Continued suctioning through a critical desaturation.'}
+  ];
+  const box=$('#cr-o'); box.innerHTML='';
+  const CRISIS_SECS=30;
+  let done=false, left=CRISIS_SECS;
+  const cd=$('#cr-cd'); cd.textContent='0:'+String(CRISIS_SECS).padStart(2,'0');
+  const iv=setInterval(()=>{
+    left--; cd.textContent='0:'+String(Math.max(0,left)).padStart(2,'0');
+    if(left<=0&&!done)finish(null);
+  },1000);
+  function finish(o){
+    if(done)return; done=true; clearInterval(iv);
+    if(o&&o.good){
+      vacOff(); setDepth(0);
+      award('tech',o.sc,4,'Corrected a critical desaturation: released the vacuum and increased oxygen','g');
+      P.sao2=Math.min(100,P.sao2+10);
+      P.o2lpm=Math.max(P.o2lpm,4);
+      P.gag=Math.max(0,P.gag-0.3);
+      note('Corrected a critical desaturation (SpO₂ below 80%).','g');
+      box.querySelectorAll('.opt').forEach((b,i)=>{
+        b.disabled=true;b.classList.add('rv');
+        if(opts[i].good)b.classList.add('good');
+      });
+      toast(o.fb,'g',9000,true);
+      setTimeout(()=>{m.classList.remove('on');S.crisisOpen=false;},2600);
+    }else{
+      box.querySelectorAll('.opt').forEach((b,i)=>{
+        b.disabled=true;b.classList.add('rv');
+        if(opts[i].good)b.classList.add('good');
+        else if(o===opts[i])b.classList.add('bad');
+      });
+      cd.textContent='—';
+      award('tech',0,4,o?'Chose the wrong response to a critical desaturation':'Did not respond to a critical desaturation in time','b');
+      const good=opts.find(x=>x.good);
+      setTimeout(()=>{showDeathOutcome(good);},1700);
+    }
+  }
+  opts.forEach((o,i)=>{
+    const b=el('button','opt');
+    b.innerHTML='<span class="ltr">'+'ABCD'[i]+'</span><span class="tx">'+o.t
+      +'<span class="fb">'+o.fb+'</span></span>';
+    b.onclick=()=>{if(done)return;b.classList.add(o.good?'good':'bad');finish(o);};
+    box.appendChild(b);
+  });
+  m.classList.add('on');
+}
+/* a low, descending tone in place of the flatline alarm — sombre, not startling */
+function deathTone(){
+  if(!S.sound)return; const c=actx(); if(!c)return;
+  const o=c.createOscillator(), g=c.createGain();
+  o.type='sine'; o.frequency.setValueAtTime(420,c.currentTime);
+  o.frequency.exponentialRampToValueAtTime(85,c.currentTime+2.4);
+  g.gain.setValueAtTime(0.0001,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.07,c.currentTime+0.08);
+  g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+2.6);
+  o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+2.7);
+}
+/* the terminal state. P.frozen stops physiology changing any further and
+   P.arrest is already wired into the monitor trace (drawTraces) to flatline
+   it — reusing both means the monitor visibly dies with him. */
+function triggerDeath(reason){
+  if(S.dead)return;
+  S.dead=true;
+  vacOff();
+  P.suction=false; P.vagal=1; P.hr=0; P.spo2=0; P.sao2=0; P.rr=0;
+  P.arrest=true; P.frozen=true;
+  alarmOff(); suckSoundOff();
+  deathTone();
+  critical(reason);
+  note(reason,'b');
+}
+function showDeathOutcome(goodOpt){
+  triggerDeath('Did not correct a critical desaturation (SpO₂ below 80%) in time.');
+  $('#cr-eb').textContent='Outcome';
+  $('#cr-cd').textContent='';
+  $('#cr-t').textContent='He does not recover';
+  $('#cr-p').innerHTML='The hypoxia was not corrected in time. His heart rate falls through the 40s '
+    +'and then he loses output. Resuscitation is commenced but he cannot be revived.'
+    +'<br><br><b>What the moment needed:</b> '+goodOpt.fb;
+  const box=$('#cr-o'); box.innerHTML='';
+  const b=el('button','btn pri','See the debrief');
+  b.style.width='100%';
+  b.onclick=()=>{$('#crisis').classList.remove('on');goStep(STEPS.length-1);};
+  box.appendChild(b);
 }
 
 /* =====================================================================
@@ -2244,8 +2383,8 @@ function buildDock(){
     const b=el('button','dbtn'+(i<S.step?' done':i===S.step?' now':''));
     b.innerHTML=`<span class="ic"><svg viewBox="0 0 24 24">${ICONS[s.id]}</svg></span>
                  <span class="lb">${s.label}</span>`;
-    b.disabled=i>S.step;
-    b.onclick=()=>{if(i<=S.step)goStep(i);};
+    b.disabled=S.dead?true:i>S.step;
+    b.onclick=()=>{if(!S.dead&&i<=S.step)goStep(i);};
     g.appendChild(b);
   });
   d.appendChild(g);
@@ -2900,14 +3039,25 @@ function stDebrief(host){
   const b=card(host,'','','');
   const head=el('div','scorehead');
   const circ=2*Math.PI*48;
-  head.innerHTML=`
-    <div class="ring"><svg width="112" height="112" viewBox="0 0 112 112">
-      <circle cx="56" cy="56" r="48" fill="none" stroke="#1C2632" stroke-width="9"/>
-      <circle cx="56" cy="56" r="48" fill="none" stroke="${pct>=70?'#2FE07A':pct>=55?'#FFC24B':'#FF4D6D'}"
-        stroke-width="9" stroke-linecap="round"
-        stroke-dasharray="${(circ*pct/100).toFixed(1)} ${circ.toFixed(1)}"/>
-    </svg><div class="pc">${pct}%</div></div>
-    <div class="gradebox"><h3>${gr[0]}</h3><p>${gr[1]}</p></div>`;
+  if(S.dead){
+    head.innerHTML=`
+      <div class="ring"><svg width="112" height="112" viewBox="0 0 112 112">
+        <circle cx="56" cy="56" r="48" fill="none" stroke="#1C2632" stroke-width="9"/>
+        <circle cx="56" cy="56" r="48" fill="none" stroke="var(--crit)" stroke-width="9"
+          stroke-linecap="round" stroke-dasharray="${circ.toFixed(1)} ${circ.toFixed(1)}"/>
+      </svg><div class="pc" style="color:var(--crit)">†</div></div>
+      <div class="gradebox"><h3 style="color:var(--crit)">He did not survive</h3>
+        <p>A critical desaturation was not corrected in time. Everything below is exactly what led there.</p></div>`;
+  }else{
+    head.innerHTML=`
+      <div class="ring"><svg width="112" height="112" viewBox="0 0 112 112">
+        <circle cx="56" cy="56" r="48" fill="none" stroke="#1C2632" stroke-width="9"/>
+        <circle cx="56" cy="56" r="48" fill="none" stroke="${pct>=70?'#2FE07A':pct>=55?'#FFC24B':'#FF4D6D'}"
+          stroke-width="9" stroke-linecap="round"
+          stroke-dasharray="${(circ*pct/100).toFixed(1)} ${circ.toFixed(1)}"/>
+      </svg><div class="pc">${pct}%</div></div>
+      <div class="gradebox"><h3>${gr[0]}</h3><p>${gr[1]}</p></div>`;
+  }
   b.appendChild(head);
 
   const dg=el('div','dgrid');
@@ -3001,7 +3151,10 @@ function stDebrief(host){
 function buildPrint(){
   const pct=totalPct(), gr=grade(pct);
   $('#printarea').innerHTML=`<h1>PaedSim 01 — Nasopharyngeal suction debrief</h1>
-    <p><b>Score ${pct}% — ${gr[0]}</b> · mode: ${S.mode} · elapsed ${mmss(S.t)}</p>
+    ${S.dead
+      ?'<p><b style="color:#c00">OUTCOME: PATIENT DIED</b> — a critical desaturation (SpO₂ below 80%) was not corrected in time.</p>'
+       +'<p>mode: '+S.mode+' · elapsed '+mmss(S.t)+'</p>'
+      :'<p><b>Score '+pct+'% — '+gr[0]+'</b> · mode: '+S.mode+' · elapsed '+mmss(S.t)+'</p>'}
     <h2>Domains</h2><ul>${Object.keys(DOM).filter(k=>DOM[k].m)
       .map(k=>`<li>${DOM[k].label}: ${DOM[k].g.toFixed(0)}/${DOM[k].m}</li>`).join('')}</ul>
     <h2>Technique</h2><ul>
