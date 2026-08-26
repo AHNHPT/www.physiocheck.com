@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Geriatric Hip Fracture Rehabilitation — Junior Physiotherapist Education</title>
+<title>Geriatric Hip Fracture Rehabilitation — Physiotherapist Education</title>
 <style>
   :root {
     --color-bg: #EEF1F4;
@@ -45,6 +45,7 @@
   p { margin: 0 0 1em; }
   ul, ol { margin: 0 0 1em; padding-left: 1.3em; }
   li { margin-bottom: 0.35em; }
+  li > ul, li > ol { margin: 0.3em 0 0; }
   .visually-hidden {
     position: absolute; width: 1px; height: 1px; overflow: hidden;
     clip: rect(0,0,0,0); white-space: nowrap; border: 0; padding: 0; margin: -1px;
@@ -105,11 +106,17 @@
   .journey-arrow { text-align: center; font-size: 1.4rem; color: var(--color-ink-muted); line-height: 1; margin: 0.2rem 0; }
   .journey-row { display: grid; grid-template-columns: 1fr; gap: 0.9rem; margin: 0.6rem 0; }
   @media (min-width: 700px) { .journey-row.two { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 760px) { .journey-row.four { grid-template-columns: repeat(4, 1fr); } }
-  .journey-box { border-radius: var(--radius); border: 1px solid var(--color-border); background: var(--color-surface); box-shadow: var(--shadow); padding: 0.9rem 1rem; border-top: 5px solid var(--color-border); }
+  @media (min-width: 700px) { .journey-row.four { grid-template-columns: 1fr 1fr; } }
+  .journey-box { border-radius: var(--radius); border: 1px solid var(--color-border); background: var(--color-surface); box-shadow: var(--shadow); padding: 0.9rem 1rem; border-top: 5px solid var(--color-border); display: flex; flex-direction: column; }
   .journey-box h4 { margin-bottom: 0.4rem; font-size: 0.92rem; }
+  .journey-box .sub { font-size: 0.76rem; color: var(--color-ink-muted); margin: -0.3rem 0 0.5rem; }
   .journey-box ul { font-size: 0.82rem; margin: 0; padding-left: 1.1em; }
   .journey-box li { margin-bottom: 0.15em; }
+  .journey-om { margin-top: auto; padding-top: 0.6rem; border-top: 1px dotted var(--color-border); font-size: 0.75rem; color: var(--color-ink-muted); line-height: 1.45; }
+  .journey-om b { display: block; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.66rem; color: var(--color-accent); margin-bottom: 0.15rem; }
+  .journey-om-span { margin: -0.2rem 0 0.6rem; background: var(--color-accent-bg); border: 1px solid #E8D9C2; border-radius: 8px; padding: 0.55rem 0.9rem; font-size: 0.78rem; color: var(--color-ink-muted); line-height: 1.5; }
+  .journey-om-span b { text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.68rem; color: var(--color-accent); }
+  .journey-appendix { text-align: center; font-size: 0.78rem; color: var(--color-ink-muted); font-style: italic; margin: 0.9rem 0 0; }
   .journey-box.acute { border-top-color: var(--color-primary); }
   .journey-box.extended { border-top-color: var(--color-accent); }
   .journey-box.maintenance { border-top-color: #6E7F8D; }
@@ -158,10 +165,10 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">Junior Physiotherapist Education · Musculoskeletal Specialty Group, PTCOC</div>
+    <div class="hero-eyebrow">DOCUMENT NO. HAHO-COC-GL-PHY-013-V01, VERSION 1.0, EFFECTIVE 25/11/2025</div>
     <h1>Physiotherapy Guidelines for Geriatric Hip Fracture Rehabilitation</h1>
-    <p>A working summary of the acute-to-community rehabilitation pathway for patients aged 65+ with a hip fracture, built to orient junior staff to assessment priorities, red flags, and phase-by-phase intervention before their first hip fracture caseload.</p>
-    <div class="hero-meta">Source: Hospital Authority Head Office, Document No. HAHO-COC-GL-PHY-013-v01, Version 1.0, effective 25/11/2025</div>
+    <p>A working summary of the acute, extented care and community rehabilitation pathway for patients aged 65+ with a hip fracture, built to ensure quality and safety in physiotherapy practice.</p>
+    <div class="hero-meta">Issue date:25/11/2025 <br> Review date: 25/11/2028 <br> Custodian: HO Alied Health Grade Department <br> Endorsed by: COC Grade (Physiotherapy)</div>
   </div>
 </div>
 
@@ -218,12 +225,31 @@
         <div class="journey-row two">
           <div class="journey-box acute">
             <h4>Acute (Pre-op / Non-op) Phase</h4>
-            <ul><li>Prevention of complications</li><li>Chest PT, TED stockings</li><li>Pain management</li><li>Training for unaffected limbs</li></ul>
+            <ul>
+              <li>Prevention of complications</li>
+              <li>Chest PT, TED stockings</li>
+              <li>Pain management</li>
+              <li>Training for unaffected limbs</li>
+            </ul>
           </div>
           <div class="journey-box acute">
             <h4>Acute (Post-op) Phase</h4>
-            <ul><li>Early mobilization</li><li>Prevention of complications</li><li>Mobility/walking training, walking aid Rx</li><li>Prosthetic joint protection</li><li>Fall risk assessment</li></ul>
+            <ul>
+              <li>Early mobilization</li>
+              <li>Prevention of complications</li>
+              <li>Chest PT, TED stockings</li>
+              <li>Pain management</li>
+              <li>Mobility/walking training</li>
+              <li>Prescription of walking aids if applicable</li>
+              <li>Mobilization and strengthening exercise</li>
+              <li>Prosthetic joint protection</li>
+              <li>Fall risk assessment</li>
+            </ul>
           </div>
+        </div>
+        <div class="journey-om-span">
+          <b>Acute phase outcome measures</b>
+          Premorbid MFAC · NPRS · MFAC · EMS · Handgrip strength · Walking aid prescription
         </div>
         <div class="journey-arrow">↓</div>
         <div class="journey-hub">Assessment · Stratification · Rehab/Discharge Planning</div>
@@ -231,21 +257,64 @@
         <div class="journey-row four">
           <div class="journey-box extended">
             <h4>Extended Care Phase</h4>
-            <ul><li>Strengthening &amp; endurance</li><li>Indoor/outdoor walker training</li><li>Balance &amp; fall prevention</li><li>Care-giver training</li></ul>
+            <ul>
+              <li>Prevention of complications</li>
+              <li>Chest PT</li>
+              <li>Pain management</li>
+              <li>Mobility/walking training</li>
+              <li>Prescription of walking aids</li>
+              <li>Strengthening &amp; endurance training</li>
+              <li>Indoor/outdoor walker training</li>
+              <li>Balance training</li>
+              <li>Fall prevention</li>
+              <li>Explore home accessibility</li>
+              <li>Care-giver training</li>
+              <li>Staff training and fall risk assessment</li>
+              <li>Telehealth via HA GO (if applicable)</li>
+            </ul>
+            <div class="journey-om"><b>Outcome measures</b>NPRS · MFAC · EMS · TUG · Handgrip strength (optional) · Walking aid prescription · Care-giver training checklist</div>
+          </div>
+          <div class="journey-box community">
+            <h4>Community / Ambulatory / Supported Discharge Phase</h4>
+            <p class="sub">e.g. Day Rehab, Outpatient Rehab</p>
+            <ul>
+              <li>Pain management</li>
+              <li>Mobilization</li>
+              <li>Prescription of walking aids</li>
+              <li>Strengthening &amp; endurance training</li>
+              <li>Indoor/outdoor walker training</li>
+              <li>Balance training</li>
+              <li>Fall prevention training</li>
+              <li>Care-giver training on proper handling skills: mobility, transfer, ambulation, usage and maintenance of walking aids, negotiating wheelchair, care-giver and patient's posture, body mechanics, and home exercise program</li>
+              <li>Community PT/exercise/fall program referral · Telehealth via HA GO (if applicable)</li>
+            </ul>
+            <div class="journey-om"><b>Outcome measures</b>NPRS · MFAC · EMS · TUG · BBS · MBI if applicable · Handgrip strength (optional) · Walking aid prescription · Care-giver training checklist</div>
           </div>
           <div class="journey-box maintenance">
             <h4>Maintenance Care</h4>
-            <ul><li>Chest PT</li><li>Passive/active-assist mobilization</li><li>Positioning, pressure sore prevention</li></ul>
-          </div>
-          <div class="journey-box community">
-            <h4>Community / Ambulatory / Supported Discharge</h4>
-            <ul><li>Advanced functional training</li><li>Fall prevention training</li><li>Community PT/exercise referral</li></ul>
+            <ul>
+              <li>Chest PT</li>
+              <li>Active/active-assist/passive mobilization</li>
+              <li>Patient and care-giver empowerment</li>
+              <li>Home-based exercises (enhancement via HA GO)</li>
+              <li>Fall prevention</li>
+              <li>Positioning and posture correction</li>
+              <li>Prevent complications (e.g. pressure sore, positioning, chest conditions)</li>
+            </ul>
+            <div class="journey-om"><b>Outcome measures</b>NPRS · MFAC · EMS · Care-giver training checklist</div>
           </div>
           <div class="journey-box outreach">
-            <h4>NGOs, Outreach, Primary Care, DHC</h4>
-            <ul><li>Patient &amp; care-giver empowerment</li><li>Home-based exercises</li><li>Prevent deconditioning/sarcopenia</li></ul>
+            <h4>NGOs, Patient Groups, Telehealth via HA GO, Outreach, Primary Care, DHC</h4>
+            <ul>
+              <li>Patient and care-giver empowerment</li>
+              <li>Home-based exercises</li>
+              <li>Fall prevention training</li>
+              <li>Prevent deconditioning / sarcopenia</li>
+            </ul>
+            <div class="journey-om"><b>Outcome measures</b>NPRS · MFAC · EMS · TUG · BBS</div>
           </div>
         </div>
+        <p class="journey-appendix">Refer to Appendices 1–8 for details of the outcome measures — see the Outcome Measures Toolkit module.</p>
       </div>
       <div class="journey-legend">
         <span><span class="swatch" style="background:var(--color-primary)"></span>Acute</span>
@@ -259,7 +328,7 @@
 
   <!-- ============ PANEL 1: FRACTURE TYPES & SURGERY ============ -->
   <section class="panel" id="panel-1" role="tabpanel" aria-labelledby="tab-1" tabindex="0" hidden>
-    <h2>Fracture Types &amp; Surgery</h2>
+    <h2>Fracture Types &amp; Common Surgery</h2>
     <p class="panel-intro">The precautions you teach only make sense if you know which structures the surgery went through — this is the "why" behind Section 3.</p>
 
     <div class="card">
@@ -269,7 +338,7 @@
           <p><strong>Intracapsular (femoral neck):</strong> proximal to the attachment of the hip joint capsule to the femur at the inter-trochanteric line.</p>
         </div>
         <div>
-          <p><strong>Extracapsular (inter-trochanteric):</strong> traverses the femur within the area bounded by the inter-trochanteric line proximally, up to <strong>5 cm</strong> distal to the lesser trochanter.</p>
+          <p><strong>Extracapsular (inter-trochanteric & sub-trochanteric):</strong> traverses the femur within the area bounded by the inter-trochanteric line proximally, up to <strong>5 cm</strong> distal to the lesser trochanter.</p>
         </div>
       </div>
     </div>
@@ -277,19 +346,49 @@
     <div class="grid-2">
       <div class="card">
         <h3>Undisplaced intracapsular</h3>
-        <p><strong>Fixation:</strong> internal fixation with screws, to stabilise the fracture and minimise avascular necrosis (AVN), non-union, or delayed union.</p>
+        <p><strong>Fixation:</strong> internal fixation with screws, to stabilise the fracture and minimise risk of avascular necrosis (AVN), non-union, or delayed union.</p>
       </div>
       <div class="card">
         <h3>Displaced intracapsular</h3>
-        <p><strong>Fixation:</strong> unipolar or bipolar hemi-arthroplasty (surgeon's choice/patient criteria). Approach — southern, lateral, or Hardinge — affects different muscle groups, which has direct implications for your PT training plan.</p>
+        <p><strong>Fixation:</strong> unipolar or bipolar hemi-arthroplasty (depending on surgeon's choice/patient criteria). Approach — e.g., southern, lateral, or Hardinge — affects different muscle groups, which has direct implications for your PT training plan.</p>
+        <p class="source-note">Unipolar vs. bipolar is broken down below.</p>
       </div>
       <div class="card">
         <h3>Extracapsular (inter-trochanteric)</h3>
-        <p><strong>Fixation:</strong> sliding hip screw (SHS) — also called compression hip screw (Dynamic, Richards, or Ambi hip screw). A screw runs up the femoral neck to the head and attaches to a side plate; it's "dynamic" because it can slide/collapse at the fracture site. Allows earlier mobilisation and avoids recumbence.</p>
+        <p><strong>Fixation:</strong> sliding hip screw (SHS) — also called compression hip screw (or Dynamic, Richards, or Ambi hip screw). A screw runs up the femoral neck to the head and attaches to a side plate; it's "dynamic" because it can slide/collapse at the fracture site. Allows earlier mobilisation and avoids recumbence.</p>
       </div>
       <div class="card">
         <h3>Extracapsular (sub-trochanteric)</h3>
         <p><strong>Fixation:</strong> intramedullary nail with a side screw into the femoral head (e.g. Gamma nail, Intramedullary Hip Screw, Kuntscher Y nail). Less common in the elderly.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag">Displaced intracapsular</span>
+      <h3>Hemi-arthroplasty: unipolar vs. bipolar</h3>
+      <p>Both are used for displaced intracapsular fracture of the femoral neck. What separates them is where the movement happens — and that shapes the complication profile you screen for.</p>
+      <div class="grid-2">
+        <div>
+          <h4>Unipolar hemi-arthroplasty</h4>
+          <p>The best-known unipolar prostheses are one-piece all-metal implants:</p>
+          <ul>
+            <li><strong>Austin-Moore</strong> (Moore, 1952) — the femoral stem is <strong>fenestrated</strong> and has a shoulder that stabilises it within the greater trochanter, preventing rotation within the femoral canal. Generally used <strong>without cement</strong>; in the long term, bone in-growth into the fenestration frequently occurs.</li>
+            <li><strong>F.R. Thompson</strong> (Thompson, 1954) — a <strong>smaller stem without fenestration</strong>, nowadays often used <strong>in conjunction with cement</strong>.</li>
+          </ul>
+          <p>For both of these, the precautions taken should be <strong>similar to total hip arthroplasty</strong>, according to the surgical approach used.</p>
+        </div>
+        <div>
+          <h4>Bipolar hemi-arthroplasty</h4>
+          <p>There is a recent increasing trend toward bipolar prostheses. These are designed to allow movement to occur not only between the acetabulum and the prosthesis, but also at <strong>a second joint within the prosthesis itself</strong>. The objective of that second joint is to <strong>reduce acetabulum wear</strong>.</p>
+          <p><strong>Potential early complications:</strong> intra-operative fracture, sciatic nerve palsy, infection (superficial and/or deep), and dislocation of the prosthesis.</p>
+          <p><strong>Late complications:</strong> loosening of the prosthesis stem, acetabular wear, breakage of the implant, and peri-prosthetic fracture of the femur (Parker &amp; Gurusamy 2011).</p>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>Watch cemented implants</strong> — where cementation is required, the pressurization and reaming may pose a <strong>higher risk of fat emboli and DVT</strong> (Parker &amp; Gurusamy 2011). Keep DVT screening and early mobilization tight in these patients.
+      </div>
+      <div class="callout-note">
+        <strong>Current recommendation</strong> — newer femoral stem designs have come out over the years, and it is now recommended to use a <strong>proven femoral stem design rather than Austin Moore or Thompson stems</strong> for arthroplasties (NICE Guideline CG124, 2023).
       </div>
     </div>
 
@@ -323,7 +422,7 @@
       <div class="grid-2">
         <div>
           <h4>Check:</h4>
-          <ul><li>Breathing status (shortness of breath)</li><li>Air entry, added sounds (wheeze/crackle)</li><li>Cough effort and cough sound</li><li>CXR, temperature, SpO₂ (screen for pneumonia)</li></ul>
+          <ul><li>Breathing status (e.g. shortness of breath)</li><li>Air entry, added sounds (e.g. wheeze/crackle)</li><li>Cough effort and cough sound</li><li>CXR, temperature, SpO₂ (screen for pneumonia)</li></ul>
         </div>
         <div>
           <h4>Intervene:</h4>
@@ -345,7 +444,7 @@
         </ul>
         DVT is a medical emergency — a dislodged thrombus can embolise to the lungs or brain. Timely medical management is required.
       </div>
-      <p>Also check past history of DVT and INR (normal range for a healthy person: <strong>0.9–1.3</strong>; for people on warfarin therapy: <strong>2.0–3.0</strong>).</p>
+      <p>Also check any past history of DVT and INR (normal range for a healthy person: <strong>0.9–1.3</strong>; for people on warfarin therapy: <strong>2.0–3.0</strong>).</p>
       <p><strong>Prevention:</strong> early mobilization is key — ankle/toes exercise, lower limb mobilization, and walking exercise started as early as possible.</p>
       <p><strong>Mechanical prophylaxis</strong> (NICE Guideline NG89, 2023): intermittent pneumatic compression (sequential compression device) can be considered at admission if pharmacological prophylaxis is contraindicated; anti-embolism stockings can be considered too, when not contraindicated — continue until the patient no longer has significantly reduced mobility.</p>
     </div>
@@ -381,12 +480,12 @@
       <h3>Pre-operative / non-operated case</h3>
       <div class="grid-2">
         <div>
-          <h4>Subjective</h4>
-          <ul><li>Present history of illness</li><li>Past medical history</li><li>Social history</li><li>Pre-morbid mental state, mobility, function</li><li>Level of home care support</li><li>Main complaint incl. pain over fracture site</li></ul>
+          <h4>Subjective examination</h4>
+          <ul><li>Present history of illness</li><li>Past medical history</li><li>Social history</li><li>Pre-morbid mental state, mobility, function</li><li>Level of home care support</li><li>Main complaint incl. pain level over fracture site</li></ul>
         </div>
         <div>
-          <h4>Objective</h4>
-          <ul><li>Vital signs, consciousness, mental status</li><li>Chest conditions</li><li>Circulatory condition of lower limbs</li><li>Screening for DVT signs</li><li>AROM/strength of unaffected joints</li><li>Sensation of lower limbs; bed mobility</li></ul>
+          <h4>Objective examination</h4>
+          <ul><li>Vital signs, consciousness level, mental status</li><li>Chest conditions</li><li>Circulatory condition of lower limbs</li><li>Screening for DVT signs</li><li>AROM/strength of unaffected joints</li><li>Sensation of lower limbs</li><li>Bed mobility</li></ul>
         </div>
       </div>
       <h4>Intervention</h4>
@@ -404,21 +503,58 @@
     <div class="card">
       <span class="tag evidence">NICE CG124, 2023</span>
       <h3>Post-operative phase</h3>
-      <p>Note date/type of operation, radiological findings, and doctors' plan including weight-bearing status before you start.</p>
+      <div class="callout-note">
+        <strong>Before you start</strong> — record the date and type of operation performed, any additional radiological findings, and the doctors' plan <strong>including weight-bearing status</strong>.
+      </div>
       <div class="grid-2">
         <div>
-          <h4>Objective (in addition to pre-op items)</h4>
-          <ul><li>Screening of neurological deficits</li><li>Leg length discrepancy / mal-positioning</li><li>AROM and muscle strength</li><li>Functional mobility: bed mobility, transfer, sit/stand balance, ambulatory status incl. walking aids</li></ul>
+          <h4>Subjective examination</h4>
+          <ul>
+            <li>Present history of illness</li>
+            <li>Past medical history</li>
+            <li>Social history</li>
+            <li>Level of home care support available</li>
+            <li>Pre-morbid mobility status</li>
+            <li>Patient's main complaint, including pain level over the operative site</li>
+          </ul>
+          <p class="source-note">The first five items only need to be assessed if the patient was not already assessed pre-operatively.</p>
         </div>
         <div>
-          <h4>Intervention</h4>
-          <ul><li>Chest PT, ankle/toe exercises, DVT prophylaxis continued</li><li>Active/active-assisted/passive mobilization of the operated hip</li><li>Strengthening of major operated lower-limb muscle groups</li><li>Electro-physical agents/manual therapy/exercise for pain and oedema</li></ul>
+          <h4>Objective examination</h4>
+          <ul>
+            <li>Vital signs, consciousness level, mental status</li>
+            <li>Chest conditions</li>
+            <li>Circulatory condition of lower limbs</li>
+            <li>Screening for signs of DVT</li>
+            <li>Screening of neurological deficits</li>
+            <li>Leg length discrepancy / mal-positioning</li>
+            <li>Active range of motion and muscle strength</li>
+            <li>Functional mobility level:
+              <ol type="i">
+                <li>Bed mobility</li>
+                <li>Transfer ability</li>
+                <li>Sitting and standing balance</li>
+                <li>Ambulatory status including the use of walking aids</li>
+              </ol>
+            </li>
+          </ul>
         </div>
       </div>
+      <h4>Intervention</h4>
+      <ul>
+        <li>Chest physiotherapy to prevent respiratory complications</li>
+        <li>Ankle and toes exercise to improve circulation of the lower extremity and minimise DVT risk (SIGN Guideline 2009)</li>
+        <li>Anti-embolism stocking or IPC device prophylaxis continued until the patient no longer has significantly reduced mobility</li>
+        <li>Active, active-assisted or passive mobilization of the operated hip to improve ROM of the operated limb</li>
+        <li>Strengthening exercise to major muscle groups of the operated lower limb</li>
+        <li><strong>Unaffected and affected limb exercises</strong> — mobilization and strengthening — to maintain joint ROM and prevent or minimise muscle atrophy</li>
+        <li>Electro-physical therapeutic agents, manual therapy or exercise to control pain and oedema of the involved lower limb</li>
+        <li>Education to patient and care-giver in arthroplasty precautions, skills of proper transfer and ambulation support, and limb maintenance exercise</li>
+        <li>Prescription of suitable walking aids at this stage can be considered for indicated patients</li>
+      </ul>
       <div class="callout-note">
-        <strong>Early mobilization</strong> — including bedside transfer, standing, and walking — should start <strong>the day after surgery</strong>, unless medically or surgically contraindicated, and be <strong>offered at least once a day</strong> (NICE Guideline CG124, 2023).
+        <strong>Early mobilization</strong> — including bedside transfer, standing, and walking — should start on <strong>the day after surgery</strong>, unless medically or surgically contraindicated, and be <strong>offered at least once a day</strong> (NICE Guideline CG124, 2023).
       </div>
-      <p>Also: education to patient and care-giver in arthroplasty precautions, proper transfer/ambulation support, and limb maintenance exercise; prescription of suitable walking aids can be considered for indicated patients at this stage.</p>
     </div>
   </section>
 
@@ -429,13 +565,13 @@
 
     <div class="card">
       <h3>Assessment</h3>
-      <p>Same subjective and objective structure as the acute post-op phase (history, social history, pre-morbid mobility status, functional mobility: bed mobility/transfer/sitting-standing balance/ambulatory status), reassessed at this stage.</p>
+      <p>Same subjective and objective structure as the acute post-op phase, reassessed at this stage.</p>
     </div>
 
     <div class="card">
       <h3>Intervention</h3>
       <ul>
-        <li>Chest PT for patients with respiratory problems; continued DVT prevention (ankle/toe exercise, prophylaxis until mobility normalises)</li>
+        <li>Chest PT to prevent respiratory complications; continued DVT prevention (ankle/toe exercise, prophylaxis until mobility improves)</li>
         <li>Early mobilization exercise to minimise DVT and pressure sore risk</li>
         <li>Active/assisted-active/passive mobilization to improve or maintain ROM of the operated limb</li>
         <li>Strengthening exercise to improve/maintain muscle strength and endurance of the operated hip</li>
@@ -447,7 +583,7 @@
         <li>Stair and slope training as indicated</li>
         <li>Home exercises and fall prevention programme given <strong>before discharge</strong></li>
         <li>Appropriate walking aids prescribed before discharge</li>
-        <li>Referral to community rehabilitation facilities if needed for reintegration</li>
+        <li>Referral to community rehabilitation facilities if needed for community reintegration</li>
         <li>Telehealth via HA GO as an option for indicated patients</li>
       </ul>
     </div>
@@ -462,12 +598,12 @@
       <h3>Assessment</h3>
       <div class="grid-2">
         <div>
-          <h4>Subjective</h4>
+          <h4>Subjective examination</h4>
           <ul><li>Present history incl. previous fall history</li><li>Patient's self-perceived ability in self-care</li><li>Care-giver level of stress, if indicated</li><li>Level of re-engagement in social activities</li><li>Accommodation details</li></ul>
         </div>
         <div>
-          <h4>Objective</h4>
-          <ul><li>Physical: neurovascular status, deformity/LLD, joint mobility, strength/motor control</li><li>Functional: bed mobility, transfer, balance, indoor/outdoor ambulation incl. kerb/stairs/slope</li><li>Home environment safety; compliance with home exercise programme</li><li>Care-giver skills; condition of walking aids/wheelchair; community reintegration</li></ul>
+          <h4>Objective examination</h4>
+          <ul><li>Physical: vitals, mental status,neurovascular status, deformity/LLD, joint mobility, strength/motor control</li><li>Functional: bed mobility, transfer, balance, indoor/outdoor ambulation incl. kerb/stairs/slope, ability to cope with current home environment</li><li>Home environment safety; compliance with home exercise programme</li><li>Care-giver skills; condition of walking aids/wheelchair; level of community reintegration</li></ul>
         </div>
       </div>
     </div>
@@ -599,8 +735,8 @@
 </main>
 
 <footer>
-  Physiotherapy Guidelines for Geriatric Hip Fracture Rehabilitation, Hospital Authority Head Office, Document No. HAHO-COC-GL-PHY-013-v01, Version 1.0 (effective 25/11/2025). This page is an educational summary for junior staff orientation only — refer to the full guideline document for clinical decision-making and documentation standards.
-</footer>
+This page is an AI generated summary for internal physiotherapist education only. Always refer to the complete HA guideline and local departmental policy for full clinical detail before making patient-care decisions.<br>
+Portal validation by: Ms. Gigi Cheung</footer>
 
 <script>
 (function () {
@@ -662,8 +798,8 @@
       options: [
         { text: "Continue the planned mobilisation session as usual and reassess tomorrow", correct: false,
           rationale: "These are exactly the DVT signs the guideline lists (ipsilateral calf swelling, increased hardness/temperature, severe pain on ankle dorsiflexion). DVT is flagged as an emergency requiring timely medical management, not routine reassessment the next day." },
-        { text: "Document the findings and escalate promptly to the medical team, continuing safe ankle/toe exercises", correct: true,
-          rationale: "Correct — the guideline lists these three signs as the DVT check for post-hip-surgery patients and stresses timely medical management because a dislodged thrombus can embolise to the lungs or brain. Ankle/toe exercise and early mobilization remain part of ongoing DVT prevention." },
+        { text: "Document the findings and escalate promptly to the medical team", correct: true,
+          rationale: "Correct — the guideline lists these three signs as the DVT check for post-hip-surgery patients and stresses timely medical management because a dislodged thrombus can embolise to the lungs or brain." },
         { text: "Apply firm massage to the calf to relieve the tightness", correct: false,
           rationale: "This isn't a guideline-supported action for suspected DVT and risks dislodging a thrombus — the correct response is escalation, not manual treatment of the calf." },
         { text: "Note that her INR of 1.1 is within the normal range (0.9–1.3), which rules out DVT", correct: false,
@@ -694,7 +830,7 @@
           rationale: "This contradicts the guideline's recommendation that early mobilization should start the day after surgery unless contraindicated — there's no stated reason here to delay standing to day 3." },
         { text: "Bedside transfer, standing, and a walking trial today, since there's no contraindication", correct: true,
           rationale: "Correct — per NICE Guideline CG124 (2023) as cited in the guideline, early mobilization including bedside transfer, standing, and walking should start the day after surgery unless medically or surgically contraindicated, with at least one mobilization session offered daily." },
-        { text: "Wait for the surgical team to write an explicit mobilization order before attempting any transfer", correct: false,
+        { text: "Wait for the orthopaedic team to write an explicit mobilization order before attempting any transfer", correct: false,
           rationale: "The guideline frames early mobilization as the default expectation in the absence of a contraindication, not something that requires a fresh explicit order each time." },
         { text: "Mobilize only once the patient is completely pain-free", correct: false,
           rationale: "Pain should be managed alongside mobilization (electro-physical agents, manual therapy, exercise) — the guideline does not make pain-free status a precondition for starting early mobilization." }
@@ -702,16 +838,16 @@
     },
     {
       stem: "In the extended care phase, a patient's second-trial Timed Up and Go result is 26 seconds. " +
-            "Using the guideline's hip-fracture-specific cut-off data, how should this inform your planning?",
+            "Using the guideline's hip-fracture-specific cut-off data, What is your comment on patient's fall risk based on these data?",
       options: [
-        { text: "26 seconds sits between the ≥24s and ≥30s cut-offs, both with high sensitivity (95% and 84%) for predicting falls after hip fracture, so balance/gait training and fall-prevention should be prioritised", correct: true,
-          rationale: "Correct — the guideline's Kristensen et al. (2007) hip-fracture-specific table shows ≥24s at 95% sensitivity/35% specificity and ≥30s at 84% sensitivity/55% specificity for predicting falls. A score of 26s falls in that elevated-risk band, supporting continued balance work before progressing discharge." },
+        { text: "26 seconds sits into the ≥24s cut-offs, balance/gait training and fall-prevention should be prioritised", correct: true,
+          rationale: "Correct — the guideline's Kristensen et al. (2007) hip-fracture-specific table shows ≥24s at 95% sensitivity/35% specificity for predicting falls. A score of 26s falls in that elevated-risk band, supporting continued balance work before progressing discharge." },
         { text: "26 seconds is under the general 30-second \"dependent in most activities\" threshold, so no further balance intervention is needed", correct: false,
           rationale: "Being under 30s doesn't mean low fall risk — the hip-fracture-specific cut-offs (≥20–34s) all indicate elevated fall risk at 26s; the general frail-elderly bands describe overall function, not fall prediction." },
         { text: "This score has no bearing on discharge planning since TUG isn't part of the extended care outcome measures", correct: false,
           rationale: "TUG is explicitly listed among the extended care and community phase outcome measures in the guideline's patient journey overview." },
-        { text: "Because 26 seconds is close to 20 seconds, she should be treated as \"freely independent\"", correct: false,
-          rationale: "Freely independent corresponds to under 10 seconds (Podsiadlo & Richardson). 26 seconds is well above that and within the guideline's elevated fall-risk range for hip fracture patients." }
+        { text: "Because 26 seconds is close to 20 seconds cut off, she should be treated as \"freely independent\"", correct: false,
+          rationale: "Freely independent corresponds to under 10 seconds (Podsiadlo & Richardson) but not 20 seconds. 26 seconds is well above that and within the guideline's elevated fall-risk range for hip fracture patients." }
       ]
     },
     {
