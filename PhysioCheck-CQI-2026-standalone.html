@@ -145,6 +145,7 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
 .num{font-family:var(--fd);font-weight:600;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
 .src{font-size:21px;color:var(--dim);letter-spacing:.004em}
 .accent{color:var(--link)}
+.hilite{color:var(--gold)}
 .wm .p{color:var(--brand)} .wm .c{color:var(--gold)}
 
 /* ===========================================
@@ -289,7 +290,7 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
 /* ===========================================
    S6 · IDEATE
    =========================================== */
-.idea-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.idea-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;grid-auto-rows:1fr}   /* equal rows: some titles run to two lines */
 .card.idea{display:flex;align-items:center;gap:30px;padding:34px 36px}
 .ideacon{flex:0 0 auto;width:108px;height:108px;border-radius:28px;line-height:1;
   display:flex;align-items:center;justify-content:center;font-size:58px;
@@ -442,7 +443,7 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
         using <span class="accent">Design thinking and AI</span>
       </h1>
       <div class="zh reveal" style="--d:1.35s;font-size:29px;margin-top:26px">
-        臨床教學 · 從師徒相傳到互動遊戲
+        臨床教學 · 從師徒承傳到互動遊戲
       </div>
       <div class="stage-pills">
         <div class="p reveal" style="--d:1.75s">Empathize</div>
@@ -645,7 +646,7 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
           <div class="ideatxt">
             <div style="display:flex;gap:16px;align-items:baseline">
               <div style="font-size:23px;color:var(--link)">01</div>
-              <div class="h3" style="font-size:40px">Capture what the seniors know</div>
+              <div class="h3" style="font-size:40px">Retain senior expertise</div>
             </div>
             <div class="zh" style="font-size:24px;color:var(--gold);margin-top:12px">保留資深經驗</div>
           </div>
@@ -655,7 +656,7 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
           <div class="ideatxt">
             <div style="display:flex;gap:16px;align-items:baseline">
               <div style="font-size:23px;color:var(--link)">02</div>
-              <div class="h3" style="font-size:40px">Automate the teaching</div>
+              <div class="h3" style="font-size:40px">Automate teaching solution</div>
             </div>
             <div class="zh" style="font-size:24px;color:var(--gold);margin-top:12px">自動化教學</div>
           </div>
@@ -665,7 +666,7 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
           <div class="ideatxt">
             <div style="display:flex;gap:16px;align-items:baseline">
               <div style="font-size:23px;color:var(--link)">03</div>
-              <div class="h3" style="font-size:40px">A young workforce wants to play</div>
+              <div class="h3" style="font-size:40px">Interactive learning for young workforce</div>
             </div>
             <div class="zh" style="font-size:24px;color:var(--gold);margin-top:12px">互動 · 有趣</div>
           </div>
@@ -675,7 +676,7 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
           <div class="ideatxt">
             <div style="display:flex;gap:16px;align-items:baseline">
               <div style="font-size:23px;color:var(--link)">04</div>
-              <div class="h3" style="font-size:40px">Serious games already work</div>
+              <div class="h3" style="font-size:40px">Serious games are proven effective by evidence</div>
             </div>
             <div class="zh" style="font-size:24px;color:var(--gold);margin-top:12px">認真遊戲 · 有實證</div>
           </div>
@@ -736,7 +737,7 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
             <div class="tagpill reveal" style="--d:1.32s">No app, no login</div>
             <div class="tagpill reveal" style="--d:1.44s">Under 10 minutes a case</div>
           </div>
-          <div class="reveal" style="--d:1.7s;margin-top:36px;font-size:29px;color:var(--link)">Game Changer</div>
+          <div class="reveal" style="--d:1.7s;margin-top:36px;font-size:29px;color:var(--link)">New Game Changer</div>
         </div>
 
         <div style="flex:1;display:flex;align-items:center;justify-content:center">
@@ -1027,12 +1028,12 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
        ========================================================== -->
   <section class="slide" data-stage="4">
     <div class="frame" style="display:flex;flex-direction:column;justify-content:center">
-      <div class="eyebrow reveal" style="--d:.1s">Return on investment</div>
+      <div class="eyebrow reveal" style="--d:.1s">Return on investment (ROI)</div>
       <div style="display:flex;align-items:stretch;gap:30px;margin-top:42px">
         <div class="card reveal-x" style="--d:.35s;flex:1;padding:40px 44px">
           <div style="font-size:27px;color:var(--mute)">What it cost</div>
-          <div class="num" style="font-size:88px;margin-top:14px">1,000 hrs</div>
-          <div style="font-size:29px;margin-top:10px">in-house development by two physiotherapists</div>
+          <div class="num" style="font-size:88px;margin-top:14px">500 hrs</div>
+          <div style="font-size:29px;margin-top:10px">in-house development by our expert physiotherapists</div>
           <div class="num" style="font-size:54px;margin-top:30px">+ HK$450</div>
           <div style="font-size:25px;color:var(--mute);margin-top:8px">AI subscription — the entire cash cost</div>
         </div>
@@ -1060,7 +1061,7 @@ body{font-family:var(--ft);color:var(--ink);-webkit-font-smoothing:antialiased;
     <div class="frame" style="top:104px;bottom:96px;display:flex;flex-direction:column">
       <div class="h1 reveal" style="--d:.2s;font-size:70px;line-height:1.1">
         <span class="wm" style="font-size:106px;letter-spacing:-.024em"><span class="p">Physio</span><span class="c">Check</span></span>-
-        A game changer for clinical education and<span class="accent"> patient safety.</span>
+        A <span class="hilite">game changer</span> for clinical education and<span class="accent"> patient safety.</span>
       </div>
 
       <div style="display:flex;align-items:center;gap:52px;margin-top:auto;margin-bottom:auto">
