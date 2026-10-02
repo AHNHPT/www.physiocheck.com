@@ -526,17 +526,19 @@ input[type=range]:disabled::-webkit-slider-thumb{background:var(--dim);box-shado
          the port with your thumb at the bedside.</p>
     </div>
     <div class="modepick">
-      <label><input type="radio" name="mode" value="coach" checked>
-        <span class="mp-t"><b>Coach mode</b><span>Feedback and rationale appear immediately after each decision. Best for laymen or newbies.</span></span></label>
-      <label><input type="radio" name="mode" value="assess">
-        <span class="mp-t"><b>Assessment mode</b><span>No feedback until the debrief. Use this if you want great challenges.</span></span></label>
+      <label><input type="radio" name="mode" value="coach">
+        <span class="mp-t"><b>Coach mode</b><span>Feedback the moment you make an error, target zones
+        shown on the anatomy, and the reasoning explained as you go. Use this first.</span></span></label>
+      <label><input type="radio" name="mode" value="assess" checked>
+        <span class="mp-t"><b>Assessment mode (Recommended)</b><span>No prompts, no target zone shading, no warnings.
+        Everything is scored and you find out at the debrief. This is the one to be assessed on.</span></span></label>
     </div>
     <div class="actions">
       <button class="btn pri" id="bootgo">Take the handover</button>
       <button class="btn ghost" id="bootsnd" aria-pressed="true">Sound: on</button>
     </div>
     <p class="hintline" style="margin-top:18px">Headphones recommended — the monitor tone drops in pitch as he desaturates.
-    <br><br>This is a AI generated teaching simulation. The patient, results and images are fabricated for education and must not be used for clinical decision-making. Follow your own unit's protocols. <br>© 2026 AHNH PTD. All rights reserved. Simulator developed by Ms Stephy Lau, Ms Michelle Hui, Mr Thomas Mak.
+    <br><br>This is a AI generated teaching simulation. The patient, results and images are fabricated for education and must not be used for clinical decision-making. Follow your own unit's protocols. <br>© 2026 AHNH PTD. All rights reserved. Simulator developed by Mr Thomas Mak, Ms Stephy Lau.
     </p>
   </div>
 </div>
@@ -631,7 +633,7 @@ const plain=t=>String(t).replace(/<[^>]*>/g,'');
    STATE
    ===================================================================== */
 const S={
-  mode:'coach', sound:true, t:0, started:false, step:0, over:false,
+  mode:'assess', sound:true, t:0, started:false, step:0, over:false,
   crisisDone:false, ended:false,
   crisisOpen:false,    // a crisis modal is on screen — mutex against overlapping triggers
   desatDone:false,     // the SpO2-below-80 crisis has already fired once this session
@@ -1855,7 +1857,7 @@ function suctionTick(dt){
        bradycardic but not asystolic — the big vagal hit comes with the vomit itself. */
     P.vagal=Math.min(0.55,P.vagal+dt*(z===4?0.14:0.05));
     /* the vomiting clock. An unvented PEG with feed sitting in the stomach is the
-       difference between a retch and a mouthful of milk: around four seconds of grace
+       difference between a retch and a mouthful of milk: roughly four seconds of grace
        at the larynx with the feed running, against about fifteen with it vented. */
     const peg=E.pegVented?0.42:1.55;
     SUC.vomitRisk+=dt*(z===4?0.10:0.025)*peg*(1+P.gag*0.6);
@@ -2478,7 +2480,7 @@ function stHandover(host){
    <div class="sb"><dt>Situation</dt><dd><b>4-year-old boy, 12.4 kg.</b> Day 2 of admission with fever
      and desaturation. Nasopharyngeal aspirate is positive for <b>human metapneumovirus</b>.
      He is on 1 L/min nasal prongs, saturating 92%, and the nurses are suctioning his nose
-     around every two hours. They have asked you to review and to teach the mother.</dd></div>
+     roughly every two hours. They have asked you to review and to teach the mother.</dd></div>
    <div class="sb"><dt>Background</dt><dd>Ex-<b>25 week</b> preterm. <b>Bronchopulmonary dysplasia</b> —
      home oxygen until age two, baseline saturation 90–92% in air. <b>Spastic quadriplegic cerebral
      palsy, GMFCS V</b> — no independent sitting, no head control, no functional cough.
@@ -3006,7 +3008,7 @@ function stAfter(host){
            fb:'This is the highest-value thing you can leave behind. The measurement is child-specific and it is what prevents the next person going too deep. Write it down.'},
           {t:'That the <b>feed must be stopped and the PEG vented</b> before suctioning, every time',good:true,w:2,
            fb:'Essential in a child with unsafe swallow and a continuous feed. This is the link between technique and the vomiting risk, and it is the part families most often are not told.'},
-          {t:'The signs that mean <b>stop suctioning</b>: colour change, bradycardia, vomiting, or blood',good:true,w:2,
+          {t:'The signs that mean <b>stop</b>: colour change, bradycardia, vomiting, or blood',good:true,w:2,
            fb:'Teaching a parent when to stop matters more than teaching them how to start. A mother suctioning at home needs clear, concrete stopping rules.'},
           {t:'That suction is for the <b>audible upper-airway rattle</b>, not for the wheeze or the cough',good:true,w:2,
            fb:'Right — the indication is the thing you can actually change. Without this, home suctioning drifts into being done for every noise and every cough.'},

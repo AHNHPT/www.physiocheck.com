@@ -716,10 +716,10 @@ body.mob .ausc{grid-template-columns:1fr}
       <p>Everything you do moves his physiology in real time. Suction too long, too deep, or without pre-oxygenating and you will watch it happen on the trace.</p>
     </div>
     <div class="modepick" role="radiogroup" aria-label="Feedback mode">
-      <label><input type="radio" name="mode" value="coach" checked>
+      <label><input type="radio" name="mode" value="coach">
         <span class="mp-t"><b>Coach mode</b><span>Feedback and rationale appear immediately after each decision. Best for laymen or newbies.</span></span></label>
-      <label><input type="radio" name="mode" value="exam">
-        <span class="mp-t"><b>Assessment mode</b><span>No feedback until the debrief. Use this if you want great challenges.</span></span></label>
+      <label><input type="radio" name="mode" value="exam" checked>
+        <span class="mp-t"><b>Assessment mode (Recommended)</b><span>No feedback until the debrief. Use this if you want great challenges.</span></span></label>
     </div>
     <div class="actions">
       <button class="btn pri" id="startbtn">Take the handover</button>
@@ -836,7 +836,7 @@ const START = JSON.parse(JSON.stringify(P));
 
 /* ---------- session state ---------- */
 const S = {
-  mode:'coach', t0:0, t:0, sound:true, step:0, running:false,
+  mode:'exam', t0:0, t:0, sound:true, step:0, running:false,
   passes:[], passN:0, lastPassEnd:-999, crisisDone:false, crisisScore:0,
   setup:{system:null,size:null,pressure:150,preOx:false,ppe:false,assistant:false},
   preOxAt:-999, listened:new Set(), auscRound:1,

@@ -444,10 +444,10 @@ body.mob #sceneTag{top:auto;bottom:6px}
     <div class="fiction">Mr. Leung is a fictional patient. The scenario is built around a major residential high-rise fire but is not an account of any real person or any real incident, and the clinical details have been written for teaching rather than drawn from a case record.</div>
 
     <div class="modepick">
-      <label><input type="radio" name="mode" value="coach" checked>
-        <span class="mp-t"><b>Coaching mode</b><span>Feedback and rationale appear immediately after each decision. Best for laymen or newbies.</span></span></label>
-      <label><input type="radio" name="mode" value="assess">
-        <span class="mp-t"><b>Assessment mode</b><span>No feedback until the debrief. Use this if you want great challenges.</span></span></label>
+      <label><input type="radio" name="mode" value="coach">
+        <span class="mp-t"><b>Coaching mode</b><span>Feedback and rationale appear as you go. Use this when you are learning.</span></span></label>
+      <label><input type="radio" name="mode" value="assess" checked>
+        <span class="mp-t"><b>Assessment mode (Recommended)</b><span>No feedback until the debrief. Use this when you are marking someone.</span></span></label>
     </div>
 
     <div class="actions">
@@ -584,7 +584,7 @@ const P={
 const BASE={hr:92,sbp:118,dbp:64,spo2:96,rr:22,co2:41,ppeak:21,vt:420};
 
 /* ---------- session state ---------- */
-const S={step:0,t:0,score:0,max:0,mode:'coach',run:false,onTick:null,started:0};
+const S={step:0,t:0,score:0,max:0,mode:'assess',run:false,onTick:null,started:0};
 const LOG=[];const CRITICALS=[];const DOM={};
 const F={                      // what the trainee actually did
   screen:{}, assessments:[], target:null, dosage:[], stopCrit:[],
