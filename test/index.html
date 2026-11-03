@@ -405,7 +405,8 @@ const L = {
   baseStand:    { zh: ['請站直，保持不動', '企直，唔好郁。'], en: ['Stand tall and still', 'Stand tall and keep still.'] },
   baseSit:      { zh: ['請坐直，保持不動', '坐直，唔好郁。'], en: ['Sit tall and still', 'Sit tall and keep still.'] },
   instRom:      { zh: ['舉手觸碰花朵', ''], en: ['Raise your arm to the flower', ''] },
-  instReach:    { zh: ['伸手觸碰花朵', ''], en: ['Reach for the flower', ''] },
+  instReach:    { left:  { zh: ['用左手觸碰花朵', ''], en: ['Reach with your left arm', ''] },
+                  right: { zh: ['用右手觸碰花朵', ''], en: ['Reach with your right arm', ''] } },
   instBalance:  { zh: ['身體慢慢傾向花朵', ''], en: ['Lean gently towards the flower', ''] },
   hold:         { zh: ['保持…', ''], en: ['Hold…', ''] },
   upright:      { zh: ['保持身體挺直', '身體企直啲。'], en: ['Keep your body upright', 'Keep your body upright.'] },
@@ -419,7 +420,7 @@ const restLine = (i, n) => ({ zh: [`休息 · 下一組：第 ${i} 組`, ''], en
 // ---------------------------------------------------------------- storage (this browser only)
 const Store = {
   key: 'nightbloom.web.v1',
-  data: { settings: { lang: 'zh', exercise: 'rom', level: 'easy', arm: 'both', posture: 'sit' }, sessions: [], garden: [] },
+  data: { settings: { lang: 'zh', exercise: 'rom', level: 'easy', arm: 'both', reachArm: 'left', posture: 'sit' }, sessions: [], garden: [] },
   load() {
     try {
       const raw = localStorage.getItem(this.key);
@@ -438,6 +439,8 @@ const Store = {
 };
 Store.load();
 const S = Store.data.settings;
+/// Reach is one arm at a time, so its across-the-body flowers are never ambiguous; it keeps its own arm choice.
+const armFor = ex => ex === 'reach' ? (S.reachArm === 'right' ? 'right' : 'left') : S.arm;
 const lang = () => S.lang;
 const tr = () => T[S.lang];
 const line = l => l[S.lang];
@@ -891,11 +894,13 @@ class Demo {
         secondLine = { zh: ['花朵會在不同高度出現', '花會喺唔同高度出現。'], en: ['Flowers appear at different heights', 'Flowers appear at different heights.'] };
       }
     } else if (ex === 'reach') {
-      reachLine = { zh: ['伸手觸碰花朵', '伸手去掂朵花。'], en: ['Reach for the flower', 'Reach out to touch the flower.'] };
+      reachLine = first === 'left'
+        ? { zh: ['用左手觸碰花朵', '用左手伸去掂朵花。'], en: ['Reach with your left arm', 'Reach out with your left arm to touch the flower.'] }
+        : { zh: ['用右手觸碰花朵', '用右手伸去掂朵花。'], en: ['Reach with your right arm', 'Reach out with your right arm to touch the flower.'] };
       s1 = { side: req(first), place: first, clock: first === 'left' ? 10.5 : 1.5 };
       if (p.cross) {
         s2 = { side: req(first), place: first, clock: first === 'left' ? 2.6 : 9.4 };
-        secondLine = { zh: ['有些花在身體另一邊', '有啲花喺身體另一邊，要伸手過去。'], en: ['Some flowers are across your body', 'Some flowers are across your body — reach over to them.'] };
+        secondLine = { zh: ['有些花在身體另一邊，也用同一隻手', '有啲花喺身體另一邊，都係用同一隻手伸過去掂。'], en: ['Some flowers are across your body — use the same arm', 'Some flowers are across your body. Reach over with the same arm.'] };
       } else {
         s2 = { side: req(second), place: second, clock: second === 'left' ? 9 : 3 };
         secondLine = { zh: ['花朵會在不同方向出現', '花會喺唔同方向出現。'], en: ['Flowers appear in different directions', 'Flowers appear in different directions.'] };
@@ -1218,7 +1223,7 @@ class Game {
     if (this.now < this.setIntroUntil) { /* keep the set title */ }
     else if (!b.present()) this.setPrompt(L.backInView);
     else if (holding) this.setPrompt(L.hold);
-    else if (!anyHover && (this.resolvedInSet === 0 || this.now - this.lastInteraction > 9)) this.setPrompt(c.exercise === 'rom' ? L.instRom : c.exercise === 'reach' ? L.instReach : L.instBalance);
+    else if (!anyHover && (this.resolvedInSet === 0 || this.now - this.lastInteraction > 9)) this.setPrompt(c.exercise === 'rom' ? L.instRom : c.exercise === 'reach' ? L.instReach[c.arm] : L.instBalance);
     else this.setPrompt(null);
     if (this.resolvedInSet >= p.reps && !this.live) this.endSet();
     this.updatePeaks();
@@ -1263,10 +1268,11 @@ class Game {
       pos = vadd(anchor, vmul(dir, p.dist * arm));
       meta.angle = Math.round(lo + (hi - lo) * k / (n - 1));
     } else if (c.exercise === 'reach') {
+      // Reach is always one arm, so a flower across the body is still clearly that arm's.
       // Easy keeps to comfortable same-side directions (no straight-overhead flower).
       const ipsi = c.level === 'easy' ? (place === 'left' ? [9, 10.5, 7.5] : [3, 1.5, 4.5]) : (place === 'left' ? [9, 10.5, 12, 7.5] : [3, 1.5, 12, 4.5]);
       const cross = place === 'left' ? [1.5, 3, 4.5] : [10.5, 9, 7.5];
-      let hours = ipsi.concat(p.cross ? cross : []);
+      const hours = ipsi.concat(p.cross ? cross : []);
       const startH = place === 'left' ? 7.5 : 4.5;
       hours.sort((a, b2) => ((a - startH + 12) % 12) - ((b2 - startH + 12) % 12));
       if (place === 'right') hours.reverse();
@@ -1958,7 +1964,7 @@ class App {
     $('exList').innerHTML = EXERCISES.map(e => `<button data-ex="${e}" class="${S.exercise === e ? 'sel' : ''}"><div class="ico" style="font-size:24px">${icons[e]}</div><div><div class="t">${t.ex[e][0]}</div><div class="d">${t.ex[e][1]}</div></div></button>`).join('');
     const seg = (id, opts, cur, key) => { $(id).innerHTML = opts.map(([v, label]) => `<button data-${key}="${v}" class="${cur === v ? 'sel' : ''}">${label}</button>`).join(''); };
     seg('levelSeg', LEVELS.map(l => [l, t.level[l]]), S.level, 'level');
-    seg('armSeg', ['left', 'both', 'right'].map(a => [a, t.armOpt[a]]), S.arm, 'arm');
+    seg('armSeg', (S.exercise === 'reach' ? ['left', 'right'] : ['left', 'both', 'right']).map(a => [a, t.armOpt[a]]), armFor(S.exercise), 'arm');
     seg('posSeg', ['sit', 'stand'].map(p => [p, t.posOpt[p]]), S.posture, 'pos');
     $('armBox').style.visibility = S.exercise === 'balance' ? 'hidden' : 'visible';
     const p = PRESETS[S.exercise][S.level];
@@ -1975,7 +1981,7 @@ class App {
       if (b.dataset.lang) { S.lang = b.dataset.lang; Store.save(); this.applyLang(); return; }
       if (b.dataset.ex) { S.exercise = b.dataset.ex; Store.save(); this.buildHome(); return; }
       if (b.dataset.level) { S.level = b.dataset.level; Store.save(); this.buildHome(); return; }
-      if (b.dataset.arm) { S.arm = b.dataset.arm; Store.save(); this.buildHome(); return; }
+      if (b.dataset.arm) { if (S.exercise === 'reach') S.reachArm = b.dataset.arm; else S.arm = b.dataset.arm; Store.save(); this.buildHome(); return; }
       if (b.dataset.pos) { S.posture = b.dataset.pos; Store.save(); this.buildHome(); return; }
     });
     $('startBtn').onclick = () => this.show('safety');
@@ -2003,7 +2009,7 @@ class App {
   // ------------------------------------------------------------- camera & tracking
   async begin() {
     this.sound.init(); this.narrator.unlock(); this.wakeLock();
-    this.choice = { exercise: S.exercise, level: S.level, arm: S.arm, posture: S.posture };
+    this.choice = { exercise: S.exercise, level: S.level, arm: armFor(S.exercise), posture: S.posture };
     if (SIM) { this.play(); return; }
     $('loadBack').style.display = 'none';
     $('loadTitle').textContent = tr().loadCam; $('loadNote').textContent = tr().loadCamNote; $('loadBar').style.width = '8%';
@@ -2092,7 +2098,7 @@ class App {
     this.show(null); this.playing = true;
     this.body.resetFilters(); this.framer.reset(); this.simPatient.reset(); this.lastCenter = null;
     this.position = 'notVisible'; this.posCand = 'notVisible';
-    $('tag').textContent = `${tr().ex[this.choice.exercise][0]} · ${tr().level[this.choice.level]}`;
+    $('tag').textContent = `${tr().ex[this.choice.exercise][0]} · ${tr().level[this.choice.level]}${this.choice.exercise === 'reach' ? ` · ${tr().armOpt[this.choice.arm]}` : ''}`;
     this.game.start(this.choice);
   }
   onSessionEnd(rec) {
