@@ -22,7 +22,7 @@ main.wrap{padding-top:34px;padding-bottom:50px}
 .how{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:30px}
 .how div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:14.5px;color:var(--ink-2)}
 .how b{display:block;color:var(--ink);font:650 16px var(--serif);margin-bottom:2px}
-h3.sh{font:650 22px var(--serif);margin:0 0 14px}
+h3.sh{font:650 22px var(--serif);margin:0 0 2px}.gd{margin:0 0 14px;color:var(--ink-2);font-size:14.5px}.grp{margin-bottom:34px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
 .pc{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px 22px;text-decoration:none;color:var(--ink);
   box-shadow:0 1px 2px rgba(20,24,35,.05),0 6px 22px rgba(20,24,35,.06);border-top:5px solid var(--a);transition:transform .15s,box-shadow .15s}
@@ -42,8 +42,8 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--ink-3);f
 <header><div class="wrap">
   <div class="eyebrow">Certificate Course · Wound Management in Orthopaedics &amp; Traumatology</div>
   <h1>Wound Management Learning Hub</h1>
-  <p>Seven interactive portals built from the course lecture slides. Each has structured notes, hands-on tools, the key slide figures, and a 10-question quiz with practice and exam modes.</p>
-  <div class="overall"><div class="ov"><b id="ovDone">0/7</b><span>quizzes attempted</span></div><div class="ov"><b id="ovAvg">—</b><span>average best score</span></div><div class="ov"><b>70</b><span>MCQs in total</span></div></div>
+  <p>23 interactive portals built from the course lecture slides. Each has structured notes, hands-on tools, the key slide figures, and a 10-question quiz with practice and exam modes.</p>
+  <div class="overall"><div class="ov"><b id="ovDone">0/23</b><span>quizzes attempted</span></div><div class="ov"><b id="ovAvg">—</b><span>average best score</span></div><div class="ov"><b>230</b><span>MCQs in total</span></div></div>
 </div></header>
 <main class="wrap">
   <div class="how">
@@ -52,8 +52,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--ink-3);f
     <div><b>3 · Figures</b>Revisit the original key slides, enlarged.</div>
     <div><b>4 · Quiz</b>Practice mode gives instant feedback; exam mode scores you at the end. Best scores show here.</div>
   </div>
-  <h3 class="sh">Suggested study order</h3>
-  <div class="grid">
+  <section class="grp"><h3 class="sh">Foundations of wound care</h3><p class="gd">Healing, wound bed preparation, infection, products, nutrition and pain.</p><div class="grid">
 <a class="pc" href="01_Clinical_Reasoning_OT_Wound.html" style="--a:#4338ca;--as:#e9e8fb;--ai:#3730a3" data-id="reason">
   <div class="top"><span class="num">1</span><span class="score" data-score="reason">Not attempted</span></div>
   <h2>Clinical Reasoning on O&amp;T Wound Management</h2>
@@ -78,6 +77,30 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--ink-3);f
   <div class="bar"><i data-bar="prod"></i></div>
   <div class="who">Isaac CHAU Wing Wah, Associate Nurse Consultant, O&amp;T, Queen Mary Hospital</div>
 </a>
+<a class="pc" href="13_Pain_Management_in_Wound_Care.html" style="--a:#c026d3;--as:#fae8fc;--ai:#a21caf" data-id="pain">
+  <div class="top"><span class="num">13</span><span class="score" data-score="pain">Not attempted</span></div>
+  <h2>Pain Management in Wound Care: From Reactive to Proactive</h2>
+  <p>From reactive to proactive: pain mechanisms, background/incident/procedural pain, PQRST assessment, red flags, multimodal analgesia, ketamine, VR and escalation.</p>
+  <div class="meta"><span>6 modules</span><span>8 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="pain"></i></div>
+  <div class="who">Fok Yan Yan, ANC KCC / ANA Department of Anaesthesiology, Perioperative &amp; Pain Medicine</div>
+</a>
+<a class="pc" href="14_Nutrition_in_Wound_Management.html" style="--a:#4d7c0f;--as:#eef6dd;--ai:#3f6212" data-id="nutri">
+  <div class="top"><span class="num">14</span><span class="score" data-score="nutri">Not attempted</span></div>
+  <h2>Nutrition in Wound Management</h2>
+  <p>ABCD nutritional assessment, BMI and amputation-adjusted weight, energy/protein/fluid targets, key nutrients and the protein exchange list.</p>
+  <div class="meta"><span>6 modules</span><span>6 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="nutri"></i></div>
+  <div class="who">Zoe Tsoi, Dietitian, PYNEH</div>
+</a>
+<a class="pc" href="18_Preparing_the_Wound_Bed.html" style="--a:#a16207;--as:#fbf1d6;--ai:#854d0e" data-id="wbp">
+  <div class="top"><span class="num">18</span><span class="score" data-score="wbp">Not attempted</span></div>
+  <h2>Preparing the Wound Bed: What Has Changed — and What Should You Change?</h2>
+  <p>Wound bed preparation 2026: set the goal first, TIME at every change, biofilm and infection updates, Wound Hygiene vs CID, debridement methods and when to stop.</p>
+  <div class="meta"><span>6 modules</span><span>8 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="wbp"></i></div>
+  <div class="who">Esther Chang, KWC &amp; YCH NC (O&amp;T)</div>
+</a></div></section><section class="grp"><h3 class="sh">Wound types &amp; special populations</h3><p class="gd">Vascular, pressure, skin tears, burns, autoimmune and palliative wounds.</p><div class="grid">
 <a class="pc" href="04_PVD_and_Diabetic_Foot_Ulcer.html" style="--a:#be123c;--as:#fce6eb;--ai:#9f1239" data-id="pvd">
   <div class="top"><span class="num">4</span><span class="score" data-score="pvd">Not attempted</span></div>
   <h2>Etiology &amp; Management of PVD and Diabetic Foot Ulcer</h2>
@@ -94,6 +117,94 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--ink-3);f
   <div class="bar"><i data-bar="auto"></i></div>
   <div class="who">K K Tsang, RN PhD</div>
 </a>
+<a class="pc" href="09_Skin_Tears_in_Aged_Skin.html" style="--a:#be185d;--as:#fce7f1;--ai:#9d174d" data-id="skintear">
+  <div class="top"><span class="num">9</span><span class="score" data-score="skintear">Not attempted</span></div>
+  <h2>Skin Tears in Aged Skin: Prevention, Assessment &amp; Management</h2>
+  <p>ISTAP 2025: what is and isn't a skin tear, risk screening, prevention bundles, Type 1–3 classification and the 10-step atraumatic pathway.</p>
+  <div class="meta"><span>5 modules</span><span>7 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="skintear"></i></div>
+  <div class="who">Liu Ka Wai Billy, NTEC NC (Orthopaedics &amp; Traumatology)</div>
+</a>
+<a class="pc" href="12_Palliative_Wound_Care.html" style="--a:#6d28d9;--as:#efe8fd;--ai:#5b21b6" data-id="pall">
+  <div class="top"><span class="num">12</span><span class="score" data-score="pall">Not attempted</span></div>
+  <h2>Palliative Wound Care</h2>
+  <p>From cure to comfort: goals of palliative wound care and practical control of odour, exudate, bleeding, pruritus, pain and psychosocial distress.</p>
+  <div class="meta"><span>6 modules</span><span>8 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="pall"></i></div>
+  <div class="who">APN Chan Hang Yee</div>
+</a>
+<a class="pc" href="19_Venous_Ulcer_Management.html" style="--a:#0369a1;--as:#e0f0fa;--ai:#075985" data-id="venous">
+  <div class="top"><span class="num">19</span><span class="score" data-score="venous">Not attempted</span></div>
+  <h2>Etiology &amp; Management of Venous Ulcers</h2>
+  <p>CVI vs varicose veins, CEAP, tourniquet test and duplex, open vs endovenous treatment, compression bandages and hosiery, venous vs arterial and mixed ulcers.</p>
+  <div class="meta"><span>6 modules</span><span>8 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="venous"></i></div>
+  <div class="who">Tse On Ho Ronald, APN (Vascular), PYNEH</div>
+</a>
+<a class="pc" href="20_Pressure_Injury_and_MDPI.html" style="--a:#b91c1c;--as:#fde5e5;--ai:#991b1b" data-id="pi">
+  <div class="top"><span class="num">20</span><span class="score" data-score="pi">Not attempted</span></div>
+  <h2>Pressure Injury: Inspection, Classification &amp; Management (with MDPI)</h2>
+  <p>Pressure, shear, friction and microclimate; NPIAP staging incl. unstageable, DTPI and mucosal; prevention, IAD and 4-layer protection, MDPI in orthopaedics, SEM scanning and UCH projects.</p>
+  <div class="meta"><span>6 modules</span><span>9 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="pi"></i></div>
+  <div class="who">Kwok Wing Hang, APN (O&amp;T), UCH / KEC</div>
+</a>
+<a class="pc" href="22_Care_of_Burn_Wounds.html" style="--a:#c2410c;--as:#fdebe1;--ai:#9a3412" data-id="burn">
+  <div class="top"><span class="num">22</span><span class="score" data-score="burn">Not attempted</span></div>
+  <h2>Care of Patients with Burn Wounds</h2>
+  <p>TBSA by Rule of Nines and Lund–Browder, burn depth and LDI, blisters, pain, nutrition, splinting, infection and MolecuLight, skin grafts and dermal substitutes.</p>
+  <div class="meta"><span>6 modules</span><span>8 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="burn"></i></div>
+  <div class="who">Wong Tze Wing, NC (Burns), Burns Centre, PRAS, Department of Surgery, PWH, NTEC</div>
+</a>
+<a class="pc" href="23_Care_of_Patient_with_Autoimmune_Disease.html" style="--a:#9333ea;--as:#f3e8fd;--ai:#7e22ce" data-id="auto2">
+  <div class="top"><span class="num">23</span><span class="score" data-score="auto2">Not attempted</span></div>
+  <h2>Care of Patient with Autoimmune Disease</h2>
+  <p>A rheumatology view: RA, SLE, systemic sclerosis, Raynaud's and vasculitis — antibodies, ACR/EULAR and DAS28, treatment and side effects, education and self-care.</p>
+  <div class="meta"><span>5 modules</span><span>7 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="auto2"></i></div>
+  <div class="who">CHEUNG Mei Shun, Nurse Consultant (Rheumatology), HKIC(E) MED</div>
+</a></div></section><section class="grp"><h3 class="sh">Orthopaedic &amp; surgical wounds</h3><p class="gd">Trauma, exposed deep structures, flaps and microvascular surgery.</p><div class="grid">
+<a class="pc" href="08_Complicated_Wounds_Deep_Structures.html" style="--a:#9a3412;--as:#fbe9df;--ai:#7c2d12" data-id="deep">
+  <div class="top"><span class="num">8</span><span class="score" data-score="deep">Not attempted</span></div>
+  <h2>Complicated Orthopaedic Wounds with Deep Structures Exposed</h2>
+  <p>Exposed bone, tendon, joint or hardware: assessment priorities, the reconstructive ladder, dermal matrices and NPWT/NPWTi-d/ROI-NPT, with five real cases.</p>
+  <div class="meta"><span>6 modules</span><span>8 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="deep"></i></div>
+  <div class="who">LAI Wai Ho Raymond, ANC (O&amp;T), PYNEH</div>
+</a>
+<a class="pc" href="15_Orthopaedic_Concerns_in_Wound_Care.html" style="--a:#ea580c;--as:#fdeee3;--ai:#c2410c" data-id="orthoc">
+  <div class="top"><span class="num">15</span><span class="score" data-score="orthoc">Not attempted</span></div>
+  <h2>Orthopaedic Concerns in Wound Care</h2>
+  <p>Hand, elbow, foot and ankle, trauma and NSTI wounds: finger dressings, bedside ultrasound, dry gangrene, off-loading with soft casts and paddings, and implant cautions.</p>
+  <div class="meta"><span>6 modules</span><span>9 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="orthoc"></i></div>
+  <div class="who">Man Nga Wai, ANC, O&amp;T Department, QEH / KCC</div>
+</a>
+<a class="pc" href="16_Microvascular_Surgery_Wound.html" style="--a:#047857;--as:#dff5ec;--ai:#065f46" data-id="mvsurg">
+  <div class="top"><span class="num">16</span><span class="score" data-score="mvsurg">Not attempted</span></div>
+  <h2>Microvascular Surgery Wound</h2>
+  <p>A surgeon's view: primary vs secondary healing, the reconstructive ladder, flap blood supply and perforasomes, flap options by region, and replantation.</p>
+  <div class="meta"><span>5 modules</span><span>6 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="mvsurg"></i></div>
+  <div class="who">Dr Emily Ka Yan YIP, Consultant, Department of O&amp;T, Tuen Mun Hospital, NTWC</div>
+</a>
+<a class="pc" href="17_Nursing_Care_Microvascular_Surgery.html" style="--a:#0d9488;--as:#dcf5f1;--ai:#0f766e" data-id="mvnurse">
+  <div class="top"><span class="num">17</span><span class="score" data-score="mvnurse">Not attempted</span></div>
+  <h2>Nursing Management in Microvascular Surgery Wounds</h2>
+  <p>Pre- and post-op nursing for flaps and replants: risk factors, hourly flap checks, venous congestion vs arterial occlusion, perfusion, positioning and three cases.</p>
+  <div class="meta"><span>6 modules</span><span>8 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="mvnurse"></i></div>
+  <div class="who">Wong Tai Fong, APN, O&amp;T, Tuen Mun Hospital</div>
+</a>
+<a class="pc" href="21_Orthopaedic_Traumatic_Wound_Management.html" style="--a:#e11d48;--as:#fde7ec;--ai:#be123c" data-id="trauma">
+  <div class="top"><span class="num">21</span><span class="score" data-score="trauma">Not attempted</span></div>
+  <h2>Orthopaedic Traumatic Wound Management</h2>
+  <p>Bleeding control, tourniquets and TXA, contamination classes, Gustilo open fractures, primary/secondary/tertiary closure, grafts, drains and special scenarios.</p>
+  <div class="meta"><span>6 modules</span><span>8 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="trauma"></i></div>
+  <div class="who">Mr Chow Chiu Man, NC (O&amp;T), UCH / KEC</div>
+</a></div></section><section class="grp"><h3 class="sh">Advanced therapies</h3><p class="gd">NPWT, hyperbaric oxygen, dermal substitutes and light therapy.</p><div class="grid">
 <a class="pc" href="06_NPWT_Basics_and_Advancement.html" style="--a:#0f766e;--as:#def3ef;--ai:#115e59" data-id="npwt">
   <div class="top"><span class="num">6</span><span class="score" data-score="npwt">Not attempted</span></div>
   <h2>Negative Pressure Wound Therapy: Basics &amp; New Advancement</h2>
@@ -109,13 +220,29 @@ footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--ink-3);f
   <div class="meta"><span>8 modules</span><span>7 slide figures</span><span>10 MCQs</span></div>
   <div class="bar"><i data-bar="hbot"></i></div>
   <div class="who">MAK Ho Man, HBOT APN, Pamela Youde Nethersole Eastern Hospital (PYNEH)</div>
-</a></div>
+</a>
+<a class="pc" href="10_Phototherapy_in_Wound_Care.html" style="--a:#b45309;--as:#fdf0d9;--ai:#92400e" data-id="photo">
+  <div class="top"><span class="num">10</span><span class="score" data-score="photo">Not attempted</span></div>
+  <h2>Light Therapy (Phototherapy) in Wound Care</h2>
+  <p>Photobiomodulation: wavelengths and penetration, how it differs from PDT, UV and lasers, evidence by wound type, dosimetry, safety and the nursing pathway.</p>
+  <div class="meta"><span>6 modules</span><span>7 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="photo"></i></div>
+  <div class="who">Mr Henry Kwong, NC (O&amp;T), QMH &amp; HKIC(W), Hong Kong West Cluster</div>
+</a>
+<a class="pc" href="11_Dermal_Substitutes.html" style="--a:#0e7490;--as:#dff3f8;--ai:#155e75" data-id="dermal">
+  <div class="top"><span class="num">11</span><span class="score" data-score="dermal">Not attempted</span></div>
+  <h2>Use of Dermal Substitutes: Advanced Nursing Management</h2>
+  <p>MatriDerm vs NovoSorb BTM vs MTX: structure, grafting pathway, dressing layers, compatibility, integration, troubleshooting and the APMED checklist.</p>
+  <div class="meta"><span>7 modules</span><span>8 slide figures</span><span>10 MCQs</span></div>
+  <div class="bar"><i data-bar="dermal"></i></div>
+  <div class="who">Mr Kwong Wai Fung Henry, Nurse Consultant (O&amp;T) / HKIC(W)</div>
+</a></div></section>
 </main>
-<footer><div class="wrap">For personal study. Keep all eight HTML files in the same folder so the links work. Content is summarised from the lecture slides — always follow current Hospital Authority and departmental guidelines.</div></footer>
+<footer><div class="wrap">For personal study. Keep all 24 HTML files in the same folder so the links work. Content is summarised from the lecture slides — always follow current Hospital Authority and departmental guidelines.</div></footer>
 <script>
-(function(){const ids=["reason", "micro", "prod", "pvd", "auto", "npwt", "hbot"];let done=0,sum=0;
+(function(){const ids=["reason", "micro", "prod", "pvd", "auto", "npwt", "hbot", "deep", "skintear", "photo", "dermal", "pall", "pain", "nutri", "orthoc", "mvsurg", "mvnurse", "wbp", "venous", "pi", "trauma", "burn", "auto2"];let done=0,sum=0;
 ids.forEach(id=>{let r=null;try{r=JSON.parse(localStorage.getItem('wm-portal-'+id))}catch(e){}
  if(r&&r.best!=null){done++;sum+=r.best;const s=document.querySelector('[data-score="'+id+'"]');s.textContent='Best '+r.best+'/10';s.classList.add('done');document.querySelector('[data-bar="'+id+'"]').style.width=(r.best*10)+'%'}});
-document.getElementById('ovDone').textContent=done+'/7';if(done)document.getElementById('ovAvg').textContent=(sum/done).toFixed(1)+'/10';})();
+document.getElementById('ovDone').textContent=done+'/'+ids.length;if(done)document.getElementById('ovAvg').textContent=(sum/done).toFixed(1)+'/10';})();
 </script>
 </body></html>
